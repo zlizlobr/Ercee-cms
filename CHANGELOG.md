@@ -1,3 +1,9 @@
+## [v0.0.5] – 2026-01-19
+
+- release: patch -- Funnel Engine & Marketing Automation Core (#5)
+* Funnel Engine & Marketing Automation Core
+- chore: update changelog for v0.0.4
+
 ## [v0.0.4] – 2026-01-19
 
 - release: patch -- add Forms & Contracts
