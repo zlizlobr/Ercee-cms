@@ -1,3 +1,9 @@
+## [v0.0.4] – 2026-01-19
+
+- release: patch -- add Forms & Contracts
+* Add Forms & Contracts module with dynamic form builder, public submission API, and lead capture system
+- chore: update changelog for v0.0.3
+
 ## [v0.0.3] – 2026-01-19
 
 - release: patch -- Add CMS module and public REST API (#3)
