@@ -2,7 +2,10 @@
 
 namespace App\Domain\Commerce;
 
+<<<<<<< HEAD
 use Database\Factories\ProductFactory;
+=======
+>>>>>>> origin/main
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,11 +15,14 @@ class Product extends Model
 {
     use HasFactory;
 
+<<<<<<< HEAD
     protected static function newFactory(): ProductFactory
     {
         return ProductFactory::new();
     }
 
+=======
+>>>>>>> origin/main
     protected $fillable = [
         'name',
         'price',
