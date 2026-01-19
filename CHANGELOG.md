@@ -1,3 +1,9 @@
+## [v0.1.3] – 2026-01-19
+
+- release: patch -- fix form (#9)
+* Fix misssing form
+- chore: update changelog for v0.1.2
+
 ## [v0.1.2] – 2026-01-19
 
 - release: patch -- application Orchestration (#8)
