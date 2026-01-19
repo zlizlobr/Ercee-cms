@@ -354,13 +354,53 @@ app/
 │   ├── Commerce/     # Products, Orders, Payments & Gateways
 │   ├── Form/         # Forms, Contracts & events
 │   └── Funnel/       # Marketing automation engine
-├── Application/      # Application services
+├── Application/      # Application orchestration layer (handlers, commands, results)
+│   ├── Form/         # SubmitFormHandler
+│   ├── Commerce/     # CreateOrderHandler, ProcessPaymentWebhookHandler
+│   ├── Funnel/       # StartFunnelHandler
+│   └── Content/      # PublishPageHandler
 ├── Infrastructure/   # External integrations
-├── Http/Controllers/Api/  # Public API controllers
+├── Http/Controllers/Api/  # Public API controllers (thin, delegate to handlers)
 ├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
 ```
+
+## Application Layer Architecture
+
+The project uses a clean Application Layer that separates HTTP/UI concerns from business logic.
+
+### Architecture Flow
+
+```
+HTTP Request → Controller → Command DTO → Handler → Domain Services → Result DTO → HTTP Response
+```
+
+### Handlers
+
+| Handler | Module | Description |
+|---------|--------|-------------|
+| `SubmitFormHandler` | Form | Processes form submissions, creates contracts |
+| `CreateOrderHandler` | Commerce | Initiates checkout, creates orders |
+| `ProcessPaymentWebhookHandler` | Commerce | Processes payment webhooks, updates order status |
+| `StartFunnelHandler` | Funnel | Triggers marketing funnels |
+| `PublishPageHandler` | Content | Publishes CMS pages |
+
+### Handler Rules
+
+1. Framework-agnostic (no Request/Response objects)
+2. Accept only Command DTOs
+3. Return only Result DTOs
+4. Coordinate domain services and repositories
+5. Dispatch domain events when needed
+
+### Controller Rules
+
+1. Validate HTTP format only
+2. Map Request → Command
+3. Call handler
+4. Map Result → Response
+5. Max 50 lines of code
 
 ## Frontend Routes
 

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Content;
 
+use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): PageFactory
+    {
+        return PageFactory::new();
+    }
 
     public const STATUS_DRAFT = 'draft';
 

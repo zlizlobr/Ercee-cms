@@ -13,7 +13,9 @@ class FunnelRun extends Model
     use HasFactory;
 
     public const STATUS_RUNNING = 'running';
+
     public const STATUS_COMPLETED = 'completed';
+
     public const STATUS_FAILED = 'failed';
 
     protected $fillable = [

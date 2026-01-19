@@ -35,7 +35,7 @@ class ProductController extends Controller
             return Product::active()->find($id);
         });
 
-        if (!$product) {
+        if (! $product) {
             return response()->json([
                 'error' => 'Product not found',
             ], 404);

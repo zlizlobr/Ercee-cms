@@ -11,7 +11,9 @@ class Funnel extends Model
     use HasFactory;
 
     public const TRIGGER_CONTRACT_CREATED = 'contract_created';
+
     public const TRIGGER_ORDER_PAID = 'order_paid';
+
     public const TRIGGER_MANUAL = 'manual';
 
     protected $fillable = [

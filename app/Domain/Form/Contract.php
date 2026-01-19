@@ -3,6 +3,7 @@
 namespace App\Domain\Form;
 
 use App\Domain\Subscriber\Subscriber;
+use Database\Factories\ContractFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,8 +12,15 @@ class Contract extends Model
 {
     use HasFactory;
 
+    protected static function newFactory(): ContractFactory
+    {
+        return ContractFactory::new();
+    }
+
     public const STATUS_NEW = 'new';
+
     public const STATUS_QUALIFIED = 'qualified';
+
     public const STATUS_CONVERTED = 'converted';
 
     public const STATUSES = [

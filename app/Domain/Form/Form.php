@@ -2,6 +2,7 @@
 
 namespace App\Domain\Form;
 
+use Database\Factories\FormFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +12,11 @@ use Illuminate\Validation\ValidationException;
 class Form extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): FormFactory
+    {
+        return FormFactory::new();
+    }
 
     public const FIELD_TYPES = ['text', 'email', 'textarea', 'select', 'checkbox'];
 
@@ -48,7 +54,7 @@ class Form extends Model
     {
         $schema = $this->schema;
 
-        if (!is_array($schema)) {
+        if (! is_array($schema)) {
             throw ValidationException::withMessages([
                 'schema' => ['Schema must be an array of fields.'],
             ]);
@@ -57,7 +63,7 @@ class Form extends Model
         foreach ($schema as $index => $field) {
             $validator = Validator::make($field, [
                 'name' => 'required|string',
-                'type' => 'required|string|in:' . implode(',', self::FIELD_TYPES),
+                'type' => 'required|string|in:'.implode(',', self::FIELD_TYPES),
                 'label' => 'required|string',
                 'required' => 'boolean',
                 'options' => 'array',
@@ -84,7 +90,7 @@ class Form extends Model
         foreach ($this->schema as $field) {
             $fieldRules = [];
 
-            if (!empty($field['required'])) {
+            if (! empty($field['required'])) {
                 $fieldRules[] = 'required';
             } else {
                 $fieldRules[] = 'nullable';
@@ -99,7 +105,7 @@ class Form extends Model
                     break;
                 case 'select':
                     $options = array_column($field['options'], 'value');
-                    $fieldRules[] = 'in:' . implode(',', $options);
+                    $fieldRules[] = 'in:'.implode(',', $options);
                     break;
                 case 'text':
                 case 'textarea':

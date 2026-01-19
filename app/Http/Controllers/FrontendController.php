@@ -28,7 +28,7 @@ class FrontendController extends Controller
     {
         $page = $this->getPageBySlug($slug);
 
-        if (!$page) {
+        if (! $page) {
             abort(404);
         }
 
