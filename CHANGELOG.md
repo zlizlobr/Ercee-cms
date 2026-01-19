@@ -1,3 +1,9 @@
+## [v0.1.0] – 2026-01-19
+
+- release: minor -- lightweight Commerce & Checkout Core (#6)
+* Lightweight Commerce & Checkout Core
+- chore: update changelog for v0.0.5
+
 ## [v0.0.5] – 2026-01-19
 
 - release: patch -- Funnel Engine & Marketing Automation Core (#5)
