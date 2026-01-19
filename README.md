@@ -1,16 +1,18 @@
 # Ercee CMS
 
-Laravel-based CMS platform with Filament admin panel.
+Laravel-based headless CMS platform with Filament admin panel.
 
 ## Features
 
 - **Filament Admin Panel** - Modern backoffice UI at `/admin`
 - **Role-Based Access Control** - Using spatie/laravel-permission (admin, operator, marketing roles)
 - **Domain-Driven Design** - Clean architecture with Domain, Application, Infrastructure layers
+- **Headless CMS** - Block-based page builder with public REST API
 - **Core Entities**:
   - **Subscribers** - Marketing contact management
-  - **Pages** - CMS content with SEO support
+  - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
   - **Products** - Lightweight commerce entities
+  - **Navigation** - Hierarchical site navigation management
 
 ## Requirements
 
@@ -135,16 +137,70 @@ Access the admin panel at `http://localhost:8000/admin`
 | `operator` | Operational access |
 | `marketing` | Marketing-related features |
 
+## Public API
+
+The CMS exposes a REST API for frontend consumption.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
+| GET | `/api/v1/navigation` | Get hierarchical navigation structure |
+
+### Example Response - Page
+
+```json
+{
+  "data": {
+    "id": 1,
+    "slug": "homepage",
+    "title": "Homepage",
+    "blocks": [
+      {
+        "type": "text",
+        "position": 0,
+        "data": {
+          "heading": "Welcome",
+          "body": "<p>Content here...</p>"
+        }
+      }
+    ],
+    "seo": {
+      "title": "Homepage | Ercee",
+      "description": "Welcome to our site",
+      "open_graph": {
+        "title": "Homepage",
+        "description": "Welcome",
+        "image": "pages/og/image.jpg"
+      }
+    },
+    "published_at": "2026-01-19T10:00:00+00:00"
+  }
+}
+```
+
+### Block Types
+
+| Type | Fields |
+|------|--------|
+| `text` | heading, body |
+| `image` | image, alt, caption |
+| `cta` | title, description, button_text, button_url, style |
+| `form_embed` | form_id, title, description |
+
 ## Project Structure
 
 ```
 app/
 ├── Domain/           # Business logic layer
 │   ├── Subscriber/   # Marketing contacts
-│   ├── Content/      # CMS pages
+│   ├── Content/      # CMS pages & navigation
 │   ├── Commerce/     # Products
 │   └── Funnel/       # (future) Sales funnels
 ├── Application/      # Application services
 ├── Infrastructure/   # External integrations
+├── Http/Controllers/Api/  # Public API controllers
+├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
 ```
