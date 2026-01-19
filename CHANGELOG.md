@@ -1,3 +1,9 @@
+## [v0.0.3] – 2026-01-19
+
+- release: patch -- Add CMS module and public REST API (#3)
+* Add CMS module with block-based page editor, navigation management, and public REST API
+- chore: update changelog for v0.0.2
+
 ## [v0.0.2] – 2026-01-19
 
 - release: patch -- Add Filament admin panel (#2)
