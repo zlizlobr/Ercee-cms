@@ -12,11 +12,14 @@ Laravel-based headless CMS platform with Filament admin panel.
   - **Subscribers** - Marketing contact management
   - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
   - **Products** - Lightweight commerce entities
+  - **Orders** - Order tracking with payment integration
+  - **Payments** - Multi-gateway payment processing (Stripe, GoPay, Comgate)
   - **Navigation** - Hierarchical site navigation management
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
 - **Lead Capture System** - Public form submission API with anti-spam protection
 - **Marketing Automation** - Funnel engine with multi-step workflows triggered by events
+- **Lightweight Commerce** - Simple checkout with Stripe integration
 
 ## Requirements
 
@@ -63,7 +66,27 @@ This creates the default admin user:
 - **Email:** `admin@example.com`
 - **Password:** `password`
 
-### 5. Start services (optional)
+### 5. Configure Stripe (for payments)
+
+Add to your `.env`:
+
+```env
+STRIPE_KEY=pk_test_...
+STRIPE_SECRET=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_CURRENCY=czk
+STRIPE_SUCCESS_URL=http://localhost:8000/checkout/success
+STRIPE_CANCEL_URL=http://localhost:8000/checkout/cancel
+```
+
+For local webhook testing, use Stripe CLI:
+```bash
+brew install stripe/stripe-cli/stripe
+stripe login
+stripe listen --forward-to localhost:8000/api/webhooks/stripe
+```
+
+### 6. Start services (optional)
 
 ```bash
 brew services start mailpit
@@ -77,7 +100,7 @@ brew services start redis
 
 > **Note:** By default, the app uses database driver for cache and queue. Redis is optional.
 
-### 6. Start development server
+### 7. Start development server
 
 ```bash
 php artisan serve
@@ -152,6 +175,13 @@ The CMS exposes a REST API for frontend consumption.
 | GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
 | GET | `/api/v1/navigation` | Get hierarchical navigation structure |
 | POST | `/api/v1/forms/{id}/submit` | Submit form data (rate limited: 5/min per IP) |
+| POST | `/api/v1/checkout` | Initiate checkout (rate limited: 10/min per IP) |
+
+### Webhooks
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/webhooks/stripe` | Stripe payment webhook |
 
 ### Example Response - Page
 
@@ -226,6 +256,59 @@ curl -X POST http://localhost:8000/api/v1/forms/1/submit \
 | `select` | Dropdown with options |
 | `checkbox` | Boolean checkbox |
 
+### Checkout
+
+```bash
+curl -X POST http://localhost:8000/api/v1/checkout \
+  -H "Content-Type: application/json" \
+  -d '{"product_id": 1, "email": "customer@example.com"}'
+```
+
+**Response:**
+```json
+{
+  "message": "Checkout initiated",
+  "data": {
+    "order_id": 1,
+    "redirect_url": "https://checkout.stripe.com/..."
+  }
+}
+```
+
+**Rate limiting:** 10 requests per minute per IP
+
+## Commerce
+
+The platform includes a lightweight commerce layer for selling 1-3 products.
+
+### Order Statuses
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Waiting for payment |
+| `paid` | Successfully paid |
+| `failed` | Payment failed |
+| `cancelled` | Order cancelled |
+
+### Payment Gateways
+
+| Gateway | Status |
+|---------|--------|
+| Stripe | ✅ Implemented |
+| GoPay | 🔜 Planned |
+| Comgate | 🔜 Planned |
+
+### Checkout Flow
+
+1. Customer submits checkout form → `POST /api/v1/checkout`
+2. System creates Order and redirects to Stripe Checkout
+3. Customer completes payment on Stripe
+4. Stripe sends webhook → `POST /api/webhooks/stripe`
+5. System marks Order as paid and dispatches `OrderPaid` event
+6. Marketing funnels are triggered automatically
+
+For more details, see [docs/commerce-guide.md](docs/commerce-guide.md).
+
 ## Marketing Automation (Funnels)
 
 The platform includes a funnel engine for automated marketing sequences.
@@ -235,7 +318,7 @@ The platform includes a funnel engine for automated marketing sequences.
 | Trigger | Description |
 |---------|-------------|
 | `contract_created` | Fires when a form is submitted |
-| `order_paid` | Fires when an order is paid (placeholder) |
+| `order_paid` | Fires when an order is paid |
 | `manual` | Manually triggered via admin |
 
 ### Step Types
@@ -264,12 +347,20 @@ app/
 ├── Domain/           # Business logic layer
 │   ├── Subscriber/   # Marketing contacts & services
 │   ├── Content/      # CMS pages & navigation
-│   ├── Commerce/     # Products
+│   ├── Commerce/     # Products, Orders, Payments & Gateways
 │   ├── Form/         # Forms, Contracts & events
 │   └── Funnel/       # Marketing automation engine
 ├── Application/      # Application services
 ├── Infrastructure/   # External integrations
 ├── Http/Controllers/Api/  # Public API controllers
+├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
 ```
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
+| [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
