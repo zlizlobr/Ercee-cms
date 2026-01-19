@@ -16,6 +16,7 @@ Laravel-based headless CMS platform with Filament admin panel.
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
 - **Lead Capture System** - Public form submission API with anti-spam protection
+- **Marketing Automation** - Funnel engine with multi-step workflows triggered by events
 
 ## Requirements
 
@@ -225,6 +226,37 @@ curl -X POST http://localhost:8000/api/v1/forms/1/submit \
 | `select` | Dropdown with options |
 | `checkbox` | Boolean checkbox |
 
+## Marketing Automation (Funnels)
+
+The platform includes a funnel engine for automated marketing sequences.
+
+### Trigger Types
+
+| Trigger | Description |
+|---------|-------------|
+| `contract_created` | Fires when a form is submitted |
+| `order_paid` | Fires when an order is paid (placeholder) |
+| `manual` | Manually triggered via admin |
+
+### Step Types
+
+| Step | Config | Description |
+|------|--------|-------------|
+| `delay` | `{"seconds": 3600}` | Wait before next step |
+| `email` | `{"subject": "...", "body": "..."}` | Send email to subscriber |
+| `webhook` | `{"url": "...", "method": "POST"}` | Call external HTTP endpoint |
+| `tag` | `{"tag": "lead_qualified"}` | Add tag to subscriber |
+
+### Queue Processing
+
+Funnels run asynchronously via Laravel queues. Start the queue worker:
+
+```bash
+php artisan queue:work
+```
+
+For more details, see [docs/funnel-guide.md](docs/funnel-guide.md).
+
 ## Project Structure
 
 ```
@@ -234,7 +266,7 @@ app/
 │   ├── Content/      # CMS pages & navigation
 │   ├── Commerce/     # Products
 │   ├── Form/         # Forms, Contracts & events
-│   └── Funnel/       # (future) Sales funnels
+│   └── Funnel/       # Marketing automation engine
 ├── Application/      # Application services
 ├── Infrastructure/   # External integrations
 ├── Http/Controllers/Api/  # Public API controllers
