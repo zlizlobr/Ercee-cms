@@ -13,6 +13,9 @@ Laravel-based headless CMS platform with Filament admin panel.
   - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
   - **Products** - Lightweight commerce entities
   - **Navigation** - Hierarchical site navigation management
+  - **Forms** - Dynamic form builder with schema validation
+  - **Contracts** - Lead capture and form submissions
+- **Lead Capture System** - Public form submission API with anti-spam protection
 
 ## Requirements
 
@@ -147,6 +150,7 @@ The CMS exposes a REST API for frontend consumption.
 |--------|----------|-------------|
 | GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
 | GET | `/api/v1/navigation` | Get hierarchical navigation structure |
+| POST | `/api/v1/forms/{id}/submit` | Submit form data (rate limited: 5/min per IP) |
 
 ### Example Response - Page
 
@@ -189,14 +193,47 @@ The CMS exposes a REST API for frontend consumption.
 | `cta` | title, description, button_text, button_url, style |
 | `form_embed` | form_id, title, description |
 
+### Form Submission
+
+```bash
+curl -X POST http://localhost:8000/api/v1/forms/1/submit \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "first_name": "John"}'
+```
+
+**Response:**
+```json
+{
+  "message": "Form submitted successfully.",
+  "data": {
+    "contract_id": 1
+  }
+}
+```
+
+**Anti-spam protection:**
+- Rate limiting: 5 requests per minute per IP
+- Honeypot field: include `_hp_field` (must be empty)
+
+### Form Field Types
+
+| Type | Description |
+|------|-------------|
+| `text` | Single line text input |
+| `email` | Email input with validation |
+| `textarea` | Multi-line text input |
+| `select` | Dropdown with options |
+| `checkbox` | Boolean checkbox |
+
 ## Project Structure
 
 ```
 app/
 ├── Domain/           # Business logic layer
-│   ├── Subscriber/   # Marketing contacts
+│   ├── Subscriber/   # Marketing contacts & services
 │   ├── Content/      # CMS pages & navigation
 │   ├── Commerce/     # Products
+│   ├── Form/         # Forms, Contracts & events
 │   └── Funnel/       # (future) Sales funnels
 ├── Application/      # Application services
 ├── Infrastructure/   # External integrations
