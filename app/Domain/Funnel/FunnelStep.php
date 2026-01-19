@@ -12,8 +12,11 @@ class FunnelStep extends Model
     use HasFactory;
 
     public const TYPE_DELAY = 'delay';
+
     public const TYPE_EMAIL = 'email';
+
     public const TYPE_WEBHOOK = 'webhook';
+
     public const TYPE_TAG = 'tag';
 
     protected $fillable = [

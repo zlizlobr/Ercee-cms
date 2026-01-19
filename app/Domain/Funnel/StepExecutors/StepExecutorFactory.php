@@ -16,7 +16,7 @@ class StepExecutorFactory
 
     public function make(string $type): StepExecutorInterface
     {
-        if (!isset($this->executors[$type])) {
+        if (! isset($this->executors[$type])) {
             throw new InvalidArgumentException("Unknown step type: {$type}");
         }
 

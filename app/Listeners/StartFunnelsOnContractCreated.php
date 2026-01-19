@@ -2,21 +2,24 @@
 
 namespace App\Listeners;
 
+use App\Application\Funnel\Commands\StartFunnelCommand;
+use App\Application\Funnel\StartFunnelHandler;
 use App\Domain\Form\Events\ContractCreated;
 use App\Domain\Funnel\Funnel;
-use App\Domain\Funnel\Services\FunnelStarter;
 
 class StartFunnelsOnContractCreated
 {
     public function __construct(
-        protected FunnelStarter $funnelStarter
+        protected StartFunnelHandler $startFunnelHandler
     ) {}
 
     public function handle(ContractCreated $event): void
     {
-        $this->funnelStarter->startByTrigger(
-            Funnel::TRIGGER_CONTRACT_CREATED,
-            $event->subscriber
+        $command = new StartFunnelCommand(
+            trigger: Funnel::TRIGGER_CONTRACT_CREATED,
+            subscriberId: $event->subscriber->id,
         );
+
+        $this->startFunnelHandler->handle($command);
     }
 }

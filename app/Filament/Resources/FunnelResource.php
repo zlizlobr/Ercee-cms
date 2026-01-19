@@ -142,10 +142,10 @@ class FunnelResource extends Resource
         $typeName = $types[$type] ?? 'Unknown';
 
         return match ($type) {
-            FunnelStep::TYPE_DELAY => "⏱️ Delay: " . ($state['config']['seconds'] ?? 0) . "s",
-            FunnelStep::TYPE_EMAIL => "✉️ Email: " . ($state['config']['subject'] ?? 'No subject'),
-            FunnelStep::TYPE_WEBHOOK => "🔗 Webhook: " . ($state['config']['url'] ?? 'No URL'),
-            FunnelStep::TYPE_TAG => "🏷️ Tag: " . ($state['config']['tag'] ?? 'No tag'),
+            FunnelStep::TYPE_DELAY => '⏱️ Delay: '.($state['config']['seconds'] ?? 0).'s',
+            FunnelStep::TYPE_EMAIL => '✉️ Email: '.($state['config']['subject'] ?? 'No subject'),
+            FunnelStep::TYPE_WEBHOOK => '🔗 Webhook: '.($state['config']['url'] ?? 'No URL'),
+            FunnelStep::TYPE_TAG => '🏷️ Tag: '.($state['config']['tag'] ?? 'No tag'),
             default => $typeName,
         };
     }

@@ -18,6 +18,7 @@ class ExecuteFunnelStepJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 3;
+
     public int $backoff = 60;
 
     public function __construct(
@@ -29,14 +30,15 @@ class ExecuteFunnelStepJob implements ShouldQueue
     {
         $run = FunnelRun::with(['funnel.steps', 'subscriber'])->find($this->funnelRunId);
 
-        if (!$run || $run->status !== FunnelRun::STATUS_RUNNING) {
+        if (! $run || $run->status !== FunnelRun::STATUS_RUNNING) {
             return;
         }
 
         $step = $run->funnel->steps->firstWhere('position', $this->stepPosition);
 
-        if (!$step) {
+        if (! $step) {
             $run->markAsCompleted();
+
             return;
         }
 
@@ -48,6 +50,7 @@ class ExecuteFunnelStepJob implements ShouldQueue
 
         if ($existingRunStep) {
             $this->scheduleNextStep($run, $step);
+
             return;
         }
 

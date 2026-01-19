@@ -95,12 +95,12 @@ class FunnelRunResource extends Resource
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('error_message')
                                     ->label('Error')
-                                    ->visible(fn ($state): bool => !empty($state))
+                                    ->visible(fn ($state): bool => ! empty($state))
                                     ->color('danger'),
                                 Infolists\Components\TextEntry::make('payload')
                                     ->label('Payload')
                                     ->formatStateUsing(fn ($state) => is_array($state) ? json_encode($state, JSON_PRETTY_PRINT) : $state)
-                                    ->visible(fn ($state): bool => !empty($state)),
+                                    ->visible(fn ($state): bool => ! empty($state)),
                             ])
                             ->columns(4),
                     ]),

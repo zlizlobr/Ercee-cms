@@ -34,7 +34,7 @@ class FunnelStarter
 
     public function startManually(Funnel $funnel, Subscriber $subscriber): ?FunnelRun
     {
-        if (!$funnel->active || $funnel->steps->isEmpty()) {
+        if (! $funnel->active || $funnel->steps->isEmpty()) {
             return null;
         }
 

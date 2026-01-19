@@ -2,21 +2,24 @@
 
 namespace App\Listeners;
 
+use App\Application\Funnel\Commands\StartFunnelCommand;
+use App\Application\Funnel\StartFunnelHandler;
 use App\Domain\Commerce\Events\OrderPaid;
 use App\Domain\Funnel\Funnel;
-use App\Domain\Funnel\Services\FunnelStarter;
 
 class StartFunnelsOnOrderPaid
 {
     public function __construct(
-        protected FunnelStarter $funnelStarter
+        protected StartFunnelHandler $startFunnelHandler
     ) {}
 
     public function handle(OrderPaid $event): void
     {
-        $this->funnelStarter->startByTrigger(
-            Funnel::TRIGGER_ORDER_PAID,
-            $event->subscriber
+        $command = new StartFunnelCommand(
+            trigger: Funnel::TRIGGER_ORDER_PAID,
+            subscriberId: $event->subscriber->id,
         );
+
+        $this->startFunnelHandler->handle($command);
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Product;
-use App\Domain\Subscriber\SubscriberService;
+use App\Application\Commerce\Commands\CreateOrderCommand;
+use App\Application\Commerce\CreateOrderHandler;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,8 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class CheckoutController extends Controller
 {
     public function __construct(
-        private SubscriberService $subscriberService,
-        private PaymentGatewayInterface $paymentGateway
+        private CreateOrderHandler $createOrderHandler
     ) {}
 
     public function checkout(Request $request): JsonResponse
@@ -34,34 +31,22 @@ class CheckoutController extends Controller
 
         $validated = $validator->validated();
 
-        $product = Product::where('active', true)->find($validated['product_id']);
-
-        if (!$product) {
-            return response()->json([
-                'error' => 'Product not found or inactive',
-            ], 404);
-        }
-
-        $subscriber = $this->subscriberService->findOrCreateByEmail(
-            $validated['email'],
-            'checkout:' . $product->id
+        $command = new CreateOrderCommand(
+            productId: $validated['product_id'],
+            email: $validated['email'],
         );
 
-        $order = Order::create([
-            'subscriber_id' => $subscriber->id,
-            'product_id' => $product->id,
-            'email' => $validated['email'],
-            'price' => $product->price,
-            'status' => Order::STATUS_PENDING,
-        ]);
+        $result = $this->createOrderHandler->handle($command);
 
-        $redirectUrl = $this->paymentGateway->createPayment($order);
+        if (! $result->isSuccess()) {
+            return response()->json(['error' => $result->error], 404);
+        }
 
         return response()->json([
             'message' => 'Checkout initiated',
             'data' => [
-                'order_id' => $order->id,
-                'redirect_url' => $redirectUrl,
+                'order_id' => $result->orderId,
+                'redirect_url' => $result->redirectUrl,
             ],
         ], 201);
     }

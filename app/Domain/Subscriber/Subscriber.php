@@ -5,6 +5,7 @@ namespace App\Domain\Subscriber;
 use App\Domain\Commerce\Order;
 use App\Domain\Form\Contract;
 use App\Domain\Funnel\FunnelRun;
+use Database\Factories\SubscriberFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\DB;
 class Subscriber extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): SubscriberFactory
+    {
+        return SubscriberFactory::new();
+    }
 
     protected $fillable = [
         'email',

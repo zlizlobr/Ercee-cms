@@ -2,6 +2,7 @@
 
 namespace App\Domain\Commerce;
 
+use Database\Factories\PaymentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,12 +11,21 @@ class Payment extends Model
 {
     use HasFactory;
 
+    protected static function newFactory(): PaymentFactory
+    {
+        return PaymentFactory::new();
+    }
+
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_PAID = 'paid';
+
     public const STATUS_FAILED = 'failed';
 
     public const GATEWAY_STRIPE = 'stripe';
+
     public const GATEWAY_GOPAY = 'gopay';
+
     public const GATEWAY_COMGATE = 'comgate';
 
     protected $fillable = [

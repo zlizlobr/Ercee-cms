@@ -76,7 +76,7 @@ class FormResource extends Resource
                                     ->defaultItems(2)
                                     ->visible(fn (Get $get): bool => $get('type') === 'select'),
                             ])
-                            ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field') . ' (' . ($state['type'] ?? 'text') . ')')
+                            ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field').' ('.($state['type'] ?? 'text').')')
                             ->reorderable()
                             ->reorderableWithButtons()
                             ->collapsible()
@@ -95,7 +95,7 @@ class FormResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('schema')
                     ->label('Fields')
-                    ->formatStateUsing(fn (mixed $state): string => is_array($state) ? count($state) . ' fields' : '0 fields'),
+                    ->formatStateUsing(fn (mixed $state): string => is_array($state) ? count($state).' fields' : '0 fields'),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('contracts_count')

@@ -3,6 +3,7 @@
 namespace App\Domain\Commerce;
 
 use App\Domain\Subscriber\Subscriber;
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +14,17 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected static function newFactory(): OrderFactory
+    {
+        return OrderFactory::new();
+    }
+
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_PAID = 'paid';
+
     public const STATUS_FAILED = 'failed';
+
     public const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
