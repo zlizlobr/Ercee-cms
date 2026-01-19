@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
+use App\Domain\Commerce\Events\OrderPaid;
+use App\Domain\Commerce\Gateways\StripeGateway;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use App\Domain\Form\Events\ContractCreated;
 use App\Listeners\StartFunnelsOnContractCreated;
+use App\Listeners\StartFunnelsOnOrderPaid;
 use App\Observers\NavigationObserver;
 use App\Observers\PageObserver;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -21,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PaymentGatewayInterface::class, StripeGateway::class);
     }
 
     /**
@@ -39,12 +43,17 @@ class AppServiceProvider extends ServiceProvider
     protected function registerEventListeners(): void
     {
         Event::listen(ContractCreated::class, StartFunnelsOnContractCreated::class);
+        Event::listen(OrderPaid::class, StartFunnelsOnOrderPaid::class);
     }
 
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('form-submissions', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
+        });
+
+        RateLimiter::for('checkout', function (Request $request) {
+            return Limit::perMinute(10)->by($request->ip());
         });
     }
 }

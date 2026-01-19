@@ -2,6 +2,7 @@
 
 namespace App\Domain\Subscriber;
 
+use App\Domain\Commerce\Order;
 use App\Domain\Form\Contract;
 use App\Domain\Funnel\FunnelRun;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,11 @@ class Subscriber extends Model
     public function funnelRuns(): HasMany
     {
         return $this->hasMany(FunnelRun::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function tags(): array
