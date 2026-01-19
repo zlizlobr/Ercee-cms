@@ -1,3 +1,9 @@
+## [v0.1.4] – 2026-01-19
+
+- release: patch -- production hardening with idempotent handlers
+* Add production hardening with idempotent handlers, DB transactions, webhook signature verification, and IP whitelist middleware
+- chore: update changelog for v0.1.3
+
 ## [v0.1.3] – 2026-01-19
 
 - release: patch -- fix form (#9)
