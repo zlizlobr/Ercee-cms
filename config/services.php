@@ -44,4 +44,16 @@ return [
         'cancel_url' => env('STRIPE_CANCEL_URL', env('APP_URL').'/products'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Webhook IP Whitelist
+    |--------------------------------------------------------------------------
+    |
+    | IP addresses or CIDR ranges allowed to access webhook endpoints.
+    | Stripe webhook IPs: https://stripe.com/docs/ips
+    | Leave empty to allow all IPs (not recommended for production).
+    |
+    */
+    'webhook_whitelist' => array_filter(explode(',', env('WEBHOOK_IP_WHITELIST', ''))),
+
 ];

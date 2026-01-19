@@ -22,6 +22,6 @@ Route::prefix('v1')->group(function () {
         ->middleware('throttle:checkout');
 });
 
-Route::prefix('webhooks')->group(function () {
+Route::prefix('webhooks')->middleware('webhook.whitelist')->group(function () {
     Route::post('/stripe', [WebhookController::class, 'stripe']);
 });

@@ -23,6 +23,10 @@ class FunnelStarter
                 continue;
             }
 
+            if ($this->hasRunningRun($funnel, $subscriber)) {
+                continue;
+            }
+
             $run = $this->createRun($funnel, $subscriber);
             $runs[] = $run;
 
@@ -38,10 +42,22 @@ class FunnelStarter
             return null;
         }
 
+        if ($this->hasRunningRun($funnel, $subscriber)) {
+            return null;
+        }
+
         $run = $this->createRun($funnel, $subscriber);
         $this->dispatchFirstStep($run);
 
         return $run;
+    }
+
+    protected function hasRunningRun(Funnel $funnel, Subscriber $subscriber): bool
+    {
+        return FunnelRun::where('funnel_id', $funnel->id)
+            ->where('subscriber_id', $subscriber->id)
+            ->running()
+            ->exists();
     }
 
     protected function createRun(Funnel $funnel, Subscriber $subscriber): FunnelRun

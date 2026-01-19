@@ -8,6 +8,7 @@ use App\Domain\Form\Contract;
 use App\Domain\Form\Events\ContractCreated;
 use App\Domain\Form\Form;
 use App\Domain\Subscriber\SubscriberService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,22 +43,38 @@ final class SubmitFormHandler
             return SubmitFormResult::validationFailed($validator->errors()->toArray());
         }
 
-        $subscriber = $this->subscriberService->findOrCreateByEmail(
-            $command->email,
-            $command->source
-        );
+        $idempotencyKey = $this->generateIdempotencyKey($form->id, $command->email);
 
-        $contract = Contract::create([
-            'subscriber_id' => $subscriber->id,
-            'form_id' => $form->id,
-            'email' => $command->email,
-            'data' => $command->data,
-            'source' => $command->source,
-            'status' => Contract::STATUS_NEW,
-        ]);
+        $existingContract = Contract::where('idempotency_key', $idempotencyKey)->first();
 
-        ContractCreated::dispatch($contract, $subscriber);
+        if ($existingContract) {
+            return SubmitFormResult::success($existingContract->id);
+        }
 
-        return SubmitFormResult::success($contract->id);
+        return DB::transaction(function () use ($command, $form, $idempotencyKey) {
+            $subscriber = $this->subscriberService->findOrCreateByEmail(
+                $command->email,
+                $command->source
+            );
+
+            $contract = Contract::create([
+                'subscriber_id' => $subscriber->id,
+                'form_id' => $form->id,
+                'email' => $command->email,
+                'data' => $command->data,
+                'source' => $command->source,
+                'status' => Contract::STATUS_NEW,
+                'idempotency_key' => $idempotencyKey,
+            ]);
+
+            ContractCreated::dispatch($contract, $subscriber);
+
+            return SubmitFormResult::success($contract->id);
+        });
+    }
+
+    private function generateIdempotencyKey(int $formId, string $email): string
+    {
+        return sha1($formId.$email.now()->toDateString());
     }
 }

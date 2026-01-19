@@ -10,6 +10,7 @@ final readonly class ProcessWebhookCommand implements CommandInterface
         public string $transactionId,
         public string $status,
         public bool $success,
+        public bool $signatureVerified = false,
         public ?array $payload = null,
     ) {}
 
@@ -19,6 +20,7 @@ final readonly class ProcessWebhookCommand implements CommandInterface
             'transaction_id' => $this->transactionId,
             'status' => $this->status,
             'success' => $this->success,
+            'signature_verified' => $this->signatureVerified,
             'payload' => $this->payload,
         ];
     }
