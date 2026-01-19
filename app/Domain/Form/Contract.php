@@ -36,6 +36,7 @@ class Contract extends Model
         'data',
         'source',
         'status',
+        'idempotency_key',
     ];
 
     protected $casts = [

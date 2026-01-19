@@ -35,6 +35,11 @@ final readonly class WebhookResult implements ResultInterface
         return new self(success: false, error: $error);
     }
 
+    public static function signatureInvalid(): self
+    {
+        return new self(success: false, error: 'Invalid webhook signature');
+    }
+
     public function isSuccess(): bool
     {
         return $this->success;

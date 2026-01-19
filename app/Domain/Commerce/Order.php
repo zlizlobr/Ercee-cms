@@ -33,6 +33,7 @@ class Order extends Model
         'email',
         'price',
         'status',
+        'idempotency_key',
     ];
 
     public function subscriber(): BelongsTo

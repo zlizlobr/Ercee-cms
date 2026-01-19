@@ -21,6 +21,7 @@ Laravel-based headless CMS platform with Filament admin panel.
 - **Lead Capture System** - Public form submission API with anti-spam protection
 - **Marketing Automation** - Funnel engine with multi-step workflows triggered by events
 - **Lightweight Commerce** - Simple checkout with Stripe integration
+- **Production Hardening** - Idempotent handlers, DB transactions, webhook signature verification, IP whitelisting
 
 ## Requirements
 
@@ -185,7 +186,9 @@ The CMS exposes a REST API for frontend consumption.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/webhooks/stripe` | Stripe payment webhook |
+| POST | `/api/webhooks/stripe` | Stripe payment webhook (IP whitelisted) |
+
+> **Security:** Webhook endpoints are protected by IP whitelist middleware. Configure `WEBHOOK_IP_WHITELIST` in `.env` with comma-separated IPs or CIDR ranges (e.g., Stripe webhook IPs).
 
 ### Example Response - Page
 
@@ -380,10 +383,10 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 
 | Handler | Module | Description |
 |---------|--------|-------------|
-| `SubmitFormHandler` | Form | Processes form submissions, creates contracts |
-| `CreateOrderHandler` | Commerce | Initiates checkout, creates orders |
-| `ProcessPaymentWebhookHandler` | Commerce | Processes payment webhooks, updates order status |
-| `StartFunnelHandler` | Funnel | Triggers marketing funnels |
+| `SubmitFormHandler` | Form | Processes form submissions, creates contracts (idempotent, transactional) |
+| `CreateOrderHandler` | Commerce | Initiates checkout, creates orders (idempotent, transactional) |
+| `ProcessPaymentWebhookHandler` | Commerce | Processes payment webhooks, updates order status (idempotent, transactional, signature verified) |
+| `StartFunnelHandler` | Funnel | Triggers marketing funnels (prevents duplicate runs) |
 | `PublishPageHandler` | Content | Publishes CMS pages |
 
 ### Handler Rules
@@ -413,6 +416,27 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 | `/checkout/{productId}` | Checkout form |
 | `/thank-you` | Thank you page |
 | `/payment/return` | Payment gateway return URL |
+
+## Production Configuration
+
+For production deployment, configure the following environment variables:
+
+```env
+# Webhook IP Whitelist (comma-separated IPs or CIDR ranges)
+# Get Stripe IPs from: https://stripe.com/docs/ips
+WEBHOOK_IP_WHITELIST=3.18.12.63,3.130.192.231,13.235.14.237,13.235.122.149
+
+# Queue settings (already configured in config/queue.php)
+DB_QUEUE_RETRY_AFTER=120
+```
+
+### Production Checklist
+
+- [ ] Run migrations: `php artisan migrate`
+- [ ] Configure `WEBHOOK_IP_WHITELIST` with payment gateway IPs
+- [ ] Set up queue worker: `php artisan queue:work --tries=3`
+- [ ] (Optional) Install Sentry: `composer require sentry/sentry-laravel`
+- [ ] (Optional) Install Horizon: `composer require laravel/horizon`
 
 ## Documentation
 
