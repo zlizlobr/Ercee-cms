@@ -1,0 +1,120 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+
+      - name: Get last tag
+        id: last_tag
+        run: |
+          TAG=$(git tag --sort=-v:refname | head -n 1)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Read release intent from commit title
+        id: intent
+        run: |
+          TITLE=$(git log -1 --pretty=%s)
+          echo "Commit title: $TITLE"
+
+          if [[ "$TITLE" =~ release:\ patch ]]; then
+            echo "type=patch" >> $GITHUB_OUTPUT
+          elif [[ "$TITLE" =~ release:\ minor ]]; then
+            echo "type=minor" >> $GITHUB_OUTPUT
+          elif [[ "$TITLE" =~ release:\ major ]]; then
+            echo "type=major" >> $GITHUB_OUTPUT
+          else
+            echo "No release intent found. Skipping release."
+            exit 0
+          fi
+
+      - name: Calculate next version
+        id: version
+        run: |
+          VERSION=${{ steps.last_tag.outputs.tag }}
+          VERSION=${VERSION#v}
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          case "${{ steps.intent.outputs.type }}" in
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+          esac
+
+          NEXT="v$MAJOR.$MINOR.$PATCH"
+          echo "next=$NEXT" >> $GITHUB_OUTPUT
+          echo "Next version ;): $NEXT"
+
+      - name: Create tag
+        run: |
+          git tag ${{ steps.version.outputs.next }}
+          git push origin ${{ steps.version.outputs.next }}
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          LAST_TAG=${{ steps.last_tag.outputs.tag }}
+          CURRENT_TAG=${{ steps.version.outputs.next }}
+
+          NOTES=$(git log "$LAST_TAG..HEAD" --pretty=format:"- %s%n%b")
+   
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.next }}
+          name: ${{ steps.version.outputs.next }}
+          body: ${{ steps.notes.outputs.notes }}
+
+      - name: Update CHANGELOG.md
+        run: |
+          VERSION=${{ steps.version.outputs.next }}
+          DATE=$(date +'%Y-%m-%d')
+
+          {
+            echo "## [$VERSION] – $DATE"
+            echo ""
+            echo "${{ steps.notes.outputs.notes }}"
+            echo ""
+            cat CHANGELOG.md
+          } > CHANGELOG.tmp
+
+          mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "chore: update changelog for ${{ steps.version.outputs.next }}"
+          git push origin main
