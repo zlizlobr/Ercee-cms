@@ -1,3 +1,9 @@
+## [v0.1.1] – 2026-01-19
+
+- release: patch -- Frontend MVP & Public API Integration
+* Frontend MVP & Public API Integration
+- chore: update changelog for v0.1.0
+
 ## [v0.1.0] – 2026-01-19
 
 - release: minor -- lightweight Commerce & Checkout Core (#6)
