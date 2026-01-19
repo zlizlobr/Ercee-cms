@@ -1,3 +1,11 @@
+## [v0.1.2] – 2026-01-19
+
+- release: patch -- application Orchestration (#8)
+* Application Orchestration layer
+
+* orchestrace
+- chore: update changelog for v0.1.1
+
 ## [v0.1.1] – 2026-01-19
 
 - release: patch -- Frontend MVP & Public API Integration
