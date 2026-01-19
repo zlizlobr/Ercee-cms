@@ -40,8 +40,8 @@ return [
         'secret' => env('STRIPE_SECRET'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
         'currency' => env('STRIPE_CURRENCY', 'czk'),
-        'success_url' => env('STRIPE_SUCCESS_URL', env('APP_URL').'/checkout/success'),
-        'cancel_url' => env('STRIPE_CANCEL_URL', env('APP_URL').'/checkout/cancel'),
+        'success_url' => env('STRIPE_SUCCESS_URL', env('APP_URL').'/payment/return'),
+        'cancel_url' => env('STRIPE_CANCEL_URL', env('APP_URL').'/products'),
     ],
 
 ];

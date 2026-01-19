@@ -8,6 +8,7 @@ Laravel-based headless CMS platform with Filament admin panel.
 - **Role-Based Access Control** - Using spatie/laravel-permission (admin, operator, marketing roles)
 - **Domain-Driven Design** - Clean architecture with Domain, Application, Infrastructure layers
 - **Headless CMS** - Block-based page builder with public REST API
+- **Frontend MVP** - Blade + Tailwind templates for content pages, products, checkout
 - **Core Entities**:
   - **Subscribers** - Marketing contact management
   - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
@@ -75,8 +76,8 @@ STRIPE_KEY=pk_test_...
 STRIPE_SECRET=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_CURRENCY=czk
-STRIPE_SUCCESS_URL=http://localhost:8000/checkout/success
-STRIPE_CANCEL_URL=http://localhost:8000/checkout/cancel
+STRIPE_SUCCESS_URL=http://localhost:8000/payment/return
+STRIPE_CANCEL_URL=http://localhost:8000/products
 ```
 
 For local webhook testing, use Stripe CLI:
@@ -174,6 +175,9 @@ The CMS exposes a REST API for frontend consumption.
 |--------|----------|-------------|
 | GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
 | GET | `/api/v1/navigation` | Get hierarchical navigation structure |
+| GET | `/api/v1/products` | Get active products list |
+| GET | `/api/v1/products/{id}` | Get single product detail |
+| GET | `/api/v1/forms/{id}` | Get form schema for rendering |
 | POST | `/api/v1/forms/{id}/submit` | Submit form data (rate limited: 5/min per IP) |
 | POST | `/api/v1/checkout` | Initiate checkout (rate limited: 10/min per IP) |
 
@@ -358,9 +362,22 @@ app/
 └── Filament/         # Admin panel resources
 ```
 
+## Frontend Routes
+
+| URL | Description |
+|-----|-------------|
+| `/` | Homepage (renders CMS page with slug `home`) |
+| `/{slug}` | CMS page by slug |
+| `/products` | Product listing |
+| `/products/{id}` | Product detail |
+| `/checkout/{productId}` | Checkout form |
+| `/thank-you` | Thank you page |
+| `/payment/return` | Payment gateway return URL |
+
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
+| [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
 | [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |

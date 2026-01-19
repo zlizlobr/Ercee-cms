@@ -18,6 +18,25 @@ class FormController extends Controller
         private SubscriberService $subscriberService
     ) {}
 
+    public function show(int $id): JsonResponse
+    {
+        $form = Form::active()->find($id);
+
+        if (!$form) {
+            return response()->json([
+                'error' => 'Form not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => [
+                'id' => $form->id,
+                'name' => $form->name,
+                'schema' => $form->schema,
+            ],
+        ]);
+    }
+
     public function submit(Request $request, int $id): JsonResponse
     {
         $form = Form::active()->find($id);
