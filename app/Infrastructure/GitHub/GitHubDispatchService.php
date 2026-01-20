@@ -13,8 +13,8 @@ class GitHubDispatchService
 
     public function __construct()
     {
-        $this->token = config('services.github.token', '');
-        $this->repository = config('services.github.frontend_repository', '');
+        $this->token = config('services.github.token') ?? '';
+        $this->repository = config('services.github.frontend_repository') ?? '';
     }
 
     public function triggerFrontendBuild(string $reason = 'content_update'): void

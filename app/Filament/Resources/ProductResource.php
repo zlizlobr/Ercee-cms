@@ -22,6 +22,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -30,6 +31,16 @@ class ProductResource extends Resource
                     ->numeric()
                     ->prefix('CZK')
                     ->helperText('Price in cents (e.g., 10000 = 100.00 CZK)'),
+                Forms\Components\FileUpload::make('attachment')
+                    ->disk('public')
+                    ->directory('products/thumbnails')
+                    ->image(),
+                Forms\Components\FileUpload::make('gallery')
+                    ->disk('public')
+                    ->directory('products/gallery')
+                    ->multiple()
+                    ->reorderable()
+                    ->maxParallelUploads(2),
                 Forms\Components\Toggle::make('active')
                     ->default(true),
             ]);
@@ -39,6 +50,10 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('attachment')
+                    ->height(50)
+                    ->circular()
+                    ->disk('public'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')

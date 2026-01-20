@@ -19,15 +19,29 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'attachment',
         'price',
+        'data',
         'active',
+
     ];
 
     protected function casts(): array
     {
         return [
             'active' => 'boolean',
+            'data' => 'array',
         ];
+    }
+
+    protected function gallery(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->data['gallery'] ?? [],
+            set: fn($value) => [
+                'data->gallery' => $value,
+            ],
+        );
     }
 
     public function orders(): HasMany
@@ -43,7 +57,7 @@ class Product extends Model
     protected function priceFormatted(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format($this->price / 100, 2).' CZK',
+            get: fn() => number_format($this->price / 100, 2) . ' CZK',
         );
     }
 }
