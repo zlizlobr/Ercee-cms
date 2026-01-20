@@ -10,6 +10,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class PageResource extends Resource
@@ -18,31 +19,64 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Content';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.navigation.content');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.page.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.page.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.page.navigation');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Page Info')
+                Forms\Components\Section::make(__('admin.page.sections.info'))
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
+                        Forms\Components\Tabs::make('Title')
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make('Čeština')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title.cs')
+                                            ->label(__('admin.labels.title').' (CS)')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('English')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title.en')
+                                            ->label(__('admin.labels.title').' (EN)')
+                                            ->maxLength(255),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
                         Forms\Components\TextInput::make('slug')
+                            ->label(__('admin.labels.slug'))
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
-                    ])
-                    ->columns(2),
+                    ]),
 
-                Forms\Components\Section::make('Content Blocks')
+                Forms\Components\Section::make(__('admin.page.sections.content_blocks'))
                     ->schema([
                         Forms\Components\Repeater::make('content.blocks')
                             ->schema([
                                 Forms\Components\Select::make('type')
+                                    ->label(__('admin.labels.type'))
                                     ->options(Page::blockTypes())
                                     ->required()
                                     ->live()
@@ -53,9 +87,9 @@ class PageResource extends Resource
                                 // Text block fields
                                 Forms\Components\Group::make([
                                     Forms\Components\TextInput::make('data.heading')
-                                        ->label('Heading'),
+                                        ->label(__('admin.page.fields.heading')),
                                     Forms\Components\RichEditor::make('data.body')
-                                        ->label('Body Text')
+                                        ->label(__('admin.page.fields.body'))
                                         ->columnSpanFull(),
                                 ])
                                     ->visible(fn (Get $get): bool => $get('type') === Page::BLOCK_TYPE_TEXT),
@@ -63,34 +97,34 @@ class PageResource extends Resource
                                 // Image block fields
                                 Forms\Components\Group::make([
                                     Forms\Components\FileUpload::make('data.image')
-                                        ->label('Image')
+                                        ->label(__('admin.labels.image'))
                                         ->image()
                                         ->directory('pages/images'),
                                     Forms\Components\TextInput::make('data.alt')
-                                        ->label('Alt Text'),
+                                        ->label(__('admin.page.fields.alt')),
                                     Forms\Components\TextInput::make('data.caption')
-                                        ->label('Caption'),
+                                        ->label(__('admin.page.fields.caption')),
                                 ])
                                     ->visible(fn (Get $get): bool => $get('type') === Page::BLOCK_TYPE_IMAGE),
 
                                 // CTA block fields
                                 Forms\Components\Group::make([
                                     Forms\Components\TextInput::make('data.title')
-                                        ->label('CTA Title'),
+                                        ->label(__('admin.page.fields.cta_title')),
                                     Forms\Components\Textarea::make('data.description')
-                                        ->label('Description')
+                                        ->label(__('admin.labels.description'))
                                         ->rows(2),
                                     Forms\Components\TextInput::make('data.button_text')
-                                        ->label('Button Text'),
+                                        ->label(__('admin.page.fields.button_text')),
                                     Forms\Components\TextInput::make('data.button_url')
-                                        ->label('Button URL')
+                                        ->label(__('admin.page.fields.button_url'))
                                         ->url(),
                                     Forms\Components\Select::make('data.style')
-                                        ->label('Style')
+                                        ->label(__('admin.page.fields.style'))
                                         ->options([
-                                            'primary' => 'Primary',
-                                            'secondary' => 'Secondary',
-                                            'outline' => 'Outline',
+                                            'primary' => __('admin.styles.primary'),
+                                            'secondary' => __('admin.styles.secondary'),
+                                            'outline' => __('admin.styles.outline'),
                                         ])
                                         ->default('primary'),
                                 ])
@@ -99,16 +133,16 @@ class PageResource extends Resource
                                 // Form embed block fields
                                 Forms\Components\Group::make([
                                     Forms\Components\TextInput::make('data.form_id')
-                                        ->label('Form ID'),
+                                        ->label(__('admin.page.fields.form_id')),
                                     Forms\Components\TextInput::make('data.title')
-                                        ->label('Form Title'),
+                                        ->label(__('admin.page.fields.form_title')),
                                     Forms\Components\Textarea::make('data.description')
-                                        ->label('Description')
+                                        ->label(__('admin.labels.description'))
                                         ->rows(2),
                                 ])
                                     ->visible(fn (Get $get): bool => $get('type') === Page::BLOCK_TYPE_FORM_EMBED),
                             ])
-                            ->itemLabel(fn (array $state): ?string => Page::blockTypes()[$state['type'] ?? ''] ?? 'New Block')
+                            ->itemLabel(fn (array $state): ?string => Page::blockTypes()[$state['type'] ?? ''] ?? __('admin.page.blocks.new'))
                             ->reorderable()
                             ->reorderableWithButtons()
                             ->collapsible()
@@ -126,43 +160,45 @@ class PageResource extends Resource
                             }),
                     ]),
 
-                Forms\Components\Section::make('SEO')
+                Forms\Components\Section::make(__('admin.page.sections.seo'))
                     ->schema([
                         Forms\Components\TextInput::make('seo_meta.title')
-                            ->label('SEO Title')
+                            ->label(__('admin.page.seo.title'))
                             ->maxLength(60)
-                            ->helperText('Recommended: 50-60 characters'),
+                            ->helperText(__('admin.page.seo.title_helper')),
                         Forms\Components\Textarea::make('seo_meta.description')
-                            ->label('Meta Description')
+                            ->label(__('admin.page.seo.description'))
                             ->maxLength(160)
                             ->rows(2)
-                            ->helperText('Recommended: 150-160 characters'),
+                            ->helperText(__('admin.page.seo.description_helper')),
                         Forms\Components\Fieldset::make('Open Graph')
                             ->schema([
                                 Forms\Components\TextInput::make('seo_meta.open_graph.title')
-                                    ->label('OG Title'),
+                                    ->label(__('admin.page.seo.og_title')),
                                 Forms\Components\Textarea::make('seo_meta.open_graph.description')
-                                    ->label('OG Description')
+                                    ->label(__('admin.page.seo.og_description'))
                                     ->rows(2),
                                 Forms\Components\FileUpload::make('seo_meta.open_graph.image')
-                                    ->label('OG Image')
+                                    ->label(__('admin.page.seo.og_image'))
                                     ->image()
                                     ->directory('pages/og'),
                             ]),
                     ])
                     ->collapsed(),
 
-                Forms\Components\Section::make('Publishing')
+                Forms\Components\Section::make(__('admin.page.sections.publishing'))
                     ->schema([
                         Forms\Components\Select::make('status')
+                            ->label(__('admin.labels.status'))
                             ->options([
-                                Page::STATUS_DRAFT => 'Draft',
-                                Page::STATUS_PUBLISHED => 'Published',
-                                Page::STATUS_ARCHIVED => 'Archived',
+                                Page::STATUS_DRAFT => __('admin.statuses.draft'),
+                                Page::STATUS_PUBLISHED => __('admin.statuses.published'),
+                                Page::STATUS_ARCHIVED => __('admin.statuses.archived'),
                             ])
                             ->default(Page::STATUS_DRAFT)
                             ->required(),
-                        Forms\Components\DateTimePicker::make('published_at'),
+                        Forms\Components\DateTimePicker::make('published_at')
+                            ->label(__('admin.labels.published_at')),
                     ])
                     ->columns(2),
             ]);
@@ -173,11 +209,18 @@ class PageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->label(__('admin.labels.title'))
+                    ->formatStateUsing(fn (Page $record): string => $record->getLocalizedTitle())
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where('title', 'like', "%{$search}%");
+                    }),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('admin.labels.slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('admin.labels.status'))
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => __("admin.statuses.{$state}"))
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
                         'draft' => 'warning',
@@ -185,19 +228,22 @@ class PageResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('published_at')
+                    ->label(__('admin.labels.published_at'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('admin.labels.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
+                    ->label(__('admin.labels.status'))
                     ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
-                        'archived' => 'Archived',
+                        'draft' => __('admin.statuses.draft'),
+                        'published' => __('admin.statuses.published'),
+                        'archived' => __('admin.statuses.archived'),
                     ]),
             ])
             ->actions([

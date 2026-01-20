@@ -389,9 +389,16 @@ app/
 │   └── Content/      # PublishPageHandler
 ├── Infrastructure/   # External integrations
 ├── Http/Controllers/Api/  # Public API controllers (thin, delegate to handlers)
+├── Http/Middleware/  # Custom middleware (SetLocale, WebhookIpWhitelist)
 ├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
+
+lang/
+├── cs/               # Czech translations
+│   └── admin.php     # Admin panel labels
+└── en/               # English translations
+    └── admin.php     # Admin panel labels
 ```
 
 ## Application Layer Architecture
@@ -441,6 +448,51 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 | `/checkout/{productId}` | Checkout form |
 | `/thank-you` | Thank you page |
 | `/payment/return` | Payment gateway return URL |
+| `/lang/{locale}` | Switch language (cs, en) |
+
+## Localization (i18n)
+
+The application supports multiple languages with runtime switching.
+
+### Supported Languages
+
+| Locale | Language |
+|--------|----------|
+| `cs` | Czech (default) |
+| `en` | English |
+
+### Configuration
+
+Add to `.env`:
+
+```env
+APP_LOCALE=cs
+APP_FALLBACK_LOCALE=en
+```
+
+### Language Switching
+
+Switch language via URL: `/lang/cs` or `/lang/en`. The selected language is stored in the session.
+
+### Translation Files
+
+| File | Purpose |
+|------|---------|
+| `lang/cs/admin.php` | Czech admin panel translations |
+| `lang/en/admin.php` | English admin panel translations |
+
+### Translatable Content
+
+Page titles support multiple languages and are stored as JSON in the database:
+
+```json
+{
+  "cs": "Úvodní stránka",
+  "en": "Homepage"
+}
+```
+
+Use `$page->getLocalizedTitle()` to get the title in the current locale with automatic fallback.
 
 ## Production Configuration
 
