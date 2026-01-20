@@ -1,3 +1,9 @@
+## [v0.3.0] – 2026-01-20
+
+- release: minor -- Add i18n support (#13)
+* Add i18n support with Czech/English translations, locale middleware, and translatable page titles
+- chore: update changelog for v0.2.1
+
 ## [v0.2.1] – 2026-01-20
 
 - release: patch -- Fix Astro build  (#12)
