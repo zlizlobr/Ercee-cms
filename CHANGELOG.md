@@ -1,3 +1,9 @@
+## [v0.2.0] – 2026-01-20
+
+- release: minor -- Astro Headless Setup (#11)
+* Astro Headless Setup
+- chore: update changelog for v0.1.4
+
 ## [v0.1.4] – 2026-01-19
 
 - release: patch -- production hardening with idempotent handlers
