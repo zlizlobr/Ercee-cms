@@ -21,6 +21,8 @@ class NavigationResource extends Resource
     protected static ?string $navigationGroup = 'Content';
 
     protected static ?int $navigationSort = 2;
+    
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -45,15 +47,21 @@ class NavigationResource extends Resource
                             ->placeholder('None (Root Item)'),
                         Forms\Components\Select::make('page_id')
                             ->label('Link to Page')
-                            ->options(Page::pluck('title', 'id'))
+                            ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
                             ->searchable()
                             ->placeholder('Select a page...')
                             ->helperText('Or use custom URL below'),
                         Forms\Components\TextInput::make('url')
-                            ->label('Custom URL')
-                            ->url()
-                            ->placeholder('https://...')
-                            ->helperText('Overrides linked page if set'),
+                            ->label('Custom URL / Anchor')
+                            ->placeholder('/page, #section, https://...')
+                            ->helperText('Supports: /relative-path, #anchor, https://external.com'),
+                        Forms\Components\Select::make('target')
+                            ->label('Open in')
+                            ->options([
+                                '_self' => 'Same window',
+                                '_blank' => 'New window/tab',
+                            ])
+                            ->default('_self'),
                         Forms\Components\TextInput::make('position')
                             ->numeric()
                             ->default(0)
@@ -78,8 +86,9 @@ class NavigationResource extends Resource
                 Tables\Columns\TextColumn::make('parent.title')
                     ->label('Parent')
                     ->placeholder('Root'),
-                Tables\Columns\TextColumn::make('page.title')
+                Tables\Columns\TextColumn::make('page.slug')
                     ->label('Linked Page')
+                    ->formatStateUsing(fn ($record) => $record->page?->getLocalizedTitle())
                     ->placeholder('-'),
                 Tables\Columns\TextColumn::make('position')
                     ->sortable(),

@@ -13,6 +13,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
     Route::get('/navigation', [NavigationController::class, 'index']);
+    Route::get('/navigation/{menuSlug}', [NavigationController::class, 'index']);
+    Route::get('/menus/{menuSlug}', [NavigationController::class, 'show']);
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::get('/forms/{id}', [FormController::class, 'show']);
