@@ -389,9 +389,16 @@ app/
 │   └── Content/      # PublishPageHandler
 ├── Infrastructure/   # External integrations
 ├── Http/Controllers/Api/  # Public API controllers (thin, delegate to handlers)
+├── Http/Middleware/  # Custom middleware (SetLocale, WebhookIpWhitelist)
 ├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
+
+lang/
+├── cs/               # Czech translations
+│   └── admin.php     # Admin panel labels
+└── en/               # English translations
+    └── admin.php     # Admin panel labels
 ```
 
 ## Application Layer Architecture
@@ -441,6 +448,108 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 | `/checkout/{productId}` | Checkout form |
 | `/thank-you` | Thank you page |
 | `/payment/return` | Payment gateway return URL |
+| `/lang/{locale}` | Switch language (cs, en) |
+
+## Localization (i18n)
+
+The application supports multiple languages with runtime switching.
+
+### Supported Languages
+
+| Locale | Language |
+|--------|----------|
+| `cs` | Czech (default) |
+| `en` | English |
+
+### Configuration
+
+Add to `.env`:
+
+```env
+APP_LOCALE=cs
+APP_FALLBACK_LOCALE=en
+```
+
+### Language Switching
+
+Switch language via URL: `/lang/cs` or `/lang/en`. The selected language is stored in the session.
+
+### Translation Files
+
+| File | Purpose |
+|------|---------|
+| `lang/cs/admin.php` | Czech admin panel translations |
+| `lang/en/admin.php` | English admin panel translations |
+
+### Translatable Content
+
+Page titles support multiple languages and are stored as JSON in the database:
+
+```json
+{
+  "cs": "Úvodní stránka",
+  "en": "Homepage"
+}
+```
+
+Use `$page->getLocalizedTitle()` to get the title in the current locale with automatic fallback.
+
+## Production Configuration
+
+For production deployment, configure the following environment variables:
+
+```env
+# Webhook IP Whitelist (comma-separated IPs or CIDR ranges)
+# Get Stripe IPs from: https://stripe.com/docs/ips
+WEBHOOK_IP_WHITELIST=3.18.12.63,3.130.192.231,13.235.14.237,13.235.122.149
+
+# Queue settings (already configured in config/queue.php)
+DB_QUEUE_RETRY_AFTER=120
+```
+
+### Production Checklist
+
+- [ ] Run migrations: `php artisan migrate`
+- [ ] Configure `WEBHOOK_IP_WHITELIST` with payment gateway IPs
+- [ ] Set up queue worker: `php artisan queue:work --tries=3`
+- [ ] (Optional) Install Sentry: `composer require sentry/sentry-laravel`
+- [ ] (Optional) Install Horizon: `composer require laravel/horizon`
+
+## Astro Frontend Integration
+
+The CMS automatically triggers frontend rebuilds when content changes:
+
+1. **Page saved/deleted** → `TriggerFrontendRebuildJob` dispatched
+2. **Navigation updated** → `TriggerFrontendRebuildJob` dispatched
+3. **Job calls GitHub API** → `repository_dispatch` event sent
+4. **GitHub Actions** → Builds and deploys Astro site
+
+### Configuration
+
+Add to `.env`:
+
+```env
+# GitHub Integration
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+GITHUB_FRONTEND_REPOSITORY=zlizlobr/ercee-frontend
+
+# Frontend Rebuild Token (for manual triggers)
+FRONTEND_REBUILD_TOKEN=your_secure_random_string
+
+# CORS (allow frontend domain)
+CORS_ALLOWED_ORIGINS=https://www.yourdomain.com
+```
+
+### Manual Rebuild Trigger
+
+```bash
+curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
+  -H "X-Rebuild-Token: your_secure_random_string" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "manual"}'
+```
+
+For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
 
 ## Production Configuration
 

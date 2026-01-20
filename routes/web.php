@@ -3,6 +3,17 @@
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
+// Language switcher
+Route::get('/lang/{locale}', function (string $locale) {
+    $supported = ['cs', 'en'];
+
+    if (in_array($locale, $supported)) {
+        session(['locale' => $locale]);
+    }
+
+    return redirect()->back();
+})->name('locale.switch');
+
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
 Route::get('/products', [FrontendController::class, 'products'])->name('frontend.products');
 Route::get('/products/{id}', [FrontendController::class, 'product'])->name('frontend.product');
