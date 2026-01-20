@@ -551,6 +551,63 @@ curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
 
 For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
 
+## Production Configuration
+
+For production deployment, configure the following environment variables:
+
+```env
+# Webhook IP Whitelist (comma-separated IPs or CIDR ranges)
+# Get Stripe IPs from: https://stripe.com/docs/ips
+WEBHOOK_IP_WHITELIST=3.18.12.63,3.130.192.231,13.235.14.237,13.235.122.149
+
+# Queue settings (already configured in config/queue.php)
+DB_QUEUE_RETRY_AFTER=120
+```
+
+### Production Checklist
+
+- [ ] Run migrations: `php artisan migrate`
+- [ ] Configure `WEBHOOK_IP_WHITELIST` with payment gateway IPs
+- [ ] Set up queue worker: `php artisan queue:work --tries=3`
+- [ ] (Optional) Install Sentry: `composer require sentry/sentry-laravel`
+- [ ] (Optional) Install Horizon: `composer require laravel/horizon`
+
+## Astro Frontend Integration
+
+The CMS automatically triggers frontend rebuilds when content changes:
+
+1. **Page saved/deleted** → `TriggerFrontendRebuildJob` dispatched
+2. **Navigation updated** → `TriggerFrontendRebuildJob` dispatched
+3. **Job calls GitHub API** → `repository_dispatch` event sent
+4. **GitHub Actions** → Builds and deploys Astro site
+
+### Configuration
+
+Add to `.env`:
+
+```env
+# GitHub Integration
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+GITHUB_FRONTEND_REPOSITORY=zlizlobr/ercee-frontend
+
+# Frontend Rebuild Token (for manual triggers)
+FRONTEND_REBUILD_TOKEN=your_secure_random_string
+
+# CORS (allow frontend domain)
+CORS_ALLOWED_ORIGINS=https://www.yourdomain.com
+```
+
+### Manual Rebuild Trigger
+
+```bash
+curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
+  -H "X-Rebuild-Token: your_secure_random_string" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "manual"}'
+```
+
+For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
+
 ## Documentation
 
 | Document | Description |
