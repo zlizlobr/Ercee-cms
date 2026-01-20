@@ -1,6 +1,24 @@
 # Ercee CMS
 
-Laravel-based headless CMS platform with Filament admin panel.
+Laravel-based headless CMS platform with Filament admin panel and decoupled Astro static frontend.
+
+## Architecture
+
+```
+┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐
+│   admin.domain      │     │    api.domain       │     │    www.domain       │
+│   Laravel + Filament│────▶│    Laravel API      │◀────│    Astro (CDN)      │
+│   (Backoffice)      │     │    (REST API)       │     │    (Static Site)    │
+└─────────────────────┘     └─────────────────────┘     └─────────────────────┘
+                                     │
+                                     ▼
+                            GitHub Actions
+                            (Auto-rebuild on content change)
+```
+
+**Repositories:**
+- **CMS Backend:** This repository (Laravel + Filament)
+- **Public Frontend:** [github.com/zlizlobr/ercee-frontend](https://github.com/zlizlobr/ercee-frontend) (Astro)
 
 ## Features
 
@@ -8,7 +26,7 @@ Laravel-based headless CMS platform with Filament admin panel.
 - **Role-Based Access Control** - Using spatie/laravel-permission (admin, operator, marketing roles)
 - **Domain-Driven Design** - Clean architecture with Domain, Application, Infrastructure layers
 - **Headless CMS** - Block-based page builder with public REST API
-- **Frontend MVP** - Blade + Tailwind templates for content pages, products, checkout
+- **Decoupled Astro Frontend** - Static site generation with automatic rebuilds on content changes
 - **Core Entities**:
   - **Subscribers** - Marketing contact management
   - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
@@ -174,6 +192,7 @@ The CMS exposes a REST API for frontend consumption.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| GET | `/api/v1/pages` | Get all published page slugs (for static generation) |
 | GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
 | GET | `/api/v1/navigation` | Get hierarchical navigation structure |
 | GET | `/api/v1/products` | Get active products list |
@@ -181,6 +200,12 @@ The CMS exposes a REST API for frontend consumption.
 | GET | `/api/v1/forms/{id}` | Get form schema for rendering |
 | POST | `/api/v1/forms/{id}/submit` | Submit form data (rate limited: 5/min per IP) |
 | POST | `/api/v1/checkout` | Initiate checkout (rate limited: 10/min per IP) |
+
+### Internal Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/internal/rebuild-frontend` | Trigger frontend rebuild (token protected) |
 
 ### Webhooks
 
@@ -438,10 +463,48 @@ DB_QUEUE_RETRY_AFTER=120
 - [ ] (Optional) Install Sentry: `composer require sentry/sentry-laravel`
 - [ ] (Optional) Install Horizon: `composer require laravel/horizon`
 
+## Astro Frontend Integration
+
+The CMS automatically triggers frontend rebuilds when content changes:
+
+1. **Page saved/deleted** → `TriggerFrontendRebuildJob` dispatched
+2. **Navigation updated** → `TriggerFrontendRebuildJob` dispatched
+3. **Job calls GitHub API** → `repository_dispatch` event sent
+4. **GitHub Actions** → Builds and deploys Astro site
+
+### Configuration
+
+Add to `.env`:
+
+```env
+# GitHub Integration
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+GITHUB_FRONTEND_REPOSITORY=zlizlobr/ercee-frontend
+
+# Frontend Rebuild Token (for manual triggers)
+FRONTEND_REBUILD_TOKEN=your_secure_random_string
+
+# CORS (allow frontend domain)
+CORS_ALLOWED_ORIGINS=https://www.yourdomain.com
+```
+
+### Manual Rebuild Trigger
+
+```bash
+curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
+  -H "X-Rebuild-Token: your_secure_random_string" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "manual"}'
+```
+
+For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
+
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
 | [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
+| [docs/astro-frontend-guide.md](docs/astro-frontend-guide.md) | Astro frontend architecture & development |
+| [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
 | [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
