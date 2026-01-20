@@ -1,3 +1,9 @@
+## [v0.2.1] – 2026-01-20
+
+- release: patch -- Fix Astro build  (#12)
+* Fix Astro build errors: add currency fallback, map form schema to fields, handle nullable config
+- chore: update changelog for v0.2.0
+
 ## [v0.2.0] – 2026-01-20
 
 - release: minor -- Astro Headless Setup (#11)
