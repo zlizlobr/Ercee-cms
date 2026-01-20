@@ -27,4 +27,30 @@ class Form extends Model
     {
         return $query->where('active', true);
     }
+
+    public function getValidationRules(): array
+    {
+        $rules = [];
+
+        foreach ($this->schema ?? [] as $field) {
+            $fieldRules = [];
+
+            if ($field['required'] ?? false) {
+                $fieldRules[] = 'required';
+            } else {
+                $fieldRules[] = 'nullable';
+            }
+
+            $fieldRules[] = match ($field['type'] ?? 'text') {
+                'email' => 'email',
+                'number' => 'numeric',
+                'url' => 'url',
+                default => 'string',
+            };
+
+            $rules[$field['name']] = $fieldRules;
+        }
+
+        return $rules;
+    }
 }
