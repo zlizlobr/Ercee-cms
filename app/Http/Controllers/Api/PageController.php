@@ -9,6 +9,19 @@ use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller
 {
+    public function index(): JsonResponse
+    {
+        $slugs = Cache::remember('pages:slugs', 3600, function () {
+            return Page::published()
+                ->pluck('slug')
+                ->toArray();
+        });
+
+        return response()->json([
+            'data' => $slugs,
+        ]);
+    }
+
     public function show(string $slug): JsonResponse
     {
         $cacheKey = "page:{$slug}";

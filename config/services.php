@@ -56,4 +56,31 @@ return [
     */
     'webhook_whitelist' => array_filter(explode(',', env('WEBHOOK_IP_WHITELIST', ''))),
 
+    /*
+    |--------------------------------------------------------------------------
+    | GitHub Integration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for GitHub API integration used to trigger frontend
+    | rebuilds via repository_dispatch events.
+    |
+    */
+    'github' => [
+        'token' => env('GITHUB_TOKEN'),
+        'frontend_repository' => env('GITHUB_FRONTEND_REPOSITORY'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Frontend Rebuild
+    |--------------------------------------------------------------------------
+    |
+    | Secret token used to authenticate requests to the rebuild endpoint.
+    | This should be a long, random string shared with internal services.
+    |
+    */
+    'frontend' => [
+        'rebuild_token' => env('FRONTEND_REBUILD_TOKEN'),
+    ],
+
 ];
