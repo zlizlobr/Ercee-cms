@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'webhook.whitelist' => \App\Http\Middleware\WebhookIpWhitelist::class,
+            'redirect.frontend' => \App\Http\Middleware\RedirectToFrontend::class,
         ]);
 
         $middleware->web(append: [
