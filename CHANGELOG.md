@@ -1,3 +1,9 @@
+## [v0.3.1] – 2026-01-20
+
+- release: patch -- Refactor navigation (#14)
+* Refactor menu, set up menu group for links
+- chore: update changelog for v0.3.0
+
 ## [v0.3.0] – 2026-01-20
 
 - release: minor -- Add i18n support (#13)
