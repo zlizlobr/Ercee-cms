@@ -12,6 +12,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
+/**
+ * Filament resource for managing menus.
+ *
+ * @extends Resource<Menu>
+ */
 class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
@@ -22,6 +27,12 @@ class MenuResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    /**
+     * Build the menu form schema.
+     *
+     * @param Form $form
+     * @return Form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -42,6 +53,12 @@ class MenuResource extends Resource
             ]);
     }
 
+    /**
+     * Build the menus table.
+     *
+     * @param Table $table
+     * @return Table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -73,6 +90,11 @@ class MenuResource extends Resource
             ]);
     }
 
+    /**
+     * Register menu relation managers.
+     *
+     * @return array<int, class-string>
+     */
     public static function getRelations(): array
     {
         return [
@@ -80,6 +102,11 @@ class MenuResource extends Resource
         ];
     }
 
+    /**
+     * Register menu resource pages.
+     *
+     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

@@ -12,12 +12,23 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
+/**
+ * Manages navigation items attached to a menu.
+ *
+ * @extends RelationManager<Navigation>
+ */
 class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'allItems';
 
     protected static ?string $title = 'Navigation Items';
 
+    /**
+     * Build the navigation item form schema.
+     *
+     * @param Form $form
+     * @return Form
+     */
     public function form(Form $form): Form
     {
         return $form
@@ -92,6 +103,12 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the navigation items table.
+     *
+     * @param Table $table
+     * @return Table
+     */
     public function table(Table $table): Table
     {
         return $table
