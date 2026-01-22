@@ -11,7 +11,10 @@
 
             <div class="space-y-8">
                 @foreach($page->getBlocks() as $block)
-                    @include('frontend.blocks.' . $block['type'], ['block' => $block])
+                    <x-dynamic-component
+                        :component="'blocks.' . str_replace('_', '-', $block['type'])"
+                        :block="$block"
+                    />
                 @endforeach
             </div>
         </div>

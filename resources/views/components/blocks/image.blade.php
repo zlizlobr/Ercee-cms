@@ -1,3 +1,5 @@
+@props(['block'])
+
 @php
     $data = $block['data'] ?? $block;
 @endphp

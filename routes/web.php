@@ -1,11 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\PagePreviewController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 /**
  * Web routes for frontend requests and locale switching.
  */
+
+// Admin page preview (requires authentication)
+Route::get('/admin/pages/{page}/preview', PagePreviewController::class)
+    ->middleware(['web', 'auth'])
+    ->name('admin.pages.preview');
+
 // Language switcher
 Route::get('/lang/{locale}', function (string $locale) {
     $supported = ['cs', 'en'];

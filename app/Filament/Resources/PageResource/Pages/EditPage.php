@@ -13,6 +13,12 @@ class EditPage extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('preview')
+                ->label(__('admin.actions.preview'))
+                ->icon('heroicon-o-eye')
+                ->color('gray')
+                ->url(fn () => route('admin.pages.preview', ['page' => $this->record]))
+                ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];
     }

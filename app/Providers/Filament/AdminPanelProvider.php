@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationItems([
                 NavigationItem::make('Homepage')
                     ->url(fn () => config('app.frontend_url', '/'))
-                    ->icon('heroicon-o-home')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
                     ->sort(-1)
                     ->openUrlInNewTab(),
             ])
