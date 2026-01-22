@@ -4,6 +4,7 @@ return [
     // Navigation groups
     'navigation' => [
         'content' => 'Obsah',
+        'products' => 'Produkty',
         'commerce' => 'E-commerce',
         'marketing' => 'Marketing',
         'settings' => 'Nastavení',
@@ -38,12 +39,19 @@ return [
         'content' => 'Obsah',
         'image' => 'Obrázek',
         'email' => 'E-mail',
-        'name' => 'Jméno',
+        'name' => 'Název',
         'price' => 'Cena',
         'quantity' => 'Množství',
         'total' => 'Celkem',
         'type' => 'Typ',
         'position' => 'Pozice',
+        'active' => 'Aktivní',
+        'categories' => 'Kategorie',
+        'tags' => 'Štítky',
+        'brands' => 'Značky',
+        'attributes' => 'Atributy',
+        'main_image' => 'Hlavní obrázek',
+        'gallery' => 'Galerie',
     ],
 
     // Statuses
@@ -155,6 +163,18 @@ return [
 
     // Product resource specific
     'product' => [
+        'sections' => [
+            'info' => 'Informace o produktu',
+            'product_data' => 'Data produktu',
+            'status' => 'Stav',
+            'taxonomies' => 'Taxonomie',
+            'media' => 'Média',
+            'seo' => 'SEO',
+        ],
+        'tabs' => [
+            'pricing' => 'Cena',
+            'attributes' => 'Atributy',
+        ],
         'fields' => [
             'sku' => 'SKU',
             'price' => 'Cena',
@@ -162,6 +182,11 @@ return [
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
         ],
+        'price_helper' => 'Cena v :currency',
+        'price_variable_helper' => 'Cena je nastavena na variantách pro variabilní produkty',
+        'active_helper' => 'Pouze aktivní produkty jsou viditelné na e-shopu',
+        'attributes_helper' => 'Vyberte atributy produktu (barva, velikost, atd.)',
+        'slug_helper' => 'URL-friendly identifikátor produktu',
     ],
 
     // Order resource specific
