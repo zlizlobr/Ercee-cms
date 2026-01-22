@@ -3,6 +3,9 @@
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Web routes for frontend requests and locale switching.
+ */
 // Language switcher
 Route::get('/lang/{locale}', function (string $locale) {
     $supported = ['cs', 'en'];
