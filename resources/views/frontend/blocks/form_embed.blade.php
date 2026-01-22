@@ -1,11 +1,18 @@
 @php
-    $formId = $block['data']['form_id'] ?? null;
+    $data = $block['data'] ?? $block;
+    $formId = $data['form_id'] ?? null;
     $form = $formId ? \App\Domain\Form\Form::active()->find($formId) : null;
 @endphp
 
 @if($form)
     <div class="rounded-lg bg-gray-100 p-8" id="form-container-{{ $form->id }}">
-        <h3 class="mb-6 text-xl font-bold text-gray-900">{{ $form->name }}</h3>
+        @if(!empty($data['title']))
+            <h3 class="mb-2 text-xl font-bold text-gray-900">{{ $data['title'] }}</h3>
+        @endif
+
+        @if(!empty($data['description']))
+            <p class="mb-6 text-gray-600">{{ $data['description'] }}</p>
+        @endif
 
         <form
             id="dynamic-form-{{ $form->id }}"

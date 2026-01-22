@@ -9,6 +9,9 @@ use App\Http\Controllers\Api\RebuildFrontendController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * API routes for the public and internal endpoints.
+ */
 Route::prefix('v1')->group(function () {
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);

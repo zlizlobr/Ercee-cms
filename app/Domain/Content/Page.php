@@ -23,6 +23,8 @@ class Page extends Model
 
     public const STATUS_ARCHIVED = 'archived';
 
+    public const BLOCK_TYPE_HERO = 'hero';
+
     public const BLOCK_TYPE_TEXT = 'text';
 
     public const BLOCK_TYPE_IMAGE = 'image';
@@ -55,6 +57,7 @@ class Page extends Model
     public static function blockTypes(): array
     {
         return [
+            self::BLOCK_TYPE_HERO => __('admin.page.blocks.hero'),
             self::BLOCK_TYPE_TEXT => __('admin.page.blocks.text'),
             self::BLOCK_TYPE_IMAGE => __('admin.page.blocks.image'),
             self::BLOCK_TYPE_CTA => __('admin.page.blocks.cta'),
@@ -119,9 +122,22 @@ class Page extends Model
         return $this->status === self::STATUS_PUBLISHED;
     }
 
+    /**
+     * Get blocks from content.
+     * Supports both Filament Builder format (flat array with 'type' and 'data')
+     * and legacy Repeater format (nested under 'blocks' key).
+     */
     public function getBlocks(): array
     {
-        $blocks = $this->content['blocks'] ?? [];
+        $content = $this->content ?? [];
+
+        // Filament Builder stores blocks as flat array with 'type' and 'data' keys
+        if (isset($content[0]['type'])) {
+            return $content;
+        }
+
+        // Legacy format: blocks nested under 'blocks' key
+        $blocks = $content['blocks'] ?? [];
 
         usort($blocks, fn ($a, $b) => ($a['position'] ?? 0) <=> ($b['position'] ?? 0));
 

@@ -5,10 +5,25 @@ namespace Database\Factories;
 use App\Domain\Commerce\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Factory for creating products.
+ *
+ * @extends Factory<Product>
+ */
 class ProductFactory extends Factory
 {
+    /**
+     * The model associated with the factory.
+     *
+     * @var class-string<Product>
+     */
     protected $model = Product::class;
 
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [

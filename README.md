@@ -33,7 +33,7 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
   - **Products** - Lightweight commerce entities
   - **Orders** - Order tracking with payment integration
   - **Payments** - Multi-gateway payment processing (Stripe, GoPay, Comgate)
-  - **Navigation** - Hierarchical site navigation management
+  - **Menus & Navigation** - Multi-menu system with hierarchical navigation items (supports pages, custom URLs, anchors)
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
 - **Lead Capture System** - Public form submission API with anti-spam protection
@@ -194,7 +194,9 @@ The CMS exposes a REST API for frontend consumption.
 |--------|----------|-------------|
 | GET | `/api/v1/pages` | Get all published page slugs (for static generation) |
 | GET | `/api/v1/pages/{slug}` | Get published page by slug with blocks and SEO |
-| GET | `/api/v1/navigation` | Get hierarchical navigation structure |
+| GET | `/api/v1/navigation` | Get main menu navigation items (default) |
+| GET | `/api/v1/navigation/{menuSlug}` | Get navigation items by menu slug |
+| GET | `/api/v1/menus/{menuSlug}` | Get full menu with metadata and items |
 | GET | `/api/v1/products` | Get active products list |
 | GET | `/api/v1/products/{id}` | Get single product detail |
 | GET | `/api/v1/forms/{id}` | Get form schema for rendering |
@@ -246,6 +248,41 @@ The CMS exposes a REST API for frontend consumption.
   }
 }
 ```
+
+### Example Response - Navigation
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Home",
+      "slug": "home",
+      "url": "/",
+      "target": "_self",
+      "children": [
+        {
+          "id": 2,
+          "title": "About",
+          "slug": "about",
+          "url": "/about",
+          "target": "_self",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Navigation Item URL Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| Page link | `/about` | Internal page reference |
+| Custom URL | `https://example.com` | External link |
+| Anchor | `#contact` | Same-page anchor |
+| Page + anchor | `/about#team` | Internal page with anchor |
 
 ### Block Types
 
@@ -560,3 +597,4 @@ For local development setup, see [docs/local-frontend-setup.md](docs/local-front
 | [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
 | [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
+| [docs/frontend-menu-integration.md](docs/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |

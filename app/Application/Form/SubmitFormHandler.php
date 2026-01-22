@@ -35,6 +35,7 @@ final class SubmitFormHandler
         }
 
         $dataWithEmail = array_merge($command->data, ['email' => $command->email]);
+        error_log('test handel');
         $rules = array_merge($form->getValidationRules(), ['email' => ['required', 'email']]);
 
         $validator = Validator::make($dataWithEmail, $rules);

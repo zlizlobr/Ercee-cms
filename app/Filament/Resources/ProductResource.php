@@ -18,6 +18,16 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'Commerce';
 
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -35,12 +35,12 @@ class FormController extends Controller
     public function submit(Request $request, int $id): JsonResponse
     {
         $data = $request->except(['email', '_hp_field']);
-
+        error_log('test logu pro submit.');
         $command = new SubmitFormCommand(
             formId: $id,
             email: $request->input('email', ''),
             data: $data,
-            source: $request->header('X-Form-Source', 'form:'.$id),
+            source: $request->header('X-Form-Source', 'form:' . $id),
             isHoneypotFilled: $request->filled('_hp_field'),
         );
 

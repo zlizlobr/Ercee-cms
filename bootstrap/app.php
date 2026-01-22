@@ -4,6 +4,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+/**
+ * Bootstrap the Laravel application instance.
+ *
+ * @return Application
+ */
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -14,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'webhook.whitelist' => \App\Http\Middleware\WebhookIpWhitelist::class,
+            'redirect.frontend' => \App\Http\Middleware\RedirectToFrontend::class,
         ]);
 
         $middleware->web(append: [

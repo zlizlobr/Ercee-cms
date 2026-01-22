@@ -12,6 +12,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
+/**
+ * Filament resource for managing navigation items.
+ *
+ * @extends Resource<Navigation>
+ */
 class NavigationResource extends Resource
 {
     protected static ?string $model = Navigation::class;
@@ -24,6 +29,12 @@ class NavigationResource extends Resource
     
     protected static bool $shouldRegisterNavigation = false;
 
+    /**
+     * Build the navigation form schema.
+     *
+     * @param Form $form
+     * @return Form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -74,6 +85,12 @@ class NavigationResource extends Resource
             ]);
     }
 
+    /**
+     * Build the navigation table.
+     *
+     * @param Table $table
+     * @return Table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -122,11 +139,21 @@ class NavigationResource extends Resource
             ]);
     }
 
+    /**
+     * Register navigation relation managers.
+     *
+     * @return array<int, class-string>
+     */
     public static function getRelations(): array
     {
         return [];
     }
 
+    /**
+     * Register navigation resource pages.
+     *
+     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
