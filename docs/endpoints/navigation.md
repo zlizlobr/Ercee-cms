@@ -16,7 +16,7 @@ None.
     {
       "id": 1,
       "title": "Home",
-      "slug": "home",
+      "classes": "",
       "url": "/",
       "target": "_self",
       "children": []
@@ -24,14 +24,14 @@ None.
     {
       "id": 2,
       "title": "Services",
-      "slug": "services",
+      "classes": "",
       "url": "/services",
       "target": "_self",
       "children": [
         {
           "id": 3,
           "title": "Consulting",
-          "slug": "consulting",
+          "classes": "",
           "url": "/services/consulting",
           "target": "_self",
           "children": []
