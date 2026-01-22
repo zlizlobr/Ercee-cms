@@ -1,3 +1,15 @@
+## [v0.3.2] – 2026-01-22
+
+- release: patch -- Refactor page builder (#15)
+* add doc for menu, navigation scrope
+
+* Add phpDoc
+
+* add doc for endpoints
+
+* Migrate page builder from Repeater to Filament Builder with Hero block, reusable Blade components, preview action, validation rules, and block contract documentation
+- chore: update changelog for v0.3.1
+
 ## [v0.3.1] – 2026-01-20
 
 - release: patch -- Refactor navigation (#14)
