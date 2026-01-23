@@ -1,3 +1,13 @@
+## [v0.3.3] – 2026-01-23
+
+- release: patch -- Filament Builder Block for page (#16)
+* Migrate page builder from Repeater to Filament Builder with Hero block, reusable Blade components, preview action, validation rules, and block contract documentation
+
+* add builder localizace
+
+* Filament Builder Block Autoloading
+- chore: update changelog for v0.3.2
+
 ## [v0.3.2] – 2026-01-22
 
 - release: patch -- Refactor page builder (#15)
