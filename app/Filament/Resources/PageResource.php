@@ -8,7 +8,6 @@ use App\Filament\Resources\PageResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -68,7 +67,7 @@ class PageResource extends Resource
                                 }
 
                                 $set('slug', Str::slug($state ?? ''));
-                            })
+                            }),
                     ]),
 
                 Forms\Components\Grid::make(['default' => 1, 'lg' => 5])
@@ -144,7 +143,7 @@ class PageResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('admin.labels.title'))
-                    ->formatStateUsing(fn(Page $record): string => $record->getLocalizedTitle())
+                    ->formatStateUsing(fn (Page $record): string => $record->getLocalizedTitle())
                     ->searchable(query: function (EloquentBuilder $query, string $search): EloquentBuilder {
                         return $query->where('title', 'like', "%{$search}%");
                     }),
@@ -154,8 +153,8 @@ class PageResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('admin.labels.status'))
                     ->badge()
-                    ->formatStateUsing(fn(string $state): string => __("admin.statuses.{$state}"))
-                    ->color(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => __("admin.statuses.{$state}"))
+                    ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
                         'draft' => 'warning',
                         'archived' => 'gray',

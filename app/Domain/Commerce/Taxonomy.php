@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 class Taxonomy extends Model
 {
     public const TYPE_CATEGORY = 'category';
+
     public const TYPE_TAG = 'tag';
+
     public const TYPE_BRAND = 'brand';
 
     public const TYPES = [

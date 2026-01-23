@@ -22,11 +22,11 @@ class RedirectToFrontend
 
         // Build the redirect URL preserving the path
         $path = $request->getPathInfo();
-        $redirectUrl = rtrim($frontendUrl, '/') . $path;
+        $redirectUrl = rtrim($frontendUrl, '/').$path;
 
         // Preserve query string if present
         if ($request->getQueryString()) {
-            $redirectUrl .= '?' . $request->getQueryString();
+            $redirectUrl .= '?'.$request->getQueryString();
         }
 
         return redirect()->away($redirectUrl, 301);

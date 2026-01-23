@@ -13,8 +13,6 @@ class AdminUserSeeder extends Seeder
 {
     /**
      * Run the admin user seeder.
-     *
-     * @return void
      */
     public function run(): void
     {

@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 /**
  * Filament resource for managing navigation items.
  *
- * @extends Resource<Navigation>
+ * @extends resource<Navigation>
  */
 class NavigationResource extends Resource
 {
@@ -26,14 +26,11 @@ class NavigationResource extends Resource
     protected static ?string $navigationGroup = 'Content';
 
     protected static ?int $navigationSort = 2;
-    
+
     protected static bool $shouldRegisterNavigation = false;
 
     /**
      * Build the navigation form schema.
-     *
-     * @param Form $form
-     * @return Form
      */
     public static function form(Form $form): Form
     {
@@ -87,9 +84,6 @@ class NavigationResource extends Resource
 
     /**
      * Build the navigation table.
-     *
-     * @param Table $table
-     * @return Table
      */
     public static function table(Table $table): Table
     {

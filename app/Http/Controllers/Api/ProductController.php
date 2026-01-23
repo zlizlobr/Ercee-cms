@@ -18,7 +18,7 @@ class ProductController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $cacheKey = 'products:active:' . md5(serialize($request->only(['type', 'category', 'tag', 'brand'])));
+        $cacheKey = 'products:active:'.md5(serialize($request->only(['type', 'category', 'tag', 'brand'])));
 
         $products = Cache::remember($cacheKey, 3600, function () use ($request) {
             $query = Product::active()

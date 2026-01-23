@@ -252,11 +252,11 @@ php artisan tinker
 >>> Str::random(32)
 
 # Add to .env
-FRONTEND_REBUILD_TOKEN=your_generated_token
+API_INTERNAL_TOKEN=your_generated_token
 
 # Test endpoint
 curl -X POST http://localhost:8000/api/internal/rebuild-frontend \
-  -H "X-Rebuild-Token: your_generated_token" \
+  -H "Authorization: Bearer your_generated_token" \
   -H "Content-Type: application/json" \
   -d '{"reason": "test"}'
 ```

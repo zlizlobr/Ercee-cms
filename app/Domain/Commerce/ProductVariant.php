@@ -44,7 +44,7 @@ class ProductVariant extends Model
             get: fn () => number_format(
                 $this->price,
                 config('commerce.currency.decimals'),
-            ) . ' ' . config('commerce.currency.code'),
+            ).' '.config('commerce.currency.code'),
         );
     }
 

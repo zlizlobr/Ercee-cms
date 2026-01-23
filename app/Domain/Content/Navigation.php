@@ -108,8 +108,6 @@ class Navigation extends Model
 
     /**
      * Polymorphic relation for dynamic link targets.
-     *
-     * @return MorphTo
      */
     public function navigable(): MorphTo
     {
@@ -118,9 +116,6 @@ class Navigation extends Model
 
     /**
      * Scope active navigation items.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -129,9 +124,6 @@ class Navigation extends Model
 
     /**
      * Scope root navigation items.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeRoots(Builder $query): Builder
     {
@@ -140,9 +132,6 @@ class Navigation extends Model
 
     /**
      * Scope items ordered by position.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeOrdered(Builder $query): Builder
     {
@@ -151,8 +140,6 @@ class Navigation extends Model
 
     /**
      * Get URL with priority: navigable > page_id (legacy) > url.
-     *
-     * @return string|null
      */
     public function getUrl(): ?string
     {
@@ -163,7 +150,7 @@ class Navigation extends Model
 
         // Priority 2: Legacy page_id support
         if ($this->page) {
-            return '/' . $this->page->slug;
+            return '/'.$this->page->slug;
         }
 
         // Priority 3: Direct URL
@@ -172,15 +159,13 @@ class Navigation extends Model
 
     /**
      * Resolve URL from a polymorphic navigable model.
-     *
-     * @return string|null
      */
     protected function resolveNavigableUrl(): ?string
     {
         $navigable = $this->navigable;
 
         if ($navigable instanceof Page) {
-            return '/' . $navigable->slug;
+            return '/'.$navigable->slug;
         }
 
         // Add more types as needed (Contact, etc.)
@@ -204,7 +189,7 @@ class Navigation extends Model
             'slug' => $this->slug,
             'url' => $this->getUrl(),
             'target' => $this->target ?? '_self',
-            'children' => $this->children->map(fn($child) => $child->toArray())->toArray(),
+            'children' => $this->children->map(fn ($child) => $child->toArray())->toArray(),
         ];
     }
 }

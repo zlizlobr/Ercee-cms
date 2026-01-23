@@ -25,9 +25,6 @@ class ItemsRelationManager extends RelationManager
 
     /**
      * Build the navigation item form schema.
-     *
-     * @param Form $form
-     * @return Form
      */
     public function form(Form $form): Form
     {
@@ -106,9 +103,6 @@ class ItemsRelationManager extends RelationManager
 
     /**
      * Build the navigation items table.
-     *
-     * @param Table $table
-     * @return Table
      */
     public function table(Table $table): Table
     {
@@ -140,13 +134,14 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {
                         // Set navigable fields based on link_type
-                        if (($data['link_type'] ?? null) === 'page' && !empty($data['navigable_id'])) {
+                        if (($data['link_type'] ?? null) === 'page' && ! empty($data['navigable_id'])) {
                             $data['navigable_type'] = Page::class;
                         } else {
                             $data['navigable_type'] = null;
                             $data['navigable_id'] = null;
                         }
                         unset($data['link_type']);
+
                         return $data;
                     }),
             ])
@@ -159,10 +154,11 @@ class ItemsRelationManager extends RelationManager
                         } else {
                             $data['link_type'] = 'url';
                         }
+
                         return $data;
                     })
                     ->mutateFormDataUsing(function (array $data): array {
-                        if (($data['link_type'] ?? null) === 'page' && !empty($data['navigable_id'])) {
+                        if (($data['link_type'] ?? null) === 'page' && ! empty($data['navigable_id'])) {
                             $data['navigable_type'] = Page::class;
                             $data['url'] = null;
                         } else {
@@ -170,6 +166,7 @@ class ItemsRelationManager extends RelationManager
                             $data['navigable_id'] = null;
                         }
                         unset($data['link_type']);
+
                         return $data;
                     }),
                 Tables\Actions\DeleteAction::make(),

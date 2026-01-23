@@ -5,7 +5,6 @@ namespace Tests\Unit\Application\Funnel;
 use App\Application\Funnel\Commands\StartFunnelCommand;
 use App\Application\Funnel\StartFunnelHandler;
 use App\Domain\Funnel\Funnel;
-use App\Domain\Funnel\FunnelRun;
 use App\Domain\Funnel\Services\FunnelStarter;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,10 +65,10 @@ class StartFunnelHandlerTest extends TestCase
     {
         $subscriber = Subscriber::factory()->create();
 
-        $run1 = new \stdClass();
+        $run1 = new \stdClass;
         $run1->id = 1;
 
-        $run2 = new \stdClass();
+        $run2 = new \stdClass;
         $run2->id = 2;
 
         $this->funnelStarter

@@ -52,11 +52,35 @@ class AppServiceProvider extends ServiceProvider
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('form-submissions', function (Request $request) {
-            return Limit::perMinute(5)->by($request->ip());
+            return Limit::perMinute(5)->by($request->ip())->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
         });
 
         RateLimiter::for('checkout', function (Request $request) {
-            return Limit::perMinute(10)->by($request->ip());
+            return Limit::perMinute(10)->by($request->ip())->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
+        });
+
+        RateLimiter::for('api-read', function (Request $request) {
+            return Limit::perMinute(60)->by($request->ip())->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
+        });
+
+        RateLimiter::for('api-internal', function (Request $request) {
+            $key = $request->bearerToken() ?? $request->header('X-Api-Token') ?? $request->ip();
+
+            return Limit::perMinute(30)->by($key)->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
+        });
+
+        RateLimiter::for('webhooks', function (Request $request) {
+            return Limit::perMinute(100)->by($request->ip())->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
         });
     }
 }

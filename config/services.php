@@ -83,4 +83,19 @@ return [
         'rebuild_token' => env('FRONTEND_REBUILD_TOKEN'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for internal API authentication using bearer tokens.
+    | The internal_token is used for /internal endpoints.
+    | Token abilities define what actions a token can perform.
+    |
+    */
+    'api' => [
+        'internal_token' => env('API_INTERNAL_TOKEN'),
+        'token_abilities' => explode(',', env('API_TOKEN_ABILITIES', 'internal:rebuild')),
+    ],
+
 ];

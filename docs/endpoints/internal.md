@@ -4,12 +4,13 @@
 Trigger a frontend rebuild via GitHub dispatch.
 
 ### Authorization
-Requires `X-Rebuild-Token` header.
+Requires API token authentication via `Authorization: Bearer <token>` or `X-Api-Token`.
 
 ### Headers
 | name | type | required | description | default |
 | --- | --- | --- | --- | --- |
-| X-Rebuild-Token | string | yes | Static rebuild token | - |
+| Authorization | string | no | `Bearer <token>` | - |
+| X-Api-Token | string | no | API token (alternative to Bearer) | - |
 
 ### Body parameters
 | name | type | required | description | default |
@@ -19,30 +20,40 @@ Requires `X-Rebuild-Token` header.
 ### Successful response
 ```json
 {
-  "message": "Frontend rebuild triggered successfully",
-  "reason": "manual"
+  "data": {
+    "reason": "manual"
+  }
 }
 ```
 
 ### Error responses
-- `401 Unauthorized` - invalid token
+- `401 Unauthorized` - missing or invalid token
 ```json
 {
-  "error": "Invalid token"
+  "error": "Unauthorized"
 }
 ```
 
-- `500 Internal Server Error` - rebuild token not configured
+- `403 Forbidden` - insufficient token permissions
 ```json
 {
-  "error": "Rebuild token not configured"
+  "error": "Forbidden - insufficient permissions"
+}
+```
+
+- `500 Internal Server Error` - API authentication not configured
+```json
+{
+  "error": "API authentication not configured"
 }
 ```
 
 - `500 Internal Server Error` - rebuild trigger failed
 ```json
 {
-  "error": "Failed to trigger rebuild",
-  "message": "<error details>"
+  "error": "Failed to trigger rebuild"
 }
 ```
+
+### Rate limiting
+30 requests per minute per token or IP.

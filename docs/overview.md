@@ -8,5 +8,5 @@ Ercee CMS exposes a public content and commerce API, plus internal and webhook e
 - Authentication:
   - Public (`/v1`): no authentication
   - Webhooks (`/webhooks/*`): IP whitelist (if configured) + Stripe signature header
-  - Internal (`/internal/*`): static token header (`X-Rebuild-Token`)
+  - Internal (`/internal/*`): API token (`Authorization: Bearer <token>` or `X-Api-Token`)
 - Content-Type: `application/json`

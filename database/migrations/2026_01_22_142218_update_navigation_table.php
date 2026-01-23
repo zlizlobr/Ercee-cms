@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('navigations', function (Blueprint $table) {
-           $table->renameColumn('slug', 'classes');
+            $table->renameColumn('slug', 'classes');
         });
     }
 

@@ -15,9 +15,6 @@ class NavigationController extends Controller
 {
     /**
      * Get navigation by menu slug (default: 'main').
-     *
-     * @param string|null $menuSlug
-     * @return JsonResponse
      */
     public function index(?string $menuSlug = 'main'): JsonResponse
     {
@@ -47,9 +44,6 @@ class NavigationController extends Controller
 
     /**
      * Get specific menu by slug with all items.
-     *
-     * @param string $menuSlug
-     * @return JsonResponse
      */
     public function show(string $menuSlug): JsonResponse
     {
