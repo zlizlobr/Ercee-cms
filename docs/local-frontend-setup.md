@@ -6,7 +6,7 @@ This guide explains how to set up and test the Astro frontend locally alongside 
 
 - Node.js 20+
 - npm or pnpm
-- Laravel CMS running locally (see main README)
+- Laravel CMS running locally (see docs/local-backend-setup.md)
 
 ## Quick Start
 
@@ -42,25 +42,13 @@ SITE_URL=http://localhost:4321
 
 ### 4. Start Development Server
 
-**Terminal 1 - Laravel API:**
+Start the Laravel API and queue worker first (see docs/local-backend-setup.md).
 
-```bash
-cd /usr/local/var/www/Ercee-cms
-php artisan serve
-```
-
-**Terminal 2 - Astro Frontend:**
+**Astro Frontend:**
 
 ```bash
 cd /usr/local/var/www/ercee-frontend
 npm run dev
-```
-
-**Terminal 3 - Laravel Queue (for webhooks/funnels):**
-
-```bash
-cd /usr/local/var/www/Ercee-cms
-php artisan queue:work
 ```
 
 ### 5. Access Applications

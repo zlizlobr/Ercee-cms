@@ -43,97 +43,10 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 - **Lightweight Commerce** - Simple checkout with Stripe integration
 - **Production Hardening** - Idempotent handlers, DB transactions, webhook signature verification, IP whitelisting
 
-## Requirements
+## Local Development
 
-- PHP 8.3+
-- Composer
-- Node.js 20+
-- Redis (optional - can use database driver instead)
-- SQLite 3 (built into macOS)
-- Mailpit (for email testing)
-
-## Local Development Setup (macOS)
-
-### 1. Install Homebrew (if not installed)
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-### 2. Install required packages
-
-```bash
-brew install php@8.3 composer node redis mailpit
-```
-
-### 3. Clone and setup the project
-
-```bash
-git clone <repository-url> ercee-cms
-cd ercee-cms
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-```
-
-### 4. Create SQLite database and seed
-
-```bash
-touch database/database.sqlite
-php artisan migrate --seed
-```
-
-This creates the default admin user:
-- **Email:** `admin@example.com`
-- **Password:** `password`
-
-### 5. Configure Stripe (for payments)
-
-Add to your `.env`:
-
-```env
-STRIPE_KEY=pk_test_...
-STRIPE_SECRET=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_CURRENCY=czk
-STRIPE_SUCCESS_URL=http://localhost:8000/payment/return
-STRIPE_CANCEL_URL=http://localhost:8000/products
-```
-
-For local webhook testing, use Stripe CLI:
-```bash
-brew install stripe/stripe-cli/stripe
-stripe login
-stripe listen --forward-to localhost:8000/api/webhooks/stripe
-```
-
-### 6. Start services (optional)
-
-```bash
-brew services start mailpit
-# Only if using Redis for cache/queue:
-brew services start redis
-```
-
-- Mailpit UI: `http://localhost:8025`
-- Mailpit SMTP: `127.0.0.1:1025`
-- Redis (optional): `127.0.0.1:6379`
-
-> **Note:** By default, the app uses database driver for cache and queue. Redis is optional.
-
-### 7. Start development server
-
-```bash
-php artisan serve
-```
-
-The application will be available at `http://localhost:8000`
-
-Or use the full dev environment with queue worker and Vite:
-```bash
-composer dev
-```
+- Backend setup: `docs/local-backend-setup.md`
+- Astro frontend setup: `docs/local-frontend-setup.md`
 
 ## Available Commands
 
@@ -756,6 +669,7 @@ For local development setup, see [docs/local-frontend-setup.md](docs/local-front
 | [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
 | [docs/astro-frontend-guide.md](docs/astro-frontend-guide.md) | Astro frontend architecture & development |
 | [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
+| [docs/local-backend-setup.md](docs/local-backend-setup.md) | Local backend setup (Laravel API + admin) |
 | [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
 | [docs/frontend-menu-integration.md](docs/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
