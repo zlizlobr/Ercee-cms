@@ -38,6 +38,7 @@ class Product extends Model
         'price',
         'data',
         'active',
+
     ];
 
     protected function casts(): array
