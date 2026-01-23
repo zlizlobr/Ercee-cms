@@ -1,3 +1,9 @@
+## [v0.3.6] – 2026-01-23
+
+- release: patch -- Refactor Rest API (#20)
+* Add REST API hardening with token auth, rate limiting, idempotency, audit logging, FormRequest validation, and centralized exception handling
+- chore: update changelog for v0.3.5
+
 ## [v0.3.5] – 2026-01-23
 
 - release: patch -- update docs (#19)
