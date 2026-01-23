@@ -145,6 +145,9 @@ composer lint
 # Run static analysis
 composer analyse
 
+# Clear Builder blocks cache (after adding/removing blocks)
+php artisan blocks:clear
+
 # Start queue worker
 php artisan queue:work
 
@@ -288,10 +291,13 @@ The CMS exposes a REST API for frontend consumption.
 
 | Type | Fields |
 |------|--------|
+| `hero` | heading, subheading, background_image, button_text, button_url |
 | `text` | heading, body |
 | `image` | image, alt, caption |
 | `cta` | title, description, button_text, button_url, style |
 | `form_embed` | form_id, title, description |
+
+Blocks are auto-loaded from `app/Filament/Blocks/` directory. See [Page Builder](#page-builder-blocks) section for details.
 
 ### Form Submission
 
@@ -430,6 +436,7 @@ app/
 ├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
+    └── Blocks/       # Page Builder blocks (auto-loaded)
 
 lang/
 ├── cs/               # Czech translations
@@ -473,6 +480,69 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 3. Call handler
 4. Map Result → Response
 5. Max 50 lines of code
+
+## Page Builder Blocks
+
+The CMS uses an auto-loading architecture for Filament Builder blocks. Blocks are automatically discovered from `app/Filament/Blocks/` directory.
+
+### Directory Structure
+
+```
+app/Filament/Blocks/
+├── BaseBlock.php      # Abstract base class (contract)
+├── BlockRegistry.php  # Auto-loader with caching
+├── HeroBlock.php      # Hero section block
+├── TextBlock.php      # Rich text block
+├── ImageBlock.php     # Image with caption block
+├── CtaBlock.php       # Call-to-action block
+└── FormEmbedBlock.php # Embedded form block
+```
+
+### Creating a New Block
+
+1. Create a new class in `app/Filament/Blocks/` extending `BaseBlock`
+2. Implement the `make()` method returning a `Filament\Forms\Components\Builder\Block`
+3. Clear the cache: `php artisan blocks:clear`
+
+```php
+<?php
+
+namespace App\Filament\Blocks;
+
+use Filament\Forms;
+use Filament\Forms\Components\Builder\Block;
+
+class MyCustomBlock extends BaseBlock
+{
+    public static int $order = 60;      // Lower = appears first
+    public static bool $enabled = true; // Set false to disable
+
+    public static function make(): Block
+    {
+        return Block::make('my_custom')
+            ->label(__('admin.page.blocks.my_custom'))
+            ->icon('heroicon-o-star')
+            ->schema([
+                Forms\Components\TextInput::make('title')->required(),
+            ]);
+    }
+}
+```
+
+### Block Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `$order` | int | 100 | Sort order in block picker (lower = first) |
+| `$enabled` | bool | true | Whether the block is available |
+
+### Cache Management
+
+Block discovery is cached for performance. Clear the cache when adding or removing blocks:
+
+```bash
+php artisan blocks:clear
+```
 
 ## Frontend Routes
 

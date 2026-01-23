@@ -42,6 +42,7 @@ class Navigation extends Model
         'menu_id',
         'title',
         'slug',
+        'classes',
         'url',
         'target',
         'parent_id',
@@ -203,7 +204,7 @@ class Navigation extends Model
             'slug' => $this->slug,
             'url' => $this->getUrl(),
             'target' => $this->target ?? '_self',
-            'children' => $this->children->map(fn ($child) => $child->toArray())->toArray(),
+            'children' => $this->children->map(fn($child) => $child->toArray())->toArray(),
         ];
     }
 }

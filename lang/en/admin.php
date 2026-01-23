@@ -22,6 +22,8 @@ return [
         'filter' => 'Filter',
         'export' => 'Export',
         'import' => 'Import',
+        'preview' => 'Preview',
+        'close' => 'Close',
     ],
 
     // Common labels
@@ -116,22 +118,28 @@ return [
             'open_graph' => 'Open Graph',
         ],
         'blocks' => [
+            'hero' => 'Hero Section',
             'text' => 'Text',
             'image' => 'Image',
             'cta' => 'Call to Action',
             'form_embed' => 'Form Embed',
             'new' => 'New Block',
         ],
+        'actions' => [
+            'add_block' => 'Add Block',
+        ],
         'fields' => [
             'heading' => 'Heading',
+            'subheading' => 'Subheading',
             'body' => 'Body Text',
+            'background_image' => 'Background Image',
             'alt' => 'Alt Text',
             'caption' => 'Caption',
             'cta_title' => 'CTA Title',
             'button_text' => 'Button Text',
             'button_url' => 'Button URL',
             'style' => 'Style',
-            'form_id' => 'Form ID',
+            'form_id' => 'Form',
             'form_title' => 'Form Title',
         ],
         'seo' => [
@@ -192,5 +200,12 @@ return [
         'updated' => 'Successfully updated.',
         'error' => 'An error occurred.',
         'confirm_delete' => 'Are you sure you want to delete?',
+    ],
+
+    // Preview
+    'preview' => [
+        'title' => 'Preview',
+        'mode' => 'Preview Mode',
+        'unknown_block' => 'Unknown block type: :type',
     ],
 ];

@@ -22,6 +22,8 @@ return [
         'filter' => 'Filtrovat',
         'export' => 'Exportovat',
         'import' => 'Importovat',
+        'preview' => 'Náhled',
+        'close' => 'Zavřít',
     ],
 
     // Common labels
@@ -116,22 +118,28 @@ return [
             'open_graph' => 'Open Graph',
         ],
         'blocks' => [
+            'hero' => 'Hero sekce',
             'text' => 'Text',
             'image' => 'Obrázek',
             'cta' => 'Výzva k akci',
             'form_embed' => 'Vložený formulář',
             'new' => 'Nový blok',
         ],
+        'actions' => [
+            'add_block' => 'Přidat blok',
+        ],
         'fields' => [
             'heading' => 'Nadpis',
+            'subheading' => 'Podnadpis',
             'body' => 'Tělo textu',
+            'background_image' => 'Obrázek na pozadí',
             'alt' => 'Alternativní text',
             'caption' => 'Popisek',
             'cta_title' => 'Název CTA',
             'button_text' => 'Text tlačítka',
             'button_url' => 'URL tlačítka',
             'style' => 'Styl',
-            'form_id' => 'ID formuláře',
+            'form_id' => 'Formulář',
             'form_title' => 'Název formuláře',
         ],
         'seo' => [
@@ -192,5 +200,12 @@ return [
         'updated' => 'Úspěšně aktualizováno.',
         'error' => 'Došlo k chybě.',
         'confirm_delete' => 'Opravdu chcete smazat?',
+    ],
+
+    // Preview
+    'preview' => [
+        'title' => 'Náhled',
+        'mode' => 'Režim náhledu',
+        'unknown_block' => 'Neznámý typ bloku: :type',
     ],
 ];
