@@ -1,3 +1,9 @@
+## [v0.3.5] – 2026-01-23
+
+- release: patch -- update docs (#19)
+* Update docs
+- chore: update changelog for v0.3.4
+
 ## [v0.3.4] – 2026-01-23
 
 - PR title: release: patch --Refactor product architecture (#17)
