@@ -4,6 +4,7 @@ return [
     // Navigation groups
     'navigation' => [
         'content' => 'Content',
+        'products' => 'Products',
         'commerce' => 'Commerce',
         'marketing' => 'Marketing',
         'settings' => 'Settings',
@@ -44,6 +45,13 @@ return [
         'total' => 'Total',
         'type' => 'Type',
         'position' => 'Position',
+        'active' => 'Active',
+        'categories' => 'Categories',
+        'tags' => 'Tags',
+        'brands' => 'Brands',
+        'attributes' => 'Attributes',
+        'main_image' => 'Main Image',
+        'gallery' => 'Gallery',
     ],
 
     // Statuses
@@ -155,13 +163,35 @@ return [
 
     // Product resource specific
     'product' => [
+        'sections' => [
+            'info' => 'Product Info',
+            'product_data' => 'Product Data',
+            'status' => 'Status',
+            'taxonomies' => 'Taxonomies',
+            'media' => 'Media',
+            'seo' => 'SEO',
+        ],
+        'tabs' => [
+            'description' => 'Description',
+            'pricing' => 'Pricing',
+            'attributes' => 'Attributes',
+        ],
         'fields' => [
             'sku' => 'SKU',
             'price' => 'Price',
             'sale_price' => 'Sale Price',
             'stock' => 'Stock',
             'is_active' => 'Active',
+            'short_description' => 'Short Description',
+            'description' => 'Product Description',
         ],
+        'price_helper' => 'Price in :currency',
+        'price_variable_helper' => 'Price is set on variants for variable products',
+        'active_helper' => 'Only active products are visible on the storefront',
+        'attributes_helper' => 'Select product attributes (color, size, etc.)',
+        'slug_helper' => 'URL-friendly identifier for the product',
+        'short_description_helper' => 'Short description displayed in product listings',
+        'description_helper' => 'Detailed product description with formatting',
     ],
 
     // Order resource specific

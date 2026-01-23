@@ -40,7 +40,9 @@ class ItemsRelationManager extends RelationManager
                     ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
 
                 Forms\Components\TextInput::make('classes')
-                     ->maxLength(255),
+                    ->maxLength(255)
+                    ->default('')
+                    ->dehydrateStateUsing(fn ($state) => $state ?? ''),
 
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Item')

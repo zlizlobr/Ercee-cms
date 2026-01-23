@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PagePreviewController;
+use App\Http\Controllers\Admin\ProductPreviewController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/admin/pages/{page}/preview', PagePreviewController::class)
     ->middleware(['web', 'auth'])
     ->name('admin.pages.preview');
+
+// Admin product preview (requires authentication)
+Route::get('/admin/products/{product}/preview', ProductPreviewController::class)
+    ->middleware(['web', 'auth'])
+    ->name('admin.products.preview');
 
 // Language switcher
 Route::get('/lang/{locale}', function (string $locale) {

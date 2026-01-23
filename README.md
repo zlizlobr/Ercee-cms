@@ -30,12 +30,13 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 - **Core Entities**:
   - **Subscribers** - Marketing contact management
   - **Pages** - Block-based content with SEO support (text, image, CTA, form embed blocks)
-  - **Products** - Lightweight commerce entities
+  - **Products** - WooCommerce-like product system with types, variants, and taxonomies
   - **Orders** - Order tracking with payment integration
   - **Payments** - Multi-gateway payment processing (Stripe, GoPay, Comgate)
   - **Menus & Navigation** - Multi-menu system with hierarchical navigation items (supports pages, custom URLs, anchors)
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
+  - **Product Reviews** - Customer reviews with approval workflow
 - **Lead Capture System** - Public form submission API with anti-spam protection
 - **Marketing Automation** - Funnel engine with multi-step workflows triggered by events
 - **Lightweight Commerce** - Simple checkout with Stripe integration
@@ -187,6 +188,15 @@ Access the admin panel at `http://localhost:8000/admin`
 | `operator` | Operational access |
 | `marketing` | Marketing-related features |
 
+### Navigation Groups
+
+| Group | Resources |
+|-------|-----------|
+| Content | Pages, Navigation, Forms |
+| Products | Products, Taxonomies, Attributes, Reviews |
+| Commerce | Orders, Payments |
+| Marketing | Subscribers, Funnels, Contracts |
+
 ## Public API
 
 The CMS exposes a REST API for frontend consumption.
@@ -200,8 +210,8 @@ The CMS exposes a REST API for frontend consumption.
 | GET | `/api/v1/navigation` | Get main menu navigation items (default) |
 | GET | `/api/v1/navigation/{menuSlug}` | Get navigation items by menu slug |
 | GET | `/api/v1/menus/{menuSlug}` | Get full menu with metadata and items |
-| GET | `/api/v1/products` | Get active products list |
-| GET | `/api/v1/products/{id}` | Get single product detail |
+| GET | `/api/v1/products` | Get active products list (with filters) |
+| GET | `/api/v1/products/{id}` | Get single product with variants, taxonomies, attributes |
 | GET | `/api/v1/forms/{id}` | Get form schema for rendering |
 | POST | `/api/v1/forms/{id}/submit` | Submit form data (rate limited: 5/min per IP) |
 | POST | `/api/v1/checkout` | Initiate checkout (rate limited: 10/min per IP) |
@@ -354,7 +364,51 @@ curl -X POST http://localhost:8000/api/v1/checkout \
 
 ## Commerce
 
-The platform includes a lightweight commerce layer for selling 1-3 products.
+The platform includes a WooCommerce-like commerce layer with advanced product management.
+
+### Configuration
+
+Add to `.env`:
+
+```env
+CURRENCY_CODE=CZK
+CURRENCY_DECIMALS=2
+```
+
+### Product Types
+
+| Type | Description |
+|------|-------------|
+| `simple` | Standard product with single price |
+| `virtual` | Digital/downloadable product (no shipping) |
+| `variable` | Product with variants (e.g., size, color combinations) |
+
+### Taxonomies
+
+Products can be organized using three taxonomy types:
+
+| Type | Description |
+|------|-------------|
+| `category` | Hierarchical product categories |
+| `tag` | Flat tags for flexible grouping |
+| `brand` | Product brands/manufacturers |
+
+### Attributes & Variants
+
+For variable products, you can define:
+- **Attributes** - Product characteristics (color, size, material)
+- **Attribute Values** - Possible values for each attribute (red, blue, S, M, L)
+- **Variants** - Specific combinations with own SKU, price, and stock
+
+### Product Reviews
+
+Reviews support an approval workflow:
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Awaiting moderation |
+| `approved` | Visible on storefront |
+| `rejected` | Hidden from storefront |
 
 ### Order Statuses
 
@@ -422,7 +476,18 @@ app/
 ├── Domain/           # Business logic layer
 │   ├── Subscriber/   # Marketing contacts & services
 │   ├── Content/      # CMS pages & navigation
-│   ├── Commerce/     # Products, Orders, Payments & Gateways
+│   ├── Commerce/     # E-commerce entities & services
+│   │   ├── Product.php           # Product model (simple, virtual, variable types)
+│   │   ├── ProductVariant.php    # Variant model (SKU, price, stock)
+│   │   ├── ProductReview.php     # Review model with approval workflow
+│   │   ├── Taxonomy.php          # Categories, tags, brands
+│   │   ├── Attribute.php         # Product attributes
+│   │   ├── AttributeValue.php    # Attribute values
+│   │   ├── Order.php             # Order model
+│   │   ├── Payment.php           # Payment model
+│   │   └── Services/
+│   │       ├── ProductPricingService.php      # Price formatting & ranges
+│   │       └── ProductAvailabilityService.php # Stock & availability
 │   ├── Form/         # Forms, Contracts & events
 │   └── Funnel/       # Marketing automation engine
 ├── Application/      # Application orchestration layer (handlers, commands, results)
@@ -431,12 +496,24 @@ app/
 │   ├── Funnel/       # StartFunnelHandler
 │   └── Content/      # PublishPageHandler
 ├── Infrastructure/   # External integrations
-├── Http/Controllers/Api/  # Public API controllers (thin, delegate to handlers)
+├── Http/Controllers/
+│   ├── Api/          # Public API controllers (thin, delegate to handlers)
+│   └── Admin/        # Admin controllers (previews)
 ├── Http/Middleware/  # Custom middleware (SetLocale, WebhookIpWhitelist)
 ├── Listeners/        # Event listeners
 ├── Observers/        # Model observers (cache invalidation)
 └── Filament/         # Admin panel resources
+    ├── Resources/
+    │   ├── ProductResource/      # Product management with variants & reviews
+    │   ├── TaxonomyResource/     # Categories, tags, brands
+    │   ├── AttributeResource/    # Product attributes
+    │   ├── ProductReviewResource/# Review moderation
+    │   ├── OrderResource/        # Order management
+    │   └── PaymentResource/      # Payment tracking
     └── Blocks/       # Page Builder blocks (auto-loaded)
+
+config/
+└── commerce.php      # Currency settings (code, decimals)
 
 lang/
 ├── cs/               # Czech translations
@@ -472,6 +549,13 @@ HTTP Request → Controller → Command DTO → Handler → Domain Services → 
 3. Return only Result DTOs
 4. Coordinate domain services and repositories
 5. Dispatch domain events when needed
+
+### Domain Services
+
+| Service | Description |
+|---------|-------------|
+| `ProductPricingService` | Get product price, formatted price, price range for variable products |
+| `ProductAvailabilityService` | Check stock availability, get purchasable variants |
 
 ### Controller Rules
 
@@ -606,6 +690,10 @@ Use `$page->getLocalizedTitle()` to get the title in the current locale with aut
 For production deployment, configure the following environment variables:
 
 ```env
+# Commerce settings
+CURRENCY_CODE=CZK
+CURRENCY_DECIMALS=2
+
 # Webhook IP Whitelist (comma-separated IPs or CIDR ranges)
 # Get Stripe IPs from: https://stripe.com/docs/ips
 WEBHOOK_IP_WHITELIST=3.18.12.63,3.130.192.231,13.235.14.237,13.235.122.149
