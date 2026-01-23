@@ -1,0 +1,15 @@
+---
+import type { {{ componentName }}BlockData } from '../../lib/api';
+
+interface Props {
+  data: {{ componentName }}BlockData;
+}
+
+const { data } = Astro.props;
+---
+
+<section class="py-12 px-4">
+  <div class="container mx-auto max-w-6xl">
+{{ templateContent }}
+  </div>
+</section>

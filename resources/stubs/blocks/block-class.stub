@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Filament\Blocks;
+
+use App\Domain\Content\Page;
+use Filament\Forms;
+use Filament\Forms\Components\Builder\Block;
+
+class {{ className }} extends BaseBlock
+{
+    public static int $order = {{ order }};
+
+    public static function make(): Block
+    {
+        return Block::make(Page::BLOCK_TYPE_{{ constantName }})
+            ->label(__('admin.page.blocks.{{ blockType }}'))
+            ->icon('{{ icon }}')
+            ->columns(2)
+            ->schema([
+{{ schemaFields }}
+            ]);
+    }
+}
