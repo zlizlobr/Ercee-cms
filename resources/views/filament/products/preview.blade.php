@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 
     <style>
         .preview-banner {
@@ -102,6 +102,13 @@
                     <p class="mt-1 text-sm text-gray-500">{{ $product->slug }}</p>
                 </div>
 
+                {{-- Short Description --}}
+                @if($product->short_description)
+                    <div class="text-lg text-gray-600">
+                        {{ $product->short_description }}
+                    </div>
+                @endif
+
                 {{-- Price --}}
                 <div class="rounded-lg bg-white p-6 shadow">
                     <h2 class="text-lg font-semibold text-gray-900">{{ __('admin.labels.price') }}</h2>
@@ -116,6 +123,16 @@
                         </p>
                     @endif
                 </div>
+
+                {{-- Description --}}
+                @if($product->description)
+                    <div class="rounded-lg bg-white p-6 shadow">
+                        <h2 class="text-lg font-semibold text-gray-900">{{ __('admin.product.fields.description') }}</h2>
+                        <div class="prose prose-sm mt-4 max-w-none text-gray-600">
+                            {!! $product->description !!}
+                        </div>
+                    </div>
+                @endif
 
                 {{-- Taxonomies --}}
                 @if($product->categories->count() || $product->tags->count() || $product->brands->count())

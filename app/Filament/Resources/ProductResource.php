@@ -60,6 +60,33 @@ class ProductResource extends Resource
                             ->schema([
                                 Forms\Components\Tabs::make('ProductTabs')
                                     ->tabs([
+                                        // Description tab
+                                        Forms\Components\Tabs\Tab::make(__('admin.product.tabs.description'))
+                                            ->icon('heroicon-o-document-text')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('data.short_description')
+                                                    ->label(__('admin.product.fields.short_description'))
+                                                    ->rows(3)
+                                                    ->helperText(__('admin.product.short_description_helper')),
+                                                Forms\Components\RichEditor::make('data.description')
+                                                    ->label(__('admin.product.fields.description'))
+                                                    ->toolbarButtons([
+                                                        'bold',
+                                                        'italic',
+                                                        'underline',
+                                                        'strike',
+                                                        'link',
+                                                        'orderedList',
+                                                        'bulletList',
+                                                        'h2',
+                                                        'h3',
+                                                        'blockquote',
+                                                        'redo',
+                                                        'undo',
+                                                    ])
+                                                    ->helperText(__('admin.product.description_helper')),
+                                            ]),
+
                                         // Pricing & Stock tab
                                         Forms\Components\Tabs\Tab::make(__('admin.product.tabs.pricing'))
                                             ->icon('heroicon-o-currency-dollar')

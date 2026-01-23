@@ -69,6 +69,20 @@ class Product extends Model
         );
     }
 
+    protected function shortDescription(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->data['short_description'] ?? null,
+        );
+    }
+
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->data['description'] ?? null,
+        );
+    }
+
     protected function priceFormatted(): Attribute
     {
         return Attribute::make(

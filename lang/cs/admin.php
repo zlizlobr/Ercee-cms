@@ -172,6 +172,7 @@ return [
             'seo' => 'SEO',
         ],
         'tabs' => [
+            'description' => 'Popis',
             'pricing' => 'Cena',
             'attributes' => 'Atributy',
         ],
@@ -181,12 +182,16 @@ return [
             'sale_price' => 'Akční cena',
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
+            'short_description' => 'Krátký popis',
+            'description' => 'Popis produktu',
         ],
         'price_helper' => 'Cena v :currency',
         'price_variable_helper' => 'Cena je nastavena na variantách pro variabilní produkty',
         'active_helper' => 'Pouze aktivní produkty jsou viditelné na e-shopu',
         'attributes_helper' => 'Vyberte atributy produktu (barva, velikost, atd.)',
         'slug_helper' => 'URL-friendly identifikátor produktu',
+        'short_description_helper' => 'Krátký popis zobrazený v přehledu produktů',
+        'description_helper' => 'Detailní popis produktu s formátováním',
     ],
 
     // Order resource specific
