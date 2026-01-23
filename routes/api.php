@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RebuildFrontendController;
+use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::get('/forms/{id}', [FormController::class, 'show']);
+    Route::get('/theme', [ThemeController::class, 'index']);
 
     Route::post('/forms/{id}/submit', [FormController::class, 'submit'])
         ->middleware('throttle:form-submissions');

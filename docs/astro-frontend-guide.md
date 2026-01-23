@@ -1,6 +1,6 @@
 # Astro Frontend Development Guide
 
-This guide explains the architecture and development workflow for the Ercee public frontend built with Astro.
+This guide explains the architecture and workflow for the public Astro frontend.
 
 **Repository:** [github.com/zlizlobr/ercee-frontend](https://github.com/zlizlobr/ercee-frontend)
 
@@ -25,14 +25,7 @@ This guide explains the architecture and development workflow for the Ercee publ
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Key Concepts
-
-1. **Static Site Generation (SSG)** - Pages are pre-built at build time
-2. **API Data Fetching** - Content fetched from Laravel API during build
-3. **Client-side Interactivity** - Forms and checkout use client-side JS
-4. **Automatic Rebuilds** - CMS changes trigger GitHub Actions rebuild
-
-## Project Structure
+## Project Structure (current)
 
 ```
 ercee-frontend/
@@ -40,212 +33,91 @@ ercee-frontend/
 │   └── workflows/
 │       └── build-deploy.yml      # CI/CD pipeline
 ├── public/
-│   ├── favicon.svg               # Site favicon
-│   └── robots.txt                # SEO robots file
+│   ├── favicon.svg
+│   └── robots.txt
 ├── src/
 │   ├── components/
 │   │   ├── blocks/               # CMS block renderers
-│   │   │   ├── Text.astro        # Rich text content
-│   │   │   ├── Image.astro       # Image with caption
-│   │   │   ├── CTA.astro         # Call-to-action section
-│   │   │   └── FormEmbed.astro   # Embedded form
-│   │   ├── BlockRenderer.astro   # Block type dispatcher
-│   │   └── Navigation.astro      # Site navigation
+│   │   ├── home/                 # Home-only sections
+│   │   ├── react/                # Interactive React widgets
+│   │   └── ui/                   # Shared UI atoms
 │   ├── layouts/
-│   │   └── BaseLayout.astro      # Main HTML layout
+│   │   └── BaseLayout.astro
 │   ├── lib/
-│   │   └── api.ts                # API client (typed)
+│   │   └── api/
+│   │       ├── client.ts         # fetch wrapper
+│   │       ├── index.ts          # barrel exports
+│   │       ├── types.ts          # shared API types
+│   │       └── endpoints/        # per-endpoint mappers
 │   ├── pages/
-│   │   ├── index.astro           # Homepage
-│   │   ├── [slug].astro          # Dynamic CMS pages
-│   │   ├── 404.astro             # Not found page
-│   │   ├── thank-you.astro       # Post-payment page
+│   │   ├── index.astro
+│   │   ├── [slug].astro
+│   │   ├── 404.astro
+│   │   ├── thank-you.astro
 │   │   ├── products/
-│   │   │   ├── index.astro       # Product listing
-│   │   │   └── [id].astro        # Product detail
+│   │   │   ├── index.astro
+│   │   │   └── [id].astro
 │   │   └── checkout/
-│   │       └── [productId].astro # Checkout form
-│   └── env.d.ts                  # TypeScript env types
-├── .env.example                  # Environment template
-├── astro.config.mjs              # Astro configuration
-├── package.json                  # Dependencies
-├── tailwind.config.mjs           # Tailwind CSS config
-└── tsconfig.json                 # TypeScript config
+│   │       └── [productId].astro
+│   ├── i18n/
+│   │   ├── cs.ts
+│   │   ├── en.ts
+│   │   └── index.ts
+│   └── styles/global.css
+├── .env.example
+├── astro.config.mjs
+├── package.json
+├── tailwind.config.mjs
+└── tsconfig.json
 ```
 
-## Component Reference
+## CMS block mapping
 
-### Block Components
+CMS returns raw builder blocks from `Page::getBlocks()`. The frontend maps the data in:
+`src/lib/api/endpoints/pages.ts`.
 
-Block components render CMS content blocks. Each block type has its own component.
+- **Mapped blocks**: `text`, `image`, `cta`, `form_embed`
+- **Pass-through blocks**: any other type (e.g. `hero`, `stats`, `testimonials`, `feature_grid`)
 
-#### Text Block (`src/components/blocks/Text.astro`)
+If you add a new CMS block, update the mapping and types so Astro gets the shape it expects.
 
-Renders rich HTML content.
+## Block components
 
-```astro
----
-import type { TextBlockData } from '../../lib/api';
+Block renderer: `src/components/BlockRenderer.astro`
 
-interface Props {
-  data: TextBlockData;
-}
+Supported components today:
 
-const { data } = Astro.props;
----
+- `Text.astro`
+- `Image.astro`
+- `CTA.astro`
+- `FormEmbed.astro`
+- `Hero.astro`
+- `Stats.astro`
+- `Testimonials.astro`
+- `FeatureGrid.astro`
 
-<div class="prose prose-lg max-w-none">
-  <Fragment set:html={data.content} />
-</div>
-```
+Block types and data contracts are defined in `src/lib/api/types.ts`.
 
-**API Data:**
-```json
-{
-  "type": "text",
-  "data": {
-    "content": "<p>HTML content here...</p>"
-  }
-}
-```
+## API client
 
-#### Image Block (`src/components/blocks/Image.astro`)
+The API client lives in `src/lib/api/`:
 
-Renders image with optional caption.
+- `client.ts` - fetch wrapper with base URL
+- `endpoints/*` - mapping per endpoint
+- `types.ts` - shared types
 
-**API Data:**
-```json
-{
-  "type": "image",
-  "data": {
-    "url": "https://example.com/image.jpg",
-    "alt": "Image description",
-    "caption": "Optional caption"
-  }
-}
-```
-
-#### CTA Block (`src/components/blocks/CTA.astro`)
-
-Renders call-to-action section with button.
-
-**API Data:**
-```json
-{
-  "type": "cta",
-  "data": {
-    "title": "Get Started",
-    "description": "Optional description text",
-    "button_text": "Sign Up",
-    "button_url": "/signup"
-  }
-}
-```
-
-#### Form Embed Block (`src/components/blocks/FormEmbed.astro`)
-
-Renders embedded form with client-side submission.
-
-**API Data:**
-```json
-{
-  "type": "form_embed",
-  "data": {
-    "form_id": 1
-  }
-}
-```
-
-### BlockRenderer Component
-
-Dispatches blocks to appropriate components based on type.
-
-```astro
----
-import type { Block } from '../lib/api';
-import Text from './blocks/Text.astro';
-import Image from './blocks/Image.astro';
-import CTA from './blocks/CTA.astro';
-import FormEmbed from './blocks/FormEmbed.astro';
-
-interface Props {
-  blocks: Block[];
-}
-
-const { blocks } = Astro.props;
----
-
-<div class="space-y-8">
-  {blocks.map((block) => {
-    switch (block.type) {
-      case 'text':
-        return <Text data={block.data} />;
-      case 'image':
-        return <Image data={block.data} />;
-      case 'cta':
-        return <CTA data={block.data} />;
-      case 'form_embed':
-        return <FormEmbed data={block.data} />;
-      default:
-        return null;
-    }
-  })}
-</div>
-```
-
-## API Client
-
-The API client (`src/lib/api.ts`) provides typed functions for fetching data.
-
-### Available Functions
+### Available functions
 
 | Function | Description | Build/Runtime |
 |----------|-------------|---------------|
-| `getAllPages()` | Get all page slugs | Build time |
+| `getAllPages()` | Get page slugs | Build time |
 | `getPage(slug)` | Get page by slug | Build time |
 | `getNavigation()` | Get navigation tree | Build time |
-| `getProducts()` | Get all products | Build time |
-| `getProduct(id)` | Get product by ID | Build time |
+| `getProducts()` | Get products | Build time |
+| `getProduct(id)` | Get product | Build time |
 | `getForm(id)` | Get form schema | Build time |
-| `submitForm(id, data)` | Submit form | Runtime (client) |
-| `initiateCheckout(productId, email)` | Start checkout | Runtime (client) |
-
-### Type Definitions
-
-```typescript
-interface Page {
-  id: number;
-  slug: string;
-  title: string;
-  blocks: Block[];
-  seo: SeoMeta | null;
-  published_at: string | null;
-}
-
-interface Block {
-  type: 'text' | 'image' | 'cta' | 'form_embed';
-  position: number;
-  data: TextBlockData | ImageBlockData | CtaBlockData | FormEmbedBlockData;
-}
-
-interface NavigationItem {
-  id: number;
-  label: string;
-  url: string;
-  target?: string;
-  children?: NavigationItem[];
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  currency: string;
-  image_url?: string;
-  is_active: boolean;
-}
-```
+| `submitForm(id, data)` | Submit form | Runtime |
+| `initiateCheckout(productId, email)` | Start checkout | Runtime |
 
 ## Page Types
 
@@ -296,52 +168,20 @@ Forms and checkout use client-side JavaScript for API calls.
 
 ### Adding a New Block Type
 
-1. **Define type in `api.ts`:**
+1. **CMS side (Ercee-cms):**
+   - Add a block constant in `app/Domain/Content/Page.php`.
+   - Create a block class in `app/Filament/Blocks/`.
+   - Clear the block cache: `php artisan blocks:clear`.
 
-```typescript
-export interface VideoBlockData {
-  video_url: string;
-  autoplay: boolean;
-}
+2. **Astro types:**
+   - Add the data shape in `src/lib/api/types.ts`.
 
-export interface Block {
-  type: 'text' | 'image' | 'cta' | 'form_embed' | 'video'; // Add new type
-  // ...
-}
-```
+3. **API mapping:**
+   - Map raw CMS data in `src/lib/api/endpoints/pages.ts`.
 
-2. **Create component:**
-
-```astro
-<!-- src/components/blocks/Video.astro -->
----
-import type { VideoBlockData } from '../../lib/api';
-
-interface Props {
-  data: VideoBlockData;
-}
-
-const { data } = Astro.props;
----
-
-<div class="aspect-video">
-  <iframe src={data.video_url} allowfullscreen></iframe>
-</div>
-```
-
-3. **Add to BlockRenderer:**
-
-```astro
-import Video from './blocks/Video.astro';
-
-// In switch statement:
-case 'video':
-  return <Video data={block.data} />;
-```
-
-4. **Add block type in Laravel CMS:**
-
-Update `Page::blockTypes()` and Filament form schema.
+4. **Rendering:**
+   - Create component in `src/components/blocks/`.
+   - Register it in `src/components/BlockRenderer.astro`.
 
 ### Adding a New Page
 

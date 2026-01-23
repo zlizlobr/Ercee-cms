@@ -1,10 +1,10 @@
 # Block Contract Documentation
 
-This document defines the data contract for page builder blocks used in the CMS.
+This document defines the data contract for CMS builder blocks and how they are rendered in Astro.
 
 ## Overview
 
-Pages use Filament Builder to manage content blocks. Each block has a `type` and `data` structure.
+Pages use Filament Builder to manage content blocks. Each block has a `type` and `data` structure that is returned by the API as-is.
 
 ## Block Data Structure
 
@@ -21,7 +21,7 @@ All blocks follow this format when stored in the database:
 ]
 ```
 
-## Available Block Types
+## CMS Block Types (current)
 
 ### Hero Block (`hero`)
 
@@ -139,35 +139,42 @@ Embeds a dynamic form from the Forms module.
 }
 ```
 
+## Astro Mapping
+
+The Astro frontend maps CMS data in `ercee-frontend/src/lib/api/endpoints/pages.ts`.
+
+- `text`: combines `heading` + `body` into a single HTML string (`content`)
+- `image`: maps `image` to `url`
+- `cta`: direct mapping
+- `form_embed`: direct mapping
+
+Other block types are passed through without mapping. If a block needs a different shape on the frontend, add a mapper.
+
 ## Rendering Pipeline
 
-### Frontend Rendering
+### Public Frontend (Astro)
 
-1. `Page::getBlocks()` retrieves blocks from the `content` JSON column
-2. Frontend view iterates blocks using `<x-dynamic-component>`
-3. Each block type maps to a Blade component in `resources/views/components/blocks/`
+1. `Page::getBlocks()` returns builder blocks via the API.
+2. Astro maps data in `ercee-frontend/src/lib/api/endpoints/pages.ts`.
+3. Blocks render via `ercee-frontend/src/components/BlockRenderer.astro`.
 
-```blade
-@foreach($page->getBlocks() as $block)
-    <x-dynamic-component
-        :component="'blocks.' . str_replace('_', '-', $block['type'])"
-        :block="$block"
-    />
-@endforeach
-```
+### Admin Preview (Blade)
 
-### Filament Preview
+Preview is rendered by:
+- `resources/views/filament/pages/preview.blade.php`
+- `resources/views/filament/products/preview.blade.php`
 
-Each block type has a preview Blade view in `resources/views/filament/blocks/` configured via `->preview()` on the Builder Block.
+Block preview uses Blade components in:
+- `resources/views/components/blocks/`
+- fallback: `resources/views/frontend/blocks/`
 
 ## Adding New Block Types
 
-1. Add constant to `App\Domain\Content\Page` (e.g., `BLOCK_TYPE_GALLERY = 'gallery'`)
-2. Add to `Page::blockTypes()` array
-3. Create Builder\Block in `PageResource::form()`
-4. Create Blade component: `resources/views/components/blocks/gallery.blade.php`
-5. Create Filament preview: `resources/views/filament/blocks/gallery.blade.php`
-6. Update this documentation
+1. Add constant to `App\Domain\Content\Page` (e.g., `BLOCK_TYPE_GALLERY = 'gallery'`).
+2. Create a block class in `app/Filament/Blocks/` and clear cache: `php artisan blocks:clear`.
+3. Add Astro types and mapping in `ercee-frontend/src/lib/api/types.ts` and `ercee-frontend/src/lib/api/endpoints/pages.ts`.
+4. Add Astro component in `ercee-frontend/src/components/blocks/` and wire it in `BlockRenderer.astro`.
+5. Add a Blade preview component in `resources/views/components/blocks/`.
 
 ## Migration Notes
 
