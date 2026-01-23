@@ -64,6 +64,9 @@ composer analyse
 # Clear Builder blocks cache (after adding/removing blocks)
 php artisan blocks:clear
 
+# Generate a CMS block (Filament + Astro + translations)
+php artisan make:cms-block "Block Name" --schema-file=path/to/schema.json
+
 # Start queue worker
 php artisan queue:work
 
@@ -73,6 +76,13 @@ npm run build
 # Watch frontend assets
 npm run dev
 ```
+
+## CMS Block Generator
+
+Use the `make:cms-block` Artisan command to scaffold CMS blocks, Filament form schema, localization entries, and Astro components/types.
+
+- Guide: `docs/make-cms-block-guide.md`
+- Implementation plan: `docs/block-command-implementation.md`
 
 ## Code Quality
 
