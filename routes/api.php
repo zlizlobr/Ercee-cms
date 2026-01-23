@@ -10,31 +10,29 @@ use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
 
-/**
- * API routes for the public and internal endpoints.
- */
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
     Route::get('/navigation', [NavigationController::class, 'index']);
     Route::get('/navigation/{menuSlug}', [NavigationController::class, 'index']);
     Route::get('/menus/{menuSlug}', [NavigationController::class, 'show']);
     Route::get('/products', [ProductController::class, 'index']);
-    Route::get('/products/{id}', [ProductController::class, 'show']);
-    Route::get('/forms/{id}', [FormController::class, 'show']);
+    Route::get('/products/{id}', [ProductController::class, 'show'])->whereNumber('id');
+    Route::get('/forms/{id}', [FormController::class, 'show'])->whereNumber('id');
     Route::get('/theme', [ThemeController::class, 'index']);
 
     Route::post('/forms/{id}/submit', [FormController::class, 'submit'])
-        ->middleware('throttle:form-submissions');
+        ->whereNumber('id')
+        ->middleware(['throttle:form-submissions', 'api.idempotency']);
 
     Route::post('/checkout', [CheckoutController::class, 'checkout'])
-        ->middleware('throttle:checkout');
+        ->middleware(['throttle:checkout', 'api.idempotency']);
 });
 
-Route::prefix('webhooks')->middleware('webhook.whitelist')->group(function () {
+Route::prefix('webhooks')->middleware(['webhook.whitelist', 'throttle:webhooks'])->group(function () {
     Route::post('/stripe', [WebhookController::class, 'stripe']);
 });
 
-Route::prefix('internal')->group(function () {
+Route::prefix('internal')->middleware(['api.auth', 'throttle:api-internal'])->group(function () {
     Route::post('/rebuild-frontend', [RebuildFrontendController::class, 'rebuild']);
 });

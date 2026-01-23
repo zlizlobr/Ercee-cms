@@ -16,7 +16,9 @@ class Product extends Model
 
     // Product types
     public const TYPE_SIMPLE = 'simple';
+
     public const TYPE_VIRTUAL = 'virtual';
+
     public const TYPE_VARIABLE = 'variable';
 
     public const TYPES = [
@@ -90,7 +92,7 @@ class Product extends Model
             get: fn () => number_format(
                 $this->price,
                 config('commerce.currency.decimals'),
-            ) . ' ' . config('commerce.currency.code'),
+            ).' '.config('commerce.currency.code'),
         );
     }
 

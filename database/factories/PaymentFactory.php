@@ -30,7 +30,7 @@ class PaymentFactory extends Factory
         return [
             'order_id' => Order::factory(),
             'gateway' => Payment::GATEWAY_STRIPE,
-            'transaction_id' => 'pi_' . fake()->uuid(),
+            'transaction_id' => 'pi_'.fake()->uuid(),
             'status' => Payment::STATUS_PENDING,
             'payload' => [],
         ];

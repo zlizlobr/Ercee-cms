@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 /**
  * Filament resource for managing menus.
  *
- * @extends Resource<Menu>
+ * @extends resource<Menu>
  */
 class MenuResource extends Resource
 {
@@ -29,9 +29,6 @@ class MenuResource extends Resource
 
     /**
      * Build the menu form schema.
-     *
-     * @param Form $form
-     * @return Form
      */
     public static function form(Form $form): Form
     {
@@ -55,9 +52,6 @@ class MenuResource extends Resource
 
     /**
      * Build the menus table.
-     *
-     * @param Table $table
-     * @return Table
      */
     public static function table(Table $table): Table
     {

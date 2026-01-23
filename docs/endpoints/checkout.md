@@ -6,16 +6,20 @@ Create a checkout session for a product.
 ### Authorization
 None.
 
+### Headers
+| name | type | required | description | default |
+| --- | --- | --- | --- | --- |
+| Idempotency-Key | string | no | Optional idempotency key for safe retries | - |
+
 ### Body parameters
 | name | type | required | description | default |
 | --- | --- | --- | --- | --- |
 | product_id | integer | yes | Active product ID | - |
 | email | string | yes | Customer email address | - |
 
-### Successful response
+### Successful response (created)
 ```json
 {
-  "message": "Checkout initiated",
   "data": {
     "order_id": 501,
     "redirect_url": "https://checkout.stripe.com/c/pay/cs_test_123"
@@ -43,3 +47,6 @@ None.
 ```
 
 - `429 Too Many Requests` - rate limit exceeded (10 requests per minute per IP)
+
+### Notes
+- When an idempotency key is replayed, the response includes `X-Idempotent-Replay: true`.

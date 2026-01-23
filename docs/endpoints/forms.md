@@ -55,6 +55,7 @@ None.
 
 ### Headers
 - `X-Form-Source` (optional) - submission source label; defaults to `form:{id}`.
+- `Idempotency-Key` (optional) - idempotency key for safe retries.
 
 ### Path parameters
 | name | type | required | description | default |
@@ -64,14 +65,13 @@ None.
 ### Body parameters
 | name | type | required | description | default |
 | --- | --- | --- | --- | --- |
-| email | string | yes | Subscriber email address | - |
+| email | string | no | Subscriber email address | - |
 | _hp_field | string | no | Honeypot field; if filled, request is treated as spam | - |
 | <field_name> | string | no | Form fields defined in the form schema | - |
 
 ### Successful response (created)
 ```json
 {
-  "message": "Form submitted successfully.",
   "data": {
     "contract_id": 123
   }
@@ -98,10 +98,13 @@ None.
 {
   "error": "Validation failed",
   "errors": {
-    "email": ["The email field is required."],
+    "email": ["Please provide a valid email address."],
     "first_name": ["The first name field is required."]
   }
 }
 ```
 
 - `429 Too Many Requests` - rate limit exceeded (5 requests per minute per IP)
+
+### Notes
+- When an idempotency key is replayed, the response includes `X-Idempotent-Replay: true`.

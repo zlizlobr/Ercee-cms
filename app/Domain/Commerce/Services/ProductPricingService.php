@@ -81,6 +81,6 @@ class ProductPricingService
         return number_format(
             $price,
             config('commerce.currency.decimals'),
-        ) . ' ' . config('commerce.currency.code');
+        ).' '.config('commerce.currency.code');
     }
 }

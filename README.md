@@ -41,7 +41,7 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 - **Lead Capture System** - Public form submission API with anti-spam protection
 - **Marketing Automation** - Funnel engine with multi-step workflows triggered by events
 - **Lightweight Commerce** - Simple checkout with Stripe integration
-- **Production Hardening** - Idempotent handlers, DB transactions, webhook signature verification, IP whitelisting
+- **Production Hardening** - Idempotent handlers, request IDs, rate limiting, webhook signature verification, IP whitelisting
 
 ## Local Development
 
@@ -136,7 +136,7 @@ The CMS exposes a REST API for frontend consumption.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/internal/rebuild-frontend` | Trigger frontend rebuild (token protected) |
+| POST | `/api/internal/rebuild-frontend` | Trigger frontend rebuild (API token protected) |
 
 ### Webhooks
 
@@ -144,7 +144,7 @@ The CMS exposes a REST API for frontend consumption.
 |--------|----------|-------------|
 | POST | `/api/webhooks/stripe` | Stripe payment webhook (IP whitelisted) |
 
-> **Security:** Webhook endpoints are protected by IP whitelist middleware. Configure `WEBHOOK_IP_WHITELIST` in `.env` with comma-separated IPs or CIDR ranges (e.g., Stripe webhook IPs).
+> **Security:** Webhook endpoints verify the `Stripe-Signature` header and can be protected by IP whitelist middleware. Configure `WEBHOOK_IP_WHITELIST` in `.env` with comma-separated IPs or CIDR ranges (e.g., Stripe webhook IPs).
 
 ### Example Response - Page
 
@@ -236,7 +236,6 @@ curl -X POST http://localhost:8000/api/v1/forms/1/submit \
 **Response:**
 ```json
 {
-  "message": "Form submitted successfully.",
   "data": {
     "contract_id": 1
   }
@@ -246,6 +245,7 @@ curl -X POST http://localhost:8000/api/v1/forms/1/submit \
 **Anti-spam protection:**
 - Rate limiting: 5 requests per minute per IP
 - Honeypot field: include `_hp_field` (must be empty)
+- Idempotency: send `Idempotency-Key` to safely retry (responses may include `X-Idempotent-Replay: true`)
 
 ### Form Field Types
 
@@ -268,7 +268,6 @@ curl -X POST http://localhost:8000/api/v1/checkout \
 **Response:**
 ```json
 {
-  "message": "Checkout initiated",
   "data": {
     "order_id": 1,
     "redirect_url": "https://checkout.stripe.com/..."
@@ -277,6 +276,7 @@ curl -X POST http://localhost:8000/api/v1/checkout \
 ```
 
 **Rate limiting:** 10 requests per minute per IP
+**Idempotency:** send `Idempotency-Key` to safely retry (responses may include `X-Idempotent-Replay: true`)
 
 ## Commerce
 
@@ -644,8 +644,8 @@ Add to `.env`:
 GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 GITHUB_FRONTEND_REPOSITORY=zlizlobr/ercee-frontend
 
-# Frontend Rebuild Token (for manual triggers)
-FRONTEND_REBUILD_TOKEN=your_secure_random_string
+# Internal API Token (for manual triggers)
+API_INTERNAL_TOKEN=your_secure_random_string
 
 # CORS (allow frontend domain)
 CORS_ALLOWED_ORIGINS=https://www.yourdomain.com
@@ -655,7 +655,7 @@ CORS_ALLOWED_ORIGINS=https://www.yourdomain.com
 
 ```bash
 curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
-  -H "X-Rebuild-Token: your_secure_random_string" \
+  -H "Authorization: Bearer your_secure_random_string" \
   -H "Content-Type: application/json" \
   -d '{"reason": "manual"}'
 ```

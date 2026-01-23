@@ -6,8 +6,8 @@ use App\Application\Form\Commands\SubmitFormCommand;
 use App\Application\Form\SubmitFormHandler;
 use App\Domain\Form\Form;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\SubmitFormRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class FormController extends Controller
 {
@@ -32,15 +32,15 @@ class FormController extends Controller
         ]);
     }
 
-    public function submit(Request $request, int $id): JsonResponse
+    public function submit(SubmitFormRequest $request, int $id): JsonResponse
     {
         $data = $request->except(['email', '_hp_field']);
-        error_log('test logu pro submit.');
+
         $command = new SubmitFormCommand(
             formId: $id,
             email: $request->input('email', ''),
             data: $data,
-            source: $request->header('X-Form-Source', 'form:' . $id),
+            source: $request->header('X-Form-Source', 'form:'.$id),
             isHoneypotFilled: $request->filled('_hp_field'),
         );
 
@@ -60,7 +60,6 @@ class FormController extends Controller
         }
 
         return response()->json([
-            'message' => 'Form submitted successfully.',
             'data' => ['contract_id' => $result->contractId],
         ], 201);
     }

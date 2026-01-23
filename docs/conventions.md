@@ -17,4 +17,5 @@
 - `Accept: application/json`
 - `Stripe-Signature` (required for `/webhooks/stripe`)
 - `X-Form-Source` (optional for form submissions)
-- `X-Rebuild-Token` (required for `/internal/rebuild-frontend`)
+- `Authorization: Bearer <token>` or `X-Api-Token` (required for `/internal/*`)
+- `Idempotency-Key` (optional for safe retries on POST endpoints)

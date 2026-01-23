@@ -3,7 +3,6 @@
 namespace App\Filament\Blocks;
 
 use Filament\Forms\Components\Builder\Block;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
@@ -45,7 +44,7 @@ class BlockRegistry
         return collect(File::files($blocksPath))
             ->map(fn ($file) => $file->getFilenameWithoutExtension())
             ->filter(fn (string $filename) => ! in_array($filename, ['BaseBlock', 'BlockRegistry']))
-            ->map(fn (string $filename) => $namespace . $filename)
+            ->map(fn (string $filename) => $namespace.$filename)
             ->filter(fn (string $class) => self::isValidBlockClass($class))
             ->sortBy(fn (string $class) => $class::$order)
             ->values()

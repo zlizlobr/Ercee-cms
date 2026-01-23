@@ -155,7 +155,7 @@ class ThemeSetting extends Model
     public static function getCached(): self
     {
         return Cache::remember(self::CACHE_KEY, 3600, function () {
-            return self::first() ?? new self();
+            return self::first() ?? new self;
         });
     }
 

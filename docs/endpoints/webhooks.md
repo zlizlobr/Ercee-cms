@@ -57,3 +57,6 @@ Payment not found for transaction: <transaction_id>
 ```
 Webhook processing failed
 ```
+
+### Rate limiting
+100 requests per minute per IP.

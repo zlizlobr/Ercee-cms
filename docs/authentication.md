@@ -9,11 +9,12 @@ Endpoints under `/v1` are public and do not require authentication.
 - Stripe signature verification using the `Stripe-Signature` header.
 
 ## Internal endpoints
-`/internal/rebuild-frontend` requires the `X-Rebuild-Token` header.
+`/internal/*` endpoints require an API token.
 
-- The token value is configured via `services.frontend.rebuild_token`.
-- The token does not expire automatically; rotate it manually as needed.
+- Send `Authorization: Bearer <token>` or `X-Api-Token: <token>`.
+- The token value is configured via `services.api.internal_token` (`API_INTERNAL_TOKEN`).
+- Token abilities (scopes) can be configured via `services.api.token_abilities`.
 
 ## 401 vs 403
 - `401 Unauthorized` - missing or invalid authentication token.
-- `403 Forbidden` - authentication succeeded but access is blocked (e.g., IP not allowed).
+- `403 Forbidden` - authentication succeeded but access is blocked (e.g., missing token ability or IP not allowed).

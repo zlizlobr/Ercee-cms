@@ -13,9 +13,6 @@ class NavigationObserver
 {
     /**
      * Handle the Navigation "saved" event.
-     *
-     * @param Navigation $navigation
-     * @return void
      */
     public function saved(Navigation $navigation): void
     {
@@ -25,9 +22,6 @@ class NavigationObserver
 
     /**
      * Handle the Navigation "deleted" event.
-     *
-     * @param Navigation $navigation
-     * @return void
      */
     public function deleted(Navigation $navigation): void
     {
@@ -37,9 +31,6 @@ class NavigationObserver
 
     /**
      * Clear cached navigation data for the affected menu.
-     *
-     * @param Navigation $navigation
-     * @return void
      */
     protected function clearCache(Navigation $navigation): void
     {
