@@ -7,11 +7,13 @@ use App\Domain\Commerce\Events\OrderPaid;
 use App\Domain\Commerce\Gateways\StripeGateway;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
+use App\Domain\Content\ThemeSetting;
 use App\Domain\Form\Events\ContractCreated;
 use App\Listeners\StartFunnelsOnContractCreated;
 use App\Listeners\StartFunnelsOnOrderPaid;
 use App\Observers\NavigationObserver;
 use App\Observers\PageObserver;
+use App\Observers\ThemeSettingObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Page::observe(PageObserver::class);
         Navigation::observe(NavigationObserver::class);
+        ThemeSetting::observe(ThemeSettingObserver::class);
 
         $this->configureRateLimiting();
         $this->registerEventListeners();
