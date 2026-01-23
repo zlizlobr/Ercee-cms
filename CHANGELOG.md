@@ -1,3 +1,13 @@
+## [v0.3.4] – 2026-01-23
+
+- PR title: release: patch --Refactor product architecture (#17)
+* fix save navigation
+
+* refactor product architecture
+
+* Update doc, update Rest Api produkt. Add product descriptions
+- chore: update changelog for v0.3.3
+
 ## [v0.3.3] – 2026-01-23
 
 - release: patch -- Filament Builder Block for page (#16)
