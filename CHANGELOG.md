@@ -1,3 +1,9 @@
+## [v0.3.7] – 2026-01-23
+
+- release: patch -- command build block (#21)
+* Create an Artisan command to build block
+- chore: update changelog for v0.3.6
+
 ## [v0.3.6] – 2026-01-23
 
 - release: patch -- Refactor Rest API (#20)
