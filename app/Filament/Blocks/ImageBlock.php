@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -17,16 +18,14 @@ class ImageBlock extends BaseBlock
             ->icon('heroicon-o-photo')
             ->columns(2)
             ->schema([
-                Forms\Components\FileUpload::make('image')
+                MediaPicker::make('media_uuid')
                     ->label(__('admin.labels.image'))
-                    ->image()
                     ->required()
-                    ->directory('pages/images')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('alt')
                     ->label(__('admin.page.fields.alt'))
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->helperText(__('Override media alt text')),
                 Forms\Components\TextInput::make('caption')
                     ->label(__('admin.page.fields.caption'))
                     ->maxLength(255),
