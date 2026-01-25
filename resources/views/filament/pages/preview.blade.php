@@ -68,7 +68,7 @@
             @endif
 
             <div class="space-y-8">
-                @foreach($page->getBlocks() as $block)
+                @foreach($resolvedBlocks as $block)
                     @php
                         $blockType = str_replace('_', '-', $block['type']);
                         $componentName = 'blocks.' . $blockType;

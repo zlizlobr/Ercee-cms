@@ -50,6 +50,7 @@ return [
         'media' => [
             'driver' => 'local',
             'root' => storage_path('app/media'),
+            'url' => rtrim(env('APP_URL'), '/') . '/media',
             'throw' => false,
             'report' => false,
         ],
