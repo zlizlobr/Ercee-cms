@@ -11,6 +11,9 @@ class Form extends Model
         'name',
         'schema',
         'active',
+        'submit_button_text',
+        'success_title',
+        'success_message',
     ];
 
     protected $casts = [

@@ -24,64 +24,116 @@ class FormResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Form Settings')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Toggle::make('active')
-                            ->default(true),
-                    ])
-                    ->columns(2),
-
-                Forms\Components\Section::make('Form Fields')
-                    ->schema([
-                        Forms\Components\Repeater::make('schema')
+                Forms\Components\Tabs::make('Form Tabs')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Form Settings')
                             ->schema([
                                 Forms\Components\TextInput::make('name')
-                                    ->label('Field Name')
                                     ->required()
-                                    ->alphaDash()
-                                    ->helperText('Use lowercase with underscores (e.g., first_name)'),
-
-                                Forms\Components\TextInput::make('label')
-                                    ->label('Field Label')
-                                    ->required(),
-
-                                Forms\Components\Select::make('type')
-                                    ->label('Field Type')
-                                    ->options([
-                                        'text' => 'Text',
-                                        'email' => 'Email',
-                                        'textarea' => 'Textarea',
-                                        'select' => 'Select',
-                                        'checkbox' => 'Checkbox',
-                                    ])
-                                    ->required()
-                                    ->live(),
-
-                                Forms\Components\Toggle::make('required')
-                                    ->label('Required')
-                                    ->default(false),
-
-                                Forms\Components\Repeater::make('options')
-                                    ->label('Options')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('label')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('value')
-                                            ->required(),
-                                    ])
-                                    ->columns(2)
-                                    ->defaultItems(2)
-                                    ->visible(fn (Get $get): bool => $get('type') === 'select'),
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('submit_button_text')
+                                    ->label('Submit button text')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('success_title')
+                                    ->label('Success title')
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('success_message')
+                                    ->label('Success message')
+                                    ->rows(3)
+                                    ->maxLength(500)
+                                    ->columnSpanFull(),
+                                Forms\Components\Toggle::make('active')
+                                    ->default(true),
                             ])
-                            ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field').' ('.($state['type'] ?? 'text').')')
-                            ->reorderable()
-                            ->reorderableWithButtons()
-                            ->collapsible()
-                            ->defaultItems(0)
-                            ->addActionLabel('Add Field'),
+                            ->columns(2),
+                        Forms\Components\Tabs\Tab::make('Form Fields')
+                            ->schema([
+                                Forms\Components\Toggle::make('contact_form_preset')
+                                    ->label('Apply contact form schema')
+                                    ->helperText('Sets schema to name, email, phone, message fields.')
+                                    ->dehydrated(false)
+                                    ->live()
+                                    ->afterStateUpdated(function (Forms\Set $set, ?bool $state) {
+                                        if (!$state) {
+                                            return;
+                                        }
+
+                                        $set('schema', [
+                                            [
+                                                'name' => 'name',
+                                                'label' => 'Name',
+                                                'type' => 'text',
+                                                'required' => true,
+                                            ],
+                                            [
+                                                'name' => 'email',
+                                                'label' => 'Email',
+                                                'type' => 'email',
+                                                'required' => true,
+                                            ],
+                                            [
+                                                'name' => 'phone',
+                                                'label' => 'Phone',
+                                                'type' => 'text',
+                                                'required' => true,
+                                            ],
+                                            [
+                                                'name' => 'message',
+                                                'label' => 'Message',
+                                                'type' => 'textarea',
+                                                'required' => true,
+                                            ],
+                                        ]);
+
+                                        $set('contact_form_preset', false);
+                                    }),
+                                Forms\Components\Repeater::make('schema')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Field Name')
+                                            ->required()
+                                            ->alphaDash()
+                                            ->helperText('Use lowercase with underscores (e.g., first_name)'),
+
+                                        Forms\Components\TextInput::make('label')
+                                            ->label('Field Label')
+                                            ->required(),
+
+                                        Forms\Components\Select::make('type')
+                                            ->label('Field Type')
+                                            ->options([
+                                                'text' => 'Text',
+                                                'email' => 'Email',
+                                                'textarea' => 'Textarea',
+                                                'select' => 'Select',
+                                                'checkbox' => 'Checkbox',
+                                            ])
+                                            ->required()
+                                            ->live(),
+
+                                        Forms\Components\Toggle::make('required')
+                                            ->label('Required')
+                                            ->default(false),
+
+                                        Forms\Components\Repeater::make('options')
+                                            ->label('Options')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('label')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('value')
+                                                    ->required(),
+                                            ])
+                                            ->columns(2)
+                                            ->defaultItems(2)
+                                            ->visible(fn (Get $get): bool => $get('type') === 'select'),
+                                    ])
+                                    ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field').' ('.($state['type'] ?? 'text').')')
+                                    ->reorderable()
+                                    ->reorderableWithButtons()
+                                    ->collapsible()
+                                    ->defaultItems(0)
+                                    ->addActionLabel('Add Field'),
+                            ]),
                     ]),
             ]);
     }
