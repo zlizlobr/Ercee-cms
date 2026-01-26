@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Domain\Form\Form;
 use App\Filament\Resources\FormResource\Pages;
+use App\Support\FormIconRegistry;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -104,9 +105,19 @@ class FormResource extends Resource
                                             ->options([
                                                 'text' => 'Text',
                                                 'email' => 'Email',
+                                                'tel' => 'Tel',
+                                                'number' => 'Number',
+                                                'password' => 'Password',
+                                                'url' => 'URL',
+                                                'date' => 'Date',
+                                                'time' => 'Time',
+                                                'datetime-local' => 'Datetime',
                                                 'textarea' => 'Textarea',
                                                 'select' => 'Select',
                                                 'checkbox' => 'Checkbox',
+                                                'radio' => 'Radio',
+                                                'file' => 'File',
+                                                'hidden' => 'Hidden',
                                             ])
                                             ->required()
                                             ->live(),
@@ -114,6 +125,21 @@ class FormResource extends Resource
                                         Forms\Components\Toggle::make('required')
                                             ->label('Required')
                                             ->default(false),
+
+                                        Forms\Components\TextInput::make('placeholder')
+                                            ->label('Placeholder')
+                                            ->maxLength(255),
+
+                                        Forms\Components\Select::make('icon')
+                                            ->label('Icon')
+                                            ->options(FormIconRegistry::options())
+                                            ->searchable()
+                                            ->placeholder('Select icon...'),
+
+                                        Forms\Components\Textarea::make('helper_text')
+                                            ->label('Helper text')
+                                            ->rows(2)
+                                            ->maxLength(255),
 
                                         Forms\Components\Repeater::make('options')
                                             ->label('Options')
@@ -125,7 +151,7 @@ class FormResource extends Resource
                                             ])
                                             ->columns(2)
                                             ->defaultItems(2)
-                                            ->visible(fn (Get $get): bool => $get('type') === 'select'),
+                                            ->visible(fn (Get $get): bool => in_array($get('type'), ['select', 'radio'], true)),
                                     ])
                                     ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field').' ('.($state['type'] ?? 'text').')')
                                     ->reorderable()

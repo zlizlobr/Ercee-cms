@@ -28,6 +28,7 @@ class FormController extends Controller
                 'id' => $form->id,
                 'name' => $form->name,
                 'schema' => $form->schema,
+                'data_options' => $form->data_options,
                 'submit_button_text' => $form->submit_button_text,
                 'success_title' => $form->success_title,
                 'success_message' => $form->success_message,

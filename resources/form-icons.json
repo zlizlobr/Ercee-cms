@@ -1,0 +1,14 @@
+{
+  "user": "User",
+  "mail": "Mail",
+  "phone": "Phone",
+  "building": "Building",
+  "briefcase": "Briefcase",
+  "calendar": "Calendar",
+  "file-text": "File text",
+  "message-square": "Message",
+  "globe": "Globe",
+  "map-pin": "Map pin",
+  "info": "Info",
+  "check-circle": "Check circle"
+}
