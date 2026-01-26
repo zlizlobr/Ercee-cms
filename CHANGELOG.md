@@ -1,3 +1,15 @@
+## [v0.4.1] – 2026-01-26
+
+- release: patch -- Update docs, block and phpStan media docs (#23)
+* Fix composer, add docPHP for media
+
+* add media fisrt to product flow
+
+* fix select from library
+
+* Update docs for build block in Pages
+- chore: update changelog for v0.4.0
+
 ## [v0.4.0] – 2026-01-26
 
 - release: minor -- private-first media workflow (#22)
