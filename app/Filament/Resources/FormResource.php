@@ -92,17 +92,19 @@ class FormResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('name')
                                             ->label('Field Name')
-                                            ->required()
+                                            ->required(fn (Get $get): bool => $get('type') !== 'section')
                                             ->alphaDash()
+                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
                                             ->helperText('Use lowercase with underscores (e.g., first_name)'),
 
                                         Forms\Components\TextInput::make('label')
-                                            ->label('Field Label')
+                                            ->label(fn (Get $get): string => $get('type') === 'section' ? 'Section title' : 'Field Label')
                                             ->required(),
 
                                         Forms\Components\Select::make('type')
                                             ->label('Field Type')
                                             ->options([
+                                                'section' => 'Section',
                                                 'text' => 'Text',
                                                 'email' => 'Email',
                                                 'tel' => 'Tel',
@@ -124,20 +126,24 @@ class FormResource extends Resource
 
                                         Forms\Components\Toggle::make('required')
                                             ->label('Required')
+                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
                                             ->default(false),
 
                                         Forms\Components\TextInput::make('placeholder')
                                             ->label('Placeholder')
+                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
                                             ->maxLength(255),
 
                                         Forms\Components\Select::make('icon')
                                             ->label('Icon')
                                             ->options(FormIconRegistry::options())
                                             ->searchable()
-                                            ->placeholder('Select icon...'),
+                                            ->placeholder('Select icon...')
+                                            ->visible(fn (Get $get): bool => $get('type') === 'section'),
 
                                         Forms\Components\Textarea::make('helper_text')
                                             ->label('Helper text')
+                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
                                             ->rows(2)
                                             ->maxLength(255),
 

@@ -11,6 +11,9 @@ class Form extends Model
         'name',
         'schema',
         'active',
+        'submit_button_text',
+        'success_title',
+        'success_message',
         'data_options',
     ];
 
@@ -35,6 +38,14 @@ class Form extends Model
         $rules = [];
 
         foreach ($this->schema ?? [] as $field) {
+            if (($field['type'] ?? 'text') === 'section') {
+                continue;
+            }
+
+            if (! isset($field['name']) || $field['name'] === '') {
+                continue;
+            }
+
             $fieldRules = [];
 
             if ($field['required'] ?? false) {
