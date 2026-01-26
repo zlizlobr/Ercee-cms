@@ -1,3 +1,13 @@
+## [v0.4.0] – 2026-01-26
+
+- release: minor -- private-first media workflow (#22)
+* Implement a private-first media workflow
+
+* Add MediaPicker component, block media integration, and migration commands for centralized media management
+
+* Fix images preview.
+- chore: update changelog for v0.3.7
+
 ## [v0.3.7] – 2026-01-23
 
 - release: patch -- command build block (#21)
