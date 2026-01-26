@@ -7,10 +7,16 @@ use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Filament block schema for an image block using media UUIDs.
+ */
 class ImageBlock extends BaseBlock
 {
     public static int $order = 30;
 
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_IMAGE)

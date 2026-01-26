@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Migrate legacy block image paths to media UUID references.
+ */
 class MediaMigrateBlocks extends Command
 {
     protected $signature = 'media:migrate-blocks
@@ -21,6 +24,9 @@ class MediaMigrateBlocks extends Command
     private int $skippedCount = 0;
     private int $errorCount = 0;
 
+    /**
+     * Migrate legacy block images to MediaLibrary records.
+     */
     public function handle(): int
     {
         $isDryRun = $this->option('dry-run');
@@ -59,6 +65,9 @@ class MediaMigrateBlocks extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Process a single page's block content.
+     */
     private function processPage(Page $page, bool $isDryRun): void
     {
         $content = $page->content;
@@ -91,6 +100,11 @@ class MediaMigrateBlocks extends Command
         }
     }
 
+    /**
+     * Migrate an Image block payload to a media UUID reference.
+     *
+     * @return array<string, mixed>|null
+     */
     private function migrateImageBlock(array $data, bool $isDryRun): ?array
     {
         if (isset($data['media_uuid'])) {
@@ -117,6 +131,11 @@ class MediaMigrateBlocks extends Command
         return $data;
     }
 
+    /**
+     * Migrate a Hero block payload to a media UUID reference.
+     *
+     * @return array<string, mixed>|null
+     */
     private function migrateHeroBlock(array $data, bool $isDryRun): ?array
     {
         if (isset($data['background_media_uuid'])) {
@@ -143,6 +162,9 @@ class MediaMigrateBlocks extends Command
         return $data;
     }
 
+    /**
+     * Migrate a single file path to MediaLibrary and return the UUID.
+     */
     private function migrateFile(string $path, ?string $alt, bool $isDryRun): ?string
     {
         $fullPath = Storage::disk('public')->path($path);

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * Export media library assets to the public directory and build a manifest.
+ */
 class MediaExport extends Command
 {
     protected $signature = 'media:export
@@ -17,11 +20,16 @@ class MediaExport extends Command
 
     protected $description = 'Export media files and conversions to public directory and generate manifest';
 
+    /** @var array<string, array<string, mixed>> */
     private array $manifest = [];
     private string $publicPath;
     private string $manifestPath;
+    /** @var array<string, array<string, mixed>> */
     private array $previousManifest = [];
 
+    /**
+     * Export media items and generate a public manifest.
+     */
     public function handle(): int
     {
         $this->publicPath = base_path($this->option('public-path'));
@@ -54,6 +62,9 @@ class MediaExport extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Load the existing manifest if it is available.
+     */
     private function loadPreviousManifest(): void
     {
         if (File::exists($this->manifestPath)) {
@@ -61,6 +72,9 @@ class MediaExport extends Command
         }
     }
 
+    /**
+     * Ensure the export directory exists.
+     */
     private function ensureDirectoryExists(): void
     {
         if (! File::isDirectory($this->publicPath)) {
@@ -68,6 +82,9 @@ class MediaExport extends Command
         }
     }
 
+    /**
+     * Export a single MediaLibrary record if it has media.
+     */
     private function processMediaItem(MediaLibrary $item): void
     {
         $media = $item->getFirstMedia('default');
@@ -95,12 +112,18 @@ class MediaExport extends Command
         $this->manifest[$uuid] = $this->buildManifestEntry($media, $item, $uuid, $checksum);
     }
 
+    /**
+     * Determine if a manifest entry has not changed.
+     */
     private function hasNotChanged(string $uuid, string $checksum): bool
     {
         return isset($this->previousManifest[$uuid])
             && ($this->previousManifest[$uuid]['checksum'] ?? '') === $checksum;
     }
 
+    /**
+     * Copy the original media file to the public directory.
+     */
     private function copyOriginal(Media $media, string $targetDir): void
     {
         $sourcePath = $media->getPath();
@@ -111,6 +134,9 @@ class MediaExport extends Command
         }
     }
 
+    /**
+     * Copy generated conversions to the public directory.
+     */
     private function copyConversions(Media $media, string $targetDir): void
     {
         $conversionsDir = "{$targetDir}/conversions";
@@ -131,6 +157,9 @@ class MediaExport extends Command
         }
     }
 
+    /**
+     * Build a conversion file name for a specific conversion.
+     */
     private function getConversionFileName(Media $media, string $conversion): string
     {
         $extension = $conversion === 'webp' ? 'webp' : pathinfo($media->file_name, PATHINFO_EXTENSION);
@@ -139,6 +168,11 @@ class MediaExport extends Command
         return "{$baseName}-{$conversion}.{$extension}";
     }
 
+    /**
+     * Build a manifest entry for an exported media item.
+     *
+     * @return array<string, mixed>
+     */
     private function buildManifestEntry(Media $media, MediaLibrary $item, string $uuid, string $checksum): array
     {
         $baseUrl = "/media/{$uuid}";
@@ -181,6 +215,11 @@ class MediaExport extends Command
         return $entry;
     }
 
+    /**
+     * Read image dimensions from disk, if available.
+     *
+     * @return array{width: int|null, height: int|null}
+     */
     private function getImageDimensions(string $path): array
     {
         if (! File::exists($path)) {
@@ -195,6 +234,9 @@ class MediaExport extends Command
         ];
     }
 
+    /**
+     * Persist the manifest to disk using an atomic move.
+     */
     private function writeManifest(): void
     {
         $tempPath = "{$this->manifestPath}.tmp";
@@ -204,6 +246,9 @@ class MediaExport extends Command
         File::move($tempPath, $this->manifestPath);
     }
 
+    /**
+     * Remove export directories that are no longer in the manifest.
+     */
     private function cleanupOrphanedFiles(): void
     {
         $directories = File::directories($this->publicPath);

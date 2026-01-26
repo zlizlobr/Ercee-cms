@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * API controller for published pages and their block content.
+ */
 class PageController extends Controller
 {
     public function __construct(
@@ -16,6 +19,9 @@ class PageController extends Controller
         private readonly RichContentTransformer $richContentTransformer,
     ) {}
 
+    /**
+     * List all published page slugs.
+     */
     public function index(): JsonResponse
     {
         $slugs = Cache::remember('pages:slugs', 3600, function () {
@@ -29,6 +35,9 @@ class PageController extends Controller
         ]);
     }
 
+    /**
+     * Show a single published page by slug.
+     */
     public function show(string $slug): JsonResponse
     {
         $cacheKey = "page:{$slug}";
@@ -59,6 +68,12 @@ class PageController extends Controller
         ]);
     }
 
+    /**
+     * Resolve media references and transform rich content.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     private function transformBlocks(array $blocks): array
     {
         $blocks = $this->blockMediaResolver->resolveAllBlocks($blocks);
