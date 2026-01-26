@@ -32,6 +32,8 @@ class Page extends Model
 
     public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
 
+    public const BLOCK_TYPE_CONTACT_FORM = 'contact_form';
+
     public const BLOCK_TYPE_TESTIMONIALS = 'testimonials';
 
     public const SUPPORTED_LOCALES = ['cs', 'en'];
