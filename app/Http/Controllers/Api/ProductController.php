@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Domain\Commerce\Product;
 use App\Domain\Commerce\Services\ProductPricingService;
+use App\Domain\Media\MediaManifestService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
     public function __construct(
         private readonly ProductPricingService $pricingService,
+        private readonly MediaManifestService $mediaManifestService,
     ) {}
 
     public function index(Request $request): JsonResponse
@@ -90,7 +93,7 @@ class ProductController extends Controller
             'short_description' => $product->short_description,
             'price' => $product->price,
             'price_formatted' => $product->price_formatted,
-            'image' => $product->attachment ? Storage::disk('public')->url($product->attachment) : null,
+            'image' => $this->resolveMediaUrl($product->attachment),
             'categories' => $product->categories->map(fn ($t) => [
                 'id' => $t->id,
                 'name' => $t->name,
@@ -120,8 +123,8 @@ class ProductController extends Controller
             'description' => $product->description,
             'price' => $product->price,
             'price_formatted' => $product->price_formatted,
-            'image' => $product->attachment ? Storage::disk('public')->url($product->attachment) : null,
-            'gallery' => collect($product->gallery)->map(fn ($img) => Storage::disk('public')->url($img))->all(),
+            'image' => $this->resolveMediaUrl($product->attachment),
+            'gallery' => $this->resolveMediaUrls($product->gallery),
             'categories' => $product->categories->map(fn ($t) => [
                 'id' => $t->id,
                 'name' => $t->name,
@@ -177,5 +180,31 @@ class ProductController extends Controller
         }
 
         return $data;
+    }
+
+    private function resolveMediaUrl(?string $reference): ?string
+    {
+        if (blank($reference)) {
+            return null;
+        }
+
+        if (Str::isUuid($reference)) {
+            return $this->mediaManifestService->getUrl($reference);
+        }
+
+        return Storage::disk('public')->url($reference);
+    }
+
+    /**
+     * @param array<int, string> $references
+     * @return array<int, string>
+     */
+    private function resolveMediaUrls(array $references): array
+    {
+        return collect($references)
+            ->map(fn (string $reference) => $this->resolveMediaUrl($reference))
+            ->filter()
+            ->values()
+            ->all();
     }
 }

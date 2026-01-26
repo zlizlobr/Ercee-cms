@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Domain\Content\Page;
 use App\Domain\Media\Media;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+/**
+ * Resolve media URLs for the admin page preview view.
+ */
 class PagePreviewController extends Controller
 {
+    /**
+     * Render the preview view with resolved block media.
+     */
     public function __invoke(Page $page): View
     {
         $blocks = $this->resolveMediaInBlocks($page->getBlocks());
@@ -19,6 +26,12 @@ class PagePreviewController extends Controller
         ]);
     }
 
+    /**
+     * Resolve media URLs for block data used in preview.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     private function resolveMediaInBlocks(array $blocks): array
     {
         return array_map(function ($block) {
@@ -36,6 +49,12 @@ class PagePreviewController extends Controller
         }, $blocks);
     }
 
+    /**
+     * Resolve image block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveImageBlock(array $data): array
     {
         if (isset($data['media_uuid'])) {
@@ -47,11 +66,19 @@ class PagePreviewController extends Controller
                     $data['alt'] = $media->getCustomProperty('alt') ?? '';
                 }
             }
+        } elseif (isset($data['image'])) {
+            $data['image_url'] = Storage::disk('public')->url($data['image']);
         }
 
         return $data;
     }
 
+    /**
+     * Resolve hero block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroBlock(array $data): array
     {
         if (isset($data['background_media_uuid'])) {
@@ -60,6 +87,8 @@ class PagePreviewController extends Controller
                 $data['background_image_url'] = $media->getUrl();
                 $data['background_image_url_large'] = $media->getUrl('large');
             }
+        } elseif (isset($data['background_image'])) {
+            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
         }
 
         return $data;

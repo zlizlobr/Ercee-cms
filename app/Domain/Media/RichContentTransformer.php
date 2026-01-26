@@ -2,6 +2,9 @@
 
 namespace App\Domain\Media;
 
+/**
+ * Transform rich HTML content with media placeholders and legacy URLs.
+ */
 class RichContentTransformer
 {
     private const MEDIA_PLACEHOLDER_PATTERN = '#/__media__/([a-f0-9-]+)/(\w+)#i';
@@ -11,6 +14,9 @@ class RichContentTransformer
         private readonly MediaManifestService $manifestService,
     ) {}
 
+    /**
+     * Transform HTML to resolved media URLs.
+     */
     public function transform(string $html): string
     {
         $html = $this->transformMediaPlaceholders($html);
@@ -19,6 +25,9 @@ class RichContentTransformer
         return $html;
     }
 
+    /**
+     * Replace media placeholder URLs with manifest URLs.
+     */
     private function transformMediaPlaceholders(string $html): string
     {
         return preg_replace_callback(
@@ -43,11 +52,19 @@ class RichContentTransformer
         );
     }
 
+    /**
+     * Replace legacy storage URLs with resolved media URLs.
+     */
     private function transformLegacyUrls(string $html): string
     {
         return $html;
     }
 
+    /**
+     * Extract media UUIDs from placeholder URLs.
+     *
+     * @return array<int, string>
+     */
     public function extractMediaUuids(string $html): array
     {
         preg_match_all(self::MEDIA_PLACEHOLDER_PATTERN, $html, $matches);
@@ -55,6 +72,11 @@ class RichContentTransformer
         return array_unique($matches[1] ?? []);
     }
 
+    /**
+     * Extract legacy storage paths from HTML.
+     *
+     * @return array<int, string>
+     */
     public function extractLegacyPaths(string $html): array
     {
         preg_match_all(self::LEGACY_STORAGE_PATTERN, $html, $matches);

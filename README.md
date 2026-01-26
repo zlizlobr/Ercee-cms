@@ -23,6 +23,7 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 ## Features
 
 - **Filament Admin Panel** - Modern backoffice UI at `/admin`
+- **Private Media Library** - Spatie Media Library on a private disk with exportable public assets
 - **Role-Based Access Control** - Using spatie/laravel-permission (admin, operator, marketing roles)
 - **Domain-Driven Design** - Clean architecture with Domain, Application, Infrastructure layers
 - **Headless CMS** - Block-based page builder with public REST API
@@ -66,6 +67,15 @@ php artisan blocks:clear
 
 # Generate a CMS block (Filament + Astro + translations)
 php artisan make:cms-block "Block Name" --schema-file=path/to/schema.json
+
+# Export private media assets + manifest
+php artisan media:export --only-changed
+
+# Migrate legacy block images to Media Library
+php artisan media:migrate-blocks --dry-run
+
+# Migrate legacy RichEditor images to Media Library placeholders
+php artisan media:migrate-richtext --dry-run --model=Page
 
 # Start queue worker
 php artisan queue:work
@@ -230,9 +240,9 @@ The CMS exposes a REST API for frontend consumption.
 
 | Type | Fields |
 |------|--------|
-| `hero` | heading, subheading, background_image, button_text, button_url |
+| `hero` | heading, subheading, background_media, button_text, button_url |
 | `text` | heading, body |
-| `image` | image, alt, caption |
+| `image` | media, alt, caption |
 | `cta` | title, description, button_text, button_url, style |
 | `form_embed` | form_id, title, description |
 
@@ -556,6 +566,16 @@ Block discovery is cached for performance. Clear the cache when adding or removi
 ```bash
 php artisan blocks:clear
 ```
+
+## Media Workflow
+
+The CMS stores media on a private disk and exports public assets at build time.
+
+- **Private disk:** `media` disk at `storage/app/media` via Spatie Media Library
+- **Admin management:** `Media` resource in Filament uses the private disk
+- **Block usage:** `ImageBlock` and `HeroBlock` store `media_uuid` and the API resolves them to `media` objects
+- **RichEditor uploads:** insert `/__media__/{uuid}/original` placeholders and resolve via manifest on API output
+- **Export step:** `php artisan media:export` writes `public/media` and `public/media-manifest.json`
 
 ## Frontend Routes
 

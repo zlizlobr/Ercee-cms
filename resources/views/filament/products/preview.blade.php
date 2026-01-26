@@ -64,10 +64,10 @@
         <div class="grid gap-8 lg:grid-cols-2">
             {{-- Left: Images --}}
             <div class="space-y-4">
-                @if($product->attachment)
+                @if($attachmentUrl)
                     <div class="overflow-hidden rounded-lg bg-white shadow">
                         <img
-                            src="{{ Storage::disk('public')->url($product->attachment) }}"
+                            src="{{ $attachmentUrl }}"
                             alt="{{ $product->name }}"
                             class="h-96 w-full object-cover"
                         >
@@ -80,12 +80,12 @@
                     </div>
                 @endif
 
-                @if(count($product->gallery) > 0)
+                @if(count($galleryUrls) > 0)
                     <div class="grid grid-cols-4 gap-2">
-                        @foreach($product->gallery as $image)
+                        @foreach($galleryUrls as $image)
                             <div class="overflow-hidden rounded-lg bg-white shadow">
                                 <img
-                                    src="{{ Storage::disk('public')->url($image) }}"
+                                    src="{{ $image }}"
                                     alt="Gallery"
                                     class="h-24 w-full object-cover"
                                 >

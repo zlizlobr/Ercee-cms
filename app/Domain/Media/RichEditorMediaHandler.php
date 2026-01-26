@@ -4,8 +4,14 @@ namespace App\Domain\Media;
 
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
+/**
+ * Handle rich editor uploads and media URL resolution.
+ */
 class RichEditorMediaHandler
 {
+    /**
+     * Store an uploaded file in MediaLibrary and return a placeholder URL.
+     */
     public function handleUpload(TemporaryUploadedFile $file): string
     {
         $mediaItem = MediaLibrary::create([
@@ -21,6 +27,9 @@ class RichEditorMediaHandler
         return "/__media__/{$media->uuid}/original";
     }
 
+    /**
+     * Resolve a media UUID and optional variant to a manifest URL.
+     */
     public function resolveUrl(string $uuid, ?string $variant = null): ?string
     {
         $manifestService = app(MediaManifestService::class);
