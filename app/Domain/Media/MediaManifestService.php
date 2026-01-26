@@ -5,11 +5,19 @@ namespace App\Domain\Media;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
+/**
+ * Provide access to the generated media manifest and helpers for API output.
+ */
 class MediaManifestService
 {
     private const CACHE_KEY = 'media:manifest';
     private const CACHE_TTL = 3600;
 
+    /**
+     * Load the media manifest from disk with caching.
+     *
+     * @return array<string, array<string, mixed>>
+     */
     public function getManifest(): array
     {
         return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
@@ -23,11 +31,21 @@ class MediaManifestService
         });
     }
 
+    /**
+     * Get a manifest entry by media UUID.
+     *
+     * @return array<string, mixed>|null
+     */
     public function getByUuid(string $uuid): ?array
     {
         return $this->getManifest()[$uuid] ?? null;
     }
 
+    /**
+     * Get a manifest entry by media ID.
+     *
+     * @return array<string, mixed>|null
+     */
     public function getById(int $id): ?array
     {
         $manifest = $this->getManifest();
@@ -41,6 +59,9 @@ class MediaManifestService
         return null;
     }
 
+    /**
+     * Resolve a URL for a media UUID and optional variant.
+     */
     public function getUrl(string $uuid, ?string $variant = null): ?string
     {
         $entry = $this->getByUuid($uuid);
@@ -56,6 +77,12 @@ class MediaManifestService
         return $entry['original']['url'] ?? null;
     }
 
+    /**
+     * Resolve multiple media IDs to manifest entries.
+     *
+     * @param array<int, int> $ids
+     * @return array<int, array<string, mixed>>
+     */
     public function resolveMediaIds(array $ids): array
     {
         $result = [];
@@ -70,11 +97,20 @@ class MediaManifestService
         return $result;
     }
 
+    /**
+     * Clear the cached manifest.
+     */
     public function clearCache(): void
     {
         Cache::forget(self::CACHE_KEY);
     }
 
+    /**
+     * Map a manifest entry to API response format.
+     *
+     * @param array<string, mixed>|null $entry
+     * @return array<string, mixed>|null
+     */
     public function toApiFormat(?array $entry): ?array
     {
         if (! $entry) {

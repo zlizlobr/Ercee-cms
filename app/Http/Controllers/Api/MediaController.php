@@ -7,12 +7,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * API controller for the public media manifest.
+ */
 class MediaController extends Controller
 {
     public function __construct(
         private readonly MediaManifestService $manifestService,
     ) {}
 
+    /**
+     * Return the full media manifest in API format.
+     */
     public function index(): JsonResponse
     {
         $manifest = $this->manifestService->getManifest();
@@ -26,6 +32,9 @@ class MediaController extends Controller
         ]);
     }
 
+    /**
+     * Return a single media entry by UUID.
+     */
     public function show(string $uuid): JsonResponse
     {
         $entry = $this->manifestService->getByUuid($uuid);
@@ -41,6 +50,9 @@ class MediaController extends Controller
         ]);
     }
 
+    /**
+     * Resolve media entries by numeric IDs.
+     */
     public function resolve(Request $request): JsonResponse
     {
         $request->validate([

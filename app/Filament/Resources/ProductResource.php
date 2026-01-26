@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Domain\Commerce\Product;
+use App\Domain\Media\MediaManifestService;
+use App\Filament\Components\MediaPicker;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use Filament\Forms;
@@ -178,20 +180,13 @@ class ProductResource extends Resource
                                 // Media section
                                 Forms\Components\Section::make(__('admin.product.sections.media'))
                                     ->schema([
-                                        Forms\Components\FileUpload::make('attachment')
-                                            ->disk('public')
-                                            ->directory('products/thumbnails')
-                                            ->image()
-                                            ->imageEditor()
-                                            ->label(__('admin.labels.main_image')),
-                                        Forms\Components\FileUpload::make('gallery')
-                                            ->disk('public')
-                                            ->directory('products/gallery')
+                                        MediaPicker::make('attachment')
+                                            ->label(__('admin.labels.main_image'))
+                                            ->columnSpanFull(),
+                                        MediaPicker::make('gallery')
+                                            ->label(__('admin.labels.gallery'))
                                             ->multiple()
-                                            ->reorderable()
-                                            ->image()
-                                            ->maxParallelUploads(2)
-                                            ->label(__('admin.labels.gallery')),
+                                            ->columnSpanFull(),
                                     ]),
                             ])
                             ->columnSpan(['default' => 1, 'lg' => 1]),
@@ -222,11 +217,9 @@ class ProductResource extends Resource
                                 Forms\Components\Textarea::make('data.seo.og_description')
                                     ->label(__('admin.page.seo.og_description'))
                                     ->rows(2),
-                                Forms\Components\FileUpload::make('data.seo.og_image')
+                                MediaPicker::make('data.seo.og_image')
                                     ->label(__('admin.page.seo.og_image'))
-                                    ->image()
-                                    ->disk('public')
-                                    ->directory('products/og'),
+                                    ->columnSpanFull(),
                             ]),
                     ])
                     ->collapsed(),
@@ -240,7 +233,19 @@ class ProductResource extends Resource
                 Tables\Columns\ImageColumn::make('attachment')
                     ->height(50)
                     ->circular()
-                    ->disk('public'),
+                    ->disk('public')
+                    ->getStateUsing(function (Product $record): ?string {
+                        $value = $record->attachment;
+                        if (! $value) {
+                            return null;
+                        }
+
+                        if (Str::isUuid($value)) {
+                            return app(MediaManifestService::class)->getUrl($value);
+                        }
+
+                        return $value;
+                    }),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')

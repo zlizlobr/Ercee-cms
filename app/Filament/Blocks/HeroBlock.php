@@ -7,10 +7,16 @@ use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Filament block schema for a hero block using media UUIDs.
+ */
 class HeroBlock extends BaseBlock
 {
     public static int $order = 10;
 
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_HERO)

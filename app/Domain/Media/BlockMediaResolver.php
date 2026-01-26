@@ -4,12 +4,21 @@ namespace App\Domain\Media;
 
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Resolve block media references from UUIDs or legacy storage paths.
+ */
 class BlockMediaResolver
 {
     public function __construct(
         private readonly MediaManifestService $manifestService,
     ) {}
 
+    /**
+     * Resolve a single block's media data by block type.
+     *
+     * @param array<string, mixed> $blockData
+     * @return array<string, mixed>
+     */
     public function resolve(array $blockData, string $blockType): array
     {
         return match ($blockType) {
@@ -19,6 +28,10 @@ class BlockMediaResolver
         };
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveImageBlock(array $data): array
     {
         $media = null;
@@ -41,6 +54,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroBlock(array $data): array
     {
         $media = null;
@@ -60,6 +77,11 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * Resolve a media manifest entry and map it to API format.
+     *
+     * @return array<string, mixed>|null
+     */
     private function resolveByUuid(string $uuid): ?array
     {
         $entry = $this->manifestService->getByUuid($uuid);
@@ -71,6 +93,11 @@ class BlockMediaResolver
         return $this->manifestService->toApiFormat($entry);
     }
 
+    /**
+     * Resolve a legacy public storage path into a media-like payload.
+     *
+     * @return array<string, mixed>|null
+     */
     private function resolveLegacyPath(string $path): ?array
     {
         if (empty($path)) {
@@ -96,6 +123,9 @@ class BlockMediaResolver
         ];
     }
 
+    /**
+     * @return array{width: int|null, height: int|null}
+     */
     private function getImageDimensions(string $path): array
     {
         if (! file_exists($path)) {
@@ -110,6 +140,9 @@ class BlockMediaResolver
         ];
     }
 
+    /**
+     * Get a file MIME type from disk.
+     */
     private function getMimeType(string $path): ?string
     {
         if (! file_exists($path)) {
@@ -119,6 +152,12 @@ class BlockMediaResolver
         return mime_content_type($path) ?: null;
     }
 
+    /**
+     * Resolve all blocks that contain media references.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     public function resolveAllBlocks(array $blocks): array
     {
         return array_map(function ($block) {

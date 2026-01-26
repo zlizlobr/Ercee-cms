@@ -8,7 +8,11 @@ use Filament\Forms;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Filament field for selecting or uploading media library items.
+ */
 class MediaPicker extends Field
 {
     protected string $view = 'filament.components.media-picker';
@@ -19,6 +23,9 @@ class MediaPicker extends Field
 
     protected int|Closure $maxFileSize = 10240; // 10MB
 
+    /**
+     * Configure the field and register actions.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +41,19 @@ class MediaPicker extends Field
             } else {
                 $component->state(is_array($state) ? ($state[0] ?? null) : $state);
             }
+        });
+
+        $this->afterStateUpdated(function (MediaPicker $component, $state): void {
+            $livewire = $component->getLivewire();
+            $record = method_exists($livewire, 'getRecord') ? $livewire->getRecord() : null;
+
+            Log::info('MediaPicker state updated', [
+                'state_path' => $component->getStatePath(),
+                'state' => $state,
+                'is_multiple' => $component->isMultiple(),
+                'livewire' => $livewire ? $livewire::class : null,
+                'record_id' => $record?->getKey(),
+            ]);
         });
 
         $this->dehydrateStateUsing(function ($state) {
@@ -131,6 +151,9 @@ class MediaPicker extends Field
         ]);
     }
 
+    /**
+     * Enable or disable multi-select mode.
+     */
     public function multiple(bool|Closure $condition = true): static
     {
         $this->isMultiple = $condition;
@@ -138,11 +161,19 @@ class MediaPicker extends Field
         return $this;
     }
 
+    /**
+     * Determine if multi-select mode is active.
+     */
     public function isMultiple(): bool
     {
         return (bool) $this->evaluate($this->isMultiple);
     }
 
+    /**
+     * Set accepted MIME types for uploads.
+     *
+     * @param array<int, string>|Closure $types
+     */
     public function acceptedFileTypes(array|Closure $types): static
     {
         $this->acceptedFileTypes = $types;
@@ -150,11 +181,19 @@ class MediaPicker extends Field
         return $this;
     }
 
+    /**
+     * Get accepted MIME types for uploads.
+     *
+     * @return array<int, string>
+     */
     public function getAcceptedFileTypes(): array
     {
         return (array) $this->evaluate($this->acceptedFileTypes);
     }
 
+    /**
+     * Set the maximum upload size in kilobytes.
+     */
     public function maxFileSize(int|Closure $size): static
     {
         $this->maxFileSize = $size;
@@ -162,11 +201,19 @@ class MediaPicker extends Field
         return $this;
     }
 
+    /**
+     * Get the maximum upload size in kilobytes.
+     */
     public function getMaxFileSize(): int
     {
         return (int) $this->evaluate($this->maxFileSize);
     }
 
+    /**
+     * Get the most recent media items for the picker list.
+     *
+     * @return Collection<int, MediaLibrary>
+     */
     public function getMediaItems(): Collection
     {
         return MediaLibrary::with('media')
@@ -175,6 +222,9 @@ class MediaPicker extends Field
             ->get();
     }
 
+    /**
+     * Get the first selected media item, if any.
+     */
     public function getSelectedMedia(): ?MediaLibrary
     {
         $state = $this->getState();
@@ -194,6 +244,11 @@ class MediaPicker extends Field
         })->with('media')->first();
     }
 
+    /**
+     * Get all selected media items.
+     *
+     * @return Collection<int, MediaLibrary>
+     */
     public function getSelectedMediaCollection(): Collection
     {
         $state = $this->getState();
