@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\FormController;
+use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\ProductController;
@@ -20,6 +21,9 @@ Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/products/{id}', [ProductController::class, 'show'])->whereNumber('id');
     Route::get('/forms/{id}', [FormController::class, 'show'])->whereNumber('id');
     Route::get('/theme', [ThemeController::class, 'index']);
+    Route::get('/media', [MediaController::class, 'index']);
+    Route::get('/media/{uuid}', [MediaController::class, 'show']);
+    Route::post('/media/resolve', [MediaController::class, 'resolve']);
 
     Route::post('/forms/{id}/submit', [FormController::class, 'submit'])
         ->whereNumber('id')

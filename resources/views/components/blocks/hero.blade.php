@@ -2,13 +2,19 @@
 
 @php
     $data = $block['data'] ?? $block;
+    $bgImageUrl = $data['background_image_url_large'] ?? $data['background_image_url'] ?? null;
+
+    // Fallback for legacy format
+    if (!$bgImageUrl && !empty($data['background_image'])) {
+        $bgImageUrl = asset('storage/' . $data['background_image']);
+    }
 @endphp
 
 <section class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-700 py-20">
-    @if(!empty($data['background_image']))
+    @if($bgImageUrl)
         <div class="absolute inset-0">
             <img
-                src="{{ asset('storage/' . $data['background_image']) }}"
+                src="{{ $bgImageUrl }}"
                 alt=""
                 class="h-full w-full object-cover opacity-20"
             >

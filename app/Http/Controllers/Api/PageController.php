@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Domain\Content\Page;
+use App\Domain\Media\BlockMediaResolver;
+use App\Domain\Media\RichContentTransformer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller
 {
+    public function __construct(
+        private readonly BlockMediaResolver $blockMediaResolver,
+        private readonly RichContentTransformer $richContentTransformer,
+    ) {}
+
     public function index(): JsonResponse
     {
         $slugs = Cache::remember('pages:slugs', 3600, function () {
@@ -38,15 +45,30 @@ class PageController extends Controller
             ], 404);
         }
 
+        $blocks = $this->transformBlocks($page->getBlocks());
+
         return response()->json([
             'data' => [
                 'id' => $page->id,
                 'slug' => $page->slug,
                 'title' => $page->title,
-                'blocks' => $page->getBlocks(),
+                'blocks' => $blocks,
                 'seo' => $page->seo_meta,
                 'published_at' => $page->published_at?->toIso8601String(),
             ],
         ]);
+    }
+
+    private function transformBlocks(array $blocks): array
+    {
+        $blocks = $this->blockMediaResolver->resolveAllBlocks($blocks);
+
+        foreach ($blocks as &$block) {
+            if (isset($block['data']['body']) && is_string($block['data']['body'])) {
+                $block['data']['body'] = $this->richContentTransformer->transform($block['data']['body']);
+            }
+        }
+
+        return $blocks;
     }
 }

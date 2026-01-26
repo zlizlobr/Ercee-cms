@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -27,10 +28,8 @@ class HeroBlock extends BaseBlock
                     ->rows(2)
                     ->maxLength(500)
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('background_image')
+                MediaPicker::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_image'))
-                    ->image()
-                    ->directory('pages/heroes')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('button_text')
                     ->label(__('admin.page.fields.button_text'))

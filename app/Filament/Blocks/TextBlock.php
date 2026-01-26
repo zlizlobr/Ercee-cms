@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Domain\Media\RichEditorMediaHandler;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -22,6 +23,12 @@ class TextBlock extends BaseBlock
                 Forms\Components\RichEditor::make('body')
                     ->label(__('admin.page.fields.body'))
                     ->required()
+                    ->fileAttachmentsDisk('media')
+                    ->fileAttachmentsDirectory('richtext')
+                    ->fileAttachmentsVisibility('private')
+                    ->saveUploadedFileAttachmentsUsing(
+                        fn ($file) => app(RichEditorMediaHandler::class)->handleUpload($file)
+                    )
                     ->columnSpanFull(),
             ]);
     }
