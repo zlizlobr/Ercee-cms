@@ -35,11 +35,25 @@
                     @endphp
                     <div class="bg-slate-50 rounded-2xl p-8 shadow-lg flex flex-col h-full">
                         <div class="flex items-center mb-6">
-                            <div class="flex text-yellow-400">
+                            @php
+                                $rating = isset($testimonial['rating']) ? (float) $testimonial['rating'] : 5;
+                                $rating = max(0, min(5, $rating));
+                            @endphp
+                            <div class="flex">
                                 @for($i = 0; $i < 5; $i++)
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                    </svg>
+                                    @php
+                                        $fill = max(0, min(1, $rating - $i));
+                                    @endphp
+                                    <span class="relative inline-block w-5 h-5">
+                                        <svg class="absolute inset-0 w-5 h-5 text-slate-200" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                        <span class="absolute inset-0 overflow-hidden" style="width: {{ $fill * 100 }}%">
+                                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </span>
+                                    </span>
                                 @endfor
                             </div>
                         </div>

@@ -49,6 +49,13 @@ class TestimonialsBlock extends BaseBlock
                             ->label(__('admin.page.fields.role'))
                             ->required()
                             ->maxLength(160),
+                        Forms\Components\TextInput::make('rating')
+                            ->label(__('admin.page.fields.rating'))
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(5)
+                            ->step(0.5)
+                            ->default(5),
                         MediaPicker::make('media_uuid')
                             ->label(__('admin.page.fields.photo'))
                             ->columnSpanFull(),

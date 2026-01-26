@@ -155,6 +155,7 @@ return [
             'quote' => 'Citace',
             'role' => 'Pozice',
             'photo' => 'Fotka',
+            'rating' => 'Hodnocení',
         ],
         'seo' => [
             'title' => 'SEO titulek',

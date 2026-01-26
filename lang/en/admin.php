@@ -155,6 +155,7 @@ return [
             'quote' => 'Quote',
             'role' => 'Role',
             'photo' => 'Photo',
+            'rating' => 'Rating',
         ],
         'seo' => [
             'title' => 'SEO Title',
