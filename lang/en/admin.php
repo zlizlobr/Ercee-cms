@@ -131,6 +131,7 @@ return [
             'image' => 'Image',
             'cta' => 'Call to Action',
             'form_embed' => 'Form Embed',
+            'testimonials' => 'Testimonials',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -149,6 +150,11 @@ return [
             'style' => 'Style',
             'form_id' => 'Form',
             'form_title' => 'Form Title',
+            'subtitle' => 'Subtitle',
+            'testimonials' => 'Testimonials',
+            'quote' => 'Quote',
+            'role' => 'Role',
+            'photo' => 'Photo',
         ],
         'seo' => [
             'title' => 'SEO Title',

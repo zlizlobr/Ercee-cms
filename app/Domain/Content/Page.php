@@ -32,6 +32,8 @@ class Page extends Model
 
     public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
 
+    public const BLOCK_TYPE_TESTIMONIALS = 'testimonials';
+
     public const SUPPORTED_LOCALES = ['cs', 'en'];
 
     protected $fillable = [
@@ -61,6 +63,7 @@ class Page extends Model
             self::BLOCK_TYPE_IMAGE => __('admin.page.blocks.image'),
             self::BLOCK_TYPE_CTA => __('admin.page.blocks.cta'),
             self::BLOCK_TYPE_FORM_EMBED => __('admin.page.blocks.form_embed'),
+            self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
         ];
     }
 

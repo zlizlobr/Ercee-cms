@@ -131,6 +131,7 @@ return [
             'image' => 'Obrázek',
             'cta' => 'Výzva k akci',
             'form_embed' => 'Vložený formulář',
+            'testimonials' => 'Reference',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -149,6 +150,11 @@ return [
             'style' => 'Styl',
             'form_id' => 'Formulář',
             'form_title' => 'Název formuláře',
+            'subtitle' => 'Podtitulek',
+            'testimonials' => 'Reference',
+            'quote' => 'Citace',
+            'role' => 'Pozice',
+            'photo' => 'Fotka',
         ],
         'seo' => [
             'title' => 'SEO titulek',
