@@ -17,7 +17,7 @@ class MediaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static ?string $navigationGroup = 'Obsah';
 
     protected static ?int $navigationSort = 10;
 
@@ -112,7 +112,7 @@ class MediaResource extends Resource
 
                 Tables\Columns\TextColumn::make('media.size')
                     ->label('Size')
-                    ->formatStateUsing(fn ($state) => $state ? number_format($state / 1024, 1) . ' KB' : '-')
+                    ->formatStateUsing(fn($state) => $state ? number_format($state / 1024, 1) . ' KB' : '-')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('media.mime_type')

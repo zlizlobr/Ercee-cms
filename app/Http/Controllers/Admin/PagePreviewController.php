@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Domain\Content\Page;
 use App\Domain\Media\Media;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 /**
@@ -65,6 +66,8 @@ class PagePreviewController extends Controller
                     $data['alt'] = $media->getCustomProperty('alt') ?? '';
                 }
             }
+        } elseif (isset($data['image'])) {
+            $data['image_url'] = Storage::disk('public')->url($data['image']);
         }
 
         return $data;
@@ -84,6 +87,8 @@ class PagePreviewController extends Controller
                 $data['background_image_url'] = $media->getUrl();
                 $data['background_image_url_large'] = $media->getUrl('large');
             }
+        } elseif (isset($data['background_image'])) {
+            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
         }
 
         return $data;

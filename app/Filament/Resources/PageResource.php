@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Domain\Content\Page;
 use App\Filament\Blocks\BlockRegistry;
+use App\Filament\Components\MediaPicker;
 use App\Filament\Resources\PageResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Components\Builder;
@@ -127,10 +128,9 @@ class PageResource extends Resource
                                 Forms\Components\Textarea::make('seo_meta.open_graph.description')
                                     ->label(__('admin.page.seo.og_description'))
                                     ->rows(2),
-                                Forms\Components\FileUpload::make('seo_meta.open_graph.image')
+                                MediaPicker::make('seo_meta.open_graph.image')
                                     ->label(__('admin.page.seo.og_image'))
-                                    ->image()
-                                    ->directory('pages/og'),
+                                    ->columnSpanFull(),
                             ]),
                     ])
                     ->collapsed(),
