@@ -3,6 +3,7 @@
         x-data="{
             state: $wire.$entangle('{{ $getStatePath() }}'),
             selectMedia(uuid) {
+                const previousState = this.state;
                 @if($isMultiple())
                     if (!Array.isArray(this.state)) this.state = [];
                     if (this.state.includes(uuid)) {
@@ -13,6 +14,13 @@
                 @else
                     this.state = uuid;
                 @endif
+                console.info('MediaPicker selectMedia', {
+                    statePath: '{{ $getStatePath() }}',
+                    previousState,
+                    nextState: this.state,
+                    isMultiple: @json($isMultiple()),
+                });
+                $wire.set('{{ $getStatePath() }}', this.state);
                 $dispatch('close-modal', { id: '{{ $getId() }}-media-modal' });
             }
         }"
