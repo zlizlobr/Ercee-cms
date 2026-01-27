@@ -23,11 +23,29 @@ class FormController extends Controller
             return response()->json(['error' => 'Form not found'], 404);
         }
 
+        $dataOptions = $form->data_options ?? [];
+
+        if (($form->submit_button_text ?? null) !== null && ! array_key_exists('submit_button_text', $dataOptions)) {
+            $dataOptions['submit_button_text'] = $form->submit_button_text;
+        }
+
+        if (($form->success_title ?? null) !== null && ! array_key_exists('success_title', $dataOptions)) {
+            $dataOptions['success_title'] = $form->success_title;
+        }
+
+        if (($form->success_message ?? null) !== null && ! array_key_exists('success_message', $dataOptions)) {
+            $dataOptions['success_message'] = $form->success_message;
+        }
+
         return response()->json([
             'data' => [
                 'id' => $form->id,
                 'name' => $form->name,
                 'schema' => $form->schema,
+                'data_options' => $dataOptions,
+                'submit_button_text' => $form->submit_button_text,
+                'success_title' => $form->success_title,
+                'success_message' => $form->success_message,
             ],
         ]);
     }

@@ -131,6 +131,8 @@ return [
             'image' => 'Obrázek',
             'cta' => 'Výzva k akci',
             'form_embed' => 'Vložený formulář',
+            'testimonials' => 'Reference',
+                        'contact_form' => 'Kontaktni formular',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -149,6 +151,15 @@ return [
             'style' => 'Styl',
             'form_id' => 'Formulář',
             'form_title' => 'Název formuláře',
+            'subtitle' => 'Podtitulek',
+            'testimonials' => 'Reference',
+            'quote' => 'Citace',
+            'role' => 'Pozice',
+            'photo' => 'Fotka',
+            'rating' => 'Hodnocení',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+        
+        
+        
         ],
         'seo' => [
             'title' => 'SEO titulek',
@@ -183,7 +194,10 @@ return [
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
             'short_description' => 'Krátký popis',
-            'description' => 'Popis produktu',
+            'description' => 'Popis produktu',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+        
+        
+        
         ],
         'price_helper' => 'Cena v :currency',
         'price_variable_helper' => 'Cena je nastavena na variantách pro variabilní produkty',
@@ -203,7 +217,10 @@ return [
             'subtotal' => 'Mezisoučet',
             'shipping' => 'Doprava',
             'tax' => 'DPH',
-            'total' => 'Celkem',
+            'total' => 'Celkem',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+        
+        
+        
         ],
         'statuses' => [
             'pending' => 'Čeká na zpracování',
