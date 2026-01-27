@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\Filament\Resources\ThemeSettingResource\Pages;
 
 use App\Domain\Content\Menu;
 use App\Domain\Content\Page as ContentPage;
 use App\Domain\Content\ThemeSetting;
+use App\Filament\Resources\ThemeSettingResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Pages\Page;
+use Filament\Resources\Pages\Page;
 
-class ThemeSettings extends Page
+class ManageThemeSettings extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-paint-brush';
-
-    protected static ?string $navigationGroup = 'Thema';
-
-    protected static ?int $navigationSort = 1;
+    protected static string $resource = ThemeSettingResource::class;
 
     protected static string $view = 'filament.pages.theme-settings';
 
