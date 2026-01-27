@@ -1,3 +1,11 @@
+## [v0.5.1] – 2026-01-27
+
+- release: patch -- add Rebuildmap servis class for build public part (#25)
+* add RebuildMap for resources
+
+* update readme for flow field type and rebuildmap. Add support doc
+- chore: update changelog for v0.5.0
+
 ## [v0.5.0] – 2026-01-27
 
 - release: minor -- New builder page Shema + New version Form shema (#24)
