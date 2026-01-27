@@ -139,6 +139,12 @@ class FormResource extends Resource
                                                     ->required(),
                                                 Forms\Components\TextInput::make('value')
                                                     ->required(),
+                                                Forms\Components\Select::make('icon')
+                                                    ->label('Icon')
+                                                    ->options(FormIconRegistry::options())
+                                                    ->searchable()
+                                                    ->placeholder('Select icon...')
+                                                    ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('../../type'), 'options_icon')),
                                             ])
                                             ->columns(2)
                                             ->defaultItems(2)
