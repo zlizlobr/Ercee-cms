@@ -38,6 +38,8 @@ class Page extends Model
 
     public const BLOCK_TYPE_CAPABILITIES = 'capabilities';
 
+    public const BLOCK_TYPE_PREMIUM_CTA = 'premium_cta';
+
     public const SUPPORTED_LOCALES = ['cs', 'en'];
 
     protected $fillable = [
@@ -69,6 +71,7 @@ class Page extends Model
             self::BLOCK_TYPE_FORM_EMBED => __('admin.page.blocks.form_embed'),
             self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
             self::BLOCK_TYPE_CAPABILITIES => __('admin.page.blocks.capabilities'),
+            self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
         ];
     }
 

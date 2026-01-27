@@ -134,6 +134,7 @@ return [
             'testimonials' => 'Reference',
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',
+            'premium_cta' => 'Prémiové CTA',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -163,6 +164,18 @@ return [
             'feature' => 'Výhoda',
             'icon' => 'Ikona',
             'icon_placeholder' => 'Vyberte ikonu...',
+            'background_image_helper' => 'URL nebo media UUID dle strategie médií.',
+            'buttons' => 'Tlačítka',
+            'button_label' => 'Text tlačítka',
+            'button_style' => 'Styl tlačítka',
+            'button_page' => 'Stránka tlačítka',
+            'button_page_placeholder' => 'Vyberte stránku...',
+            'button_page_helper' => 'Nebo použijte vlastní URL níže.',
+            'button_url_placeholder' => '/stranka, #sekce, https://...',
+            'button_url_helper' => 'Podporuje: /relativni-cesta, #anchor, https://external.com',
+            'stats' => 'Statistiky',
+            'stat_value' => 'Hodnota',
+            'stat_label' => 'Popisek',
         
         
         

@@ -134,6 +134,7 @@ return [
             'testimonials' => 'Testimonials',
                         'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
+            'premium_cta' => 'Premium CTA',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -163,6 +164,18 @@ return [
             'feature' => 'Feature',
             'icon' => 'Icon',
             'icon_placeholder' => 'Select icon...',
+            'background_image_helper' => 'URL or media UUID depending on media strategy.',
+            'buttons' => 'Buttons',
+            'button_label' => 'Button label',
+            'button_style' => 'Button style',
+            'button_page' => 'Button page',
+            'button_page_placeholder' => 'Select a page...',
+            'button_page_helper' => 'Or use custom URL below.',
+            'button_url_placeholder' => '/page, #section, https://...',
+            'button_url_helper' => 'Supports: /relative-path, #anchor, https://external.com',
+            'stats' => 'Stats',
+            'stat_value' => 'Value',
+            'stat_label' => 'Label',
         
         
         

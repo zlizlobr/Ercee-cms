@@ -43,6 +43,7 @@ class PagePreviewController extends Controller
                 'image' => $this->resolveImageBlock($block['data']),
                 'hero' => $this->resolveHeroBlock($block['data']),
                 'testimonials' => $this->resolveTestimonialsBlock($block['data']),
+                'premium_cta' => $this->resolvePremiumCtaBlock($block['data']),
                 default => $block['data'],
             };
 
@@ -129,6 +130,44 @@ class PagePreviewController extends Controller
 
             return $testimonial;
         }, $data['testimonials']);
+
+        return $data;
+    }
+
+    /**
+     * Resolve premium CTA block background media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolvePremiumCtaBlock(array $data): array
+    {
+        if (isset($data['background_media_uuid'])) {
+            $media = Media::where('uuid', $data['background_media_uuid'])->first();
+            if ($media) {
+                $data['background_image_url'] = $media->getUrl();
+                $data['background_image_url_large'] = $media->getUrl('large');
+            }
+        } elseif (isset($data['background_image'])) {
+            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
+        }
+
+        if (isset($data['buttons']) && is_array($data['buttons'])) {
+            $data['buttons'] = array_map(function ($button) {
+                if (! is_array($button)) {
+                    return $button;
+                }
+
+                if (empty($button['url']) && ! empty($button['page_id'])) {
+                    $page = Page::find($button['page_id']);
+                    if ($page) {
+                        $button['url'] = '/'.$page->slug;
+                    }
+                }
+
+                return $button;
+            }, $data['buttons']);
+        }
 
         return $data;
     }

@@ -1,0 +1,109 @@
+{
+  "label": "Premium CTA",
+  "label_cs": "Prémiové CTA",
+  "icon": "heroicon-o-megaphone",
+  "order": 80,
+  "fields": [
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 400,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "background_media_uuid",
+      "label": "Background image",
+      "label_cs": "Obrázek na pozadí",
+      "helperText": "Media UUID (MediaPicker in CMS).",
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "buttons",
+      "label": "Buttons",
+      "label_cs": "Tlačítka",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "text",
+          "name": "label",
+          "label": "Label",
+          "label_cs": "Text",
+          "required": true,
+          "maxLength": 80
+        },
+        {
+          "type": "select",
+          "name": "page_id",
+          "label": "Button page",
+          "label_cs": "Stránka tlačítka",
+          "options": {},
+          "placeholder": "Select a page..."
+        },
+        {
+          "type": "text",
+          "name": "url",
+          "label": "URL",
+          "label_cs": "URL",
+          "placeholder": "/page, #section, https://..."
+        },
+        {
+          "type": "select",
+          "name": "style",
+          "label": "Style",
+          "label_cs": "Styl",
+          "options": {
+            "primary": "Primary",
+            "secondary": "Secondary"
+          },
+          "default": "primary"
+        }
+      ]
+    },
+    {
+      "type": "repeater",
+      "name": "stats",
+      "label": "Stats",
+      "label_cs": "Statistiky",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "text",
+          "name": "value",
+          "label": "Value",
+          "label_cs": "Hodnota",
+          "required": true,
+          "maxLength": 40
+        },
+        {
+          "type": "text",
+          "name": "label",
+          "label": "Label",
+          "label_cs": "Popisek",
+          "required": true,
+          "maxLength": 120
+        }
+      ]
+    }
+  ]
+}
