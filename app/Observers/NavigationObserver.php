@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Domain\Content\Navigation;
 use App\Jobs\TriggerFrontendRebuildJob;
+use App\Support\FrontendRebuildRegistry;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -17,7 +18,10 @@ class NavigationObserver
     public function saved(Navigation $navigation): void
     {
         $this->clearCache($navigation);
-        TriggerFrontendRebuildJob::dispatch('navigation_updated');
+
+        foreach (FrontendRebuildRegistry::reasonsFor($navigation, 'saved') as $reason) {
+            TriggerFrontendRebuildJob::dispatch($reason);
+        }
     }
 
     /**
@@ -26,7 +30,10 @@ class NavigationObserver
     public function deleted(Navigation $navigation): void
     {
         $this->clearCache($navigation);
-        TriggerFrontendRebuildJob::dispatch('navigation_deleted');
+
+        foreach (FrontendRebuildRegistry::reasonsFor($navigation, 'deleted') as $reason) {
+            TriggerFrontendRebuildJob::dispatch($reason);
+        }
     }
 
     /**
