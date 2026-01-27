@@ -133,6 +133,7 @@ return [
             'form_embed' => 'Vložený formulář',
             'testimonials' => 'Reference',
                         'contact_form' => 'Kontaktni formular',
+            'capabilities' => 'Schopnosti',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -157,6 +158,11 @@ return [
             'role' => 'Pozice',
             'photo' => 'Fotka',
             'rating' => 'Hodnocení',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'items' => 'Položky',
+            'features' => 'Výhody',
+            'feature' => 'Výhoda',
+            'icon' => 'Ikona',
+            'icon_placeholder' => 'Vyberte ikonu...',
         
         
         

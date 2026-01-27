@@ -133,6 +133,7 @@ return [
             'form_embed' => 'Form Embed',
             'testimonials' => 'Testimonials',
                         'contact_form' => 'Contact form',
+            'capabilities' => 'Capabilities',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -157,6 +158,11 @@ return [
             'role' => 'Role',
             'photo' => 'Photo',
             'rating' => 'Rating',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+            'items' => 'Items',
+            'features' => 'Features',
+            'feature' => 'Feature',
+            'icon' => 'Icon',
+            'icon_placeholder' => 'Select icon...',
         
         
         
