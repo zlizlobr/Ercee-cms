@@ -1,0 +1,18 @@
+[
+  "section",
+  "text",
+  "email",
+  "tel",
+  "number",
+  "password",
+  "url",
+  "date",
+  "time",
+  "datetime-local",
+  "textarea",
+  "select",
+  "checkbox",
+  "radio",
+  "file",
+  "hidden"
+]

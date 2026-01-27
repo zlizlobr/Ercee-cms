@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Domain\Form\Form;
 use App\Filament\Resources\FormResource\Pages;
+use App\Support\FormFieldTypeRegistry;
 use App\Support\FormIconRegistry;
 use Filament\Forms;
 use Filament\Forms\Get;
@@ -103,24 +104,7 @@ class FormResource extends Resource
 
                                         Forms\Components\Select::make('type')
                                             ->label('Field Type')
-                                            ->options([
-                                                'section' => 'Section',
-                                                'text' => 'Text',
-                                                'email' => 'Email',
-                                                'tel' => 'Tel',
-                                                'number' => 'Number',
-                                                'password' => 'Password',
-                                                'url' => 'URL',
-                                                'date' => 'Date',
-                                                'time' => 'Time',
-                                                'datetime-local' => 'Datetime',
-                                                'textarea' => 'Textarea',
-                                                'select' => 'Select',
-                                                'checkbox' => 'Checkbox',
-                                                'radio' => 'Radio',
-                                                'file' => 'File',
-                                                'hidden' => 'Hidden',
-                                            ])
+                                            ->options(FormFieldTypeRegistry::options())
                                             ->required()
                                             ->live(),
 
