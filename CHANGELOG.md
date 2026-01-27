@@ -1,3 +1,34 @@
+## [v0.5.0] – 2026-01-27
+
+- release: minor -- New builder page Shema + New version Form shema (#24)
+* add Testimaniol block
+
+* udpate testimonial rating
+
+* add thema contact form block
+
+* Update contact form optimization flow
+
+* synchronization of icons for admin/public forms
+ltimpalization of tables for forms
+
+* add section field
+
+* fix send form api
+
+* Add sidebar options to setting form
+
+* Refactor form model->move label, massage title to data_options
+
+* change themaSetting to patter Resource/page
+
+* fix 2 collumns layout
+
+* reafactor load fields in from from json patter
+
+* WIP: form field types registry
+- chore: update changelog for v0.4.1
+
 ## [v0.4.1] – 2026-01-26
 
 - release: patch -- Update docs, block and phpStan media docs (#23)
