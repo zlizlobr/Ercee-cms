@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Domain\Content\Page;
 use App\Jobs\TriggerFrontendRebuildJob;
+use App\Support\FrontendRebuildRegistry;
 use Illuminate\Support\Facades\Cache;
 
 class PageObserver
@@ -12,15 +13,18 @@ class PageObserver
     {
         $this->clearCache($page);
 
-        if ($page->isPublished()) {
-            TriggerFrontendRebuildJob::dispatch("page_updated:{$page->slug}");
+        foreach (FrontendRebuildRegistry::reasonsFor($page, 'saved') as $reason) {
+            TriggerFrontendRebuildJob::dispatch($reason);
         }
     }
 
     public function deleted(Page $page): void
     {
         $this->clearCache($page);
-        TriggerFrontendRebuildJob::dispatch("page_deleted:{$page->slug}");
+
+        foreach (FrontendRebuildRegistry::reasonsFor($page, 'deleted') as $reason) {
+            TriggerFrontendRebuildJob::dispatch($reason);
+        }
     }
 
     protected function clearCache(Page $page): void
