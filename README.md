@@ -16,6 +16,9 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
                             (Auto-rebuild on content change)
 ```
 
+**Frontend rebuild mapping:** which admin changes trigger a frontend rebuild is centrally defined in
+`app/Filament/Resources/FrontendRebuildMap.php` and enforced by model observers.
+
 **Repositories:**
 - **CMS Backend:** This repository (Laravel + Filament)
 - **Public Frontend:** [github.com/zlizlobr/ercee-frontend](https://github.com/zlizlobr/ercee-frontend) (Astro)

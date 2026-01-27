@@ -87,3 +87,11 @@ php artisan queue:work
 ```bash
 composer dev
 ```
+### 
+28 / 5 000
+Reload .env + config:
+
+```bash
+php artisan config:clear
+php artisan config:cache
+```
