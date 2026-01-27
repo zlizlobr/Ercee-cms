@@ -31,3 +31,4 @@ yarn-error.log
 .phpunit.result.cache
 .php-cs-fixer.cache
 phpstan.cache
+app/Filament/Resources/frontend-rebuild-guide.md
