@@ -93,9 +93,9 @@ class FormResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('name')
                                             ->label('Field Name')
-                                            ->required(fn (Get $get): bool => $get('type') !== 'section')
+                                            ->required(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
                                             ->alphaDash()
-                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
                                             ->helperText('Use lowercase with underscores (e.g., first_name)'),
 
                                         Forms\Components\TextInput::make('label')
@@ -105,17 +105,18 @@ class FormResource extends Resource
                                         Forms\Components\Select::make('type')
                                             ->label('Field Type')
                                             ->options(FormFieldTypeRegistry::options())
+                                            ->helperText(fn (Get $get): ?string => FormFieldTypeRegistry::description($get('type')))
                                             ->required()
                                             ->live(),
 
                                         Forms\Components\Toggle::make('required')
                                             ->label('Required')
-                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'required'))
                                             ->default(false),
 
                                         Forms\Components\TextInput::make('placeholder')
                                             ->label('Placeholder')
-                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'placeholder'))
                                             ->maxLength(255),
 
                                         Forms\Components\Select::make('icon')
@@ -123,11 +124,11 @@ class FormResource extends Resource
                                             ->options(FormIconRegistry::options())
                                             ->searchable()
                                             ->placeholder('Select icon...')
-                                            ->visible(fn (Get $get): bool => $get('type') === 'section'),
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'icon')),
 
                                         Forms\Components\Textarea::make('helper_text')
                                             ->label('Helper text')
-                                            ->visible(fn (Get $get): bool => $get('type') !== 'section')
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'helper_text'))
                                             ->rows(2)
                                             ->maxLength(255),
 
@@ -141,7 +142,7 @@ class FormResource extends Resource
                                             ])
                                             ->columns(2)
                                             ->defaultItems(2)
-                                            ->visible(fn (Get $get): bool => in_array($get('type'), ['select', 'radio'], true)),
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'options')),
                                     ])
                                     ->itemLabel(fn (array $state): ?string => ($state['label'] ?? 'New Field').' ('.($state['type'] ?? 'text').')')
                                     ->reorderable()
