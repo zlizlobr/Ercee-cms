@@ -166,6 +166,174 @@ class FormResource extends Resource
                                     ->defaultItems(0)
                                     ->addActionLabel('Add Field'),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Sidebar')
+                            ->schema([
+                                Forms\Components\Repeater::make('data_options.sidebar')
+                                    ->label('Sidebar sections')
+                                    ->schema([
+                                        Forms\Components\Select::make('type')
+                                            ->label('Section type')
+                                            ->options([
+                                                'contact_info' => 'Contact info',
+                                                'steps' => 'Steps',
+                                                'trust_indicators' => 'Trust indicators',
+                                            ])
+                                            ->required()
+                                            ->live(),
+                                        Forms\Components\TextInput::make('title')
+                                            ->label('Section title')
+                                            ->required()
+                                            ->maxLength(255),
+                                        Forms\Components\Repeater::make('items')
+                                            ->label('Items')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('label')
+                                                    ->label('Label')
+                                                    ->required(fn (Get $get): bool => $get('../../type') === 'contact_info')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'contact_info')
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('value')
+                                                    ->label('Value')
+                                                    ->required(fn (Get $get): bool => $get('../../type') === 'contact_info')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'contact_info')
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('note')
+                                                    ->label('Note')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'contact_info')
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('title')
+                                                    ->label('Step title')
+                                                    ->required(fn (Get $get): bool => $get('../../type') === 'steps')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'steps')
+                                                    ->maxLength(255),
+                                                Forms\Components\Textarea::make('description')
+                                                    ->label('Step description')
+                                                    ->required(fn (Get $get): bool => $get('../../type') === 'steps')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'steps')
+                                                    ->rows(2)
+                                                    ->maxLength(500),
+                                                Forms\Components\TextInput::make('number')
+                                                    ->label('Step number')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'steps')
+                                                    ->maxLength(10),
+                                                Forms\Components\TextInput::make('text')
+                                                    ->label('Text')
+                                                    ->required(fn (Get $get): bool => $get('../../type') === 'trust_indicators')
+                                                    ->visible(fn (Get $get): bool => $get('../../type') === 'trust_indicators')
+                                                    ->maxLength(255),
+                                                Forms\Components\Select::make('icon')
+                                                    ->label('Icon')
+                                                    ->options(FormIconRegistry::options())
+                                                    ->searchable()
+                                                    ->placeholder('Select icon...'),
+                                                Forms\Components\Select::make('tone')
+                                                    ->label('Tone')
+                                                    ->options([
+                                                        'blue' => 'Blue',
+                                                        'teal' => 'Teal',
+                                                        'green' => 'Green',
+                                                        'purple' => 'Purple',
+                                                        'emerald' => 'Emerald',
+                                                    ])
+                                                    ->native(false),
+                                            ])
+                                            ->itemLabel(fn (array $state): ?string => $state['label']
+                                                ?? $state['title']
+                                                ?? $state['text']
+                                                ?? 'Item')
+                                            ->reorderable()
+                                            ->reorderableWithButtons()
+                                            ->collapsible()
+                                            ->defaultItems(0)
+                                            ->addActionLabel('Add Item'),
+                                    ])
+                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Section')
+                                    ->reorderable()
+                                    ->reorderableWithButtons()
+                                    ->collapsible()
+                                    ->default([
+                                        [
+                                            'type' => 'contact_info',
+                                            'title' => 'Potřebujete pomoc?',
+                                            'items' => [
+                                                [
+                                                    'label' => 'Telefon',
+                                                    'value' => '+420 XXX XXX XXX',
+                                                    'note' => 'Po-Pá, 8:00-17:00',
+                                                    'icon' => 'phone',
+                                                    'tone' => 'blue',
+                                                ],
+                                                [
+                                                    'label' => 'E-mail',
+                                                    'value' => 'info@ercee.cz',
+                                                    'note' => 'Odpovíme do 24 hodin',
+                                                    'icon' => 'mail',
+                                                    'tone' => 'teal',
+                                                ],
+                                            ],
+                                        ],
+                                        [
+                                            'type' => 'steps',
+                                            'title' => 'Jak to funguje',
+                                            'items' => [
+                                                [
+                                                    'title' => 'Odpověď',
+                                                    'description' => 'Vaši poptávku zpracujeme do 24 hodin',
+                                                    'number' => '1',
+                                                    'tone' => 'blue',
+                                                ],
+                                                [
+                                                    'title' => 'Konzultace',
+                                                    'description' => 'Domluvíme si hovor pro upřesnění',
+                                                    'number' => '2',
+                                                    'tone' => 'teal',
+                                                ],
+                                                [
+                                                    'title' => 'Nabídka',
+                                                    'description' => 'Obdržíte detailní nabídku na míru',
+                                                    'number' => '3',
+                                                    'tone' => 'green',
+                                                ],
+                                                [
+                                                    'title' => 'Spolupráce',
+                                                    'description' => 'Začneme společnou cestu k úspěchu',
+                                                    'number' => '4',
+                                                    'tone' => 'purple',
+                                                ],
+                                            ],
+                                        ],
+                                        [
+                                            'type' => 'trust_indicators',
+                                            'title' => 'Proč my?',
+                                            'items' => [
+                                                [
+                                                    'text' => '10+ let zkušeností v oboru',
+                                                    'icon' => 'trend',
+                                                    'tone' => 'green',
+                                                ],
+                                                [
+                                                    'text' => '99% spokojenost klientů',
+                                                    'icon' => 'check',
+                                                    'tone' => 'blue',
+                                                ],
+                                                [
+                                                    'text' => 'Certifikované procesy',
+                                                    'icon' => 'shield',
+                                                    'tone' => 'purple',
+                                                ],
+                                                [
+                                                    'text' => 'Lokální tým v ČR',
+                                                    'icon' => 'users',
+                                                    'tone' => 'teal',
+                                                ],
+                                            ],
+                                        ],
+                                    ])
+                                    ->defaultItems(0)
+                                    ->addActionLabel('Add Section')
+                                    ->columns(2)
+                                    ->columnSpanFull(),
+                            ]),
                     ]),
             ]);
     }
