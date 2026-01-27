@@ -24,6 +24,7 @@ class BlockMediaResolver
         return match ($blockType) {
             'image' => $this->resolveImageBlock($blockData),
             'hero' => $this->resolveHeroBlock($blockData),
+            'testimonials' => $this->resolveTestimonialsBlock($blockData),
             default => $blockData,
         };
     }
@@ -73,6 +74,45 @@ class BlockMediaResolver
         }
 
         unset($data['background_media_uuid'], $data['background_image']);
+
+        return $data;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolveTestimonialsBlock(array $data): array
+    {
+        if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
+            return $data;
+        }
+
+        $data['testimonials'] = array_map(function ($testimonial) {
+            if (! is_array($testimonial)) {
+                return $testimonial;
+            }
+
+            $media = null;
+
+            if (isset($testimonial['media_uuid'])) {
+                $media = $this->resolveByUuid($testimonial['media_uuid']);
+            } elseif (
+                isset($testimonial['image'])
+                && is_string($testimonial['image'])
+                && ! filter_var($testimonial['image'], FILTER_VALIDATE_URL)
+            ) {
+                $media = $this->resolveLegacyPath($testimonial['image']);
+            }
+
+            if ($media) {
+                $testimonial['image'] = $media['url'] ?? null;
+            }
+
+            unset($testimonial['media_uuid']);
+
+            return $testimonial;
+        }, $data['testimonials']);
 
         return $data;
     }

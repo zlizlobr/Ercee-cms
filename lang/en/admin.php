@@ -131,6 +131,8 @@ return [
             'image' => 'Image',
             'cta' => 'Call to Action',
             'form_embed' => 'Form Embed',
+            'testimonials' => 'Testimonials',
+                        'contact_form' => 'Contact form',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -149,6 +151,15 @@ return [
             'style' => 'Style',
             'form_id' => 'Form',
             'form_title' => 'Form Title',
+            'subtitle' => 'Subtitle',
+            'testimonials' => 'Testimonials',
+            'quote' => 'Quote',
+            'role' => 'Role',
+            'photo' => 'Photo',
+            'rating' => 'Rating',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+        
+        
+        
         ],
         'seo' => [
             'title' => 'SEO Title',
@@ -183,7 +194,10 @@ return [
             'stock' => 'Stock',
             'is_active' => 'Active',
             'short_description' => 'Short Description',
-            'description' => 'Product Description',
+            'description' => 'Product Description',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+        
+        
+        
         ],
         'price_helper' => 'Price in :currency',
         'price_variable_helper' => 'Price is set on variants for variable products',
@@ -203,7 +217,10 @@ return [
             'subtotal' => 'Subtotal',
             'shipping' => 'Shipping',
             'tax' => 'Tax',
-            'total' => 'Total',
+            'total' => 'Total',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+        
+        
+        
         ],
         'statuses' => [
             'pending' => 'Pending',

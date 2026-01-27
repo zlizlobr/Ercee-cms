@@ -1,0 +1,52 @@
+{
+  "label": "Contact form",
+  "label_cs": "Kontaktni formular",
+  "icon": "heroicon-o-envelope",
+  "order": 60,
+  "fields": [
+    {
+      "type": "text",
+      "name": "form_id",
+      "label": "Form ID",
+      "label_cs": "ID formulare",
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Titulek"
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 500
+    },
+    {
+      "type": "text",
+      "name": "data_options.success_title",
+      "label": "Success title",
+      "label_cs": "Titulek po odeslani",
+      "default": "Dekujeme za zpravu!"
+    },
+    {
+      "type": "textarea",
+      "name": "data_options.success_message",
+      "label": "Success message",
+      "label_cs": "Zprava po odeslani",
+      "rows": 3,
+      "maxLength": 500,
+      "default": "Ozveme se vam do 24 hodin."
+    },
+    {
+      "type": "text",
+      "name": "data_options.submit_button_text",
+      "label": "Submit button text",
+      "label_cs": "Text tlacitka",
+      "default": "Odeslat zpravu"
+    }
+  ]
+}
