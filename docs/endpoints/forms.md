@@ -34,7 +34,15 @@ None.
           {"label": "Product", "value": "product"}
         ]
       }
-    ]
+    ],
+    "data_options": {
+      "submit_button_text": "Send",
+      "success_title": "Thank you",
+      "success_message": "We will get back to you shortly."
+    },
+    "submit_button_text": "Send",
+    "success_title": "Thank you",
+    "success_message": "We will get back to you shortly."
   }
 }
 ```

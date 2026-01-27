@@ -27,14 +27,14 @@
     },
     {
       "type": "text",
-      "name": "success_title",
+      "name": "data_options.success_title",
       "label": "Success title",
       "label_cs": "Titulek po odeslani",
       "default": "Dekujeme za zpravu!"
     },
     {
       "type": "textarea",
-      "name": "success_message",
+      "name": "data_options.success_message",
       "label": "Success message",
       "label_cs": "Zprava po odeslani",
       "rows": 3,
@@ -43,8 +43,8 @@
     },
     {
       "type": "text",
-      "name": "submit_label",
-      "label": "Submit label",
+      "name": "data_options.submit_button_text",
+      "label": "Submit button text",
       "label_cs": "Text tlacitka",
       "default": "Odeslat zpravu"
     }

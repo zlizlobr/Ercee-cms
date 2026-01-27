@@ -32,13 +32,13 @@ class FormResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('submit_button_text')
+                                Forms\Components\TextInput::make('data_options.submit_button_text')
                                     ->label('Submit button text')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('success_title')
+                                Forms\Components\TextInput::make('data_options.success_title')
                                     ->label('Success title')
                                     ->maxLength(255),
-                                Forms\Components\Textarea::make('success_message')
+                                Forms\Components\Textarea::make('data_options.success_message')
                                     ->label('Success message')
                                     ->rows(3)
                                     ->maxLength(500)
