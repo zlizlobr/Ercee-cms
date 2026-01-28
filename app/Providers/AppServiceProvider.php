@@ -16,10 +16,12 @@ use App\Domain\Content\ThemeSetting;
 use App\Domain\Form\Events\ContractCreated;
 use App\Domain\Form\Form;
 use App\Domain\Media\Media;
+use App\Domain\Media\MediaLibrary;
 use App\Listeners\StartFunnelsOnContractCreated;
 use App\Listeners\StartFunnelsOnOrderPaid;
 use App\Observers\AttributeObserver;
 use App\Observers\FormObserver;
+use App\Observers\MediaLibraryObserver;
 use App\Observers\MediaObserver;
 use App\Observers\MenuObserver;
 use App\Observers\NavigationObserver;
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         Attribute::observe(AttributeObserver::class);
         ProductReview::observe(ProductReviewObserver::class);
         Media::observe(MediaObserver::class);
+        MediaLibrary::observe(MediaLibraryObserver::class);
 
         $this->configureRateLimiting();
         $this->registerEventListeners();

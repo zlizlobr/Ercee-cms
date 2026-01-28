@@ -1,0 +1,134 @@
+{
+    "fd819063-5f74-47b4-a49f-5daf60a9382b": {
+        "id": 8,
+        "uuid": "fd819063-5f74-47b4-a49f-5daf60a9382b",
+        "original": {
+            "url": "/media/fd819063-5f74-47b4-a49f-5daf60a9382b/01kfwhb45nnf6aa3d149qs3sdw-fd819063.jpeg",
+            "width": null,
+            "height": null,
+            "size": 5751,
+            "mime": "image/jpeg"
+        },
+        "variants": {
+            "thumb": {
+                "url": "/media/fd819063-5f74-47b4-a49f-5daf60a9382b/conversions/01kfwhb45nnf6aa3d149qs3sdw-fd819063-thumb.jpeg",
+                "width": 150,
+                "height": 150,
+                "size": 4298
+            },
+            "medium": {
+                "url": "/media/fd819063-5f74-47b4-a49f-5daf60a9382b/conversions/01kfwhb45nnf6aa3d149qs3sdw-fd819063-medium.jpeg",
+                "width": 600,
+                "height": 399,
+                "size": 22442
+            },
+            "large": {
+                "url": "/media/fd819063-5f74-47b4-a49f-5daf60a9382b/conversions/01kfwhb45nnf6aa3d149qs3sdw-fd819063-large.jpeg",
+                "width": 1200,
+                "height": 799,
+                "size": 68255
+            },
+            "webp": {
+                "url": "/media/fd819063-5f74-47b4-a49f-5daf60a9382b/conversions/01kfwhb45nnf6aa3d149qs3sdw-fd819063-webp.webp",
+                "width": 1200,
+                "height": 799,
+                "size": 47656
+            }
+        },
+        "alt": null,
+        "title": "01KFWHB45NNF6AA3D149QS3SDW",
+        "focal_point": null,
+        "tags": [],
+        "checksum": "e5e24312e771f823c4a161a2273739cc",
+        "exported_at": "2026-01-28T09:40:39+00:00"
+    },
+    "496b9287-60e6-4811-8e81-3a8897505dd9": {
+        "id": 9,
+        "uuid": "496b9287-60e6-4811-8e81-3a8897505dd9",
+        "original": {
+            "url": "/media/496b9287-60e6-4811-8e81-3a8897505dd9/title-496b9287.webp",
+            "width": null,
+            "height": null,
+            "size": 26484,
+            "mime": "image/webp"
+        },
+        "variants": {
+            "thumb": {
+                "url": "/media/496b9287-60e6-4811-8e81-3a8897505dd9/conversions/title-496b9287-thumb.webp",
+                "width": 150,
+                "height": 150,
+                "size": 4940
+            },
+            "medium": {
+                "url": "/media/496b9287-60e6-4811-8e81-3a8897505dd9/conversions/title-496b9287-medium.webp",
+                "width": 600,
+                "height": 600,
+                "size": 34679
+            },
+            "large": {
+                "url": "/media/496b9287-60e6-4811-8e81-3a8897505dd9/conversions/title-496b9287-large.webp",
+                "width": 1200,
+                "height": 1200,
+                "size": 99305
+            },
+            "webp": {
+                "url": "/media/496b9287-60e6-4811-8e81-3a8897505dd9/conversions/title-496b9287-webp.webp",
+                "width": 1200,
+                "height": 1200,
+                "size": 84260
+            }
+        },
+        "alt": null,
+        "title": "Title",
+        "focal_point": null,
+        "tags": [],
+        "checksum": "6c0808ab0b3d8e544d85d6753d3c9467",
+        "exported_at": "2026-01-28T09:40:39+00:00"
+    },
+    "10e06296-689c-4f8f-9b62-2cf5e5c54b9c": {
+        "id": 10,
+        "uuid": "10e06296-689c-4f8f-9b62-2cf5e5c54b9c",
+        "original": {
+            "url": "/media/10e06296-689c-4f8f-9b62-2cf5e5c54b9c/seo-title-10e06296.png",
+            "width": null,
+            "height": null,
+            "size": 60771,
+            "mime": "image/png"
+        },
+        "variants": {
+            "thumb": {
+                "url": "/media/10e06296-689c-4f8f-9b62-2cf5e5c54b9c/conversions/seo-title-10e06296-thumb.png",
+                "width": 150,
+                "height": 150,
+                "size": 1438
+            },
+            "medium": {
+                "url": "/media/10e06296-689c-4f8f-9b62-2cf5e5c54b9c/conversions/seo-title-10e06296-medium.png",
+                "width": 600,
+                "height": 334,
+                "size": 9712
+            },
+            "large": {
+                "url": "/media/10e06296-689c-4f8f-9b62-2cf5e5c54b9c/conversions/seo-title-10e06296-large.png",
+                "width": 1200,
+                "height": 668,
+                "size": 29414
+            },
+            "webp": {
+                "url": "/media/10e06296-689c-4f8f-9b62-2cf5e5c54b9c/conversions/seo-title-10e06296-webp.webp",
+                "width": 1200,
+                "height": 668,
+                "size": 10912
+            }
+        },
+        "alt": null,
+        "title": "Seo title",
+        "focal_point": {
+            "x": 50,
+            "y": 50
+        },
+        "tags": "Testtag",
+        "checksum": "a8b9cf24e38aeca0ea45ccedb47545f6",
+        "exported_at": "2026-01-28T09:40:39+00:00"
+    }
+}
