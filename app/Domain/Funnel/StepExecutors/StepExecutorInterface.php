@@ -2,11 +2,9 @@
 
 namespace App\Domain\Funnel\StepExecutors;
 
-use App\Domain\Funnel\FunnelRun;
-use App\Domain\Funnel\FunnelStep;
-use App\Domain\Subscriber\Subscriber;
+use Modules\Funnel\Domain\StepExecutors\StepExecutorInterface as ModuleStepExecutorInterface;
 
-interface StepExecutorInterface
+interface StepExecutorInterface extends ModuleStepExecutorInterface
 {
-    public function execute(FunnelStep $step, FunnelRun $run, Subscriber $subscriber): array;
+    // Alias for backwards compatibility - use Modules\Funnel\Domain\StepExecutors\StepExecutorInterface instead
 }

@@ -2,24 +2,9 @@
 
 namespace App\Domain\Commerce\Contracts;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\PaymentResult;
-use Illuminate\Http\Request;
+use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface as ModulePaymentGatewayInterface;
 
-interface PaymentGatewayInterface
+interface PaymentGatewayInterface extends ModulePaymentGatewayInterface
 {
-    /**
-     * Create a payment session and return redirect URL.
-     */
-    public function createPayment(Order $order): string;
-
-    /**
-     * Handle webhook callback from payment provider.
-     */
-    public function handleWebhook(Request $request): PaymentResult;
-
-    /**
-     * Get the gateway identifier.
-     */
-    public function getGatewayName(): string;
+    // Alias for backwards compatibility - use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface instead
 }

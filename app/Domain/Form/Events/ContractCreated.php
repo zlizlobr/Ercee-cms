@@ -2,18 +2,9 @@
 
 namespace App\Domain\Form\Events;
 
-use App\Domain\Form\Contract;
-use App\Domain\Subscriber\Subscriber;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Modules\Forms\Domain\Events\ContractCreated as ModuleContractCreated;
 
-class ContractCreated
+class ContractCreated extends ModuleContractCreated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public function __construct(
-        public Contract $contract,
-        public Subscriber $subscriber
-    ) {}
+    // Alias for backwards compatibility - use Modules\Forms\Domain\Events\ContractCreated instead
 }
