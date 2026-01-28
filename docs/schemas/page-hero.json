@@ -1,0 +1,142 @@
+{
+  "label": "Page Hero",
+  "label_cs": "Hero - stranka",
+  "icon": "heroicon-o-photo",
+  "order": 10,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle badge",
+      "label_cs": "Stitek",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "required": true,
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "background_media_uuid",
+      "label": "Background image",
+      "label_cs": "Obrazek na pozadi",
+      "helperText": "Media UUID (MediaPicker in CMS).",
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "badges",
+      "label": "Badges",
+      "label_cs": "Odrazky",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "text",
+          "name": "text",
+          "label": "Text",
+          "label_cs": "Text",
+          "required": true,
+          "maxLength": 80
+        }
+      ]
+    },
+    {
+      "type": "repeater",
+      "name": "stats",
+      "label": "Stats",
+      "label_cs": "Statistiky",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "text",
+          "name": "value",
+          "label": "Value",
+          "label_cs": "Hodnota",
+          "required": true,
+          "maxLength": 40
+        },
+        {
+          "type": "text",
+          "name": "label",
+          "label": "Label",
+          "label_cs": "Popisek",
+          "required": true,
+          "maxLength": 120
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "primary.label",
+      "label": "Primary CTA label",
+      "label_cs": "Text primarniho CTA",
+      "maxLength": 80
+    },
+    {
+      "type": "select",
+      "name": "primary.link.page_id",
+      "label": "Primary CTA page",
+      "label_cs": "Stranka primarniho CTA",
+      "options": {},
+      "placeholder": "Select a page..."
+    },
+    {
+      "type": "text",
+      "name": "primary.link.url",
+      "label": "Primary CTA URL",
+      "label_cs": "URL primarniho CTA",
+      "placeholder": "/page, #section, https://..."
+    },
+    {
+      "type": "text",
+      "name": "primary.link.anchor",
+      "label": "Primary CTA anchor",
+      "label_cs": "Kotva primarniho CTA",
+      "placeholder": "section-id"
+    },
+    {
+      "type": "text",
+      "name": "secondary.label",
+      "label": "Secondary CTA label",
+      "label_cs": "Text sekundarniho CTA",
+      "maxLength": 80
+    },
+    {
+      "type": "select",
+      "name": "secondary.link.page_id",
+      "label": "Secondary CTA page",
+      "label_cs": "Stranka sekundarniho CTA",
+      "options": {},
+      "placeholder": "Select a page..."
+    },
+    {
+      "type": "text",
+      "name": "secondary.link.url",
+      "label": "Secondary CTA URL",
+      "label_cs": "URL sekundarniho CTA",
+      "placeholder": "/page, #section, https://..."
+    },
+    {
+      "type": "text",
+      "name": "secondary.link.anchor",
+      "label": "Secondary CTA anchor",
+      "label_cs": "Kotva sekundarniho CTA",
+      "placeholder": "section-id"
+    }
+  ]
+}

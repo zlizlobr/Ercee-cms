@@ -1,0 +1,81 @@
+{
+  "label": "Facility Stats",
+  "label_cs": "Statistiky - pobocky",
+  "icon": "heroicon-o-chart-bar",
+  "order": 30,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "stats",
+      "label": "Stats",
+      "label_cs": "Statistiky",
+      "minItems": 1,
+      "defaultItems": 3,
+      "schema": [
+        {
+          "type": "text",
+          "name": "value",
+          "label": "Value",
+          "label_cs": "Hodnota",
+          "required": true,
+          "maxLength": 40
+        },
+        {
+          "type": "text",
+          "name": "label",
+          "label": "Label",
+          "label_cs": "Popisek",
+          "required": true,
+          "maxLength": 120
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        }
+      ]
+    }
+  ]
+}
