@@ -92,6 +92,13 @@ class FormResource extends Resource
                                     }),
                                 Forms\Components\Repeater::make('schema')
                                     ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Field Name')
+                                            ->required(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
+                                            ->alphaDash()
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
+                                            ->helperText('Use lowercase with underscores (e.g., first_name)'),
+
                                         Forms\Components\TextInput::make('label')
                                             ->label(fn (Get $get): string => $get('type') === 'section' ? 'Section title' : 'Field Label')
                                             ->required()

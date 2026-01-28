@@ -1,3 +1,62 @@
+## [v0.5.2] – 2026-01-28
+
+- release: patch --  Add new block to build, hotfix sync media (#26)
+* add premium cta block
+
+* Hotfix sync media
+- chore: update changelog for v0.5.1
+
+## [v0.5.1] – 2026-01-27
+
+- release: patch -- add Rebuildmap servis class for build public part (#25)
+* add RebuildMap for resources
+
+* update readme for flow field type and rebuildmap. Add support doc
+- chore: update changelog for v0.5.0
+
+## [v0.5.0] – 2026-01-27
+
+- release: minor -- New builder page Shema + New version Form shema (#24)
+* add Testimaniol block
+
+* udpate testimonial rating
+
+* add thema contact form block
+
+* Update contact form optimization flow
+
+* synchronization of icons for admin/public forms
+ltimpalization of tables for forms
+
+* add section field
+
+* fix send form api
+
+* Add sidebar options to setting form
+
+* Refactor form model->move label, massage title to data_options
+
+* change themaSetting to patter Resource/page
+
+* fix 2 collumns layout
+
+* reafactor load fields in from from json patter
+
+* WIP: form field types registry
+- chore: update changelog for v0.4.1
+
+## [v0.4.1] – 2026-01-26
+
+- release: patch -- Update docs, block and phpStan media docs (#23)
+* Fix composer, add docPHP for media
+
+* add media fisrt to product flow
+
+* fix select from library
+
+* Update docs for build block in Pages
+- chore: update changelog for v0.4.0
+
 ## [v0.4.0] – 2026-01-26
 
 - release: minor -- private-first media workflow (#22)
