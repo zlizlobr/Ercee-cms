@@ -1,3 +1,9 @@
+## [v0.5.3] – 2026-01-28
+
+- release: patch -- Update hero block (#27)
+* Upadate hero block
+- chore: update changelog for v0.5.2
+
 ## [v0.5.2] – 2026-01-28
 
 - release: patch --  Add new block to build, hotfix sync media (#26)
