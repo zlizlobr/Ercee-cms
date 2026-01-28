@@ -2,20 +2,9 @@
 
 namespace App\Application\Funnel\Commands;
 
-use App\Application\Contracts\CommandInterface;
+use Modules\Funnel\Application\Commands\StartFunnelCommand as ModuleStartFunnelCommand;
 
-final readonly class StartFunnelCommand implements CommandInterface
+class StartFunnelCommand extends ModuleStartFunnelCommand
 {
-    public function __construct(
-        public string $trigger,
-        public int $subscriberId,
-    ) {}
-
-    public function toArray(): array
-    {
-        return [
-            'trigger' => $this->trigger,
-            'subscriber_id' => $this->subscriberId,
-        ];
-    }
+    // Alias for backwards compatibility - use Modules\Funnel\Application\Commands\StartFunnelCommand instead
 }

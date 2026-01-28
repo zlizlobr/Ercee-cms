@@ -1,0 +1,21 @@
+{
+    "name": "ercee/module-funnel",
+    "description": "Marketing automation funnel module for Ercee CMS",
+    "type": "ercee-module",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "ercee/module-forms": "^1.0",
+        "ercee/module-commerce": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Funnel\\": "src/"
+        }
+    },
+    "extra": {
+        "ercee": {
+            "provider": "Modules\\Funnel\\FunnelModuleServiceProvider"
+        }
+    }
+}

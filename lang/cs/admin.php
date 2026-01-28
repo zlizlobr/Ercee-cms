@@ -135,6 +135,7 @@ return [
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
+                        'service_highlights' => 'Sluzby - prehled',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -164,7 +165,19 @@ return [
             'quote' => 'Citace',
             'role' => 'Pozice',
             'photo' => 'Fotka',
-            'rating' => 'Hodnocení',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'rating' => 'Hodnocení',
+            'success_title' => 'Titulek po odeslani',
+            'success_message' => 'Zprava po odeslani',
+            'submit_label' => 'Text tlacitka',
+            'more_info_label' => 'Text odkazu',
+            'services' => 'Sluzby',
+            'service_page' => 'Stranka sluzby',
+            'service_url' => 'URL sluzby',
+            'service_anchor' => 'Kotva sluzby',
+            'cta_label' => 'Text CTA',
+            'cta_page' => 'Stranka CTA',
+            'cta_url' => 'CTA URL',
+            'cta_anchor' => 'CTA kotva',
             'items' => 'Položky',
             'features' => 'Výhody',
             'feature' => 'Výhoda',
@@ -182,6 +195,12 @@ return [
             'stats' => 'Statistiky',
             'stat_value' => 'Hodnota',
             'stat_label' => 'Popisek',
+        
+        
+        
+        
+        
+        
         
         
         
@@ -219,7 +238,13 @@ return [
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
             'short_description' => 'Krátký popis',
-            'description' => 'Popis produktu',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'description' => 'Popis produktu',
+        
+        
+        
+        
+        
+        
         
         
         
@@ -242,7 +267,13 @@ return [
             'subtotal' => 'Mezisoučet',
             'shipping' => 'Doprava',
             'tax' => 'DPH',
-            'total' => 'Celkem',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'total' => 'Celkem',
+        
+        
+        
+        
+        
+        
         
         
         

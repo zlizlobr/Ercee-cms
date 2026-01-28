@@ -2,30 +2,9 @@
 
 namespace App\Domain\Funnel\StepExecutors;
 
-use App\Domain\Funnel\FunnelRun;
-use App\Domain\Funnel\FunnelStep;
-use App\Domain\Subscriber\Subscriber;
-use Illuminate\Support\Facades\Mail;
+use Modules\Funnel\Domain\StepExecutors\EmailExecutor as ModuleEmailExecutor;
 
-class EmailExecutor implements StepExecutorInterface
+class EmailExecutor extends ModuleEmailExecutor
 {
-    public function execute(FunnelStep $step, FunnelRun $run, Subscriber $subscriber): array
-    {
-        $template = $step->config['template'] ?? 'default';
-        $subject = $step->config['subject'] ?? 'Message from us';
-        $body = $step->config['body'] ?? '';
-
-        Mail::raw($body, function ($message) use ($subscriber, $subject) {
-            $message->to($subscriber->email)
-                ->subject($subject);
-        });
-
-        return [
-            'payload' => [
-                'template' => $template,
-                'subject' => $subject,
-                'recipient' => $subscriber->email,
-            ],
-        ];
-    }
+    // Alias for backwards compatibility - use Modules\Funnel\Domain\StepExecutors\EmailExecutor instead
 }

@@ -2,21 +2,9 @@
 
 namespace App\Domain\Funnel\StepExecutors;
 
-use App\Domain\Funnel\FunnelRun;
-use App\Domain\Funnel\FunnelStep;
-use App\Domain\Subscriber\Subscriber;
+use Modules\Funnel\Domain\StepExecutors\DelayExecutor as ModuleDelayExecutor;
 
-class DelayExecutor implements StepExecutorInterface
+class DelayExecutor extends ModuleDelayExecutor
 {
-    public function execute(FunnelStep $step, FunnelRun $run, Subscriber $subscriber): array
-    {
-        $seconds = $step->config['seconds'] ?? 0;
-
-        return [
-            'delay' => $seconds,
-            'payload' => [
-                'delay_seconds' => $seconds,
-            ],
-        ];
-    }
+    // Alias for backwards compatibility - use Modules\Funnel\Domain\StepExecutors\DelayExecutor instead
 }
