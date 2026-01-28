@@ -1,3 +1,11 @@
+## [v0.5.2] – 2026-01-28
+
+- release: patch --  Add new block to build, hotfix sync media (#26)
+* add premium cta block
+
+* Hotfix sync media
+- chore: update changelog for v0.5.1
+
 ## [v0.5.1] – 2026-01-27
 
 - release: patch -- add Rebuildmap servis class for build public part (#25)
