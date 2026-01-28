@@ -2,89 +2,9 @@
 
 namespace App\Domain\Commerce;
 
-use Database\Factories\PaymentFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Commerce\Domain\Payment as ModulePayment;
 
-class Payment extends Model
+class Payment extends ModulePayment
 {
-    use HasFactory;
-
-    protected static function newFactory(): PaymentFactory
-    {
-        return PaymentFactory::new();
-    }
-
-    public const STATUS_PENDING = 'pending';
-
-    public const STATUS_PAID = 'paid';
-
-    public const STATUS_FAILED = 'failed';
-
-    public const GATEWAY_STRIPE = 'stripe';
-
-    public const GATEWAY_GOPAY = 'gopay';
-
-    public const GATEWAY_COMGATE = 'comgate';
-
-    protected $fillable = [
-        'order_id',
-        'gateway',
-        'transaction_id',
-        'status',
-        'payload',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'payload' => 'array',
-        ];
-    }
-
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function scopePending($query)
-    {
-        return $query->where('status', self::STATUS_PENDING);
-    }
-
-    public function scopePaid($query)
-    {
-        return $query->where('status', self::STATUS_PAID);
-    }
-
-    public function scopeFailed($query)
-    {
-        return $query->where('status', self::STATUS_FAILED);
-    }
-
-    public function scopeByGateway($query, string $gateway)
-    {
-        return $query->where('gateway', $gateway);
-    }
-
-    public function isPaid(): bool
-    {
-        return $this->status === self::STATUS_PAID;
-    }
-
-    public function isPending(): bool
-    {
-        return $this->status === self::STATUS_PENDING;
-    }
-
-    public function markAsPaid(): void
-    {
-        $this->update(['status' => self::STATUS_PAID]);
-    }
-
-    public function markAsFailed(): void
-    {
-        $this->update(['status' => self::STATUS_FAILED]);
-    }
+    // Alias for backwards compatibility - use Modules\Commerce\Domain\Payment instead
 }

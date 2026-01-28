@@ -2,18 +2,9 @@
 
 namespace App\Domain\Commerce\Events;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Subscriber\Subscriber;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Modules\Commerce\Domain\Events\OrderPaid as ModuleOrderPaid;
 
-class OrderPaid
+class OrderPaid extends ModuleOrderPaid
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public function __construct(
-        public Order $order,
-        public Subscriber $subscriber
-    ) {}
+    // Alias for backwards compatibility - use Modules\Commerce\Domain\Events\OrderPaid instead
 }

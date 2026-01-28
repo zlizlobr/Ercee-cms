@@ -2,33 +2,9 @@
 
 namespace App\Domain\Commerce;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Commerce\Domain\Attribute as ModuleAttribute;
 
-class Attribute extends Model
+class Attribute extends ModuleAttribute
 {
-    protected $fillable = [
-        'code',
-        'name',
-        'is_filterable',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_filterable' => 'boolean',
-        ];
-    }
-
-    public function values(): HasMany
-    {
-        return $this->hasMany(AttributeValue::class);
-    }
-
-    // Scopes
-
-    public function scopeFilterable($query)
-    {
-        return $query->where('is_filterable', true);
-    }
+    // Alias for backwards compatibility - use Modules\Commerce\Domain\Attribute instead
 }

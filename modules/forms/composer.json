@@ -1,0 +1,19 @@
+{
+    "name": "ercee/module-forms",
+    "description": "Form builder and contract management module for Ercee CMS",
+    "type": "ercee-module",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Forms\\": "src/"
+        }
+    },
+    "extra": {
+        "ercee": {
+            "provider": "Modules\\Forms\\FormsModuleServiceProvider"
+        }
+    }
+}

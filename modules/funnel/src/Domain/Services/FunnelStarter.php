@@ -1,0 +1,78 @@
+<?php
+
+namespace Modules\Funnel\Domain\Services;
+
+use Modules\Funnel\Domain\Funnel;
+use Modules\Funnel\Domain\FunnelRun;
+use Modules\Funnel\Domain\Jobs\ExecuteFunnelStepJob;
+use App\Domain\Subscriber\Subscriber;
+
+class FunnelStarter
+{
+    public function startByTrigger(string $triggerType, Subscriber $subscriber): array
+    {
+        $funnels = Funnel::active()
+            ->byTrigger($triggerType)
+            ->with('steps')
+            ->get();
+
+        $runs = [];
+
+        foreach ($funnels as $funnel) {
+            if ($funnel->steps->isEmpty()) {
+                continue;
+            }
+
+            if ($this->hasRunningRun($funnel, $subscriber)) {
+                continue;
+            }
+
+            $run = $this->createRun($funnel, $subscriber);
+            $runs[] = $run;
+
+            $this->dispatchFirstStep($run);
+        }
+
+        return $runs;
+    }
+
+    public function startManually(Funnel $funnel, Subscriber $subscriber): ?FunnelRun
+    {
+        if (! $funnel->active || $funnel->steps->isEmpty()) {
+            return null;
+        }
+
+        if ($this->hasRunningRun($funnel, $subscriber)) {
+            return null;
+        }
+
+        $run = $this->createRun($funnel, $subscriber);
+        $this->dispatchFirstStep($run);
+
+        return $run;
+    }
+
+    protected function hasRunningRun(Funnel $funnel, Subscriber $subscriber): bool
+    {
+        return FunnelRun::where('funnel_id', $funnel->id)
+            ->where('subscriber_id', $subscriber->id)
+            ->running()
+            ->exists();
+    }
+
+    protected function createRun(Funnel $funnel, Subscriber $subscriber): FunnelRun
+    {
+        return FunnelRun::create([
+            'funnel_id' => $funnel->id,
+            'subscriber_id' => $subscriber->id,
+            'status' => FunnelRun::STATUS_RUNNING,
+            'current_step' => 0,
+            'started_at' => now(),
+        ]);
+    }
+
+    protected function dispatchFirstStep(FunnelRun $run): void
+    {
+        ExecuteFunnelStepJob::dispatch($run->id, 0);
+    }
+}

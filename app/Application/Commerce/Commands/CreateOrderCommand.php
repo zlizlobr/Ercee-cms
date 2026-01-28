@@ -2,20 +2,9 @@
 
 namespace App\Application\Commerce\Commands;
 
-use App\Application\Contracts\CommandInterface;
+use Modules\Commerce\Application\Commands\CreateOrderCommand as ModuleCreateOrderCommand;
 
-final readonly class CreateOrderCommand implements CommandInterface
+class CreateOrderCommand extends ModuleCreateOrderCommand
 {
-    public function __construct(
-        public int $productId,
-        public string $email,
-    ) {}
-
-    public function toArray(): array
-    {
-        return [
-            'product_id' => $this->productId,
-            'email' => $this->email,
-        ];
-    }
+    // Alias for backwards compatibility - use Modules\Commerce\Application\Commands\CreateOrderCommand instead
 }
