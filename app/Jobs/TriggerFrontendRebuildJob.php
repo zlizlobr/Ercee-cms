@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Infrastructure\GitHub\GitHubDispatchService;
+use App\Infrastructure\Frontend\FrontendRebuildService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,13 +26,22 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
         public string $reason
     ) {}
 
-    public function handle(GitHubDispatchService $gitHubDispatch): void
+    public function handle(FrontendRebuildService $rebuildService): void
     {
+        if (! $rebuildService->isEnabled()) {
+            Log::debug('Frontend rebuild skipped (disabled)', [
+                'reason' => $this->reason,
+            ]);
+
+            return;
+        }
+
         $lockKey = 'frontend_rebuild_lock';
 
         if (Cache::has($lockKey)) {
             Log::info('Frontend rebuild skipped (debounced)', [
                 'reason' => $this->reason,
+                'mode' => $rebuildService->getMode(),
             ]);
 
             return;
@@ -41,16 +50,18 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
         Cache::put($lockKey, true, 30);
 
         try {
-            $gitHubDispatch->triggerFrontendBuild($this->reason);
+            $rebuildService->trigger($this->reason);
 
             Log::info('Frontend rebuild job completed', [
                 'reason' => $this->reason,
+                'mode' => $rebuildService->getMode(),
             ]);
         } catch (\Exception $e) {
             Cache::forget($lockKey);
 
             Log::error('Frontend rebuild job failed', [
                 'reason' => $this->reason,
+                'mode' => $rebuildService->getMode(),
                 'error' => $e->getMessage(),
             ]);
 
