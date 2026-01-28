@@ -171,4 +171,42 @@ class PagePreviewController extends Controller
 
         return $data;
     }
+
+    /**
+     * Resolve testimonials block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolveTestimonialsBlock(array $data): array
+    {
+        if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
+            return $data;
+        }
+
+        $data['testimonials'] = array_map(function ($testimonial) {
+            if (! is_array($testimonial)) {
+                return $testimonial;
+            }
+
+            if (isset($testimonial['media_uuid'])) {
+                $media = Media::where('uuid', $testimonial['media_uuid'])->first();
+                if ($media) {
+                    $testimonial['image'] = $media->getUrl();
+                }
+            } elseif (
+                isset($testimonial['image'])
+                && is_string($testimonial['image'])
+                && ! filter_var($testimonial['image'], FILTER_VALIDATE_URL)
+            ) {
+                $testimonial['image'] = Storage::disk('public')->url($testimonial['image']);
+            }
+
+            unset($testimonial['media_uuid']);
+
+            return $testimonial;
+        }, $data['testimonials']);
+
+        return $data;
+    }
 }
