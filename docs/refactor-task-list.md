@@ -28,8 +28,8 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 ## Task list
 
 ### Phase 1 – Infrastructure & Core stabilizace
-- [x] **Vydefinovat core domény** (ponechat): Content (Page, Navigation, Menu), Media, ThemeSetting; zmapovat do `/app/Domain/Content` a `/app/Domain/Media` a potvrdit hranice.
-- [x] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel`, `Subscriber` + napojení na Filament resources.
+- [~] **Vydefinovat core domény** (ponechat): Content (Page, Navigation, Menu), Media, ThemeSetting; zmapovat do `/app/Domain/Content` a `/app/Domain/Media` a potvrdit hranice. (core i business domény jsou stále v `app/Domain/*`)
+- [~] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel`, `Subscriber` + napojení na Filament resources. (domény existují, ale stále v core)
 - [x] **Založit core namespace** – zatím ponecháno `App\`, připraveno pro budoucí extrakci do `Ercee\CmsCore\`.
 - [x] **Zavést core Contracts layer** (interfaces, events, DTO) pro komunikaci s moduly → `app/Contracts/Module/`, `app/Contracts/Events/`, `app/Contracts/Services/`.
 - [x] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`.
@@ -47,10 +47,10 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Riziko**: kolize jmen v configu a views; zaveden prefix `module.<name>.*`.
 
 ### Phase 3 – Migrace business logiky do modulů
-- [~] **Forms modul**: základní struktura vytvořena v `modules/forms/` s `FormsModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód.
-- [~] **Funnel modul**: základní struktura vytvořena v `modules/funnel/` s `FunnelModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód.
-- [~] **E‑commerce modul**: základní struktura vytvořena v `modules/commerce/` s `CommerceModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód.
-- [ ] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly).
+- [~] **Forms modul**: základní struktura vytvořena v `modules/forms/` s `FormsModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Form` a `app/Filament/Resources/Form*`).
+- [~] **Funnel modul**: základní struktura vytvořena v `modules/funnel/` s `FunnelModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Funnel` a `app/Filament/Resources/Funnel*`).
+- [~] **E‑commerce modul**: základní struktura vytvořena v `modules/commerce/` s `CommerceModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Commerce` a `app/Filament/Resources/*Product*`, `Order*`, `Payment*`).
+- [x] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly). (aktuálně `app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
 - [ ] **Custom blocks**: vyčlenit `app/Filament/Blocks/*` do modulů dle domény (form bloky do forms modulu, atd.).
 - [ ] **Integrace**: izolovat `app/Infrastructure/*` (např. GitHub dispatch) do dedikovaných modulů/integrací.
 - [x] **Zavést standard modulového repa** (struktura `src/`, `routes/`, `resources/`, `database/`, `config/`, `composer.json`) → implementováno.
@@ -61,9 +61,9 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 ### Phase 4 – Admin extensibility
 - [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets.
 - [x] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek.
-- [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery.
+- [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery. (seedery zatím nevytvářejí permissions)
 - [x] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků.
-- [x] **Riziko**: prefixy `module:<name>:` zavedeny v config/permissions.
+- [ ] **Riziko**: prefixy `module:<name>:` zavedeny v config/permissions. (v repu nevidím zavedené prefixy)
 
 ### Phase 5 – Release, versioning & update flow
 - [ ] **Rozdělit repo**: core jako Composer package (samostatný repo), moduly jako samostatné repa nebo mono‑repo s path repositories.
@@ -132,4 +132,3 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - Před update: zkontrolovat kompatibilitu modulů s core (`composer` constraints + release notes).
 - Automatizované testy: core unit/integration + modulové smoke tests.
 - Release proces: tag core → aktualizace modulových constraints → CI → deploy.
-

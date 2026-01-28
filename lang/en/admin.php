@@ -135,6 +135,7 @@ return [
                         'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
             'premium_cta' => 'Premium CTA',
+                        'service_highlights' => 'Service Highlights',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -164,7 +165,19 @@ return [
             'quote' => 'Quote',
             'role' => 'Role',
             'photo' => 'Photo',
-            'rating' => 'Rating',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+            'rating' => 'Rating',
+            'success_title' => 'Success title',
+            'success_message' => 'Success message',
+            'submit_label' => 'Submit label',
+            'more_info_label' => 'More info label',
+            'services' => 'Services',
+            'service_page' => 'Service page',
+            'service_url' => 'Service URL',
+            'service_anchor' => 'Service anchor',
+            'cta_label' => 'CTA label',
+            'cta_page' => 'CTA page',
+            'cta_url' => 'CTA URL',
+            'cta_anchor' => 'CTA anchor',
             'items' => 'Items',
             'features' => 'Features',
             'feature' => 'Feature',
@@ -182,6 +195,12 @@ return [
             'stats' => 'Stats',
             'stat_value' => 'Value',
             'stat_label' => 'Label',
+        
+        
+        
+        
+        
+        
         
         
         
@@ -219,7 +238,13 @@ return [
             'stock' => 'Stock',
             'is_active' => 'Active',
             'short_description' => 'Short Description',
-            'description' => 'Product Description',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+            'description' => 'Product Description',
+        
+        
+        
+        
+        
+        
         
         
         
@@ -242,7 +267,13 @@ return [
             'subtotal' => 'Subtotal',
             'shipping' => 'Shipping',
             'tax' => 'Tax',
-            'total' => 'Total',            'success_title' => 'Success title',            'success_message' => 'Success message',            'submit_label' => 'Submit label',
+            'total' => 'Total',
+        
+        
+        
+        
+        
+        
         
         
         
