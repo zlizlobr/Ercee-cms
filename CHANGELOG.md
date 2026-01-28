@@ -1,3 +1,9 @@
+## [v0.5.4] – 2026-01-28
+
+- release: patch -- Add SEO Image Renaming (#28)
+* add SEO Image Renaming
+- chore: update changelog for v0.5.3
+
 ## [v0.5.3] – 2026-01-28
 
 - release: patch -- Update hero block (#27)
