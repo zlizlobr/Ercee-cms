@@ -92,6 +92,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Media
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for media handling and SEO optimization.
+    |
+    | seo_rename_enabled: Auto-rename files to SEO-friendly names on save
+    |
+    */
+    'media' => [
+        'seo_rename_enabled' => env('MEDIA_SEO_RENAME_ENABLED', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | API Authentication
     |--------------------------------------------------------------------------
     |
