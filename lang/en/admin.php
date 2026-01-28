@@ -136,6 +136,28 @@ return [
             'capabilities' => 'Capabilities',
             'premium_cta' => 'Premium CTA',
                         'service_highlights' => 'Service Highlights',
+                        'page_hero' => 'Page Hero',
+                        'image_cta' => 'Image CTA',
+                        'image_grid' => 'Image Grid',
+                        'industries_served' => 'Industries Served',
+                        'technology_innovation' => 'Technology Innovation',
+                        'process_workflow' => 'Process Workflow',
+                        'stats_showcase' => 'Stats Showcase',
+                        'capabilities_detailed' => 'Capabilities Detailed',
+                        'process_steps' => 'Process Steps',
+                        'facility_stats' => 'Facility Stats',
+                        'facilities_grid' => 'Facilities Grid',
+                        'map_placeholder' => 'Map Placeholder',
+                        'facility_standards' => 'Facility Standards',
+                        'use_case_tabs' => 'Use Case Tabs',
+                        'stats_cards' => 'Stats Cards',
+                        'rfq_form_sidebar' => 'RFQ Form + Sidebar',
+                        'trust_showcase' => 'Trust Showcase',
+                        'documentation_hero' => 'Documentation Hero',
+                        'documentation_search' => 'Documentation Search',
+                        'doc_categories' => 'Documentation Categories',
+                        'faq' => 'FAQ',
+                        'support_cards' => 'Support Cards',
             'new' => 'New Block',
         ],
         'actions' => [
@@ -194,7 +216,38 @@ return [
             'button_url_helper' => 'Supports: /relative-path, #anchor, https://external.com',
             'stats' => 'Stats',
             'stat_value' => 'Value',
-            'stat_label' => 'Label',
+            'stat_label' => 'Label',            'background_media_uuid' => 'Background image',            'badges' => 'Badges',            'primary.label' => 'Primary CTA label',            'primary.link.page_id' => 'Primary CTA page',            'primary.link.url' => 'Primary CTA URL',            'primary.link.anchor' => 'Primary CTA anchor',            'secondary.label' => 'Secondary CTA label',            'secondary.link.page_id' => 'Secondary CTA page',            'secondary.link.url' => 'Secondary CTA URL',            'secondary.link.anchor' => 'Secondary CTA anchor',            'cta.label' => 'CTA label',            'cta.link.page_id' => 'CTA page',            'cta.link.url' => 'CTA URL',            'cta.link.anchor' => 'CTA anchor',            'image_media_uuid' => 'Image',            'steps' => 'Steps',            'benefits' => 'Benefits',            'logos' => 'Trusted logos',            'note' => 'Note',            'sidebar_title' => 'Sidebar title',            'contact_items' => 'Contact items',            'trust_items' => 'Trust indicators',            'cards' => 'Cards',            'cta_description' => 'CTA description',            'cta_background_media_uuid' => 'CTA background image',            'cta_button.label' => 'CTA button label',            'cta_button.link.page_id' => 'CTA button page',            'cta_button.link.url' => 'CTA button URL',            'cta_button.link.anchor' => 'CTA button anchor',            'placeholder' => 'Placeholder',            'quick_links' => 'Quick links',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -238,7 +291,38 @@ return [
             'stock' => 'Stock',
             'is_active' => 'Active',
             'short_description' => 'Short Description',
-            'description' => 'Product Description',
+            'description' => 'Product Description',            'background_media_uuid' => 'Background image',            'badges' => 'Badges',            'primary.label' => 'Primary CTA label',            'primary.link.page_id' => 'Primary CTA page',            'primary.link.url' => 'Primary CTA URL',            'primary.link.anchor' => 'Primary CTA anchor',            'secondary.label' => 'Secondary CTA label',            'secondary.link.page_id' => 'Secondary CTA page',            'secondary.link.url' => 'Secondary CTA URL',            'secondary.link.anchor' => 'Secondary CTA anchor',            'cta.label' => 'CTA label',            'cta.link.page_id' => 'CTA page',            'cta.link.url' => 'CTA URL',            'cta.link.anchor' => 'CTA anchor',            'image_media_uuid' => 'Image',            'steps' => 'Steps',            'benefits' => 'Benefits',            'logos' => 'Trusted logos',            'note' => 'Note',            'sidebar_title' => 'Sidebar title',            'contact_items' => 'Contact items',            'trust_items' => 'Trust indicators',            'cards' => 'Cards',            'cta_description' => 'CTA description',            'cta_background_media_uuid' => 'CTA background image',            'cta_button.label' => 'CTA button label',            'cta_button.link.page_id' => 'CTA button page',            'cta_button.link.url' => 'CTA button URL',            'cta_button.link.anchor' => 'CTA button anchor',            'placeholder' => 'Placeholder',            'quick_links' => 'Quick links',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -267,7 +351,38 @@ return [
             'subtotal' => 'Subtotal',
             'shipping' => 'Shipping',
             'tax' => 'Tax',
-            'total' => 'Total',
+            'total' => 'Total',            'background_media_uuid' => 'Background image',            'badges' => 'Badges',            'primary.label' => 'Primary CTA label',            'primary.link.page_id' => 'Primary CTA page',            'primary.link.url' => 'Primary CTA URL',            'primary.link.anchor' => 'Primary CTA anchor',            'secondary.label' => 'Secondary CTA label',            'secondary.link.page_id' => 'Secondary CTA page',            'secondary.link.url' => 'Secondary CTA URL',            'secondary.link.anchor' => 'Secondary CTA anchor',            'cta.label' => 'CTA label',            'cta.link.page_id' => 'CTA page',            'cta.link.url' => 'CTA URL',            'cta.link.anchor' => 'CTA anchor',            'image_media_uuid' => 'Image',            'steps' => 'Steps',            'benefits' => 'Benefits',            'logos' => 'Trusted logos',            'note' => 'Note',            'sidebar_title' => 'Sidebar title',            'contact_items' => 'Contact items',            'trust_items' => 'Trust indicators',            'cards' => 'Cards',            'cta_description' => 'CTA description',            'cta_background_media_uuid' => 'CTA background image',            'cta_button.label' => 'CTA button label',            'cta_button.link.page_id' => 'CTA button page',            'cta_button.link.url' => 'CTA button URL',            'cta_button.link.anchor' => 'CTA button anchor',            'placeholder' => 'Placeholder',            'quick_links' => 'Quick links',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
