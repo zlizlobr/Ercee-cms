@@ -1,3 +1,11 @@
+## [v0.5.5] – 2026-01-28
+
+- release: patch -- add service block (#30)
+* Add Services block
+
+* update composer
+- chore: update changelog for v0.5.4
+
 ## [v0.5.4] – 2026-01-28
 
 - release: patch -- Add SEO Image Renaming (#28)
