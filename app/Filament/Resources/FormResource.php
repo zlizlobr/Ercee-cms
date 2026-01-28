@@ -11,6 +11,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class FormResource extends Resource
 {
@@ -100,7 +101,24 @@ class FormResource extends Resource
 
                                         Forms\Components\TextInput::make('label')
                                             ->label(fn (Get $get): string => $get('type') === 'section' ? 'Section title' : 'Field Label')
-                                            ->required(),
+                                            ->required()
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(function (?string $state, Forms\Set $set, Get $get): void {
+                                                if ($state === null) {
+                                                    return;
+                                                }
+
+                                                if (! $get('name')) {
+                                                    $set('name', Str::snake(Str::ascii($state)));
+                                                }
+                                            }),
+
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Field Name')
+                                            ->required(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
+                                            ->alphaDash()
+                                            ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('type'), 'name'))
+                                            ->helperText('Use lowercase with underscores (e.g., first_name)'),
 
                                         Forms\Components\Select::make('type')
                                             ->label('Field Type')
@@ -139,6 +157,12 @@ class FormResource extends Resource
                                                     ->required(),
                                                 Forms\Components\TextInput::make('value')
                                                     ->required(),
+                                                Forms\Components\Select::make('icon')
+                                                    ->label('Icon')
+                                                    ->options(FormIconRegistry::options())
+                                                    ->searchable()
+                                                    ->placeholder('Select icon...')
+                                                    ->visible(fn (Get $get): bool => FormFieldTypeRegistry::supports($get('../../type'), 'options_icon')),
                                             ])
                                             ->columns(2)
                                             ->defaultItems(2)

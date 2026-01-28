@@ -3,6 +3,42 @@
 ## Purpose
 This guide tells an LLM exactly how to add a **new custom post type** and wire it through the **JSON-driven field type system** and related dependencies. Follow these steps in order. Do not skip steps.
 
+## Fast Path (Recommended) — Artisan Command
+Use the command to generate the JSON entry and translations in one go:
+```sh
+php artisan make:form-field-type <type_key>
+```
+
+Required inputs (prompted if not provided as options):
+- `category` (`input|choice|section`)
+- `renderer` (`input|textarea|select|checkbox|radio|hidden|section|checkbox_cards`)
+- `supports` (comma-separated list)
+- `label`/`description` for **en** and **cs**
+
+Optional inputs:
+- `--input-type=` (only when `renderer=input`)
+- `--options=` (JSON string, e.g. `{"required":true,"kind":"label_value"}`)
+- `--patch-frontend` (auto-insert renderer skeleton into ContactForm.astro)
+- `--frontend-path=` (override frontend repo path; default `../ercee-frontend`)
+- `--force` to overwrite an existing type
+- `--dry-run` to preview changes without writing files
+
+Example:
+```sh
+php artisan make:form-field-type checkbox_cards \
+  --category=choice \
+  --renderer=checkbox_cards \
+  --supports=name,required,helper_text,options \
+  --options='{"required":true,"kind":"label_value"}' \
+  --patch-frontend \
+  --label-en="Checkbox cards" \
+  --description-en="Multiple options displayed as cards with checkboxes." \
+  --label-cs="Checkbox karty" \
+  --description-cs="Více možností jako karty s checkboxem."
+```
+
+After running the command, continue with **Step 5** if you introduced a **new renderer**.
+
 ## Golden Rules
 - The **API remains the source of data** (values, required flags, options, etc.).
 - The **JSON registry is the source of render patterns** and available field types.
@@ -132,4 +168,3 @@ cp cms/resources/form-field-types.json public/form-field-types.json
 - Adding a new field type in JSON but not adding a renderer in Astro.
 - Changing API shape instead of using JSON for render-only metadata.
 - Not copying JSON into frontend public assets during build.
-

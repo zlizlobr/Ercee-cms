@@ -2,6 +2,7 @@
 
 namespace App\Domain\Media;
 
+use App\Domain\Content\Page;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -25,6 +26,7 @@ class BlockMediaResolver
             'image' => $this->resolveImageBlock($blockData),
             'hero' => $this->resolveHeroBlock($blockData),
             'testimonials' => $this->resolveTestimonialsBlock($blockData),
+            'premium_cta' => $this->resolvePremiumCtaBlock($blockData),
             default => $blockData,
         };
     }
@@ -113,6 +115,46 @@ class BlockMediaResolver
 
             return $testimonial;
         }, $data['testimonials']);
+
+        return $data;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolvePremiumCtaBlock(array $data): array
+    {
+        $media = null;
+
+        if (isset($data['background_media_uuid'])) {
+            $media = $this->resolveByUuid($data['background_media_uuid']);
+        } elseif (isset($data['background_image'])) {
+            $media = $this->resolveLegacyPath($data['background_image']);
+        }
+
+        if ($media) {
+            $data['background_media'] = $media;
+        }
+
+        if (isset($data['buttons']) && is_array($data['buttons'])) {
+            $data['buttons'] = array_map(function ($button) {
+                if (! is_array($button)) {
+                    return $button;
+                }
+
+                if (empty($button['url']) && ! empty($button['page_id'])) {
+                    $page = Page::find($button['page_id']);
+                    if ($page) {
+                        $button['url'] = '/'.$page->slug;
+                    }
+                }
+
+                return $button;
+            }, $data['buttons']);
+        }
+
+        unset($data['background_media_uuid'], $data['background_image']);
 
         return $data;
     }

@@ -1,0 +1,151 @@
+{
+  "section": {
+    "category": "section",
+    "label_key": "section.label",
+    "description_key": "section.description",
+    "renderer": "section",
+    "supports": ["name", "helper_text"],
+    "defaults": {}
+  },
+  "text": {
+    "category": "input",
+    "label_key": "text.label",
+    "description_key": "text.description",
+    "renderer": "input",
+    "input_type": "text",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "email": {
+    "category": "input",
+    "label_key": "email.label",
+    "description_key": "email.description",
+    "renderer": "input",
+    "input_type": "email",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "tel": {
+    "category": "input",
+    "label_key": "tel.label",
+    "description_key": "tel.description",
+    "renderer": "input",
+    "input_type": "tel",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "number": {
+    "category": "input",
+    "label_key": "number.label",
+    "description_key": "number.description",
+    "renderer": "input",
+    "input_type": "number",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "password": {
+    "category": "input",
+    "label_key": "password.label",
+    "description_key": "password.description",
+    "renderer": "input",
+    "input_type": "password",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "url": {
+    "category": "input",
+    "label_key": "url.label",
+    "description_key": "url.description",
+    "renderer": "input",
+    "input_type": "url",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "date": {
+    "category": "input",
+    "label_key": "date.label",
+    "description_key": "date.description",
+    "renderer": "input",
+    "input_type": "date",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "time": {
+    "category": "input",
+    "label_key": "time.label",
+    "description_key": "time.description",
+    "renderer": "input",
+    "input_type": "time",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "datetime-local": {
+    "category": "input",
+    "label_key": "datetime-local.label",
+    "description_key": "datetime-local.description",
+    "renderer": "input",
+    "input_type": "datetime-local",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "textarea": {
+    "category": "input",
+    "label_key": "textarea.label",
+    "description_key": "textarea.description",
+    "renderer": "textarea",
+    "supports": ["name", "required", "placeholder", "helper_text"],
+    "defaults": {}
+  },
+  "select": {
+    "category": "choice",
+    "label_key": "select.label",
+    "description_key": "select.description",
+    "renderer": "select",
+    "supports": ["name", "required", "helper_text", "options"],
+    "options": { "required": true, "kind": "label_value" },
+    "defaults": {}
+  },
+  "checkbox": {
+    "category": "choice",
+    "label_key": "checkbox.label",
+    "description_key": "checkbox.description",
+    "renderer": "checkbox",
+    "supports": ["name", "required", "helper_text"],
+    "defaults": {}
+  },
+  "radio": {
+    "category": "choice",
+    "label_key": "radio.label",
+    "description_key": "radio.description",
+    "renderer": "radio",
+    "supports": ["name", "required", "helper_text", "options"],
+    "options": { "required": true, "kind": "label_value" },
+    "defaults": {}
+  },
+  "checkbox_cards": {
+    "category": "choice",
+    "label_key": "checkbox_cards.label",
+    "description_key": "checkbox_cards.description",
+    "renderer": "checkbox_cards",
+    "supports": ["name", "required", "helper_text", "options", "options_icon"],
+    "options": { "required": true, "kind": "label_value" },
+    "defaults": {}
+  },
+  "file": {
+    "category": "input",
+    "label_key": "file.label",
+    "description_key": "file.description",
+    "renderer": "input",
+    "input_type": "file",
+    "supports": ["name", "required", "helper_text"],
+    "defaults": {}
+  },
+  "hidden": {
+    "category": "input",
+    "label_key": "hidden.label",
+    "description_key": "hidden.description",
+    "renderer": "hidden",
+    "supports": ["name"],
+    "defaults": {}
+  }
+}
