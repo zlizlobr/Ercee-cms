@@ -33,6 +33,7 @@ class PagePreviewController extends Controller
                 'testimonials' => $this->resolveTestimonialsBlock($block['data']),
                 'premium_cta' => $this->resolvePremiumCtaBlock($block['data']),
                 'service_highlights' => $this->resolveServiceHighlightsBlock($block['data']),
+                'service_highlights' => $this->resolveServiceHighlightsBlock($block['data']),
                 default => $block['data'],
             };
 
@@ -166,6 +167,11 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveServiceHighlightsBlock(array $data): array
     {
         if (isset($data['services']) && is_array($data['services'])) {
@@ -191,6 +197,10 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $link
+     * @return array<string, mixed>
+     */
     private function resolvePreviewLink(array $link): array
     {
         $url = $link['url'] ?? null;
@@ -226,6 +236,12 @@ class PagePreviewController extends Controller
         return $link;
     }
 
+    /**
+     * Normalize hero CTA fields into { label, url } objects for preview.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroCta(array $data, string $prefix): array
     {
         $labelKey = "{$prefix}_label";
