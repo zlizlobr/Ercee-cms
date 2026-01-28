@@ -90,8 +90,37 @@ class PagePreviewController extends Controller
                 $data['background_image_url_large'] = $media->getUrl('large');
             }
         } elseif (isset($data['background_image'])) {
-            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
+            $data['background_image_url'] = filter_var($data['background_image'], FILTER_VALIDATE_URL)
+                ? $data['background_image']
+                : Storage::disk('public')->url($data['background_image']);
         }
+
+        if (empty($data['title']) && ! empty($data['heading'])) {
+            $data['title'] = $data['heading'];
+        }
+
+        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
+            $data['subtitle'] = $data['subheading'];
+        }
+
+        if (
+            empty($data['cta_primary_label'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_text'])
+        ) {
+            $data['cta_primary_label'] = $data['button_text'];
+        }
+
+        if (
+            empty($data['cta_primary_url'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_url'])
+        ) {
+            $data['cta_primary_url'] = $data['button_url'];
+        }
+
+        $data = $this->resolveHeroCta($data, 'cta_primary');
+        $data = $this->resolveHeroCta($data, 'cta_secondary');
 
         return $data;
     }
@@ -167,6 +196,48 @@ class PagePreviewController extends Controller
 
                 return $button;
             }, $data['buttons']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Normalize hero CTA fields into { label, url } objects for preview.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolveHeroCta(array $data, string $prefix): array
+    {
+        $labelKey = "{$prefix}_label";
+        $pageIdKey = "{$prefix}_page_id";
+        $urlKey = "{$prefix}_url";
+
+        $label = $data[$labelKey] ?? null;
+        $url = $data[$urlKey] ?? null;
+        $pageId = $data[$pageIdKey] ?? null;
+
+        if (isset($data[$prefix]) && is_array($data[$prefix])) {
+            $cta = $data[$prefix];
+            $label = $cta['label'] ?? $label;
+            $url = $cta['url'] ?? $url;
+            $pageId = $cta['page_id'] ?? $pageId;
+        }
+
+        if (empty($url) && ! empty($pageId)) {
+            $page = Page::find($pageId);
+            if ($page) {
+                $url = '/'.$page->slug;
+            }
+        }
+
+        if (is_string($label) && $label !== '' && is_string($url) && $url !== '') {
+            $data[$prefix] = [
+                'label' => $label,
+                'url' => $url,
+            ];
+        } else {
+            unset($data[$prefix]);
         }
 
         return $data;
