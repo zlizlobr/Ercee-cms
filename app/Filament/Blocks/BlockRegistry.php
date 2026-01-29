@@ -22,6 +22,12 @@ class BlockRegistry
             return self::discoverBlocks();
         });
 
+        // Guard against stale cache entries after blocks are deleted/renamed.
+        if (collect($blockClasses)->contains(fn (string $class) => ! class_exists($class))) {
+            self::clearCache();
+            $blockClasses = self::discoverBlocks();
+        }
+
         return collect($blockClasses)
             ->map(fn (string $class) => $class::make())
             ->all();

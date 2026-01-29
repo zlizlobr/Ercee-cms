@@ -17,21 +17,21 @@ Tento dokument popisuje doporučený workflow pro simulaci více vývojářů
 
 ## 1. Struktura složek
 
-Předpoklad: hlavní repo je v `/usr/local/var/www/Ercee-cms`
+Předpoklad: hlavní repo je v `~/dev/my-project`
 
 Po vytvoření worktrees:
 
-    /usr/local/var/www/
-    ├── Ercee-cms/           # main branch (merge + DB migrace)
+    ~/dev/
+    ├── my-project/           # main branch (merge + DB migrace)
     │   └── .git/
     │
-    ├── Ercee-cms-llm-codex/     # feature/llm-codex
+    ├── my-project-llm-a/     # feature/llm-a
     │   ├── app/
     │   ├── routes/
     │   ├── .env
     │   └── ...
     │
-    ├── Ercee-cms-llm-claude/     # feature/llm-claude
+    ├── my-project-llm-b/     # feature/llm-b
     │   ├── app/
     │   ├── routes/
     │   ├── .env
@@ -44,8 +44,8 @@ Po vytvoření worktrees:
 Spusť z hlavního repa:
 
 ``` bash
-git worktree add -b feature/llm-codex ../Ercee-cms-llm-codex
-git worktree add -b feature/llm-claude ../Ercee-cms-llm-claude
+git worktree add ../my-project-llm-a feature/llm-a
+git worktree add ../my-project-llm-b feature/llm-b
 ```
 
 ------------------------------------------------------------------------
@@ -55,8 +55,8 @@ git worktree add -b feature/llm-claude ../Ercee-cms-llm-claude
 Otevři každý worktree v samostatném okně:
 
 ``` bash
-code ../Ercee-cms-llm-codex
-code ../Ercee-cms-llm-claude
+code ../my-project-llm-a
+code ../my-project-llm-b
 ```
 
 Doporučení: - Každé okno = jiný LLM / jiný system prompt - Ideálně i
@@ -64,74 +64,56 @@ jiný model
 
 ------------------------------------------------------------------------
 
-## 4. Instalace závislostí v každém worktree
-
-Po vytvoření worktree je potřeba nainstalovat PHP (a případně JS)
-závislosti:
-
-``` bash
-composer install
-# volitelně, pokud běžíš frontend build:
-npm install
-```
-
-Poznámka: Projekt očekává PHP 8.3+ (viz `docs/local-backend-setup.md`).
-Pokud máš novější verzi (např. 8.5), `composer install` může spadnout
-na nekompatibilním lockfile. V tom případě přepni PHP na 8.3 a zkus to
-znovu.
-
-------------------------------------------------------------------------
-
-## 5. .env soubory (oddělené, ale jedna DB)
+## 4. .env soubory (oddělené, ale jedna DB)
 
 Každý worktree má **vlastní `.env`**, ale databáze je stejná.
 
-Ercee CMS používá výchozí SQLite DB. Sdílený soubor DB je uložený v main
-worktree a ostatní worktrees na něj odkazují přes `DB_DATABASE`.
-
-Základ: v každé větvi zkopíruj `.env.example` do `.env` a pak změň jen
-specifické hodnoty níže.
-
-### Ercee-cms-llm-codex/.env (odlišné hodnoty)
+### my-project-llm-a/.env
 
 ``` env
-APP_NAME="Ercee CMS LLM Codex"
+APP_NAME="MyProject LLM A"
+APP_ENV=local
 APP_URL=http://localhost:8001
 
-DB_CONNECTION=sqlite
-DB_DATABASE=/usr/local/var/www/Ercee-cms/database/database.sqlite
+DB_CONNECTION=mysql
+DB_DATABASE=my_project
+DB_USERNAME=root
+DB_PASSWORD=secret
 
-SESSION_COOKIE=llm_codex_session
-CACHE_PREFIX=llm_codex_cache
+SESSION_COOKIE=llm_a_session
+CACHE_PREFIX=llm_a_cache
 ```
 
-### Ercee-cms-llm-claude/.env (odlišné hodnoty)
+### my-project-llm-b/.env
 
 ``` env
-APP_NAME="Ercee CMS LLM Claude"
+APP_NAME="MyProject LLM B"
+APP_ENV=local
 APP_URL=http://localhost:8002
 
-DB_CONNECTION=sqlite
-DB_DATABASE=/usr/local/var/www/Ercee-cms/database/database.sqlite
+DB_CONNECTION=mysql
+DB_DATABASE=my_project
+DB_USERNAME=root
+DB_PASSWORD=secret
 
-SESSION_COOKIE=llm_claude_session
-CACHE_PREFIX=llm_claude_cache
+SESSION_COOKIE=llm_b_session
+CACHE_PREFIX=llm_b_cache
 ```
 
 ⚠️ **Migrace a změny DB schématu se provádí pouze z main worktree
-(`Ercee-cms/`)**
+(`my-project/`)**
 
 ------------------------------------------------------------------------
 
-## 6. Spuštění artisan serverů
+## 5. Spuštění artisan serverů
 
 Každý worktree běží na vlastním portu:
 
 ``` bash
-# LLM Codex
+# LLM A
 php artisan serve --port=8001
 
-# LLM Claude
+# LLM B
 php artisan serve --port=8002
 ```
 
@@ -139,7 +121,7 @@ URL: - http://localhost:8001 - http://localhost:8002
 
 ------------------------------------------------------------------------
 
-## 7. Pravidla pro práci s DB (DŮLEŽITÉ)
+## 6. Pravidla pro práci s DB (DŮLEŽITÉ)
 
 -   ❌ LLM worktrees **nesmí spouštět migrace**
 -   ❌ LLM worktrees **nesmí měnit seedery**
@@ -152,37 +134,37 @@ práci s migracemi
 
 ------------------------------------------------------------------------
 
-## 8. Git workflow
+## 7. Git workflow
 
 V každém worktree:
 
 ``` bash
 git status
-git commit -am "LLM Codex: refactor XYZ"
+git commit -am "LLM A: refactor XYZ"
 ```
 
 Merge prováděj z main repa:
 
 ``` bash
-cd /usr/local/var/www/Ercee-cms
+cd ~/dev/my-project
 git checkout main
-git merge feature/llm-codex
-git merge feature/llm-claude
+git merge feature/llm-a
+git merge feature/llm-b
 ```
 
 ------------------------------------------------------------------------
 
-## 9. Doporučené role LLM
+## 8. Doporučené role LLM
 
   Větev   Role
   ------- -------------------------------
-  llm-codex   refactor, typy, architektura
-  llm-claude  feature, UX, edge cases
+  llm-a   refactor, typy, architektura
+  llm-b   feature, UX, edge cases
   main    merge, DB, finální rozhodnutí
 
 ------------------------------------------------------------------------
 
-## 10. Checklist při startu
+## 9. Checklist při startu
 
 -   [ ] vytvořen worktree
 -   [ ] unikátní `.env`
