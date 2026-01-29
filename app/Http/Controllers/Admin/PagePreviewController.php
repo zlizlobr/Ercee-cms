@@ -6,7 +6,6 @@ use App\Domain\Content\Page;
 use App\Domain\Media\Media;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 /**
@@ -89,8 +88,6 @@ class PagePreviewController extends Controller
                     $data['alt'] = $media->getCustomProperty('alt') ?? '';
                 }
             }
-        } elseif (isset($data['image'])) {
-            $data['image_url'] = Storage::disk('public')->url($data['image']);
         } elseif (isset($data['image'])) {
             $data['image_url'] = Storage::disk('public')->url($data['image']);
         }
