@@ -275,6 +275,34 @@ class PagePreviewController extends Controller
             unset($data[$prefix]);
         }
 
+        if (empty($data['title']) && ! empty($data['heading'])) {
+            $data['title'] = $data['heading'];
+        }
+
+        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
+            $data['subtitle'] = $data['subheading'];
+        }
+
+        if (
+            empty($data['cta_primary_label'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_text'])
+        ) {
+            $data['cta_primary_label'] = $data['button_text'];
+        }
+
+        if (
+            empty($data['cta_primary_url'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_url'])
+        ) {
+            $data['cta_primary_url'] = $data['button_url'];
+        }
+
+        $data = $this->resolveHeroCta($data, 'cta_primary');
+        $data = $this->resolveHeroCta($data, 'cta_secondary');
+
         return $data;
     }
+
 }
