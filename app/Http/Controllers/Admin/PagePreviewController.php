@@ -268,6 +268,88 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    private function resolvePremiumCtaBlock(array $data): array
+    {
+        if (isset($data['background_media_uuid'])) {
+            $media = Media::where('uuid', $data['background_media_uuid'])->first();
+            if ($media) {
+                $data['background_image_url'] = $media->getUrl();
+                $data['background_image_url_large'] = $media->getUrl('large');
+            }
+        } elseif (isset($data['background_image'])) {
+            $data['background_image_url'] = filter_var($data['background_image'], FILTER_VALIDATE_URL)
+                ? $data['background_image']
+                : Storage::disk('public')->url($data['background_image']);
+        }
+
+        if (empty($data['title']) && ! empty($data['heading'])) {
+            $data['title'] = $data['heading'];
+        }
+
+        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
+            $data['subtitle'] = $data['subheading'];
+        }
+
+        if (
+            empty($data['cta_primary_label'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_text'])
+        ) {
+            $data['cta_primary_label'] = $data['button_text'];
+        }
+
+        if (
+            empty($data['cta_primary_url'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_url'])
+        ) {
+            $data['cta_primary_url'] = $data['button_url'];
+        }
+
+        $data = $this->resolveHeroCta($data, 'cta_primary');
+        $data = $this->resolveHeroCta($data, 'cta_secondary');
+
+        return $data;
+    }
+
+    /**
+     * Resolve testimonials block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolveTestimonialsBlock(array $data): array
+    {
+        if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
+            return $data;
+        }
+
+        $data['testimonials'] = array_map(function ($testimonial) {
+            if (! is_array($testimonial)) {
+                return $testimonial;
+            }
+
+            if (isset($testimonial['media_uuid'])) {
+                $media = Media::where('uuid', $testimonial['media_uuid'])->first();
+                if ($media) {
+                    $testimonial['image'] = $media->getUrl();
+                }
+            } elseif (
+                isset($testimonial['image'])
+                && is_string($testimonial['image'])
+                && ! filter_var($testimonial['image'], FILTER_VALIDATE_URL)
+            ) {
+                $testimonial['image'] = Storage::disk('public')->url($testimonial['image']);
+            }
+
+            unset($testimonial['media_uuid']);
+
+            return $testimonial;
+        }, $data['testimonials']);
+
+        return $data;
+    }
+
     /**
      * Resolve premium CTA block background media URLs.
      *
@@ -299,11 +381,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-
-    /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveServiceHighlightsBlock(array $data): array
     {
         if (isset($data['services']) && is_array($data['services'])) {
@@ -329,10 +406,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * @param array<string, mixed> $link
-     * @return array<string, mixed>
-     */
     private function resolvePreviewLink(array $link): array
     {
         $url = $link['url'] ?? null;
@@ -368,12 +441,6 @@ class PagePreviewController extends Controller
         return $link;
     }
 
-    /**
-     * Normalize hero CTA fields into { label, url } objects for preview.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveHeroCta(array $data, string $prefix): array
     {
         $labelKey = "{$prefix}_label";
@@ -407,34 +474,6 @@ class PagePreviewController extends Controller
             unset($data[$prefix]);
         }
 
-        if (empty($data['title']) && ! empty($data['heading'])) {
-            $data['title'] = $data['heading'];
-        }
-
-        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
-            $data['subtitle'] = $data['subheading'];
-        }
-
-        if (
-            empty($data['cta_primary_label'])
-            && empty($data['cta_primary'])
-            && ! empty($data['button_text'])
-        ) {
-            $data['cta_primary_label'] = $data['button_text'];
-        }
-
-        if (
-            empty($data['cta_primary_url'])
-            && empty($data['cta_primary'])
-            && ! empty($data['button_url'])
-        ) {
-            $data['cta_primary_url'] = $data['button_url'];
-        }
-
-        $data = $this->resolveHeroCta($data, 'cta_primary');
-        $data = $this->resolveHeroCta($data, 'cta_secondary');
-
         return $data;
     }
-
 }
