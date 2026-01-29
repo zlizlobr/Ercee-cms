@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Commerce\Domain\Events\OrderPaid;
 
 class Order extends Model
 {
@@ -86,6 +87,12 @@ class Order extends Model
     public function markAsPaid(): void
     {
         $this->update(['status' => self::STATUS_PAID]);
+
+        $this->loadMissing('subscriber');
+
+        if ($this->subscriber) {
+            OrderPaid::dispatch($this, $this->subscriber);
+        }
     }
 
     public function markAsFailed(): void

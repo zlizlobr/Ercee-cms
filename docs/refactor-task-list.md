@@ -28,13 +28,13 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 ## Task list
 
 ### Phase 1 – Infrastructure & Core stabilizace
-- [~] **Vydefinovat core domény** (ponechat): Content (Page, Navigation, Menu), Media, ThemeSetting; zmapovat do `/app/Domain/Content` a `/app/Domain/Media` a potvrdit hranice. (core i business domény jsou stále v `app/Domain/*`)
-- [~] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel`, `Subscriber` + napojení na Filament resources. (domény existují, ale stále v core)
+- [x] **Vydefinovat core domény** (ponechat): Content (Page, Navigation, Menu), Media, ThemeSetting, Subscriber. Hranice potvrzeny — core domény v `app/Domain/Content`, `app/Domain/Media`, `app/Domain/Subscriber`; business domény v `app/Domain/*` jsou backward-compatible aliasy na modulové třídy.
+- [x] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel` identifikovány a přesunuty do modulů. `Subscriber` ponechán v core. Aliasy v `app/Domain/*` zajišťují zpětnou kompatibilitu.
 - [x] **Založit core namespace** – zatím ponecháno `App\`, připraveno pro budoucí extrakci do `Ercee\CmsCore\`.
 - [x] **Zavést core Contracts layer** (interfaces, events, DTO) pro komunikaci s moduly → `app/Contracts/Module/`, `app/Contracts/Events/`, `app/Contracts/Services/`.
 - [x] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`. (validace `version` i `dependencies` s podporou `^`, `~`, `>=`, `<` constraints implementována)
 - [x] **Definovat Composer autoload mapy** pro core a moduly (PSR‑4) a stabilizovat namespace konvence → `Modules\*` namespace.
-- [~] **Stabilizovat event bus** (Laravel events) pro integrace: core emituje eventy → `ContentPublished`, `MenuUpdated`, `MediaUploaded`. (eventy existují, ale nikde nejsou dispatchované)
+- [x] **Stabilizovat event bus** (Laravel events) pro integrace: core emituje eventy → `ContentPublished` (z `PageObserver` při publikaci), `MenuUpdated` (z `MenuObserver` při uložení), `MediaUploaded` (z `MediaObserver` při vytvoření). Modulové eventy: `ContractCreated` (z `SubmitFormHandler`), `OrderPaid` (z `Order::markAsPaid()`).
 
 ### Phase 2 – Modulový systém & registrace
 - [x] **Zvolit formát registrace modulů**: `config/modules.php` implementováno.
@@ -48,8 +48,8 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 
 ### Phase 3 – Migrace business logiky do modulů
 - [~] **Forms modul**: struktura v `modules/forms/`, resources a bloky registrovány v `FormsModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření, že žádný kód přímo neodkazuje na `App\` namespace.
-- [~] **Funnel modul**: struktura v `modules/funnel/`, Filament resources registrovány v `FunnelModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy a propojit event listeners (ContractCreated, OrderPaid).
-- [~] **E‑commerce modul**: struktura v `modules/commerce/`, Filament resources registrovány v `CommerceModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy a propojit event listeners.
+- [~] **Funnel modul**: struktura v `modules/funnel/`, resources registrovány, event listeners propojeny (`StartFunnelOnContractCreated`, `StartFunnelOnOrderPaid`). Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření referencí.
+- [~] **E‑commerce modul**: struktura v `modules/commerce/`, resources registrovány, `OrderPaid` event dispatchován z `Order::markAsPaid()`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření referencí.
 - [x] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly). (aktuálně `app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
 - [~] **Custom blocks**: form bloky přesunuty do `modules/forms/` a registrovány přes `FormsModuleServiceProvider`. `BlockRegistry` integruje modulové bloky s deduplicací aliasů. Zbývá vyčlenit další doménově specifické bloky do příslušných modulů.
 - [ ] **Integrace**: izolovat `app/Infrastructure/*` (např. GitHub dispatch) do dedikovaných modulů/integrací.
@@ -61,9 +61,9 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 ### Phase 4 – Admin extensibility
 - [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets. (napojeno na `AdminPanelProvider` — resources, pages, widgets z modulů se registrují přes `ModuleManager`)
 - [x] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek. (integrováno do `AdminPanelProvider`)
-- [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery. (seedery zatím nevytvářejí permissions)
+- [x] **Permissions**: permissions definovány v modulech, `RolesAndPermissionsSeeder` používá `ModuleManager::getAllPermissions()` pro registraci s prefixy `module.<name>.<permission>`.
 - [x] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků. (`BlockRegistry` integruje modulové bloky přes `ModuleManager`, s deduplicací alias bloků)
-- [ ] **Riziko**: prefixy `module:<name>:` zavedeny v config/permissions. (v repu nevidím zavedené prefixy)
+- [x] **Riziko**: prefixy `module.<name>.<permission>` zavedeny v `ModuleManager::getAllPermissions()` a používány v `RolesAndPermissionsSeeder`.
 
 ### Phase 5 – Release, versioning & update flow
 - [ ] **Rozdělit repo**: core jako Composer package (samostatný repo), moduly jako samostatné repa nebo mono‑repo s path repositories.

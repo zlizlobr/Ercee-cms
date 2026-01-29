@@ -31,8 +31,12 @@ class FunnelModuleServiceProvider extends BaseModuleServiceProvider
     public function getEventListeners(): array
     {
         return [
-            // Event listeners for funnel triggers
-            // Will listen to ContractCreated and OrderPaid events
+            \Modules\Forms\Domain\Events\ContractCreated::class => [
+                \Modules\Funnel\Listeners\StartFunnelOnContractCreated::class,
+            ],
+            \Modules\Commerce\Domain\Events\OrderPaid::class => [
+                \Modules\Funnel\Listeners\StartFunnelOnOrderPaid::class,
+            ],
         ];
     }
 
