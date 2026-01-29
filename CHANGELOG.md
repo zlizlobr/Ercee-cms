@@ -1,3 +1,9 @@
+## [v0.5.8] – 2026-01-29
+
+- release: patch -- sync Modules process (#33)
+
+- chore: update changelog for v0.5.7
+
 ## [v0.5.7] – 2026-01-29
 
 - release: patch -- Migrating business logic to modules Admin  (#32)
