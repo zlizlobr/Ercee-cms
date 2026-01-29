@@ -86,6 +86,10 @@ class Page extends Model
 
     public const BLOCK_TYPE_PREMIUM_CTA = 'premium_cta';
 
+    public const BLOCK_TYPE_CAPABILITIES = 'capabilities';
+
+    public const BLOCK_TYPE_PREMIUM_CTA = 'premium_cta';
+
     public const SUPPORTED_LOCALES = ['cs', 'en'];
 
     protected $fillable = [
