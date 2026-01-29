@@ -1,0 +1,145 @@
+{
+  "label": "Trust Showcase",
+  "label_cs": "Duvodni showcase",
+  "icon": "heroicon-o-shield-check",
+  "order": 75,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "cards",
+      "label": "Cards",
+      "label_cs": "Karty",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "required": true,
+          "maxLength": 200
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "cta_title",
+      "label": "CTA title",
+      "label_cs": "Nadpis CTA",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "cta_description",
+      "label": "CTA description",
+      "label_cs": "Popis CTA",
+      "rows": 2,
+      "maxLength": 400,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "cta_background_media_uuid",
+      "label": "CTA background image",
+      "label_cs": "CTA obrazek na pozadi",
+      "helperText": "Media UUID (MediaPicker in CMS).",
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "cta_button.label",
+      "label": "CTA button label",
+      "label_cs": "Text CTA tlacitka",
+      "maxLength": 80
+    },
+    {
+      "type": "select",
+      "name": "cta_button.link.page_id",
+      "label": "CTA button page",
+      "label_cs": "Stranka CTA",
+      "options": {},
+      "placeholder": "Select a page..."
+    },
+    {
+      "type": "text",
+      "name": "cta_button.link.url",
+      "label": "CTA button URL",
+      "label_cs": "URL CTA",
+      "placeholder": "/page, #section, https://..."
+    },
+    {
+      "type": "text",
+      "name": "cta_button.link.anchor",
+      "label": "CTA button anchor",
+      "label_cs": "Kotva CTA",
+      "placeholder": "section-id"
+    }
+  ]
+}

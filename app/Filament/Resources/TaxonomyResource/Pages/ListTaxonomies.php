@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\TaxonomyResource\Pages;
 
-use App\Filament\Resources\TaxonomyResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Commerce\Filament\Resources\TaxonomyResource\Pages\ListTaxonomies as ModuleListTaxonomies;
 
-class ListTaxonomies extends ListRecords
+class ListTaxonomies extends ModuleListTaxonomies
 {
-    protected static string $resource = TaxonomyResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

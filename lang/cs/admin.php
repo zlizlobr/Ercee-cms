@@ -135,6 +135,7 @@ return [
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
+                        'service_highlights' => 'Sluzby - prehled',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -164,7 +165,19 @@ return [
             'quote' => 'Citace',
             'role' => 'Pozice',
             'photo' => 'Fotka',
-            'rating' => 'Hodnocení',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'rating' => 'Hodnocení',
+            'success_title' => 'Titulek po odeslani',
+            'success_message' => 'Zprava po odeslani',
+            'submit_label' => 'Text tlacitka',
+            'more_info_label' => 'Text odkazu',
+            'services' => 'Sluzby',
+            'service_page' => 'Stranka sluzby',
+            'service_url' => 'URL sluzby',
+            'service_anchor' => 'Kotva sluzby',
+            'cta_label' => 'Text CTA',
+            'cta_page' => 'Stranka CTA',
+            'cta_url' => 'CTA URL',
+            'cta_anchor' => 'CTA kotva',
             'items' => 'Položky',
             'features' => 'Výhody',
             'feature' => 'Výhoda',
@@ -181,7 +194,56 @@ return [
             'button_url_helper' => 'Podporuje: /relativni-cesta, #anchor, https://external.com',
             'stats' => 'Statistiky',
             'stat_value' => 'Hodnota',
-            'stat_label' => 'Popisek',
+            'stat_label' => 'Popisek',            'background_media_uuid' => 'Obrazek na pozadi',            'badges' => 'Odrazky',            'primary.label' => 'Text primarniho CTA',            'primary.link.page_id' => 'Stranka primarniho CTA',            'primary.link.url' => 'URL primarniho CTA',            'primary.link.anchor' => 'Kotva primarniho CTA',            'secondary.label' => 'Text sekundarniho CTA',            'secondary.link.page_id' => 'Stranka sekundarniho CTA',            'secondary.link.url' => 'URL sekundarniho CTA',            'secondary.link.anchor' => 'Kotva sekundarniho CTA',            'cta.label' => 'Text CTA',            'cta.link.page_id' => 'Stranka CTA',            'cta.link.url' => 'URL CTA',            'cta.link.anchor' => 'Kotva CTA',            'image_media_uuid' => 'Obrazek',            'steps' => 'Kroky',            'benefits' => 'Vyhody',            'logos' => 'Loga klientu',            'note' => 'Poznamka',            'sidebar_title' => 'Nadpis sidebaru',            'contact_items' => 'Kontaktni karty',            'trust_items' => 'Duvodni body',            'cards' => 'Karty',            'cta_description' => 'Popis CTA',            'cta_background_media_uuid' => 'CTA obrazek na pozadi',            'cta_button.label' => 'Text CTA tlacitka',            'cta_button.link.page_id' => 'Stranka CTA',            'cta_button.link.url' => 'URL CTA',            'cta_button.link.anchor' => 'Kotva CTA',            'placeholder' => 'Placeholder',            'quick_links' => 'Rychle odkazy',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -219,7 +281,13 @@ return [
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
             'short_description' => 'Krátký popis',
-            'description' => 'Popis produktu',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'description' => 'Popis produktu',
+        
+        
+        
+        
+        
+        
         
         
         
@@ -242,7 +310,13 @@ return [
             'subtotal' => 'Mezisoučet',
             'shipping' => 'Doprava',
             'tax' => 'DPH',
-            'total' => 'Celkem',            'success_title' => 'Titulek po odeslani',            'success_message' => 'Zprava po odeslani',            'submit_label' => 'Text tlacitka',
+            'total' => 'Celkem',
+        
+        
+        
+        
+        
+        
         
         
         

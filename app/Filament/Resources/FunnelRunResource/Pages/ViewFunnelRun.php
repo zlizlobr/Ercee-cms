@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\FunnelRunResource\Pages;
 
-use App\Filament\Resources\FunnelRunResource;
-use Filament\Resources\Pages\ViewRecord;
+use Modules\Funnel\Filament\Resources\FunnelRunResource\Pages\ViewFunnelRun as ModuleViewFunnelRun;
 
-class ViewFunnelRun extends ViewRecord
+class ViewFunnelRun extends ModuleViewFunnelRun
 {
-    protected static string $resource = FunnelRunResource::class;
+    // Alias for backwards compatibility
 }

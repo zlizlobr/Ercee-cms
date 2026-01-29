@@ -8,14 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
-/**
- * Resolve media URLs for the admin page preview view.
- */
 class PagePreviewController extends Controller
 {
-    /**
-     * Render the preview view with resolved block media.
-     */
     public function __invoke(Page $page): View
     {
         $blocks = $this->resolveMediaInBlocks($page->getBlocks());
@@ -26,12 +20,6 @@ class PagePreviewController extends Controller
         ]);
     }
 
-    /**
-     * Resolve media URLs for block data used in preview.
-     *
-     * @param array<int, array<string, mixed>> $blocks
-     * @return array<int, array<string, mixed>>
-     */
     private function resolveMediaInBlocks(array $blocks): array
     {
         return array_map(function ($block) {
@@ -44,6 +32,7 @@ class PagePreviewController extends Controller
                 'hero' => $this->resolveHeroBlock($block['data']),
                 'testimonials' => $this->resolveTestimonialsBlock($block['data']),
                 'premium_cta' => $this->resolvePremiumCtaBlock($block['data']),
+                'service_highlights' => $this->resolveServiceHighlightsBlock($block['data']),
                 default => $block['data'],
             };
 
@@ -51,12 +40,6 @@ class PagePreviewController extends Controller
         }, $blocks);
     }
 
-    /**
-     * Resolve image block media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveImageBlock(array $data): array
     {
         if (isset($data['media_uuid'])) {
@@ -75,12 +58,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * Resolve hero block media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveHeroBlock(array $data): array
     {
         if (isset($data['background_media_uuid'])) {
@@ -125,12 +102,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * Resolve testimonials block media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveTestimonialsBlock(array $data): array
     {
         if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
@@ -163,12 +134,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * Resolve premium CTA block background media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolvePremiumCtaBlock(array $data): array
     {
         if (isset($data['background_media_uuid'])) {
@@ -201,12 +166,66 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * Normalize hero CTA fields into { label, url } objects for preview.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
+    private function resolveServiceHighlightsBlock(array $data): array
+    {
+        if (isset($data['services']) && is_array($data['services'])) {
+            $data['services'] = array_map(function ($service) {
+                if (! is_array($service)) {
+                    return $service;
+                }
+
+                if (isset($service['link']) && is_array($service['link'])) {
+                    $service['link'] = $this->resolvePreviewLink($service['link']);
+                }
+
+                return $service;
+            }, $data['services']);
+        }
+
+        if (isset($data['cta']) && is_array($data['cta'])) {
+            if (isset($data['cta']['link']) && is_array($data['cta']['link'])) {
+                $data['cta']['link'] = $this->resolvePreviewLink($data['cta']['link']);
+            }
+        }
+
+        return $data;
+    }
+
+    private function resolvePreviewLink(array $link): array
+    {
+        $url = $link['url'] ?? null;
+        $pageId = $link['page_id'] ?? null;
+        $anchor = $link['anchor'] ?? null;
+
+        if (empty($url) && ! empty($pageId)) {
+            $page = Page::find($pageId);
+            if ($page) {
+                $url = '/'.$page->slug;
+            }
+        }
+
+        if (empty($url) && ! empty($anchor)) {
+            $url = '#'.ltrim((string) $anchor, '#');
+        }
+
+        if (
+            is_string($url)
+            && $url !== ''
+            && ! empty($anchor)
+            && strpos($url, '#') === false
+        ) {
+            $url .= '#'.ltrim((string) $anchor, '#');
+        }
+
+        if (is_string($url) && $url !== '') {
+            $link['url'] = $url;
+        } else {
+            unset($link['url']);
+        }
+
+        return $link;
+    }
+
     private function resolveHeroCta(array $data, string $prefix): array
     {
         $labelKey = "{$prefix}_label";

@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\TaxonomyResource\Pages;
 
-use App\Filament\Resources\TaxonomyResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Commerce\Filament\Resources\TaxonomyResource\Pages\EditTaxonomy as ModuleEditTaxonomy;
 
-class EditTaxonomy extends EditRecord
+class EditTaxonomy extends ModuleEditTaxonomy
 {
-    protected static string $resource = TaxonomyResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

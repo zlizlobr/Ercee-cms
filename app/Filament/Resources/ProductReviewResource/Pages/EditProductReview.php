@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\ProductReviewResource\Pages;
 
-use App\Filament\Resources\ProductReviewResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Commerce\Filament\Resources\ProductReviewResource\Pages\EditProductReview as ModuleEditProductReview;
 
-class EditProductReview extends EditRecord
+class EditProductReview extends ModuleEditProductReview
 {
-    protected static string $resource = ProductReviewResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

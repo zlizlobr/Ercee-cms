@@ -1,0 +1,96 @@
+<?php
+
+namespace Modules\Commerce\Filament\Resources;
+
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Modules\Commerce\Domain\Attribute;
+use Modules\Commerce\Filament\Resources\AttributeResource\Pages;
+
+class AttributeResource extends Resource
+{
+    protected static ?string $model = Attribute::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+
+    protected static ?string $navigationGroup = 'Products';
+
+    protected static ?int $navigationSort = 3;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('code')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->helperText('Machine-readable code (e.g., color, size)'),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255)
+                    ->helperText('Human-readable name'),
+                Forms\Components\Toggle::make('is_filterable')
+                    ->label('Filterable')
+                    ->helperText('Allow customers to filter products by this attribute'),
+                Forms\Components\Repeater::make('values')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\TextInput::make('value')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('slug')
+                            ->maxLength(255),
+                    ])
+                    ->columns(2)
+                    ->defaultItems(0)
+                    ->addActionLabel('Add Value'),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_filterable')
+                    ->boolean()
+                    ->label('Filterable'),
+                Tables\Columns\TextColumn::make('values_count')
+                    ->counts('values')
+                    ->label('Values'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                Tables\Filters\TernaryFilter::make('is_filterable')
+                    ->label('Filterable'),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListAttributes::route('/'),
+            'create' => Pages\CreateAttribute::route('/create'),
+            'edit' => Pages\EditAttribute::route('/{record}/edit'),
+        ];
+    }
+}

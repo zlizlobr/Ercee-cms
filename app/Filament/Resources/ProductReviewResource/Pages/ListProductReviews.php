@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\ProductReviewResource\Pages;
 
-use App\Filament\Resources\ProductReviewResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Commerce\Filament\Resources\ProductReviewResource\Pages\ListProductReviews as ModuleListProductReviews;
 
-class ListProductReviews extends ListRecords
+class ListProductReviews extends ModuleListProductReviews
 {
-    protected static string $resource = ProductReviewResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

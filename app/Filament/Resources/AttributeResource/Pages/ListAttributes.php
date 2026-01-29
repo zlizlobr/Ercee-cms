@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\AttributeResource\Pages;
 
-use App\Filament\Resources\AttributeResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Commerce\Filament\Resources\AttributeResource\Pages\ListAttributes as ModuleListAttributes;
 
-class ListAttributes extends ListRecords
+class ListAttributes extends ModuleListAttributes
 {
-    protected static string $resource = AttributeResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

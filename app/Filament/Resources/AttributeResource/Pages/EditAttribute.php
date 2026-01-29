@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\AttributeResource\Pages;
 
-use App\Filament\Resources\AttributeResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Commerce\Filament\Resources\AttributeResource\Pages\EditAttribute as ModuleEditAttribute;
 
-class EditAttribute extends EditRecord
+class EditAttribute extends ModuleEditAttribute
 {
-    protected static string $resource = AttributeResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

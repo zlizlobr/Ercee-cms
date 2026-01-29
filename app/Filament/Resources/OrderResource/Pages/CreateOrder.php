@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\OrderResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Commerce\Filament\Resources\OrderResource\Pages\CreateOrder as ModuleCreateOrder;
 
-class CreateOrder extends CreateRecord
+class CreateOrder extends ModuleCreateOrder
 {
-    protected static string $resource = OrderResource::class;
+    // Alias for backwards compatibility
 }

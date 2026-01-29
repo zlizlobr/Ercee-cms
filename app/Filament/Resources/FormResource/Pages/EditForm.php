@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\FormResource\Pages;
 
-use App\Filament\Resources\FormResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Forms\Filament\Resources\FormResource\Pages\EditForm as ModuleEditForm;
 
-class EditForm extends EditRecord
+class EditForm extends ModuleEditForm
 {
-    protected static string $resource = FormResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

@@ -32,6 +32,8 @@ class Page extends Model
 
     public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
 
+    public const BLOCK_TYPE_SERVICE_HIGHLIGHTS = 'service_highlights';
+
     public const BLOCK_TYPE_CONTACT_FORM = 'contact_form';
 
     public const BLOCK_TYPE_TESTIMONIALS = 'testimonials';
@@ -72,6 +74,7 @@ class Page extends Model
             self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
             self::BLOCK_TYPE_CAPABILITIES => __('admin.page.blocks.capabilities'),
             self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
+            self::BLOCK_TYPE_SERVICE_HIGHLIGHTS => __('admin.page.blocks.service_highlights'),
         ];
     }
 

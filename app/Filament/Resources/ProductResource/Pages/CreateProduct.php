@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\ProductResource\Pages;
 
-use App\Filament\Resources\ProductResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Commerce\Filament\Resources\ProductResource\Pages\CreateProduct as ModuleCreateProduct;
 
-class CreateProduct extends CreateRecord
+class CreateProduct extends ModuleCreateProduct
 {
-    protected static string $resource = ProductResource::class;
+    // Alias for backwards compatibility
 }

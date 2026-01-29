@@ -1,3 +1,33 @@
+## [v0.5.7] – 2026-01-29
+
+- release: patch -- Migrating business logic to modules Admin  (#32)
+* Migrating business logic to modules Admin
+
+* Ecommerce module
+
+* Funnel modules
+- chore: update changelog for v0.5.6
+
+## [v0.5.6] – 2026-01-29
+
+- release: patch -- Add all thema blocks to builder (#31)
+* add schema for new blocks from all thema
+
+* chunk 01/03
+
+* chunk 02/03
+
+* chunk 03/03
+- chore: update changelog for v0.5.5
+
+## [v0.5.5] – 2026-01-28
+
+- release: patch -- add service block (#30)
+* Add Services block
+
+* update composer
+- chore: update changelog for v0.5.4
+
 ## [v0.5.4] – 2026-01-28
 
 - release: patch -- Add SEO Image Renaming (#28)
