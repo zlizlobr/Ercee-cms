@@ -1,0 +1,49 @@
+{
+  "label": "Documentation Search",
+  "label_cs": "Dokumentace - vyhledavani",
+  "icon": "heroicon-o-magnifying-glass",
+  "order": 20,
+  "fields": [
+    {
+      "type": "text",
+      "name": "placeholder",
+      "label": "Placeholder",
+      "label_cs": "Placeholder",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "button_label",
+      "label": "Button label",
+      "label_cs": "Text tlacitka",
+      "maxLength": 80
+    },
+    {
+      "type": "repeater",
+      "name": "quick_links",
+      "label": "Quick links",
+      "label_cs": "Rychle odkazy",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "text",
+          "name": "label",
+          "label": "Label",
+          "label_cs": "Text",
+          "required": true,
+          "maxLength": 80
+        },
+        {
+          "type": "text",
+          "name": "anchor",
+          "label": "Anchor",
+          "label_cs": "Kotva",
+          "placeholder": "section-id",
+          "required": true,
+          "maxLength": 80
+        }
+      ]
+    }
+  ]
+}

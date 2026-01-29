@@ -136,6 +136,28 @@ return [
             'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
                         'service_highlights' => 'Sluzby - prehled',
+                        'page_hero' => 'Hero - stranka',
+                        'image_cta' => 'CTA s obrazkem',
+                        'image_grid' => 'Mrizka obrazku',
+                        'industries_served' => 'Obsluhovane obory',
+                        'technology_innovation' => 'Technologie a inovace',
+                        'process_workflow' => 'Procesni workflow',
+                        'stats_showcase' => 'Statistiky - showcase',
+                        'capabilities_detailed' => 'Schopnosti - detail',
+                        'process_steps' => 'Procesni kroky',
+                        'facility_stats' => 'Statistiky - pobocky',
+                        'facilities_grid' => 'Pobocky - seznam',
+                        'map_placeholder' => 'Mapa - placeholder',
+                        'facility_standards' => 'Standardy pobocky',
+                        'use_case_tabs' => 'Use cases - zalozky',
+                        'stats_cards' => 'Statistiky - karty',
+                        'rfq_form_sidebar' => 'Poptavka + sidebar',
+                        'trust_showcase' => 'Duvodni showcase',
+                        'documentation_hero' => 'Dokumentace - hero',
+                        'documentation_search' => 'Dokumentace - vyhledavani',
+                        'doc_categories' => 'Kategorie dokumentace',
+                        'faq' => 'FAQ',
+                        'support_cards' => 'Podpora - karty',
             'new' => 'Nový blok',
         ],
         'actions' => [
@@ -194,7 +216,44 @@ return [
             'button_url_helper' => 'Podporuje: /relativni-cesta, #anchor, https://external.com',
             'stats' => 'Statistiky',
             'stat_value' => 'Hodnota',
-            'stat_label' => 'Popisek',
+            'stat_label' => 'Popisek',            'background_media_uuid' => 'Obrazek na pozadi',            'badges' => 'Odrazky',            'primary.label' => 'Text primarniho CTA',            'primary.link.page_id' => 'Stranka primarniho CTA',            'primary.link.url' => 'URL primarniho CTA',            'primary.link.anchor' => 'Kotva primarniho CTA',            'secondary.label' => 'Text sekundarniho CTA',            'secondary.link.page_id' => 'Stranka sekundarniho CTA',            'secondary.link.url' => 'URL sekundarniho CTA',            'secondary.link.anchor' => 'Kotva sekundarniho CTA',            'cta.label' => 'Text CTA',            'cta.link.page_id' => 'Stranka CTA',            'cta.link.url' => 'URL CTA',            'cta.link.anchor' => 'Kotva CTA',            'image_media_uuid' => 'Obrazek',            'steps' => 'Kroky',            'benefits' => 'Vyhody',            'logos' => 'Loga klientu',            'note' => 'Poznamka',            'sidebar_title' => 'Nadpis sidebaru',            'contact_items' => 'Kontaktni karty',            'trust_items' => 'Duvodni body',            'cards' => 'Karty',            'cta_description' => 'Popis CTA',            'cta_background_media_uuid' => 'CTA obrazek na pozadi',            'cta_button.label' => 'Text CTA tlacitka',            'cta_button.link.page_id' => 'Stranka CTA',            'cta_button.link.url' => 'URL CTA',            'cta_button.link.anchor' => 'Kotva CTA',            'placeholder' => 'Placeholder',            'quick_links' => 'Rychle odkazy',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -238,7 +297,38 @@ return [
             'stock' => 'Skladem',
             'is_active' => 'Aktivní',
             'short_description' => 'Krátký popis',
-            'description' => 'Popis produktu',
+            'description' => 'Popis produktu',            'background_media_uuid' => 'Obrazek na pozadi',            'badges' => 'Odrazky',            'primary.label' => 'Text primarniho CTA',            'primary.link.page_id' => 'Stranka primarniho CTA',            'primary.link.url' => 'URL primarniho CTA',            'primary.link.anchor' => 'Kotva primarniho CTA',            'secondary.label' => 'Text sekundarniho CTA',            'secondary.link.page_id' => 'Stranka sekundarniho CTA',            'secondary.link.url' => 'URL sekundarniho CTA',            'secondary.link.anchor' => 'Kotva sekundarniho CTA',            'cta.label' => 'Text CTA',            'cta.link.page_id' => 'Stranka CTA',            'cta.link.url' => 'URL CTA',            'cta.link.anchor' => 'Kotva CTA',            'image_media_uuid' => 'Obrazek',            'steps' => 'Kroky',            'benefits' => 'Vyhody',            'logos' => 'Loga klientu',            'note' => 'Poznamka',            'sidebar_title' => 'Nadpis sidebaru',            'contact_items' => 'Kontaktni karty',            'trust_items' => 'Duvodni body',            'cards' => 'Karty',            'cta_description' => 'Popis CTA',            'cta_background_media_uuid' => 'CTA obrazek na pozadi',            'cta_button.label' => 'Text CTA tlacitka',            'cta_button.link.page_id' => 'Stranka CTA',            'cta_button.link.url' => 'URL CTA',            'cta_button.link.anchor' => 'Kotva CTA',            'placeholder' => 'Placeholder',            'quick_links' => 'Rychle odkazy',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -267,7 +357,38 @@ return [
             'subtotal' => 'Mezisoučet',
             'shipping' => 'Doprava',
             'tax' => 'DPH',
-            'total' => 'Celkem',
+            'total' => 'Celkem',            'background_media_uuid' => 'Obrazek na pozadi',            'badges' => 'Odrazky',            'primary.label' => 'Text primarniho CTA',            'primary.link.page_id' => 'Stranka primarniho CTA',            'primary.link.url' => 'URL primarniho CTA',            'primary.link.anchor' => 'Kotva primarniho CTA',            'secondary.label' => 'Text sekundarniho CTA',            'secondary.link.page_id' => 'Stranka sekundarniho CTA',            'secondary.link.url' => 'URL sekundarniho CTA',            'secondary.link.anchor' => 'Kotva sekundarniho CTA',            'cta.label' => 'Text CTA',            'cta.link.page_id' => 'Stranka CTA',            'cta.link.url' => 'URL CTA',            'cta.link.anchor' => 'Kotva CTA',            'image_media_uuid' => 'Obrazek',            'steps' => 'Kroky',            'benefits' => 'Vyhody',            'logos' => 'Loga klientu',            'note' => 'Poznamka',            'sidebar_title' => 'Nadpis sidebaru',            'contact_items' => 'Kontaktni karty',            'trust_items' => 'Duvodni body',            'cards' => 'Karty',            'cta_description' => 'Popis CTA',            'cta_background_media_uuid' => 'CTA obrazek na pozadi',            'cta_button.label' => 'Text CTA tlacitka',            'cta_button.link.page_id' => 'Stranka CTA',            'cta_button.link.url' => 'URL CTA',            'cta_button.link.anchor' => 'Kotva CTA',            'placeholder' => 'Placeholder',            'quick_links' => 'Rychle odkazy',
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
