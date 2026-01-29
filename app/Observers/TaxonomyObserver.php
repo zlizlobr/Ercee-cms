@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Domain\Commerce\Taxonomy;
+use Modules\Commerce\Domain\Taxonomy;
 use App\Jobs\TriggerFrontendRebuildJob;
 use App\Support\FrontendRebuildRegistry;
 

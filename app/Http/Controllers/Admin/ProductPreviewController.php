@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Domain\Commerce\Product;
-use App\Domain\Commerce\Services\ProductPricingService;
+use Modules\Commerce\Domain\Product;
+use Modules\Commerce\Domain\Services\ProductPricingService;
 use App\Domain\Media\Media;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;

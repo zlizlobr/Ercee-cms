@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;

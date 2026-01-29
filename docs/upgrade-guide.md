@@ -126,12 +126,12 @@ Laravel automaticky nacte migrace ze vsech registrovanych modulu.
 
 ## Checklist pro upgrade
 
-1. [ ] Aktualizovat `composer.json` — pridat path repositories a autoload
-2. [ ] Spustit `composer dump-autoload`
-3. [ ] Pridat moduly do `config/modules.php`
-4. [ ] Spustit migrace: `php artisan migrate`
-5. [ ] Spustit seeder: `php artisan db:seed --class=RolesAndPermissionsSeeder`
-6. [ ] Aktualizovat vlastni kod pouzivajici stare namespace
+1. [x] Aktualizovat `composer.json` — pridat path repositories a autoload
+2. [x] Spustit `composer dump-autoload`
+3. [x] Pridat moduly do `config/modules.php`
+4. [x] Spustit migrace: `php artisan migrate`
+5. [x] Spustit seeder: `php artisan db:seed --class=RolesAndPermissionsSeeder`
+6. [x] Aktualizovat vlastni kod pouzivajici stare namespace
 7. [ ] Vymazat cache: `php artisan cache:clear && php artisan config:clear`
 8. [ ] Overit funkcnost v admin panelu
 9. [ ] Spustit testy: `composer test`

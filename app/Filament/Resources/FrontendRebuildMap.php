@@ -6,11 +6,11 @@ use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
 use App\Domain\Content\Menu;
-use App\Domain\Form\Form;
-use App\Domain\Commerce\Product;
-use App\Domain\Commerce\Taxonomy;
-use App\Domain\Commerce\Attribute;
-use App\Domain\Commerce\ProductReview;
+use Modules\Forms\Domain\Form;
+use Modules\Commerce\Domain\Product;
+use Modules\Commerce\Domain\Taxonomy;
+use Modules\Commerce\Domain\Attribute;
+use Modules\Commerce\Domain\ProductReview;
 use App\Domain\Media\Media;
 
 class FrontendRebuildMap

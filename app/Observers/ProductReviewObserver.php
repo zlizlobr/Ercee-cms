@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Domain\Commerce\ProductReview;
+use Modules\Commerce\Domain\ProductReview;
 use App\Jobs\TriggerFrontendRebuildJob;
 use App\Support\FrontendRebuildRegistry;
 

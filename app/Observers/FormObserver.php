@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Domain\Form\Form;
+use Modules\Forms\Domain\Form;
 use App\Jobs\TriggerFrontendRebuildJob;
 use App\Support\FrontendRebuildRegistry;
 

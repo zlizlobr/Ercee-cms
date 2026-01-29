@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Form\Contract;
-use App\Domain\Form\Events\ContractCreated;
-use App\Domain\Form\Form;
+use Modules\Forms\Domain\Contract;
+use Modules\Forms\Domain\Events\ContractCreated;
+use Modules\Forms\Domain\Form;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;

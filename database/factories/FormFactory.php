@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Form\Form;
+use Modules\Forms\Domain\Form;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

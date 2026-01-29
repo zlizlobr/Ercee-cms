@@ -2,15 +2,10 @@
 
 namespace App\Providers;
 
-use App\Domain\Commerce\Attribute;
-use App\Domain\Commerce\Product;
-use App\Domain\Commerce\ProductReview;
-use App\Domain\Commerce\Taxonomy;
 use App\Domain\Content\Menu;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
-use App\Domain\Form\Form;
 use App\Domain\Media\Media;
 use App\Domain\Media\MediaLibrary;
 use App\Observers\AttributeObserver;
@@ -19,17 +14,22 @@ use App\Observers\MediaLibraryObserver;
 use App\Observers\MediaObserver;
 use App\Observers\MenuObserver;
 use App\Observers\NavigationObserver;
+use App\Observers\PageObserver;
 use App\Observers\ProductObserver;
 use App\Observers\ProductReviewObserver;
-use App\Observers\PageObserver;
 use App\Observers\TaxonomyObserver;
 use App\Observers\ThemeSettingObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Modules\Commerce\Domain\Attribute;
 use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
 use Modules\Commerce\Domain\Gateways\StripeGateway;
+use Modules\Commerce\Domain\Product;
+use Modules\Commerce\Domain\ProductReview;
+use Modules\Commerce\Domain\Taxonomy;
+use Modules\Forms\Domain\Form;
 
 class AppServiceProvider extends ServiceProvider
 {
