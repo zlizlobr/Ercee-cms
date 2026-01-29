@@ -32,6 +32,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'non-existent-transaction',
             status: Payment::STATUS_PAID,
             success: true,
+            signatureVerified: true,
         );
 
         $result = $this->handler->handle($command);
@@ -63,6 +64,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'txn_123',
             status: Payment::STATUS_PAID,
             success: true,
+            signatureVerified: true,
             payload: ['event_id' => 'evt_123'],
         );
 
@@ -105,6 +107,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'txn_456',
             status: Payment::STATUS_FAILED,
             success: false,
+            signatureVerified: true,
         );
 
         $result = $this->handler->handle($command);

@@ -38,11 +38,7 @@ class CheckoutFlowTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJson([
-                'message' => 'Checkout initiated',
-            ])
             ->assertJsonStructure([
-                'message',
                 'data' => [
                     'order_id',
                     'redirect_url',

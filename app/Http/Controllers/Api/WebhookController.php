@@ -39,6 +39,7 @@ class WebhookController extends Controller
             transactionId: $gatewayResult->transactionId,
             status: $gatewayResult->status,
             success: $gatewayResult->success,
+            signatureVerified: true,
             payload: $gatewayResult->payload,
         );
 

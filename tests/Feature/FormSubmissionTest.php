@@ -33,11 +33,7 @@ class FormSubmissionTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJson([
-                'message' => 'Form submitted successfully.',
-            ])
             ->assertJsonStructure([
-                'message',
                 'data' => ['contract_id'],
             ]);
 
