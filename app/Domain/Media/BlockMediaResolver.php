@@ -3,12 +3,8 @@
 namespace App\Domain\Media;
 
 use App\Domain\Content\Page;
-use App\Domain\Content\Page;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * Resolve block media references from UUIDs or legacy storage paths.
- */
 /**
  * Resolve block media references from UUIDs or legacy storage paths.
  */
@@ -24,12 +20,6 @@ class BlockMediaResolver
      * @param array<string, mixed> $blockData
      * @return array<string, mixed>
      */
-    /**
-     * Resolve a single block's media data by block type.
-     *
-     * @param array<string, mixed> $blockData
-     * @return array<string, mixed>
-     */
     public function resolve(array $blockData, string $blockType): array
     {
         return match ($blockType) {
@@ -38,15 +28,10 @@ class BlockMediaResolver
             'testimonials' => $this->resolveTestimonialsBlock($blockData),
             'premium_cta' => $this->resolvePremiumCtaBlock($blockData),
             'service_highlights' => $this->resolveServiceHighlightsBlock($blockData),
-            'service_highlights' => $this->resolveServiceHighlightsBlock($blockData),
             default => $blockData,
         };
     }
 
-    /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     /**
      * @param array<string, mixed> $data
      * @return array<string, mixed>
@@ -73,10 +58,6 @@ class BlockMediaResolver
         return $data;
     }
 
-    /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     /**
      * @param array<string, mixed> $data
      * @return array<string, mixed>
@@ -329,50 +310,6 @@ class BlockMediaResolver
     }
 
     /**
-     * Normalize hero CTA fields into { label, url } objects.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
-    private function resolveHeroCta(array $data, string $prefix): array
-    {
-        $labelKey = "{$prefix}_label";
-        $pageIdKey = "{$prefix}_page_id";
-        $urlKey = "{$prefix}_url";
-
-        $label = $data[$labelKey] ?? null;
-        $url = $data[$urlKey] ?? null;
-        $pageId = $data[$pageIdKey] ?? null;
-
-        if (isset($data[$prefix]) && is_array($data[$prefix])) {
-            $cta = $data[$prefix];
-            $label = $cta['label'] ?? $label;
-            $url = $cta['url'] ?? $url;
-            $pageId = $cta['page_id'] ?? $pageId;
-        }
-
-        if (empty($url) && ! empty($pageId)) {
-            $page = Page::find($pageId);
-            if ($page) {
-                $url = '/'.$page->slug;
-            }
-        }
-
-        if (is_string($label) && $label !== '' && is_string($url) && $url !== '') {
-            $data[$prefix] = [
-                'label' => $label,
-                'url' => $url,
-            ];
-        } else {
-            unset($data[$prefix]);
-        }
-
-        unset($data[$labelKey], $data[$pageIdKey], $data[$urlKey]);
-
-        return $data;
-    }
-
-    /**
      * Resolve a media manifest entry and map it to API format.
      *
      * @return array<string, mixed>|null
@@ -388,11 +325,6 @@ class BlockMediaResolver
         return $this->manifestService->toApiFormat($entry);
     }
 
-    /**
-     * Resolve a legacy public storage path into a media-like payload.
-     *
-     * @return array<string, mixed>|null
-     */
     /**
      * Resolve a legacy public storage path into a media-like payload.
      *
@@ -426,9 +358,6 @@ class BlockMediaResolver
     /**
      * @return array{width: int|null, height: int|null}
      */
-    /**
-     * @return array{width: int|null, height: int|null}
-     */
     private function getImageDimensions(string $path): array
     {
         if (! file_exists($path)) {
@@ -446,9 +375,6 @@ class BlockMediaResolver
     /**
      * Get a file MIME type from disk.
      */
-    /**
-     * Get a file MIME type from disk.
-     */
     private function getMimeType(string $path): ?string
     {
         if (! file_exists($path)) {
@@ -458,12 +384,6 @@ class BlockMediaResolver
         return mime_content_type($path) ?: null;
     }
 
-    /**
-     * Resolve all blocks that contain media references.
-     *
-     * @param array<int, array<string, mixed>> $blocks
-     * @return array<int, array<string, mixed>>
-     */
     /**
      * Resolve all blocks that contain media references.
      *

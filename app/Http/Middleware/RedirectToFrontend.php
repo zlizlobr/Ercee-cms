@@ -13,6 +13,10 @@ class RedirectToFrontend
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->expectsJson()) {
+            return $next($request);
+        }
+
         $frontendUrl = config('app.frontend_url');
 
         // If no frontend URL configured, proceed normally
