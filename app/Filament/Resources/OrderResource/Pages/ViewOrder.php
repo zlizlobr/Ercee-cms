@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\OrderResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ViewRecord;
+use Modules\Commerce\Filament\Resources\OrderResource\Pages\ViewOrder as ModuleViewOrder;
 
-class ViewOrder extends ViewRecord
+class ViewOrder extends ModuleViewOrder
 {
-    protected static string $resource = OrderResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\EditAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\ContractResource\Pages;
 
-use App\Filament\Resources\ContractResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Forms\Filament\Resources\ContractResource\Pages\EditContract as ModuleEditContract;
 
-class EditContract extends EditRecord
+class EditContract extends ModuleEditContract
 {
-    protected static string $resource = ContractResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

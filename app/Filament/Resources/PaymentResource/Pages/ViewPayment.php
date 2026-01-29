@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\PaymentResource\Pages;
 
-use App\Filament\Resources\PaymentResource;
-use Filament\Resources\Pages\ViewRecord;
+use Modules\Commerce\Filament\Resources\PaymentResource\Pages\ViewPayment as ModuleViewPayment;
 
-class ViewPayment extends ViewRecord
+class ViewPayment extends ModuleViewPayment
 {
-    protected static string $resource = PaymentResource::class;
+    // Alias for backwards compatibility
 }

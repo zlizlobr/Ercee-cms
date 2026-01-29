@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\OrderResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Commerce\Filament\Resources\OrderResource\Pages\ListOrders as ModuleListOrders;
 
-class ListOrders extends ListRecords
+class ListOrders extends ModuleListOrders
 {
-    protected static string $resource = OrderResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

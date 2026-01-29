@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\AttributeResource\Pages;
 
-use App\Filament\Resources\AttributeResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Commerce\Filament\Resources\AttributeResource\Pages\CreateAttribute as ModuleCreateAttribute;
 
-class CreateAttribute extends CreateRecord
+class CreateAttribute extends ModuleCreateAttribute
 {
-    protected static string $resource = AttributeResource::class;
+    // Alias for backwards compatibility
 }
