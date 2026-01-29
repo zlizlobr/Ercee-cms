@@ -45,12 +45,12 @@ class CommerceModuleServiceProvider extends BaseModuleServiceProvider
     public function getResources(): array
     {
         return [
-            \Modules\Commerce\Filament\Resources\ProductResource::class,
-            \Modules\Commerce\Filament\Resources\OrderResource::class,
-            \Modules\Commerce\Filament\Resources\PaymentResource::class,
-            \Modules\Commerce\Filament\Resources\AttributeResource::class,
-            \Modules\Commerce\Filament\Resources\TaxonomyResource::class,
-            \Modules\Commerce\Filament\Resources\ProductReviewResource::class,
+            // Filament resources will be registered here after migration
+            // \Modules\Commerce\Filament\Resources\ProductResource::class,
+            // \Modules\Commerce\Filament\Resources\OrderResource::class,
+            // \Modules\Commerce\Filament\Resources\PaymentResource::class,
+            // \Modules\Commerce\Filament\Resources\AttributeResource::class,
+            // \Modules\Commerce\Filament\Resources\TaxonomyResource::class,
         ];
     }
 
