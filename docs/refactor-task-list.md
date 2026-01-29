@@ -47,12 +47,12 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Riziko**: kolize jmen v configu a views; zaveden prefix `module.<name>.*`.
 
 ### Phase 3 – Migrace business logiky do modulů
-- [~] **Forms modul**: struktura v `modules/forms/`, resources a bloky registrovány v `FormsModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření, že žádný kód přímo neodkazuje na `App\` namespace.
-- [~] **Funnel modul**: struktura v `modules/funnel/`, resources registrovány, event listeners propojeny (`StartFunnelOnContractCreated`, `StartFunnelOnOrderPaid`). Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření referencí.
-- [~] **E‑commerce modul**: struktura v `modules/commerce/`, resources registrovány, `OrderPaid` event dispatchován z `Order::markAsPaid()`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření referencí.
+- [~] **Forms modul**: plně funkční — resources, bloky, events registrovány. `FormController` migrován na `Modules\Forms\*`. Backward-compatible domain aliasy v `app/Domain/Form/` a `app/Filament/Resources/Form*` zůstávají kvůli Blade šablonám, testům a factories. Zbývá postupně migrovat tyto reference.
+- [~] **Funnel modul**: plně funkční — resources registrovány, event listeners (`StartFunnelOnContractCreated`, `StartFunnelOnOrderPaid`) propojeny. Staré `app/Listeners/` odstraněny, registrace z `AppServiceProvider` odstraněna. Backward-compatible aliasy zůstávají.
+- [~] **E‑commerce modul**: plně funkční — resources registrovány, `OrderPaid` dispatchován, `PaymentGatewayInterface` binding přesunut do `CommerceModuleServiceProvider`. `CheckoutController` a `WebhookController` migrovány na `Modules\Commerce\*`. Backward-compatible aliasy zůstávají.
 - [x] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly). (aktuálně `app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
-- [~] **Custom blocks**: form bloky přesunuty do `modules/forms/` a registrovány přes `FormsModuleServiceProvider`. `BlockRegistry` integruje modulové bloky s deduplicací aliasů. Zbývá vyčlenit další doménově specifické bloky do příslušných modulů.
-- [ ] **Integrace**: izolovat `app/Infrastructure/*` (např. GitHub dispatch) do dedikovaných modulů/integrací.
+- [x] **Custom blocks**: form bloky v `modules/forms/`, `BlockRegistry` integruje modulové bloky s deduplicací aliasů. Zbývající bloky v `app/Filament/Blocks/` jsou generické CMS bloky (Hero, Text, Image, CTA, FAQ atd.) — patří do core.
+- [x] **Integrace**: `app/Infrastructure/` (GitHubDispatchService, FrontendRebuildService) ponechána v core — jedná se o core CMS infrastrukturu pro frontend rebuild, používanou všemi observery. Není důvod přesouvat do modulu.
 - [x] **Zavést standard modulového repa** (struktura `src/`, `routes/`, `resources/`, `database/`, `config/`, `composer.json`) → implementováno.
 - [ ] **Sladit migraci s cílovou strukturou**: aktualizovat nebo nahradit migrační skript tak, aby pracoval s novým core namespace a module registry.
 - [ ] **Kontrolní checklist migrace**: symlink setup, composer path repo, autoload, provider registrace, migrace, testbench.

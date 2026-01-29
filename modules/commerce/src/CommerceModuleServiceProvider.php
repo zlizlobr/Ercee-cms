@@ -32,7 +32,10 @@ class CommerceModuleServiceProvider extends BaseModuleServiceProvider
 
     protected function registerBindings(): void
     {
-        // Register module-specific bindings
+        $this->app->bind(
+            \Modules\Commerce\Domain\Contracts\PaymentGatewayInterface::class,
+            \Modules\Commerce\Domain\Gateways\StripeGateway::class
+        );
     }
 
     public function getEventListeners(): array
