@@ -1,0 +1,62 @@
+{
+  "label": "FAQ",
+  "label_cs": "FAQ",
+  "icon": "heroicon-o-question-mark-circle",
+  "order": 40,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "items",
+      "label": "Questions",
+      "label_cs": "Otazky",
+      "minItems": 1,
+      "defaultItems": 4,
+      "itemLabel": "question",
+      "schema": [
+        {
+          "type": "text",
+          "name": "question",
+          "label": "Question",
+          "label_cs": "Otazka",
+          "required": true,
+          "maxLength": 200,
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "answer",
+          "label": "Answer",
+          "label_cs": "Odpoved",
+          "rows": 3,
+          "maxLength": 800,
+          "columnSpanFull": true
+        }
+      ]
+    }
+  ]
+}

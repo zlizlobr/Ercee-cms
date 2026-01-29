@@ -1,0 +1,109 @@
+{
+  "label": "Capabilities Detailed",
+  "label_cs": "Schopnosti - detail",
+  "icon": "heroicon-o-squares-2x2",
+  "order": 70,
+  "fields": [
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "items",
+      "label": "Capabilities",
+      "label_cs": "Schopnosti",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160,
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "rows": 3,
+          "maxLength": 400,
+          "columnSpanFull": true
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "image_media_uuid",
+          "label": "Image",
+          "label_cs": "Obrazek",
+          "helperText": "Media UUID (MediaPicker in CMS).",
+          "columnSpanFull": true
+        },
+        {
+          "type": "repeater",
+          "name": "features",
+          "label": "Features",
+          "label_cs": "Vlastnosti",
+          "minItems": 0,
+          "schema": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Feature",
+              "label_cs": "Vlastnost",
+              "required": true,
+              "maxLength": 160
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

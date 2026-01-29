@@ -1,0 +1,130 @@
+{
+  "label": "Technology Innovation",
+  "label_cs": "Technologie a inovace",
+  "icon": "heroicon-o-cpu-chip",
+  "order": 70,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "image_media_uuid",
+      "label": "Image",
+      "label_cs": "Obrazek",
+      "helperText": "Media UUID (MediaPicker in CMS).",
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "items",
+      "label": "Technologies",
+      "label_cs": "Technologie",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160,
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "rows": 3,
+          "maxLength": 400,
+          "columnSpanFull": true
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "cta.label",
+      "label": "CTA label",
+      "label_cs": "Text CTA",
+      "maxLength": 80
+    },
+    {
+      "type": "select",
+      "name": "cta.link.page_id",
+      "label": "CTA page",
+      "label_cs": "Stranka CTA",
+      "options": {},
+      "placeholder": "Select a page..."
+    },
+    {
+      "type": "text",
+      "name": "cta.link.url",
+      "label": "CTA URL",
+      "label_cs": "URL CTA",
+      "placeholder": "/page, #section, https://..."
+    },
+    {
+      "type": "text",
+      "name": "cta.link.anchor",
+      "label": "CTA anchor",
+      "label_cs": "Kotva CTA",
+      "placeholder": "section-id"
+    }
+  ]
+}

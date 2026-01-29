@@ -1,0 +1,127 @@
+{
+  "label": "Use Case Tabs",
+  "label_cs": "Use cases - zalozky",
+  "icon": "heroicon-o-rectangle-stack",
+  "order": 60,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "items",
+      "label": "Use cases",
+      "label_cs": "Use cases",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "industry",
+      "schema": [
+        {
+          "type": "text",
+          "name": "industry",
+          "label": "Industry",
+          "label_cs": "Obor",
+          "required": true,
+          "maxLength": 160,
+          "columnSpanFull": true
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "image_media_uuid",
+          "label": "Image",
+          "label_cs": "Obrazek",
+          "helperText": "Media UUID (MediaPicker in CMS).",
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "challenge",
+          "label": "Challenge",
+          "label_cs": "Vyzyva",
+          "rows": 3,
+          "maxLength": 600,
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "solution",
+          "label": "Solution",
+          "label_cs": "Reseni",
+          "rows": 3,
+          "maxLength": 600,
+          "columnSpanFull": true
+        },
+        {
+          "type": "repeater",
+          "name": "results",
+          "label": "Results",
+          "label_cs": "Vysledky",
+          "minItems": 0,
+          "schema": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Result",
+              "label_cs": "Vysledek",
+              "required": true,
+              "maxLength": 160
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

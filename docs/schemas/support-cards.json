@@ -1,0 +1,120 @@
+{
+  "label": "Support Cards",
+  "label_cs": "Podpora - karty",
+  "icon": "heroicon-o-lifebuoy",
+  "order": 50,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "cards",
+      "label": "Cards",
+      "label_cs": "Karty",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "textarea",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "rows": 3,
+          "maxLength": 400
+        },
+        {
+          "type": "text",
+          "name": "link_label",
+          "label": "Link label",
+          "label_cs": "Text odkazu",
+          "maxLength": 80
+        },
+        {
+          "type": "select",
+          "name": "link.page_id",
+          "label": "Link page",
+          "label_cs": "Stranka odkazu",
+          "options": {},
+          "placeholder": "Select a page..."
+        },
+        {
+          "type": "text",
+          "name": "link.url",
+          "label": "Link URL",
+          "label_cs": "URL odkazu",
+          "placeholder": "/page, #section, https://..."
+        },
+        {
+          "type": "text",
+          "name": "link.anchor",
+          "label": "Link anchor",
+          "label_cs": "Kotva odkazu",
+          "placeholder": "section-id"
+        }
+      ]
+    }
+  ]
+}

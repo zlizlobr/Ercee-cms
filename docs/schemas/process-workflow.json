@@ -1,0 +1,134 @@
+{
+  "label": "Process Workflow",
+  "label_cs": "Procesni workflow",
+  "icon": "heroicon-o-arrow-path",
+  "order": 75,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "steps",
+      "label": "Steps",
+      "label_cs": "Kroky",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "text",
+          "name": "number",
+          "label": "Step number",
+          "label_cs": "Cislo kroku",
+          "required": true,
+          "maxLength": 4
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160,
+          "columnSpanFull": true
+        },
+        {
+          "type": "textarea",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "rows": 3,
+          "maxLength": 400,
+          "columnSpanFull": true
+        },
+        {
+          "type": "text",
+          "name": "image_media_uuid",
+          "label": "Image",
+          "label_cs": "Obrazek",
+          "helperText": "Media UUID (MediaPicker in CMS).",
+          "columnSpanFull": true
+        }
+      ]
+    },
+    {
+      "type": "repeater",
+      "name": "benefits",
+      "label": "Benefits",
+      "label_cs": "Vyhody",
+      "minItems": 0,
+      "schema": [
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "required": true,
+          "maxLength": 200
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "label": "Documentation Categories",
+  "label_cs": "Kategorie dokumentace",
+  "icon": "heroicon-o-folder-open",
+  "order": 30,
+  "fields": [
+    {
+      "type": "repeater",
+      "name": "categories",
+      "label": "Categories",
+      "label_cs": "Kategorie",
+      "minItems": 1,
+      "defaultItems": 3,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160,
+          "columnSpanFull": true
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "image_media_uuid",
+          "label": "Image",
+          "label_cs": "Obrazek",
+          "helperText": "Media UUID (MediaPicker in CMS).",
+          "columnSpanFull": true
+        },
+        {
+          "type": "repeater",
+          "name": "docs",
+          "label": "Documents",
+          "label_cs": "Dokumenty",
+          "minItems": 1,
+          "itemLabel": "title",
+          "schema": [
+            {
+              "type": "text",
+              "name": "title",
+              "label": "Title",
+              "label_cs": "Nazev",
+              "required": true,
+              "maxLength": 200,
+              "columnSpanFull": true
+            },
+            {
+              "type": "textarea",
+              "name": "description",
+              "label": "Description",
+              "label_cs": "Popis",
+              "rows": 2,
+              "maxLength": 400,
+              "columnSpanFull": true
+            },
+            {
+              "type": "text",
+              "name": "type",
+              "label": "Type",
+              "label_cs": "Typ",
+              "maxLength": 20
+            },
+            {
+              "type": "text",
+              "name": "size",
+              "label": "Size",
+              "label_cs": "Velikost",
+              "maxLength": 20
+            },
+            {
+              "type": "text",
+              "name": "file_url",
+              "label": "File URL",
+              "label_cs": "URL souboru",
+              "placeholder": "/media/... or https://...",
+              "columnSpanFull": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

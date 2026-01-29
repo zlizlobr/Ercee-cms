@@ -32,6 +32,50 @@ class Page extends Model
 
     public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
 
+    public const BLOCK_TYPE_SUPPORT_CARDS = 'support_cards';
+
+    public const BLOCK_TYPE_FAQ = 'faq';
+
+    public const BLOCK_TYPE_DOC_CATEGORIES = 'doc_categories';
+
+    public const BLOCK_TYPE_DOCUMENTATION_SEARCH = 'documentation_search';
+
+    public const BLOCK_TYPE_DOCUMENTATION_HERO = 'documentation_hero';
+
+    public const BLOCK_TYPE_TRUST_SHOWCASE = 'trust_showcase';
+
+    public const BLOCK_TYPE_RFQ_FORM_SIDEBAR = 'rfq_form_sidebar';
+
+    public const BLOCK_TYPE_STATS_CARDS = 'stats_cards';
+
+    public const BLOCK_TYPE_USE_CASE_TABS = 'use_case_tabs';
+
+    public const BLOCK_TYPE_FACILITY_STANDARDS = 'facility_standards';
+
+    public const BLOCK_TYPE_MAP_PLACEHOLDER = 'map_placeholder';
+
+    public const BLOCK_TYPE_FACILITIES_GRID = 'facilities_grid';
+
+    public const BLOCK_TYPE_FACILITY_STATS = 'facility_stats';
+
+    public const BLOCK_TYPE_PROCESS_STEPS = 'process_steps';
+
+    public const BLOCK_TYPE_CAPABILITIES_DETAILED = 'capabilities_detailed';
+
+    public const BLOCK_TYPE_STATS_SHOWCASE = 'stats_showcase';
+
+    public const BLOCK_TYPE_PROCESS_WORKFLOW = 'process_workflow';
+
+    public const BLOCK_TYPE_TECHNOLOGY_INNOVATION = 'technology_innovation';
+
+    public const BLOCK_TYPE_INDUSTRIES_SERVED = 'industries_served';
+
+    public const BLOCK_TYPE_IMAGE_GRID = 'image_grid';
+
+    public const BLOCK_TYPE_IMAGE_CTA = 'image_cta';
+
+    public const BLOCK_TYPE_PAGE_HERO = 'page_hero';
+
     public const BLOCK_TYPE_SERVICE_HIGHLIGHTS = 'service_highlights';
 
     public const BLOCK_TYPE_CONTACT_FORM = 'contact_form';

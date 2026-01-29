@@ -1,0 +1,184 @@
+{
+  "label": "Facilities Grid",
+  "label_cs": "Pobocky - seznam",
+  "icon": "heroicon-o-building-office-2",
+  "order": 60,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "items",
+      "label": "Facilities",
+      "label_cs": "Pobocky",
+      "minItems": 1,
+      "defaultItems": 2,
+      "itemLabel": "name",
+      "schema": [
+        {
+          "type": "text",
+          "name": "name",
+          "label": "Name",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 200,
+          "columnSpanFull": true
+        },
+        {
+          "type": "text",
+          "name": "location",
+          "label": "Location",
+          "label_cs": "Lokace",
+          "maxLength": 200,
+          "columnSpanFull": true
+        },
+        {
+          "type": "text",
+          "name": "address",
+          "label": "Address",
+          "label_cs": "Adresa",
+          "maxLength": 240,
+          "columnSpanFull": true
+        },
+        {
+          "type": "text",
+          "name": "type",
+          "label": "Type",
+          "label_cs": "Typ",
+          "maxLength": 120
+        },
+        {
+          "type": "text",
+          "name": "size",
+          "label": "Size",
+          "label_cs": "Velikost",
+          "maxLength": 120
+        },
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "image_media_uuid",
+          "label": "Image",
+          "label_cs": "Obrazek",
+          "helperText": "Media UUID (MediaPicker in CMS).",
+          "columnSpanFull": true
+        },
+        {
+          "type": "text",
+          "name": "phone",
+          "label": "Phone",
+          "label_cs": "Telefon",
+          "maxLength": 120
+        },
+        {
+          "type": "text",
+          "name": "email",
+          "label": "Email",
+          "label_cs": "Email",
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "manager",
+          "label": "Manager",
+          "label_cs": "Kontaktni osoba",
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "hours",
+          "label": "Hours",
+          "label_cs": "Oteviraci doba",
+          "maxLength": 160
+        },
+        {
+          "type": "repeater",
+          "name": "features",
+          "label": "Features",
+          "label_cs": "Vlastnosti",
+          "minItems": 0,
+          "schema": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Feature",
+              "label_cs": "Vlastnost",
+              "required": true,
+              "maxLength": 160
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "name": "certifications",
+          "label": "Certifications",
+          "label_cs": "Certifikace",
+          "minItems": 0,
+          "schema": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Certification",
+              "label_cs": "Certifikace",
+              "required": true,
+              "maxLength": 120
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
