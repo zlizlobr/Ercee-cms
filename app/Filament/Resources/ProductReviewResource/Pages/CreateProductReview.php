@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\ProductReviewResource\Pages;
 
-use App\Filament\Resources\ProductReviewResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Commerce\Filament\Resources\ProductReviewResource\Pages\CreateProductReview as ModuleCreateProductReview;
 
-class CreateProductReview extends CreateRecord
+class CreateProductReview extends ModuleCreateProductReview
 {
-    protected static string $resource = ProductReviewResource::class;
+    // Alias for backwards compatibility
 }

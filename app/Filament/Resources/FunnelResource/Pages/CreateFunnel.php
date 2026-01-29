@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\FunnelResource\Pages;
 
-use App\Filament\Resources\FunnelResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Funnel\Filament\Resources\FunnelResource\Pages\CreateFunnel as ModuleCreateFunnel;
 
-class CreateFunnel extends CreateRecord
+class CreateFunnel extends ModuleCreateFunnel
 {
-    protected static string $resource = FunnelResource::class;
+    // Alias for backwards compatibility
 }

@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\PaymentResource\Pages;
 
-use App\Filament\Resources\PaymentResource;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Commerce\Filament\Resources\PaymentResource\Pages\ListPayments as ModuleListPayments;
 
-class ListPayments extends ListRecords
+class ListPayments extends ModuleListPayments
 {
-    protected static string $resource = PaymentResource::class;
+    // Alias for backwards compatibility
 }

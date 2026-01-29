@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\FunnelResource\Pages;
 
-use App\Filament\Resources\FunnelResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Modules\Funnel\Filament\Resources\FunnelResource\Pages\EditFunnel as ModuleEditFunnel;
 
-class EditFunnel extends EditRecord
+class EditFunnel extends ModuleEditFunnel
 {
-    protected static string $resource = FunnelResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

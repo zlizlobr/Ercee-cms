@@ -46,11 +46,11 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Zavést modulové migrations discovery** (oddělené od core migrations) → `HasMigrationsInterface`.
 - [x] **Riziko**: kolize jmen v configu a views; zaveden prefix `module.<name>.*`.
 
-### Phase 3 – Migrace business logiky do modulů
-- [~] **Forms modul**: základní struktura vytvořena v `modules/forms/` s `FormsModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Form` a `app/Filament/Resources/Form*`).
-- [~] **Funnel modul**: základní struktura vytvořena v `modules/funnel/` s `FunnelModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Funnel` a `app/Filament/Resources/Funnel*`).
-- [~] **E‑commerce modul**: základní struktura vytvořena v `modules/commerce/` s `CommerceModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Commerce` a `app/Filament/Resources/*Product*`, `Order*`, `Payment*`).
-- [x] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly). (aktuálně `app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
+### Phase 3 –
+- [x] **Forms modul**: kompletní struktura v `modules/forms/` včetně Domain, Application a Filament Resources (FormResource, ContractResource). App aliasy zachovány pro zpětnou kompatibilitu.
+- [x] **Funnel modul**: kompletní struktura v `modules/funnel/` včetně Domain, Application a Filament Resources (FunnelResource, FunnelRunResource). App aliasy zachovány pro zpětnou kompatibilitu.
+- [x] **E‑commerce modul**: kompletní struktura v `modules/commerce/` včetně Domain a Filament Resources (ProductResource, OrderResource, PaymentResource, AttributeResource, TaxonomyResource, ProductReviewResource). App aliasy zachovány pro zpětnou kompatibilitu.
+- [x] **Subscriber modul**: ponecháno v core jako sdílená entita (používaná všemi moduly). (`app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
 - [ ] **Custom blocks**: vyčlenit `app/Filament/Blocks/*` do modulů dle domény (form bloky do forms modulu, atd.).
 - [ ] **Integrace**: izolovat `app/Infrastructure/*` (např. GitHub dispatch) do dedikovaných modulů/integrací.
 - [x] **Zavést standard modulového repa** (struktura `src/`, `routes/`, `resources/`, `database/`, `config/`, `composer.json`) → implementováno.
@@ -59,7 +59,7 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [ ] **Riziko**: shared modely/relationships (např. Page ↔ Block) a hardcoded cesty/namespace ve skriptu; zavést contracts/DTO a parametrizaci migrace.
 
 ### Phase 4 – Admin extensibility
-- [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets.
+- [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets. `AdminPanelProvider` integruje modulové resources přes `ModuleManager::getModuleResources()`.
 - [x] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek.
 - [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery. (seedery zatím nevytvářejí permissions)
 - [x] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků.

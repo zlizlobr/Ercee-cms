@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\ContractResource\Pages;
 
-use App\Filament\Resources\ContractResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ViewRecord;
+use Modules\Forms\Filament\Resources\ContractResource\Pages\ViewContract as ModuleViewContract;
 
-class ViewContract extends ViewRecord
+class ViewContract extends ModuleViewContract
 {
-    protected static string $resource = ContractResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\EditAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }
