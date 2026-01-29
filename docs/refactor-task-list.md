@@ -32,13 +32,13 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [~] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel`, `Subscriber` + napojení na Filament resources. (domény existují, ale stále v core)
 - [x] **Založit core namespace** – zatím ponecháno `App\`, připraveno pro budoucí extrakci do `Ercee\CmsCore\`.
 - [x] **Zavést core Contracts layer** (interfaces, events, DTO) pro komunikaci s moduly → `app/Contracts/Module/`, `app/Contracts/Events/`, `app/Contracts/Services/`.
-- [~] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`. (základ hotov; chybí validace `version` a použití `dependencies` z `config/modules.php`)
+- [x] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`. (validace `version` i `dependencies` s podporou `^`, `~`, `>=`, `<` constraints implementována)
 - [x] **Definovat Composer autoload mapy** pro core a moduly (PSR‑4) a stabilizovat namespace konvence → `Modules\*` namespace.
 - [~] **Stabilizovat event bus** (Laravel events) pro integrace: core emituje eventy → `ContentPublished`, `MenuUpdated`, `MediaUploaded`. (eventy existují, ale nikde nejsou dispatchované)
 
 ### Phase 2 – Modulový systém & registrace
 - [x] **Zvolit formát registrace modulů**: `config/modules.php` implementováno.
-- [~] **Implementovat registraci modulů**: `enabled`, `provider`, `version`, `dependencies`, `migrations`, `routes`, `policies`, `permissions` → `ModuleManager.php`. (enabled/provider/migrations/routes/policies/permissions fungují; chybí validace `version` a řešení `dependencies` z configu)
+- [x] **Implementovat registraci modulů**: `enabled`, `provider`, `version`, `dependencies`, `migrations`, `routes`, `policies`, `permissions` → `ModuleManager.php`. (vše funguje včetně semver validace verzí a dependency version constraints)
 - [x] **Implementovat modulový service provider** → `BaseModuleServiceProvider.php` s interfaces pro `register()`, `boot()`, routes, events, policies.
 - [x] **Zavést izolaci assets** (frontend/admin): modulové view/asset namespace + publish do `public/vendor/<module>` → v `BaseModuleServiceProvider`.
 - [x] **Rozšířit DI registrace** → `ModuleServiceProvider.php` registruje ModuleManager a volá register/boot.
@@ -47,11 +47,11 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Riziko**: kolize jmen v configu a views; zaveden prefix `module.<name>.*`.
 
 ### Phase 3 – Migrace business logiky do modulů
-- [~] **Forms modul**: základní struktura vytvořena v `modules/forms/` s `FormsModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Form` a `app/Filament/Resources/Form*`).
-- [~] **Funnel modul**: základní struktura vytvořena v `modules/funnel/` s `FunnelModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Funnel` a `app/Filament/Resources/Funnel*`).
-- [~] **E‑commerce modul**: základní struktura vytvořena v `modules/commerce/` s `CommerceModuleServiceProvider`. Zbývá přesunout Domain/Application/Filament kód (aktuálně v `app/Domain/Commerce` a `app/Filament/Resources/*Product*`, `Order*`, `Payment*`).
+- [~] **Forms modul**: struktura v `modules/forms/`, resources a bloky registrovány v `FormsModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy po ověření, že žádný kód přímo neodkazuje na `App\` namespace.
+- [~] **Funnel modul**: struktura v `modules/funnel/`, Filament resources registrovány v `FunnelModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy a propojit event listeners (ContractCreated, OrderPaid).
+- [~] **E‑commerce modul**: struktura v `modules/commerce/`, Filament resources registrovány v `CommerceModuleServiceProvider`. Backward-compatible aliasy v `app/`. Zbývá odstranit aliasy a propojit event listeners.
 - [x] **Subscriber modul**: ponechat v core jako sdílená entita (používaná všemi moduly). (aktuálně `app/Domain/Subscriber`, `app/Filament/Resources/SubscriberResource`)
-- [ ] **Custom blocks**: vyčlenit `app/Filament/Blocks/*` do modulů dle domény (form bloky do forms modulu, atd.).
+- [~] **Custom blocks**: form bloky přesunuty do `modules/forms/` a registrovány přes `FormsModuleServiceProvider`. `BlockRegistry` integruje modulové bloky s deduplicací aliasů. Zbývá vyčlenit další doménově specifické bloky do příslušných modulů.
 - [ ] **Integrace**: izolovat `app/Infrastructure/*` (např. GitHub dispatch) do dedikovaných modulů/integrací.
 - [x] **Zavést standard modulového repa** (struktura `src/`, `routes/`, `resources/`, `database/`, `config/`, `composer.json`) → implementováno.
 - [ ] **Sladit migraci s cílovou strukturou**: aktualizovat nebo nahradit migrační skript tak, aby pracoval s novým core namespace a module registry.
@@ -59,10 +59,10 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [ ] **Riziko**: shared modely/relationships (např. Page ↔ Block) a hardcoded cesty/namespace ve skriptu; zavést contracts/DTO a parametrizaci migrace.
 
 ### Phase 4 – Admin extensibility
-- [~] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets. (interface + ModuleManager existují, ale nejsou napojeny na Filament panel)
-- [~] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek. (sběr existuje v ModuleManageru, ale není použit v `AdminPanelProvider`)
+- [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets. (napojeno na `AdminPanelProvider` — resources, pages, widgets z modulů se registrují přes `ModuleManager`)
+- [x] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek. (integrováno do `AdminPanelProvider`)
 - [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery. (seedery zatím nevytvářejí permissions)
-- [~] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků. (ModuleManager sbírá bloky, ale `BlockRegistry` je nepoužívá a stále bere jen `app/Filament/Blocks`)
+- [x] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků. (`BlockRegistry` integruje modulové bloky přes `ModuleManager`, s deduplicací alias bloků)
 - [ ] **Riziko**: prefixy `module:<name>:` zavedeny v config/permissions. (v repu nevidím zavedené prefixy)
 
 ### Phase 5 – Release, versioning & update flow

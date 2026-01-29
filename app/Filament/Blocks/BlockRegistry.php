@@ -2,6 +2,7 @@
 
 namespace App\Filament\Blocks;
 
+use App\Support\Module\ModuleManager;
 use Filament\Forms\Components\Builder\Block;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -28,9 +29,45 @@ class BlockRegistry
             $blockClasses = self::discoverBlocks();
         }
 
-        return collect($blockClasses)
+        $moduleBlockClasses = self::getModuleBlockClasses();
+
+        // Filter out core alias blocks whose parent is already registered via module
+        $filteredCoreClasses = collect($blockClasses)
+            ->reject(fn (string $class) => self::isAliasOfModuleBlock($class, $moduleBlockClasses))
+            ->all();
+
+        $coreBlocks = collect($filteredCoreClasses)
             ->map(fn (string $class) => $class::make())
             ->all();
+
+        $moduleBlocks = collect($moduleBlockClasses)
+            ->filter(fn (string $class) => class_exists($class) && self::isValidBlockClass($class))
+            ->sortBy(fn (string $class) => $class::$order)
+            ->map(fn (string $class) => $class::make())
+            ->values()
+            ->all();
+
+        return array_merge($coreBlocks, $moduleBlocks);
+    }
+
+    protected static function getModuleBlockClasses(): array
+    {
+        try {
+            return app(ModuleManager::class)->getModuleBlocks();
+        } catch (\Throwable) {
+            return [];
+        }
+    }
+
+    protected static function isAliasOfModuleBlock(string $class, array $moduleBlockClasses): bool
+    {
+        if (empty($moduleBlockClasses)) {
+            return false;
+        }
+
+        $parent = get_parent_class($class);
+
+        return $parent && in_array($parent, $moduleBlockClasses, true);
     }
 
     /**

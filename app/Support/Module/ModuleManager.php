@@ -13,6 +13,7 @@ use App\Contracts\Module\ModuleInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 class ModuleManager
@@ -43,13 +44,20 @@ class ModuleManager
         $providerClass = $config['provider'] ?? null;
 
         if (! $providerClass || ! class_exists($providerClass)) {
+            Log::warning("Module [{$name}] provider class [{$providerClass}] not found.");
             return;
         }
 
         $provider = new $providerClass($this->app);
 
         if (! $provider instanceof ModuleInterface) {
+            Log::warning("Module [{$name}] provider does not implement ModuleInterface.");
             return;
+        }
+
+        $configVersion = $config['version'] ?? null;
+        if ($configVersion && $provider->getVersion() !== $configVersion) {
+            Log::warning("Module [{$name}] version mismatch: config expects [{$configVersion}], provider reports [{$provider->getVersion()}].");
         }
 
         $this->modules[$name] = [
@@ -121,12 +129,96 @@ class ModuleManager
         $dependencies = $module->getDependencies();
 
         foreach ($dependencies as $dependency => $version) {
+            if (is_int($dependency)) {
+                $dependency = $version;
+                $version = '*';
+            }
+
             if (! $this->isModuleEnabled($dependency)) {
+                Log::warning("Module [{$module->getName()}] requires [{$dependency}] which is not enabled.");
+                return false;
+            }
+
+            if ($version !== '*' && ! $this->satisfiesVersion($dependency, $version)) {
+                $depModule = $this->getModule($dependency);
+                $actualVersion = $depModule?->getVersion() ?? 'unknown';
+                Log::warning("Module [{$module->getName()}] requires [{$dependency}:{$version}], but version [{$actualVersion}] is loaded.");
                 return false;
             }
         }
 
         return true;
+    }
+
+    protected function satisfiesVersion(string $moduleName, string $constraint): bool
+    {
+        $module = $this->getModule($moduleName);
+
+        if (! $module) {
+            return false;
+        }
+
+        $version = $module->getVersion();
+
+        return $this->matchesConstraint($version, $constraint);
+    }
+
+    protected function matchesConstraint(string $version, string $constraint): bool
+    {
+        $constraint = trim($constraint);
+
+        if ($constraint === '*') {
+            return true;
+        }
+
+        if (str_starts_with($constraint, '^')) {
+            return $this->matchesCaret($version, substr($constraint, 1));
+        }
+
+        if (str_starts_with($constraint, '~')) {
+            return $this->matchesTilde($version, substr($constraint, 1));
+        }
+
+        if (str_starts_with($constraint, '>=')) {
+            return version_compare($version, trim(substr($constraint, 2)), '>=');
+        }
+
+        if (str_starts_with($constraint, '>')) {
+            return version_compare($version, trim(substr($constraint, 1)), '>');
+        }
+
+        if (str_starts_with($constraint, '<=')) {
+            return version_compare($version, trim(substr($constraint, 2)), '<=');
+        }
+
+        if (str_starts_with($constraint, '<')) {
+            return version_compare($version, trim(substr($constraint, 1)), '<');
+        }
+
+        return version_compare($version, $constraint, '>=');
+    }
+
+    protected function matchesCaret(string $version, string $minVersion): bool
+    {
+        $minParts = explode('.', $minVersion);
+        $major = (int) ($minParts[0] ?? 0);
+
+        $nextMajor = ($major + 1) . '.0.0';
+
+        return version_compare($version, $minVersion, '>=')
+            && version_compare($version, $nextMajor, '<');
+    }
+
+    protected function matchesTilde(string $version, string $minVersion): bool
+    {
+        $minParts = explode('.', $minVersion);
+        $major = (int) ($minParts[0] ?? 0);
+        $minor = (int) ($minParts[1] ?? 0);
+
+        $nextMinor = $major . '.' . ($minor + 1) . '.0';
+
+        return version_compare($version, $minVersion, '>=')
+            && version_compare($version, $nextMinor, '<');
     }
 
     protected function registerRoutes(HasRoutesInterface $provider): void
