@@ -38,7 +38,7 @@ class SupportCardsBlock extends BaseBlock
                         ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
                         ->searchable()
                         ->preload()
-                        ->placeholder('Select icon...'),
+                        ->placeholder(__('admin.page.fields.icon_placeholder')),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()
@@ -53,13 +53,13 @@ class SupportCardsBlock extends BaseBlock
                     Forms\Components\Select::make('link.page_id')
                         ->label(__('admin.page.fields.link.page_id'))
                         ->options([])
-                        ->placeholder('Select a page...'),
+                        ->placeholder(__('admin.page.fields.button_page_placeholder')),
                     Forms\Components\TextInput::make('link.url')
                         ->label(__('admin.page.fields.link.url'))
-                        ->placeholder('/page, #section, https://...'),
+                        ->placeholder(__('admin.page.fields.button_url_placeholder')),
                     Forms\Components\TextInput::make('link.anchor')
                         ->label(__('admin.page.fields.link.anchor'))
-                        ->placeholder('section-id'),
+                        ->placeholder(__('admin.page.fields.anchor_placeholder')),
                     ])
                     ->defaultItems(3)
                     ->minItems(1)
