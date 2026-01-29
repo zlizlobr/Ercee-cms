@@ -283,24 +283,17 @@ class PagePreviewController extends Controller
                 $data['background_image_url_large'] = $media->getUrl('large');
             }
         } elseif (isset($data['background_image'])) {
-            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
+            $data['background_image_url'] = filter_var($data['background_image'], FILTER_VALIDATE_URL)
+                ? $data['background_image']
+                : Storage::disk('public')->url($data['background_image']);
         }
 
-        if (isset($data['buttons']) && is_array($data['buttons'])) {
-            $data['buttons'] = array_map(function ($button) {
-                if (! is_array($button)) {
-                    return $button;
-                }
+        if (empty($data['title']) && ! empty($data['heading'])) {
+            $data['title'] = $data['heading'];
+        }
 
-                if (empty($button['url']) && ! empty($button['page_id'])) {
-                    $page = Page::find($button['page_id']);
-                    if ($page) {
-                        $button['url'] = '/'.$page->slug;
-                    }
-                }
-
-                return $button;
-            }, $data['buttons']);
+        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
+            $data['subtitle'] = $data['subheading'];
         }
 
         return $data;

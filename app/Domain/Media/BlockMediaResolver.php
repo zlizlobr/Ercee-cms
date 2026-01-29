@@ -38,6 +38,7 @@ class BlockMediaResolver
             'testimonials' => $this->resolveTestimonialsBlock($blockData),
             'premium_cta' => $this->resolvePremiumCtaBlock($blockData),
             'service_highlights' => $this->resolveServiceHighlightsBlock($blockData),
+            'service_highlights' => $this->resolveServiceHighlightsBlock($blockData),
             default => $blockData,
         };
     }

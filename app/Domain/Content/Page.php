@@ -123,6 +123,7 @@ class Page extends Model
             self::BLOCK_TYPE_CAPABILITIES => __('admin.page.blocks.capabilities'),
             self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
             self::BLOCK_TYPE_SERVICE_HIGHLIGHTS => __('admin.page.blocks.service_highlights'),
+            self::BLOCK_TYPE_SERVICE_HIGHLIGHTS => __('admin.page.blocks.service_highlights'),
         ];
     }
 
