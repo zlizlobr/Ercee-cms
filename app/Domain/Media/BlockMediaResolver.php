@@ -328,6 +328,50 @@ class BlockMediaResolver
     }
 
     /**
+     * Normalize hero CTA fields into { label, url } objects.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function resolveHeroCta(array $data, string $prefix): array
+    {
+        $labelKey = "{$prefix}_label";
+        $pageIdKey = "{$prefix}_page_id";
+        $urlKey = "{$prefix}_url";
+
+        $label = $data[$labelKey] ?? null;
+        $url = $data[$urlKey] ?? null;
+        $pageId = $data[$pageIdKey] ?? null;
+
+        if (isset($data[$prefix]) && is_array($data[$prefix])) {
+            $cta = $data[$prefix];
+            $label = $cta['label'] ?? $label;
+            $url = $cta['url'] ?? $url;
+            $pageId = $cta['page_id'] ?? $pageId;
+        }
+
+        if (empty($url) && ! empty($pageId)) {
+            $page = Page::find($pageId);
+            if ($page) {
+                $url = '/'.$page->slug;
+            }
+        }
+
+        if (is_string($label) && $label !== '' && is_string($url) && $url !== '') {
+            $data[$prefix] = [
+                'label' => $label,
+                'url' => $url,
+            ];
+        } else {
+            unset($data[$prefix]);
+        }
+
+        unset($data[$labelKey], $data[$pageIdKey], $data[$urlKey]);
+
+        return $data;
+    }
+
+    /**
      * Resolve a media manifest entry and map it to API format.
      *
      * @return array<string, mixed>|null
