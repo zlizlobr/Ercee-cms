@@ -1,3 +1,21 @@
+## [v0.5.9] – 2026-01-29
+
+- release: patch --  Fix all bock issues, progress modules refactoring (#34)
+* Fix composer, add docPHP for media
+
+* add media fisrt to product flow
+
+* fix select from library
+
+* Update docs for build block in Pages
+
+* Hotfix: label for blocks
+
+* add localizace
+
+
+- chore: update changelog for v0.5.8
+
 ## [v0.5.8] – 2026-01-29
 
 - release: patch -- sync Modules process (#33)
