@@ -136,7 +136,9 @@ return [
                         'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
             'premium_cta' => 'Premium CTA',
-                        'service_highlights' => 'Service Highlights',
+            'documentation_hero' => 'Documentation Hero',
+            'page_hero' => 'Page Hero',
+            'service_highlights' => 'Service Highlights',
             'new' => 'New Block',
         ],
         'actions' => [

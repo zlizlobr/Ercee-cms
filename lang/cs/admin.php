@@ -136,7 +136,9 @@ return [
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
-                        'service_highlights' => 'Sluzby - prehled',
+            'documentation_hero' => 'Dokumentace hero',
+            'page_hero' => 'Hero stranky',
+            'service_highlights' => 'Sluzby - prehled',
             'new' => 'Nový blok',
         ],
         'actions' => [
