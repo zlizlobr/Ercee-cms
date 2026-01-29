@@ -1,3 +1,13 @@
+## [v0.5.7] – 2026-01-29
+
+- release: patch -- Migrating business logic to modules Admin  (#32)
+* Migrating business logic to modules Admin
+
+* Ecommerce module
+
+* Funnel modules
+- chore: update changelog for v0.5.6
+
 ## [v0.5.6] – 2026-01-29
 
 - release: patch -- Add all thema blocks to builder (#31)
