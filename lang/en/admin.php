@@ -257,6 +257,12 @@ return [
         
         
         
+        
+        
+        
+        
+        
+        
         ],
         'seo' => [
             'title' => 'SEO Title',
