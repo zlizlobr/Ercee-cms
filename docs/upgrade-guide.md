@@ -36,9 +36,14 @@ Tento dokument popisuje migraci z monoliticke architektury (vse v `app/`) na mod
 
 ## Backward-compatible aliasy
 
-Pro hladky prechod existuji v `app/Domain/` a `app/Filament/Resources/` backward-compatible alias tridy, ktere extendujicmodulove tridy. Tyto aliasy budou postupne odstranovany.
+Backward-compatible alias tridy byly **odstraneny**. Nasledujici adresare jiz neexistuji:
 
-**Doporuceni**: Aktualizujte vse na nove namespace co nejdrive. Aliasy budou odstraneny v nasledujicich minor verzich.
+- `app/Domain/Form/`, `app/Domain/Commerce/`, `app/Domain/Funnel/`
+- `app/Application/Form/`, `app/Application/Commerce/`, `app/Application/Funnel/`
+- `app/Filament/Resources/FormResource`, `app/Filament/Resources/ContractResource`, `app/Filament/Resources/ProductResource`, `app/Filament/Resources/OrderResource`, `app/Filament/Resources/PaymentResource`, `app/Filament/Resources/AttributeResource`, `app/Filament/Resources/TaxonomyResource`, `app/Filament/Resources/ProductReviewResource`, `app/Filament/Resources/FunnelResource`, `app/Filament/Resources/FunnelRunResource`
+- `app/Filament/Blocks/FormEmbedBlock`, `app/Filament/Blocks/ContactFormBlock`
+
+Vsechny reference musi pouzivat `Modules\*` namespace.
 
 ## Zmeny v event systemu
 

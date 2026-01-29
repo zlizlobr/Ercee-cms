@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Application\Funnel;
 
-use App\Application\Funnel\Commands\StartFunnelCommand;
-use App\Application\Funnel\StartFunnelHandler;
-use App\Domain\Funnel\Funnel;
-use App\Domain\Funnel\Services\FunnelStarter;
+use Modules\Funnel\Application\Commands\StartFunnelCommand;
+use Modules\Funnel\Application\StartFunnelHandler;
+use Modules\Funnel\Domain\Funnel;
+use Modules\Funnel\Domain\Services\FunnelStarter;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;

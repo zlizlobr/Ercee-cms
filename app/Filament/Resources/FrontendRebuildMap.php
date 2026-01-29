@@ -2,16 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use App\Domain\Content\Menu;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
-use App\Domain\Content\Menu;
-use Modules\Forms\Domain\Form;
-use Modules\Commerce\Domain\Product;
-use Modules\Commerce\Domain\Taxonomy;
-use Modules\Commerce\Domain\Attribute;
-use Modules\Commerce\Domain\ProductReview;
 use App\Domain\Media\Media;
+use Modules\Commerce\Domain\Attribute;
+use Modules\Commerce\Domain\Product;
+use Modules\Commerce\Domain\ProductReview;
+use Modules\Commerce\Domain\Taxonomy;
+use Modules\Commerce\Filament\Resources\AttributeResource;
+use Modules\Commerce\Filament\Resources\ProductResource;
+use Modules\Commerce\Filament\Resources\ProductReviewResource;
+use Modules\Commerce\Filament\Resources\TaxonomyResource;
+use Modules\Forms\Domain\Form;
+use Modules\Forms\Filament\Resources\FormResource;
 
 class FrontendRebuildMap
 {
