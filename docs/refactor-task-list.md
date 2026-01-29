@@ -66,13 +66,15 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Riziko**: prefixy `module.<name>.<permission>` zavedeny v `ModuleManager::getAllPermissions()` a používány v `RolesAndPermissionsSeeder`.
 
 ### Phase 5 – Release, versioning & update flow
-- [~] **Rozdělit repo**: aktuálně mono-repo s `path` repositories v `composer.json`. Moduly mají vlastní `composer.json` s `version`, `type: ercee-module`. Zbývá extrakce do samostatných git repozitářů.
-- [x] **Nastavit CI matrix**: `ci.yml` rozšířen — core testy a modulové testy (Forms, Commerce, Funnel) běží separátně.
+- [~] **Rozdělit repo**: aktuálně mono-repo s `path` repositories v `composer.json`. Moduly mají vlastní `composer.json` s `version`, `type: ercee-module`. Subtree split skript připraven (`scripts/subtree-split.sh`), release workflow v `.github/workflows/release-module.yml`. Zbývá vytvořit cílové repozitáře a provést první split.
+- [x] **Nastavit CI matrix**: `ci.yml` rozšířen — core testy a modulové testy (Forms, Commerce, Funnel) běží separátně. CI šablona pro standalone module repos v `.github/workflows/module-ci.yml.template`.
 - [x] **Zavést semantic versioning** pro core i moduly. Verze v `composer.json` i `ServiceProvider`. `ModuleManager` validuje shodu a dependency constraints.
-- [ ] **Definovat upgrade guide**: kompatibilita core↔modul a minimální verze core v modulech.
-- [ ] **Release flow**: tagování core, následné releasy modulů; automatisované composer constraints.
+- [x] **Definovat upgrade guide**: `docs/upgrade-guide.md` — namespace migrace, event systém, composer konfigurace, upgrade checklist.
+- [x] **Release flow**: `release-module.yml` workflow — validace verze, testy, subtree split, push do module repo, GitHub release. Manuální spuštění přes `workflow_dispatch`.
 - [x] **Developer workflow**: standardizováno v `docs/developer-workflow.md` — struktura modulu, registrace, eventy, permissions, verzování, lokální dev, produkce.
-- [~] **Release pipeline pro moduly**: CI šablony v `ci.yml`. `path repo` pro dev připraveno. Zbývá VCS repo setup pro produkci a tagging standard.
+- [x] **Release pipeline pro moduly**: CI šablona (`.github/workflows/module-ci.yml.template`), release workflow (`release-module.yml`), subtree split skript (`scripts/subtree-split.sh`).
+- [x] **Deploy skript**: `scripts/deploy.sh` — production deploy (composer, npm, migrations, cache, queue restart).
+- [x] **Health check endpoint**: `GET /api/health` — kontrola DB, cache, seznam modulů, PHP/Laravel verze.
 - [x] **Riziko**: lock‑in mezi verzemi; `requires` zavedeny v `composer.json` modulů (funnel vyžaduje `ercee/module-forms: ^1.0`, `ercee/module-commerce: ^1.0`).
 
 ## Návrh modulového API

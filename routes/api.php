@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/health', App\Http\Controllers\Api\HealthController::class);
+
 Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
