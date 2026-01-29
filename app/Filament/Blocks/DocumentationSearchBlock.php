@@ -35,7 +35,7 @@ class DocumentationSearchBlock extends BaseBlock
                         ->label(__('admin.page.fields.anchor'))
                         ->required()
                         ->maxLength(80)
-                        ->placeholder('section-id'),
+                        ->placeholder(__('admin.page.fields.anchor_placeholder')),
                     ])
                     ->minItems(0),
             ]);

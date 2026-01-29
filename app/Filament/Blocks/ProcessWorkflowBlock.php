@@ -49,7 +49,7 @@ class ProcessWorkflowBlock extends BaseBlock
                         ->columnSpanFull(),
                     Forms\Components\TextInput::make('image_media_uuid')
                         ->label(__('admin.page.fields.image_media_uuid'))
-                        ->helperText('Media UUID (MediaPicker in CMS).')
+                        ->helperText(__('admin.page.fields.media_uuid_helper'))
                         ->columnSpanFull(),
                     ])
                     ->defaultItems(3)
@@ -63,7 +63,7 @@ class ProcessWorkflowBlock extends BaseBlock
                         ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
                         ->searchable()
                         ->preload()
-                        ->placeholder('Select icon...'),
+                        ->placeholder(__('admin.page.fields.icon_placeholder')),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()

@@ -33,7 +33,7 @@ class ServiceHighlightsBlock extends BaseBlock
                 Forms\Components\TextInput::make('more_info_label')
                     ->label(__('admin.page.fields.more_info_label'))
                     ->maxLength(80)
-                    ->helperText('Fallback: home.services.moreInfo')
+                    ->helperText(__('admin.page.fields.more_info_label_helper'))
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('services')
                     ->label(__('admin.page.fields.services'))
@@ -90,7 +90,7 @@ class ServiceHighlightsBlock extends BaseBlock
                             ->helperText(__('admin.page.fields.button_url_helper')),
                         Forms\Components\TextInput::make('link.anchor')
                             ->label(__('admin.page.fields.service_anchor'))
-                            ->placeholder('section-id'),
+                            ->placeholder(__('admin.page.fields.anchor_placeholder')),
                     ])
                     ->defaultItems(4)
                     ->minItems(1)
@@ -112,7 +112,7 @@ class ServiceHighlightsBlock extends BaseBlock
                     ->helperText(__('admin.page.fields.button_url_helper')),
                 Forms\Components\TextInput::make('cta.link.anchor')
                     ->label(__('admin.page.fields.cta_anchor'))
-                    ->placeholder('section-id'),
+                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
             ]);
     }
 }
