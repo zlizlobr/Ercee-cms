@@ -1,0 +1,41 @@
+{
+  "label": "Map Placeholder",
+  "label_cs": "Mapa - placeholder",
+  "icon": "heroicon-o-map",
+  "order": 65,
+  "fields": [
+    {
+      "type": "text",
+      "name": "subtitle",
+      "label": "Subtitle",
+      "label_cs": "Podnadpis",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "title",
+      "label": "Title",
+      "label_cs": "Nadpis",
+      "maxLength": 200,
+      "columnSpanFull": true
+    },
+    {
+      "type": "textarea",
+      "name": "description",
+      "label": "Description",
+      "label_cs": "Popis",
+      "rows": 3,
+      "maxLength": 600,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "note",
+      "label": "Note",
+      "label_cs": "Poznamka",
+      "maxLength": 200,
+      "columnSpanFull": true
+    }
+  ]
+}

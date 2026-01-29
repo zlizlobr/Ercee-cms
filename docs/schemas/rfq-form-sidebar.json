@@ -1,0 +1,171 @@
+{
+  "label": "RFQ Form + Sidebar",
+  "label_cs": "Poptavka + sidebar",
+  "icon": "heroicon-o-document-text",
+  "order": 40,
+  "fields": [
+    {
+      "type": "text",
+      "name": "form_id",
+      "label": "Form ID",
+      "label_cs": "ID formulare",
+      "required": true,
+      "columnSpanFull": true
+    },
+    {
+      "type": "text",
+      "name": "sidebar_title",
+      "label": "Sidebar title",
+      "label_cs": "Nadpis sidebaru",
+      "maxLength": 160,
+      "columnSpanFull": true
+    },
+    {
+      "type": "repeater",
+      "name": "contact_items",
+      "label": "Contact items",
+      "label_cs": "Kontaktni karty",
+      "minItems": 0,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "value",
+          "label": "Value",
+          "label_cs": "Hodnota",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "helper",
+          "label": "Helper",
+          "label_cs": "Pomocny text",
+          "maxLength": 160
+        }
+      ]
+    },
+    {
+      "type": "repeater",
+      "name": "steps",
+      "label": "What to expect",
+      "label_cs": "Co cekat",
+      "minItems": 0,
+      "itemLabel": "title",
+      "schema": [
+        {
+          "type": "text",
+          "name": "step",
+          "label": "Step",
+          "label_cs": "Cislo",
+          "required": true,
+          "maxLength": 10
+        },
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "label_cs": "Nazev",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "type": "text",
+          "name": "description",
+          "label": "Description",
+          "label_cs": "Popis",
+          "required": true,
+          "maxLength": 200
+        }
+      ]
+    },
+    {
+      "type": "repeater",
+      "name": "trust_items",
+      "label": "Trust indicators",
+      "label_cs": "Duvodni body",
+      "minItems": 0,
+      "itemLabel": "text",
+      "schema": [
+        {
+          "type": "select",
+          "name": "icon_key",
+          "label": "Icon",
+          "label_cs": "Ikona",
+          "options": {
+            "default": "Default",
+            "check": "Check",
+            "star": "Star",
+            "shield": "Shield",
+            "user": "User",
+            "mail": "Mail",
+            "phone": "Phone",
+            "building": "Building",
+            "briefcase": "Briefcase",
+            "calendar": "Calendar",
+            "file-text": "File text",
+            "message-square": "Message",
+            "globe": "Globe",
+            "map-pin": "Map pin",
+            "info": "Info",
+            "check-circle": "Check circle",
+            "chat": "Chat",
+            "cog": "Settings",
+            "support": "Support",
+            "academic": "Academic cap"
+          },
+          "searchable": true,
+          "preload": true,
+          "placeholder": "Select icon..."
+        },
+        {
+          "type": "text",
+          "name": "text",
+          "label": "Text",
+          "label_cs": "Text",
+          "required": true,
+          "maxLength": 200
+        }
+      ]
+    }
+  ]
+}
