@@ -2,18 +2,9 @@
 
 namespace App\Filament\Resources\FunnelResource\Pages;
 
-use App\Filament\Resources\FunnelResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Funnel\Filament\Resources\FunnelResource\Pages\ListFunnels as ModuleListFunnels;
 
-class ListFunnels extends ListRecords
+class ListFunnels extends ModuleListFunnels
 {
-    protected static string $resource = FunnelResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // Alias for backwards compatibility
 }

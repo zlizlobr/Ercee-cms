@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\TaxonomyResource\Pages;
 
-use App\Filament\Resources\TaxonomyResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Commerce\Filament\Resources\TaxonomyResource\Pages\CreateTaxonomy as ModuleCreateTaxonomy;
 
-class CreateTaxonomy extends CreateRecord
+class CreateTaxonomy extends ModuleCreateTaxonomy
 {
-    protected static string $resource = TaxonomyResource::class;
+    // Alias for backwards compatibility
 }

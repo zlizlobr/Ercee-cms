@@ -39,9 +39,8 @@ class FunnelModuleServiceProvider extends BaseModuleServiceProvider
     public function getResources(): array
     {
         return [
-            // Filament resources will be registered here after migration
-            // \Modules\Funnel\Filament\Resources\FunnelResource::class,
-            // \Modules\Funnel\Filament\Resources\FunnelRunResource::class,
+            \Modules\Funnel\Filament\Resources\FunnelResource::class,
+            \Modules\Funnel\Filament\Resources\FunnelRunResource::class,
         ];
     }
 

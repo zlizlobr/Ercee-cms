@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\FormResource\Pages;
 
-use App\Filament\Resources\FormResource;
-use Filament\Resources\Pages\CreateRecord;
+use Modules\Forms\Filament\Resources\FormResource\Pages\CreateForm as ModuleCreateForm;
 
-class CreateForm extends CreateRecord
+class CreateForm extends ModuleCreateForm
 {
-    protected static string $resource = FormResource::class;
+    // Alias for backwards compatibility
 }

@@ -2,15 +2,9 @@
 
 namespace App\Filament\Resources\ContractResource\Pages;
 
-use App\Filament\Resources\ContractResource;
-use Filament\Resources\Pages\ListRecords;
+use Modules\Forms\Filament\Resources\ContractResource\Pages\ListContracts as ModuleListContracts;
 
-class ListContracts extends ListRecords
+class ListContracts extends ModuleListContracts
 {
-    protected static string $resource = ContractResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [];
-    }
+    // Alias for backwards compatibility
 }
