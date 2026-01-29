@@ -42,6 +42,50 @@ class Page extends Model
 
     public const BLOCK_TYPE_PREMIUM_CTA = 'premium_cta';
 
+    public const BLOCK_TYPE_DOCUMENTATION_HERO = 'documentation_hero';
+
+    public const BLOCK_TYPE_PAGE_HERO = 'page_hero';
+
+    public const BLOCK_TYPE_DOCUMENTATION_SEARCH = 'documentation_search';
+
+    public const BLOCK_TYPE_DOC_CATEGORIES = 'doc_categories';
+
+    public const BLOCK_TYPE_FACILITY_STATS = 'facility_stats';
+
+    public const BLOCK_TYPE_FACILITY_STANDARDS = 'facility_standards';
+
+    public const BLOCK_TYPE_FACILITIES_GRID = 'facilities_grid';
+
+    public const BLOCK_TYPE_CAPABILITIES_DETAILED = 'capabilities_detailed';
+
+    public const BLOCK_TYPE_STATS_CARDS = 'stats_cards';
+
+    public const BLOCK_TYPE_STATS_SHOWCASE = 'stats_showcase';
+
+    public const BLOCK_TYPE_SUPPORT_CARDS = 'support_cards';
+
+    public const BLOCK_TYPE_MAP_PLACEHOLDER = 'map_placeholder';
+
+    public const BLOCK_TYPE_USE_CASE_TABS = 'use_case_tabs';
+
+    public const BLOCK_TYPE_IMAGE_GRID = 'image_grid';
+
+    public const BLOCK_TYPE_RFQ_FORM_SIDEBAR = 'rfq_form_sidebar';
+
+    public const BLOCK_TYPE_INDUSTRIES_SERVED = 'industries_served';
+
+    public const BLOCK_TYPE_TRUST_SHOWCASE = 'trust_showcase';
+
+    public const BLOCK_TYPE_TECHNOLOGY_INNOVATION = 'technology_innovation';
+
+    public const BLOCK_TYPE_FAQ = 'faq';
+
+    public const BLOCK_TYPE_IMAGE_CTA = 'image_cta';
+
+    public const BLOCK_TYPE_PROCESS_STEPS = 'process_steps';
+
+    public const BLOCK_TYPE_PROCESS_WORKFLOW = 'process_workflow';
+
     public const SUPPORTED_LOCALES = ['cs', 'en'];
 
     protected $fillable = [
@@ -74,7 +118,29 @@ class Page extends Model
             self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
             self::BLOCK_TYPE_CAPABILITIES => __('admin.page.blocks.capabilities'),
             self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
+            self::BLOCK_TYPE_DOCUMENTATION_HERO => __('admin.page.blocks.documentation_hero'),
+            self::BLOCK_TYPE_PAGE_HERO => __('admin.page.blocks.page_hero'),
             self::BLOCK_TYPE_SERVICE_HIGHLIGHTS => __('admin.page.blocks.service_highlights'),
+            self::BLOCK_TYPE_DOCUMENTATION_SEARCH => __('admin.page.blocks.documentation_search'),
+            self::BLOCK_TYPE_DOC_CATEGORIES => __('admin.page.blocks.doc_categories'),
+            self::BLOCK_TYPE_FACILITY_STATS => __('admin.page.blocks.facility_stats'),
+            self::BLOCK_TYPE_FACILITY_STANDARDS => __('admin.page.blocks.facility_standards'),
+            self::BLOCK_TYPE_FACILITIES_GRID => __('admin.page.blocks.facilities_grid'),
+            self::BLOCK_TYPE_CAPABILITIES_DETAILED => __('admin.page.blocks.capabilities_detailed'),
+            self::BLOCK_TYPE_STATS_CARDS => __('admin.page.blocks.stats_cards'),
+            self::BLOCK_TYPE_STATS_SHOWCASE => __('admin.page.blocks.stats_showcase'),
+            self::BLOCK_TYPE_SUPPORT_CARDS => __('admin.page.blocks.support_cards'),
+            self::BLOCK_TYPE_MAP_PLACEHOLDER => __('admin.page.blocks.map_placeholder'),
+            self::BLOCK_TYPE_USE_CASE_TABS => __('admin.page.blocks.use_case_tabs'),
+            self::BLOCK_TYPE_IMAGE_GRID => __('admin.page.blocks.image_grid'),
+            self::BLOCK_TYPE_RFQ_FORM_SIDEBAR => __('admin.page.blocks.rfq_form_sidebar'),
+            self::BLOCK_TYPE_INDUSTRIES_SERVED => __('admin.page.blocks.industries_served'),
+            self::BLOCK_TYPE_TRUST_SHOWCASE => __('admin.page.blocks.trust_showcase'),
+            self::BLOCK_TYPE_TECHNOLOGY_INNOVATION => __('admin.page.blocks.technology_innovation'),
+            self::BLOCK_TYPE_FAQ => __('admin.page.blocks.faq'),
+            self::BLOCK_TYPE_IMAGE_CTA => __('admin.page.blocks.image_cta'),
+            self::BLOCK_TYPE_PROCESS_STEPS => __('admin.page.blocks.process_steps'),
+            self::BLOCK_TYPE_PROCESS_WORKFLOW => __('admin.page.blocks.process_workflow'),
         ];
     }
 

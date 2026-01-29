@@ -8,8 +8,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+/**
+ * Resolve media URLs for the admin page preview view.
+ */
+/**
+ * Resolve media URLs for the admin page preview view.
+ */
 class PagePreviewController extends Controller
 {
+    /**
+     * Render the preview view with resolved block media.
+     */
+    /**
+     * Render the preview view with resolved block media.
+     */
     public function __invoke(Page $page): View
     {
         $blocks = $this->resolveMediaInBlocks($page->getBlocks());
@@ -20,6 +32,18 @@ class PagePreviewController extends Controller
         ]);
     }
 
+    /**
+     * Resolve media URLs for block data used in preview.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
+    /**
+     * Resolve media URLs for block data used in preview.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     private function resolveMediaInBlocks(array $blocks): array
     {
         return array_map(function ($block) {
@@ -33,6 +57,7 @@ class PagePreviewController extends Controller
                 'testimonials' => $this->resolveTestimonialsBlock($block['data']),
                 'premium_cta' => $this->resolvePremiumCtaBlock($block['data']),
                 'service_highlights' => $this->resolveServiceHighlightsBlock($block['data']),
+                'service_highlights' => $this->resolveServiceHighlightsBlock($block['data']),
                 default => $block['data'],
             };
 
@@ -40,6 +65,18 @@ class PagePreviewController extends Controller
         }, $blocks);
     }
 
+    /**
+     * Resolve image block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    /**
+     * Resolve image block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveImageBlock(array $data): array
     {
         if (isset($data['media_uuid'])) {
@@ -58,6 +95,18 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve hero block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    /**
+     * Resolve hero block media URLs.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroBlock(array $data): array
     {
         if (isset($data['background_media_uuid'])) {
@@ -143,25 +192,37 @@ class PagePreviewController extends Controller
                 $data['background_image_url_large'] = $media->getUrl('large');
             }
         } elseif (isset($data['background_image'])) {
-            $data['background_image_url'] = Storage::disk('public')->url($data['background_image']);
+            $data['background_image_url'] = filter_var($data['background_image'], FILTER_VALIDATE_URL)
+                ? $data['background_image']
+                : Storage::disk('public')->url($data['background_image']);
         }
 
-        if (isset($data['buttons']) && is_array($data['buttons'])) {
-            $data['buttons'] = array_map(function ($button) {
-                if (! is_array($button)) {
-                    return $button;
-                }
-
-                if (empty($button['url']) && ! empty($button['page_id'])) {
-                    $page = Page::find($button['page_id']);
-                    if ($page) {
-                        $button['url'] = '/'.$page->slug;
-                    }
-                }
-
-                return $button;
-            }, $data['buttons']);
+        if (empty($data['title']) && ! empty($data['heading'])) {
+            $data['title'] = $data['heading'];
         }
+
+        if (empty($data['subtitle']) && ! empty($data['subheading'])) {
+            $data['subtitle'] = $data['subheading'];
+        }
+
+        if (
+            empty($data['cta_primary_label'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_text'])
+        ) {
+            $data['cta_primary_label'] = $data['button_text'];
+        }
+
+        if (
+            empty($data['cta_primary_url'])
+            && empty($data['cta_primary'])
+            && ! empty($data['button_url'])
+        ) {
+            $data['cta_primary_url'] = $data['button_url'];
+        }
+
+        $data = $this->resolveHeroCta($data, 'cta_primary');
+        $data = $this->resolveHeroCta($data, 'cta_secondary');
 
         return $data;
     }

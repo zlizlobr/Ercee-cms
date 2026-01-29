@@ -33,7 +33,7 @@ class ImageCTABlock extends BaseBlock
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_media_uuid'))
-                    ->helperText('Media UUID (MediaPicker in CMS).')
+                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('primary.label')
                     ->label(__('admin.page.fields.primary.label'))
@@ -41,26 +41,26 @@ class ImageCTABlock extends BaseBlock
                 Forms\Components\Select::make('primary.link.page_id')
                     ->label(__('admin.page.fields.primary.link.page_id'))
                     ->options([])
-                    ->placeholder('Select a page...'),
+                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
                 Forms\Components\TextInput::make('primary.link.url')
                     ->label(__('admin.page.fields.primary.link.url'))
-                    ->placeholder('/page, #section, https://...'),
+                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
                 Forms\Components\TextInput::make('primary.link.anchor')
                     ->label(__('admin.page.fields.primary.link.anchor'))
-                    ->placeholder('section-id'),
+                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
                 Forms\Components\TextInput::make('secondary.label')
                     ->label(__('admin.page.fields.secondary.label'))
                     ->maxLength(80),
                 Forms\Components\Select::make('secondary.link.page_id')
                     ->label(__('admin.page.fields.secondary.link.page_id'))
                     ->options([])
-                    ->placeholder('Select a page...'),
+                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
                 Forms\Components\TextInput::make('secondary.link.url')
                     ->label(__('admin.page.fields.secondary.link.url'))
-                    ->placeholder('/page, #section, https://...'),
+                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
                 Forms\Components\TextInput::make('secondary.link.anchor')
                     ->label(__('admin.page.fields.secondary.link.anchor'))
-                    ->placeholder('section-id'),
+                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
             ]);
     }
 }

@@ -38,7 +38,7 @@ class FacilityStandardsBlock extends BaseBlock
                         ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
                         ->searchable()
                         ->preload()
-                        ->placeholder('Select icon...'),
+                        ->placeholder(__('admin.page.fields.icon_placeholder')),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()

@@ -33,7 +33,7 @@ class DocumentationHeroBlock extends BaseBlock
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_media_uuid'))
-                    ->helperText('Media UUID (MediaPicker in CMS).')
+                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('badges')
                     ->label(__('admin.page.fields.badges'))

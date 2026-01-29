@@ -32,13 +32,13 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [~] **Identifikovat business domény** pro modularizaci: `Form`, `Commerce`, `Funnel`, `Subscriber` + napojení na Filament resources. (domény existují, ale stále v core)
 - [x] **Založit core namespace** – zatím ponecháno `App\`, připraveno pro budoucí extrakci do `Ercee\CmsCore\`.
 - [x] **Zavést core Contracts layer** (interfaces, events, DTO) pro komunikaci s moduly → `app/Contracts/Module/`, `app/Contracts/Events/`, `app/Contracts/Services/`.
-- [x] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`.
+- [~] **Zavést Module Manager** (registry) v core: načtení modulů z configu, lifecycle hooky, DI registrace → `app/Support/Module/ModuleManager.php`. (základ hotov; chybí validace `version` a použití `dependencies` z `config/modules.php`)
 - [x] **Definovat Composer autoload mapy** pro core a moduly (PSR‑4) a stabilizovat namespace konvence → `Modules\*` namespace.
-- [x] **Stabilizovat event bus** (Laravel events) pro integrace: core emituje eventy → `ContentPublished`, `MenuUpdated`, `MediaUploaded`.
+- [~] **Stabilizovat event bus** (Laravel events) pro integrace: core emituje eventy → `ContentPublished`, `MenuUpdated`, `MediaUploaded`. (eventy existují, ale nikde nejsou dispatchované)
 
 ### Phase 2 – Modulový systém & registrace
 - [x] **Zvolit formát registrace modulů**: `config/modules.php` implementováno.
-- [x] **Implementovat registraci modulů**: `enabled`, `provider`, `version`, `dependencies`, `migrations`, `routes`, `policies`, `permissions` → `ModuleManager.php`.
+- [~] **Implementovat registraci modulů**: `enabled`, `provider`, `version`, `dependencies`, `migrations`, `routes`, `policies`, `permissions` → `ModuleManager.php`. (enabled/provider/migrations/routes/policies/permissions fungují; chybí validace `version` a řešení `dependencies` z configu)
 - [x] **Implementovat modulový service provider** → `BaseModuleServiceProvider.php` s interfaces pro `register()`, `boot()`, routes, events, policies.
 - [x] **Zavést izolaci assets** (frontend/admin): modulové view/asset namespace + publish do `public/vendor/<module>` → v `BaseModuleServiceProvider`.
 - [x] **Rozšířit DI registrace** → `ModuleServiceProvider.php` registruje ModuleManager a volá register/boot.
@@ -59,10 +59,10 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [ ] **Riziko**: shared modely/relationships (např. Page ↔ Block) a hardcoded cesty/namespace ve skriptu; zavést contracts/DTO a parametrizaci migrace.
 
 ### Phase 4 – Admin extensibility
-- [x] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets.
-- [x] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek.
+- [~] **Modulové admin registry**: `AdminExtensionInterface` umožňuje modulům registrovat Resources/Pages/Widgets. (interface + ModuleManager existují, ale nejsou napojeny na Filament panel)
+- [~] **Modulové menu**: `getNavigationItems()` v `AdminExtensionInterface` pro přidávání položek. (sběr existuje v ModuleManageru, ale není použit v `AdminPanelProvider`)
 - [~] **Permissions**: permissions definovány v modulech, zbývá implementovat seedery. (seedery zatím nevytvářejí permissions)
-- [x] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků.
+- [~] **UI components**: `getBlocks()` v `AdminExtensionInterface` pro registraci bloků. (ModuleManager sbírá bloky, ale `BlockRegistry` je nepoužívá a stále bere jen `app/Filament/Blocks`)
 - [ ] **Riziko**: prefixy `module:<name>:` zavedeny v config/permissions. (v repu nevidím zavedené prefixy)
 
 ### Phase 5 – Release, versioning & update flow

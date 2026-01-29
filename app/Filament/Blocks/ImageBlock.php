@@ -31,7 +31,7 @@ class ImageBlock extends BaseBlock
                 Forms\Components\TextInput::make('alt')
                     ->label(__('admin.page.fields.alt'))
                     ->maxLength(255)
-                    ->helperText(__('Override media alt text')),
+                    ->helperText(__('admin.page.fields.override_media_alt_text_helper')),
                 Forms\Components\TextInput::make('caption')
                     ->label(__('admin.page.fields.caption'))
                     ->maxLength(255),

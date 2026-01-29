@@ -81,9 +81,17 @@ return [
     | rebuild_mode: 'github' (production), 'local' (dev), 'disabled'
     | rebuild_token: Secret token for rebuild endpoint authentication
     | local_frontend_path: Path to frontend project (for local mode)
+    | Configuration for frontend rebuild behavior.
+    |
+    | rebuild_enabled: Whether to trigger rebuilds at all
+    | rebuild_mode: 'github' (production), 'local' (dev), 'disabled'
+    | rebuild_token: Secret token for rebuild endpoint authentication
+    | local_frontend_path: Path to frontend project (for local mode)
     |
     */
     'frontend' => [
+        'rebuild_enabled' => env('FRONTEND_REBUILD_ENABLED', true),
+        'rebuild_mode' => env('FRONTEND_REBUILD_MODE', 'github'),
         'rebuild_enabled' => env('FRONTEND_REBUILD_ENABLED', true),
         'rebuild_mode' => env('FRONTEND_REBUILD_MODE', 'github'),
         'rebuild_token' => env('FRONTEND_REBUILD_TOKEN'),
