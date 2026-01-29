@@ -8,12 +8,21 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Resolve block media references from UUIDs or legacy storage paths.
  */
+/**
+ * Resolve block media references from UUIDs or legacy storage paths.
+ */
 class BlockMediaResolver
 {
     public function __construct(
         private readonly MediaManifestService $manifestService,
     ) {}
 
+    /**
+     * Resolve a single block's media data by block type.
+     *
+     * @param array<string, mixed> $blockData
+     * @return array<string, mixed>
+     */
     /**
      * Resolve a single block's media data by block type.
      *
@@ -32,6 +41,10 @@ class BlockMediaResolver
         };
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     /**
      * @param array<string, mixed> $data
      * @return array<string, mixed>
@@ -58,6 +71,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     /**
      * @param array<string, mixed> $data
      * @return array<string, mixed>
@@ -330,6 +347,11 @@ class BlockMediaResolver
      *
      * @return array<string, mixed>|null
      */
+    /**
+     * Resolve a legacy public storage path into a media-like payload.
+     *
+     * @return array<string, mixed>|null
+     */
     private function resolveLegacyPath(string $path): ?array
     {
         if (empty($path)) {
@@ -358,6 +380,9 @@ class BlockMediaResolver
     /**
      * @return array{width: int|null, height: int|null}
      */
+    /**
+     * @return array{width: int|null, height: int|null}
+     */
     private function getImageDimensions(string $path): array
     {
         if (! file_exists($path)) {
@@ -375,6 +400,9 @@ class BlockMediaResolver
     /**
      * Get a file MIME type from disk.
      */
+    /**
+     * Get a file MIME type from disk.
+     */
     private function getMimeType(string $path): ?string
     {
         if (! file_exists($path)) {
@@ -384,6 +412,12 @@ class BlockMediaResolver
         return mime_content_type($path) ?: null;
     }
 
+    /**
+     * Resolve all blocks that contain media references.
+     *
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     /**
      * Resolve all blocks that contain media references.
      *
