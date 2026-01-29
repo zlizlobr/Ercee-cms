@@ -1,10 +1,13 @@
 {
     "name": "ercee/module-commerce",
     "description": "E-commerce module for Ercee CMS",
+    "version": "1.0.0",
     "type": "ercee-module",
     "license": "proprietary",
     "require": {
         "php": "^8.2",
+        "filament/filament": "^3.2",
+        "laravel/framework": "^12.0",
         "stripe/stripe-php": "^17.0"
     },
     "autoload": {
@@ -12,9 +15,16 @@
             "Modules\\Commerce\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Commerce\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "ercee": {
             "provider": "Modules\\Commerce\\CommerceModuleServiceProvider"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

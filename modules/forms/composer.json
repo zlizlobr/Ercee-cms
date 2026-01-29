@@ -1,19 +1,29 @@
 {
     "name": "ercee/module-forms",
     "description": "Form builder and contract management module for Ercee CMS",
+    "version": "1.0.0",
     "type": "ercee-module",
     "license": "proprietary",
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "filament/filament": "^3.2",
+        "laravel/framework": "^12.0"
     },
     "autoload": {
         "psr-4": {
             "Modules\\Forms\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Forms\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "ercee": {
             "provider": "Modules\\Forms\\FormsModuleServiceProvider"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

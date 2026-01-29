@@ -66,14 +66,14 @@ Cíl: bezpečný update core, samostatné release modulu, CI a testy.
 - [x] **Riziko**: prefixy `module.<name>.<permission>` zavedeny v `ModuleManager::getAllPermissions()` a používány v `RolesAndPermissionsSeeder`.
 
 ### Phase 5 – Release, versioning & update flow
-- [ ] **Rozdělit repo**: core jako Composer package (samostatný repo), moduly jako samostatné repa nebo mono‑repo s path repositories.
-- [ ] **Nastavit CI matrix**: core testy vs modulové testy; modulové testy běží s test fixture core.
-- [ ] **Zavést semantic versioning** pro core i moduly (major při změně kontraktů).
+- [~] **Rozdělit repo**: aktuálně mono-repo s `path` repositories v `composer.json`. Moduly mají vlastní `composer.json` s `version`, `type: ercee-module`. Zbývá extrakce do samostatných git repozitářů.
+- [x] **Nastavit CI matrix**: `ci.yml` rozšířen — core testy a modulové testy (Forms, Commerce, Funnel) běží separátně.
+- [x] **Zavést semantic versioning** pro core i moduly. Verze v `composer.json` i `ServiceProvider`. `ModuleManager` validuje shodu a dependency constraints.
 - [ ] **Definovat upgrade guide**: kompatibilita core↔modul a minimální verze core v modulech.
 - [ ] **Release flow**: tagování core, následné releasy modulů; automatisované composer constraints.
-- [ ] **Developer workflow**: standardizovat lokální vývoj modulů (2 repo, symlink, dvojí git status) a uložit do core `docs`.
-- [ ] **Release pipeline pro moduly**: CI šablony, tagging standard, `path repo` pro dev a VCS repo pro produkci.
-- [ ] **Riziko**: lock‑in mezi verzemi; vynutit `requires` v `composer.json` modulů.
+- [x] **Developer workflow**: standardizováno v `docs/developer-workflow.md` — struktura modulu, registrace, eventy, permissions, verzování, lokální dev, produkce.
+- [~] **Release pipeline pro moduly**: CI šablony v `ci.yml`. `path repo` pro dev připraveno. Zbývá VCS repo setup pro produkci a tagging standard.
+- [x] **Riziko**: lock‑in mezi verzemi; `requires` zavedeny v `composer.json` modulů (funnel vyžaduje `ercee/module-forms: ^1.0`, `ercee/module-commerce: ^1.0`).
 
 ## Návrh modulového API
 
