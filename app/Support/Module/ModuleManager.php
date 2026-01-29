@@ -236,6 +236,19 @@ class ModuleManager
         return $blocks;
     }
 
+    public function getAllPermissions(): array
+    {
+        $permissions = [];
+
+        foreach ($this->getModules() as $name => $module) {
+            foreach ($module->getPermissions() as $permission) {
+                $permissions[] = "module.{$name}.{$permission}";
+            }
+        }
+
+        return $permissions;
+    }
+
     public function getModuleNavigationItems(): array
     {
         $items = [];

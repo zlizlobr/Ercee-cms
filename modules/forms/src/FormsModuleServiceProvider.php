@@ -45,9 +45,9 @@ class FormsModuleServiceProvider extends BaseModuleServiceProvider
     public function getBlocks(): array
     {
         return [
-            // Form-related blocks will be registered here
-            // \Modules\Forms\Filament\Blocks\FormEmbedBlock::class,
-            // \Modules\Forms\Filament\Blocks\ContactFormBlock::class,
+            \Modules\Forms\Filament\Blocks\FormEmbedBlock::class,
+            \Modules\Forms\Filament\Blocks\ContactFormBlock::class,
+            \Modules\Forms\Filament\Blocks\RFQFormSidebarBlock::class,
         ];
     }
 
