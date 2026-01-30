@@ -1,3 +1,13 @@
+## [v0.6.1] – 2026-01-30
+
+- release: patch -- refactor navigation: model, api and admin (#36)
+* hotfix: navigation structrue, update docs,. update api controller
+
+* update docs
+
+* Hotfi endpoint api media
+- chore: update changelog for v0.6.0
+
 ## [v0.6.0] – 2026-01-30
 
 - release: minor -- Finished refactor modules structure (#35)
