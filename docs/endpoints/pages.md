@@ -1,6 +1,6 @@
 # Pages
 
-## GET /v1/pages
+## GET /api/v1/pages
 List all published page slugs.
 
 ### Authorization
@@ -19,7 +19,7 @@ None.
 ### Error responses
 None.
 
-## GET /v1/pages/{slug}
+## GET /api/v1/pages/{slug}
 Fetch a published page by slug.
 
 ### Authorization

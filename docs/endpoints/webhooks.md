@@ -1,6 +1,6 @@
 # Webhooks
 
-## POST /webhooks/stripe
+## POST /api/webhooks/stripe
 Receive Stripe payment events.
 
 ### Authorization

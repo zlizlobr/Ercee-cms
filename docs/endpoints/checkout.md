@@ -1,6 +1,6 @@
 # Checkout
 
-## POST /v1/checkout
+## POST /api/v1/checkout
 Create a checkout session for a product.
 
 ### Authorization

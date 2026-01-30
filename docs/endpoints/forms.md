@@ -1,6 +1,6 @@
 # Forms
 
-## GET /v1/forms/{id}
+## GET /api/v1/forms/{id}
 Fetch an active form definition by ID.
 
 ### Authorization
@@ -55,7 +55,7 @@ None.
 }
 ```
 
-## POST /v1/forms/{id}/submit
+## POST /api/v1/forms/{id}/submit
 Submit a form response.
 
 ### Authorization
