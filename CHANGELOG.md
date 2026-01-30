@@ -1,3 +1,9 @@
+## [v0.6.2] – 2026-01-30
+
+- release: patch --  Refactor Thema Options(#37)
+* add to thema options MediaPicker for images
+- chore: update changelog for v0.6.1
+
 ## [v0.6.1] – 2026-01-30
 
 - release: patch -- refactor navigation: model, api and admin (#36)
