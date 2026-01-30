@@ -5,19 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Domain\Content\Menu;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
+use App\Domain\Media\ThemeMediaResolver;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
-/**
- * API controller for theme settings endpoint.
- */
 class ThemeController extends Controller
 {
-    /**
-     * Get complete theme settings with resolved menus.
-     */
+    public function __construct(
+        private readonly ThemeMediaResolver $mediaResolver,
+    ) {}
+
     public function index(): JsonResponse
     {
         $data = Cache::remember(ThemeSetting::CACHE_KEY, 3600, function () {
@@ -35,46 +33,27 @@ class ThemeController extends Controller
         ]);
     }
 
-    /**
-     * Format global settings for API response.
-     */
     protected function formatGlobal(ThemeSetting $settings): array
     {
         $global = $settings->getGlobal();
 
         return [
-            'logo' => [
-                'type' => $global['logo_type'],
-                'text' => $global['logo_text'],
-                'image_url' => $this->resolveImageUrl($global['logo_image']),
-                'url' => $this->resolveLink($global, 'logo'),
-            ],
+            'logo' => $this->formatLogo($global, true),
             'cta' => $this->formatCta($global),
         ];
     }
 
-    /**
-     * Format header settings for API response.
-     */
     protected function formatHeader(ThemeSetting $settings): array
     {
         $header = $settings->getHeader();
 
         return [
-            'logo' => [
-                'type' => $header['logo_type'],
-                'text' => $header['logo_text'],
-                'image_url' => $this->resolveImageUrl($header['logo_image']),
-                'url' => $this->resolveLink($header, 'logo'),
-            ],
+            'logo' => $this->formatLogo($header, true),
             'menu' => $this->resolveMenu($header['menu_id']),
             'cta' => $this->formatCta($header),
         ];
     }
 
-    /**
-     * Format footer settings for API response.
-     */
     protected function formatFooter(ThemeSetting $settings): array
     {
         $footer = $settings->getFooter();
@@ -82,11 +61,7 @@ class ThemeController extends Controller
         $defaultCopyright = "© {$year} Ercee. Všechna práva vyhrazena.";
 
         return [
-            'logo' => [
-                'type' => $footer['logo_type'],
-                'text' => $footer['logo_text'],
-                'image_url' => $this->resolveImageUrl($footer['logo_image']),
-            ],
+            'logo' => $this->formatLogo($footer, false),
             'company_text' => $footer['company_text'],
             'menus' => [
                 'quick_links' => $this->resolveMenu($footer['quick_links_menu_id']),
@@ -171,15 +146,23 @@ class ThemeController extends Controller
         ];
     }
 
-    /**
-     * Resolve image path to full URL.
-     */
-    protected function resolveImageUrl(?string $path): ?string
+    protected function formatLogo(array $settings, bool $includeUrl): array
     {
-        if (! $path) {
-            return null;
+        $logo = [
+            'type' => $settings['logo_type'],
+            'text' => $settings['logo_text'],
+            'image_url' => $this->mediaResolver->resolveLogoImageUrl($settings),
+        ];
+
+        $media = $this->mediaResolver->resolveLogoMedia($settings);
+        if ($media) {
+            $logo['media'] = $media;
         }
 
-        return Storage::disk('public')->url($path);
+        if ($includeUrl) {
+            $logo['url'] = $this->resolveLink($settings, 'logo');
+        }
+
+        return $logo;
     }
 }

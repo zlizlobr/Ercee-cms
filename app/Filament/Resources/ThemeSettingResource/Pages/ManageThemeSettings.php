@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ThemeSettingResource\Pages;
 use App\Domain\Content\Menu;
 use App\Domain\Content\Page as ContentPage;
 use App\Domain\Content\ThemeSetting;
+use App\Filament\Components\MediaPicker;
 use App\Filament\Resources\ThemeSettingResource;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -101,12 +102,8 @@ class ManageThemeSettings extends Page
                             ->label('Logo Text')
                             ->default('Ercee')
                             ->visible(fn (Forms\Get $get) => $get('global.logo_type') === 'text'),
-                        Forms\Components\FileUpload::make('global.logo_image')
+                        MediaPicker::make('global.logo_media_uuid')
                             ->label('Logo Image')
-                            ->disk('public')
-                            ->directory('theme/logos')
-                            ->image()
-                            ->imageEditor()
                             ->visible(fn (Forms\Get $get) => $get('global.logo_type') === 'image'),
                         ...$this->linkFields('global.logo', 'Logo', '/'),
                     ])
@@ -144,12 +141,8 @@ class ManageThemeSettings extends Page
                             ->label('Logo Text')
                             ->placeholder('Use global setting')
                             ->visible(fn (Forms\Get $get) => $get('header.logo_type') === 'text'),
-                        Forms\Components\FileUpload::make('header.logo_image')
+                        MediaPicker::make('header.logo_media_uuid')
                             ->label('Logo Image')
-                            ->disk('public')
-                            ->directory('theme/logos')
-                            ->image()
-                            ->imageEditor()
                             ->visible(fn (Forms\Get $get) => $get('header.logo_type') === 'image'),
                         ...$this->linkFields('header.logo', 'Logo', null, true),
                     ])
@@ -198,12 +191,8 @@ class ManageThemeSettings extends Page
                             ->label('Logo Text')
                             ->placeholder('Use global setting')
                             ->visible(fn (Forms\Get $get) => $get('footer.logo_type') === 'text'),
-                        Forms\Components\FileUpload::make('footer.logo_image')
+                        MediaPicker::make('footer.logo_media_uuid')
                             ->label('Logo Image')
-                            ->disk('public')
-                            ->directory('theme/logos')
-                            ->image()
-                            ->imageEditor()
                             ->visible(fn (Forms\Get $get) => $get('footer.logo_type') === 'image'),
                     ])
                     ->columns(2)
