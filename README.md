@@ -139,6 +139,13 @@ Access the admin panel at `http://localhost:8000/admin`
 
 The CMS exposes a REST API for frontend consumption.
 
+API documentation:
+- Overview: `docs/api/overview.md`
+- Authentication: `docs/api/authentication.md`
+- Errors: `docs/api/errors.md`
+- Conventions: `docs/api/conventions.md`
+- Endpoints: `docs/api/endpoints/`
+
 ### Endpoints
 
 | Method | Endpoint | Description |

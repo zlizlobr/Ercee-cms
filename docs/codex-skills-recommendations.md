@@ -13,13 +13,13 @@ Tento dokument shrnuje navrhy, jak zjednodusit praci s dokumentaci, testy a opak
 
 **Navrh obsahu SKILL.md:**
 - Pravidla pro formatovani (nadpisy, tabulky, bloky prikladu).
-- Jak zapojovat nove endpointy do `README.md` a `docs/endpoints/*`.
+- Jak zapojovat nove endpointy do `README.md` a `docs/api/endpoints/*`.
 - Struktura pro implementacni tasky (Scope, Kontext, Cile, Faze, QA, Otevrene body).
 
 ### B) skill-api-docs
 **Ucel:** Dokumentace REST API a zmen v endpointu.
 **Rozsah:**
-- Vytvareni `docs/endpoints/*.md` souboru.
+- Vytvareni `docs/api/endpoints/*.md` souboru.
 - Vkladani vzorovych request/response.
 - Udrzovani konzistence s `routes/api.php`.
 
@@ -52,17 +52,17 @@ Tento dokument shrnuje navrhy, jak zjednodusit praci s dokumentaci, testy a opak
 ## 2) Doporucene scripts/ (pomocne nastroje)
 
 ### A) scripts/docs/check-endpoints.sh
-**Ucel:** Zjistit, zda jsou endpointy pokryty v `README.md` a `docs/endpoints`.
+**Ucel:** Zjistit, zda jsou endpointy pokryty v `README.md` a `docs/api/endpoints`.
 **Chovani:**
 - Vypise route z `routes/api.php`.
-- Porovna s existujicimi `.md` soubory ve `docs/endpoints`.
+- Porovna s existujicimi `.md` soubory ve `docs/api/endpoints`.
 - Varuje, pokud chybi dokumentace pro route.
 
 ### B) scripts/docs/new-endpoint-doc.sh
 **Ucel:** Vytvorit sablonu dokumentace pro novy endpoint.
 **Chovani:**
 - Prijme slug a HTTP method.
-- Vytvori `docs/endpoints/<name>.md` se zakladni strukturou.
+- Vytvori `docs/api/endpoints/<name>.md` se zakladni strukturou.
 
 ### C) scripts/theme/verify-theme-endpoint.php
 **Ucel:** Overit strukturu odpovedi `/api/v1/theme` proti ocekavanemu JSON schematu.

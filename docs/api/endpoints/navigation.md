@@ -15,32 +15,36 @@ None.
   "data": [
     {
       "id": 1,
-      "title": "Home",
-      "classes": "",
-      "url": "/",
+      "title": "Kontakt",
+      "slug": "",
+      "url": "#contact",
+      "page_slug": null,
       "target": "_self",
       "children": []
     },
     {
       "id": 2,
-      "title": "Services",
-      "classes": "",
-      "url": "/services",
+      "title": "Služby",
+      "slug": "capabilities",
+      "url": "/capabilities",
+      "page_slug": "capabilities",
       "target": "_self",
-      "children": [
-        {
-          "id": 3,
-          "title": "Consulting",
-          "classes": "",
-          "url": "/services/consulting",
-          "target": "_self",
-          "children": []
-        }
-      ]
+      "children": []
     }
   ]
 }
 ```
+
+### Response schema
+| field | type | description |
+| --- | --- | --- |
+| id | integer | Navigation item ID |
+| title | string | Display title |
+| slug | string | Item slug (can be empty) |
+| url | string\|null | URL or anchor link, `null` if not set |
+| page_slug | string\|null | Page slug when item links to a page (use with `GET /api/v1/pages/{slug}`), `null` otherwise |
+| target | string | Link target (`_self`, `_blank`) |
+| children | array | Nested navigation items (same structure) |
 
 ### Error responses
 None. If the menu does not exist, the endpoint returns an empty array in `data`.
@@ -77,15 +81,25 @@ None.
 ```json
 {
   "data": {
-    "id": 4,
-    "name": "Main",
+    "id": 1,
+    "name": "Main Navigation",
     "slug": "main",
     "items": [
       {
         "id": 1,
-        "title": "Home",
-        "slug": "home",
-        "url": "/",
+        "title": "Kontakt",
+        "slug": "",
+        "url": "#contact",
+        "page_slug": null,
+        "target": "_self",
+        "children": []
+      },
+      {
+        "id": 2,
+        "title": "Služby",
+        "slug": "capabilities",
+        "url": "/capabilities",
+        "page_slug": "capabilities",
         "target": "_self",
         "children": []
       }
@@ -93,6 +107,14 @@ None.
   }
 }
 ```
+
+### Response schema
+| field | type | description |
+| --- | --- | --- |
+| id | integer | Menu ID |
+| name | string | Menu name |
+| slug | string | Menu slug |
+| items | array | Navigation items (same schema as `GET /api/v1/navigation` items) |
 
 ### Error responses
 - `404 Not Found` - menu not found
