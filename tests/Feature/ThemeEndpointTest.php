@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Domain\Content\Menu;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\ThemeSetting;
+use App\Domain\Media\MediaManifestService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -12,6 +13,12 @@ use Tests\TestCase;
 class ThemeEndpointTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Cache::forget(ThemeSetting::CACHE_KEY);
+    }
 
     public function test_returns_default_theme_settings_when_no_settings_exist(): void
     {
@@ -182,9 +189,99 @@ class ThemeEndpointTest extends TestCase
         $response->assertJsonPath('data.global.logo.text', 'Updated');
     }
 
-    /**
-     * Assert that a string contains a substring.
-     */
+    public function test_returns_media_url_for_logo_with_media_uuid(): void
+    {
+        $uuid = 'test-media-uuid-1234';
+
+        $manifest = $this->mock(MediaManifestService::class);
+        $manifest->shouldReceive('getByUuid')
+            ->with($uuid)
+            ->andReturn([
+                'uuid' => $uuid,
+                'original' => [
+                    'url' => '/media/test-media-uuid-1234/logo.png',
+                    'width' => 200,
+                    'height' => 60,
+                    'mime' => 'image/png',
+                ],
+                'alt' => 'Site Logo',
+                'title' => 'logo',
+                'focal_point' => null,
+                'variants' => [],
+            ]);
+        $manifest->shouldReceive('getUrl')
+            ->with($uuid)
+            ->andReturn('/media/test-media-uuid-1234/logo.png');
+        $manifest->shouldReceive('toApiFormat')
+            ->andReturn([
+                'uuid' => $uuid,
+                'url' => '/media/test-media-uuid-1234/logo.png',
+                'alt' => 'Site Logo',
+                'title' => 'logo',
+                'width' => 200,
+                'height' => 60,
+                'mime' => 'image/png',
+                'focal_point' => null,
+                'variants' => [],
+            ]);
+
+        ThemeSetting::create([
+            'global' => [
+                'logo_type' => 'image',
+                'logo_text' => 'Ercee',
+                'logo_image' => null,
+                'logo_media_uuid' => $uuid,
+                'logo_link_type' => 'url',
+                'logo_url' => '/',
+                'logo_page_id' => null,
+                'cta_label' => 'Kontaktujte nás',
+                'cta_link_type' => 'url',
+                'cta_url' => '/rfq',
+                'cta_page_id' => null,
+            ],
+            'header' => [],
+            'footer' => [],
+        ]);
+
+        $response = $this->getJson('/api/v1/theme');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.global.logo.type', 'image')
+            ->assertJsonPath('data.global.logo.image_url', '/media/test-media-uuid-1234/logo.png')
+            ->assertJsonPath('data.global.logo.media.uuid', $uuid)
+            ->assertJsonPath('data.global.logo.media.url', '/media/test-media-uuid-1234/logo.png');
+    }
+
+    public function test_returns_legacy_image_url_when_no_media_uuid(): void
+    {
+        ThemeSetting::create([
+            'global' => [
+                'logo_type' => 'image',
+                'logo_text' => 'Ercee',
+                'logo_image' => 'theme/logos/legacy-logo.png',
+                'logo_media_uuid' => null,
+                'logo_link_type' => 'url',
+                'logo_url' => '/',
+                'logo_page_id' => null,
+                'cta_label' => 'Kontaktujte nás',
+                'cta_link_type' => 'url',
+                'cta_url' => '/rfq',
+                'cta_page_id' => null,
+            ],
+            'header' => [],
+            'footer' => [],
+        ]);
+
+        $response = $this->getJson('/api/v1/theme');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.global.logo.type', 'image');
+
+        $imageUrl = $response->json('data.global.logo.image_url');
+        $this->assertNotNull($imageUrl);
+        $this->assertStringContains('theme/logos/legacy-logo.png', $imageUrl);
+    }
+
     protected function assertStringContains(string $needle, string $haystack): void
     {
         $this->assertTrue(
