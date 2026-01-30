@@ -139,41 +139,15 @@ class Navigation extends Model
     }
 
     /**
-     * Get URL with priority: navigable > page_id (legacy) > url.
+     * Get URL with priority: page_id > url.
      */
     public function getUrl(): ?string
     {
-        // Priority 1: Polymorphic navigable
-        if ($this->navigable) {
-            return $this->resolveNavigableUrl();
-        }
-
-        // Priority 2: Legacy page_id support
         if ($this->page) {
             return '/'.$this->page->slug;
         }
 
-        // Priority 3: Direct URL
         return $this->url;
-    }
-
-    /**
-     * Resolve URL from a polymorphic navigable model.
-     */
-    protected function resolveNavigableUrl(): ?string
-    {
-        $navigable = $this->navigable;
-
-        if ($navigable instanceof Page) {
-            return '/'.$navigable->slug;
-        }
-
-        // Add more types as needed (Contact, etc.)
-        if (method_exists($navigable, 'getUrl')) {
-            return $navigable->getUrl();
-        }
-
-        return null;
     }
 
     /**
@@ -188,8 +162,14 @@ class Navigation extends Model
             'title' => $this->title,
             'slug' => $this->slug,
             'url' => $this->getUrl(),
+            'page_slug' => $this->resolvePageSlug(),
             'target' => $this->target ?? '_self',
             'children' => $this->children->map(fn ($child) => $child->toArray())->toArray(),
         ];
+    }
+
+    protected function resolvePageSlug(): ?string
+    {
+        return $this->page?->slug;
     }
 }

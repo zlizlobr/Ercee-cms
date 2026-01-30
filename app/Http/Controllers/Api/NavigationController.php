@@ -31,7 +31,11 @@ class NavigationController extends Controller
                 ->active()
                 ->roots()
                 ->ordered()
-                ->with(['children' => fn ($q) => $q->active()->ordered()])
+                ->with([
+                    'page',
+                    'children' => fn ($q) => $q->active()->ordered(),
+                    'children.page',
+                ])
                 ->get()
                 ->map(fn ($item) => $item->toArray())
                 ->toArray();
@@ -51,7 +55,11 @@ class NavigationController extends Controller
 
         $menu = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
             $menu = Menu::where('slug', $menuSlug)
-                ->with(['items.children' => fn ($q) => $q->active()->ordered()])
+                ->with([
+                    'items.page',
+                    'items.children' => fn ($q) => $q->active()->ordered(),
+                    'items.children.page',
+                ])
                 ->first();
 
             return $menu?->toArray();
