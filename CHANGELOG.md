@@ -1,3 +1,29 @@
+## [v0.6.0] – 2026-01-30
+
+- release: minor -- Finished refactor modules structure (#35)
+* Hotfix: issue nedpoint
+
+* upadate ModuleManager, BlockRegistry, Commerce modul, Funnel modul
+
+* change Event bus, Funnel event listeners
+
+* Migrating controllers to module classes, Cleanup AppServiceProvider, CommerceModuleServiceProvider
+
+* Composer.json modulu  add CI action
+
+* Add ci moudle release
+
+* Migrate old name space faze 1
+
+* Complete backward-compatible migration chunk 1
+
+* Complete backward-compatible migration chunk 2
+
+* Hotfix error test
+
+* Add seeder for creating page. Update docs API
+- chore: update changelog for v0.5.9
+
 ## [v0.5.9] – 2026-01-29
 
 - release: patch --  Fix all bock issues, progress modules refactoring (#34)
