@@ -1,6 +1,6 @@
 # Products
 
-## GET /v1/products
+## GET /api/v1/products
 List all active products with optional filtering.
 
 ### Authorization
@@ -65,7 +65,7 @@ None.
 
 ---
 
-## GET /v1/products/{id}
+## GET /api/v1/products/{id}
 Fetch a single active product by ID with full details.
 
 ### Authorization

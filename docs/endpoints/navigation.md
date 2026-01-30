@@ -1,6 +1,6 @@
 # Navigation & Menus
 
-## GET /v1/navigation
+## GET /api/v1/navigation
 Get navigation items for the default menu (`main`).
 
 ### Authorization
@@ -45,7 +45,7 @@ None.
 ### Error responses
 None. If the menu does not exist, the endpoint returns an empty array in `data`.
 
-## GET /v1/navigation/{menuSlug}
+## GET /api/v1/navigation/{menuSlug}
 Get navigation items for a specific menu by slug.
 
 ### Authorization
@@ -57,12 +57,12 @@ None.
 | menuSlug | string | yes | Menu slug | - |
 
 ### Successful response
-Same structure as `GET /v1/navigation`.
+Same structure as `GET /api/v1/navigation`.
 
 ### Error responses
 None. If the menu does not exist, the endpoint returns an empty array in `data`.
 
-## GET /v1/menus/{menuSlug}
+## GET /api/v1/menus/{menuSlug}
 Get a menu (including its navigation items) by slug.
 
 ### Authorization

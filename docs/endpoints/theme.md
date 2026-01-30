@@ -1,6 +1,6 @@
 # Theme
 
-## GET /v1/theme
+## GET /api/v1/theme
 Fetch theme settings with resolved menus, URLs, and image URLs.
 
 ### Authorization
@@ -89,7 +89,7 @@ None.
 | slug | string | yes | Menu slug | - |
 | items | array | yes | Navigation items | [] |
 
-Navigation items follow the same schema as `/v1/navigation`.
+Navigation items follow the same schema as `/api/v1/navigation`.
 
 ### Error responses
 None.

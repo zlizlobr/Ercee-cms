@@ -2,6 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\MediaResource;
+use App\Filament\Resources\MenuResource;
+use App\Filament\Resources\NavigationResource;
+use App\Filament\Resources\PageResource;
+use App\Filament\Resources\SubscriberResource;
+use App\Filament\Resources\ThemeSettingResource;
 use App\Filament\Widgets\PagesStats;
 use App\Support\Module\ModuleManager;
 use Filament\Http\Middleware\Authenticate;
@@ -41,17 +47,29 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->sort(-1)
                     ->openUrlInNewTab(),
+                ...$moduleManager->getModuleNavigationItems(),
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->resources($moduleManager->getModuleResources())
+            ->resources([
+                // Core resources
+                PageResource::class,
+                NavigationResource::class,
+                MenuResource::class,
+                MediaResource::class,
+                SubscriberResource::class,
+                ThemeSettingResource::class,
+                // Module resources
+                ...$moduleManager->getModuleResources(),
+            ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                ...$moduleManager->getModulePages(),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 PagesStats::class,
+                ...$moduleManager->getModuleWidgets(),
             ])
             ->middleware([
                 EncryptCookies::class,

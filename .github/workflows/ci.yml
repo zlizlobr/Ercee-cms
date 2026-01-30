@@ -88,5 +88,14 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force
 
-      - name: Run PHPUnit Tests
-        run: php artisan test --ansi
+      - name: Run Core Tests
+        run: php artisan test --ansi --exclude-group=module
+
+      - name: Run Module Tests (Forms)
+        run: php artisan test --ansi --filter=Forms
+
+      - name: Run Module Tests (Commerce)
+        run: php artisan test --ansi --filter=Commerce
+
+      - name: Run Module Tests (Funnel)
+        run: php artisan test --ansi --filter=Funnel

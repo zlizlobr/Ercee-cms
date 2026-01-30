@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Application\Commerce\Commands\CreateOrderCommand;
-use App\Application\Commerce\CreateOrderHandler;
+use Modules\Commerce\Application\Commands\CreateOrderCommand;
+use Modules\Commerce\Application\CreateOrderHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
 use Illuminate\Http\JsonResponse;

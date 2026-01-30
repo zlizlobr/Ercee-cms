@@ -1,6 +1,6 @@
 # Internal
 
-## POST /internal/rebuild-frontend
+## POST /api/internal/rebuild-frontend
 Trigger a frontend rebuild via GitHub dispatch.
 
 ### Authorization

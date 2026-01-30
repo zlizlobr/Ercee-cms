@@ -2,9 +2,9 @@
 
 namespace App\Domain\Subscriber;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Form\Contract;
-use App\Domain\Funnel\FunnelRun;
+use Modules\Commerce\Domain\Order;
+use Modules\Forms\Domain\Contract;
+use Modules\Funnel\Domain\FunnelRun;
 use Database\Factories\SubscriberFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

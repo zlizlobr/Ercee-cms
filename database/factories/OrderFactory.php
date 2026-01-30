@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

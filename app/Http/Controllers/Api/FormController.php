@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Application\Form\Commands\SubmitFormCommand;
-use App\Application\Form\SubmitFormHandler;
-use App\Domain\Form\Form;
+use Modules\Forms\Application\Commands\SubmitFormCommand;
+use Modules\Forms\Application\SubmitFormHandler;
+use Modules\Forms\Domain\Form;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SubmitFormRequest;
 use Illuminate\Http\JsonResponse;
