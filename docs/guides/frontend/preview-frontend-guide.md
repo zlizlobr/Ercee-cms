@@ -2,7 +2,7 @@
 
 Public site is rendered by the Astro frontend in a separate repo. This file documents the **Blade preview** that is used inside Filament for quick content checks.
 
-For the public frontend guide, see: `docs/astro-frontend-guide.md`.
+For the public frontend guide, see: `docs/guides/frontend/astro-frontend-guide.md`.
 
 ## Preview pages
 
@@ -22,6 +22,6 @@ If no component exists, the preview shows a warning card with the block type.
 
 ## Adding a preview template for a new block
 
-1. Create the block in the CMS (see `docs/creating-custom-blocks.md`).
+1. Create the block in the CMS (see `docs/guides/content/creating-custom-blocks.md`).
 2. Add a preview Blade component in `resources/views/components/blocks/`.
 3. If you have legacy templates, keep them in `resources/views/frontend/blocks/` and the preview will still pick them up.

@@ -50,7 +50,7 @@ Default admin user:
 ### 5. Configure payments (optional)
 
 If you need Stripe payments or webhooks locally, follow the Commerce guide:
-`docs/commerce-guide.md`.
+`docs/guides/commerce/commerce-guide.md`.
 
 ### 6. Start services (optional)
 

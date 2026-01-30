@@ -109,5 +109,5 @@ All blocks are stored in `pages.content`:
 
 ## Related Documentation
 
-- `docs/block-contract.md` - Data structure and rendering pipeline
+- `docs/reference/content/block-contract.md` - Data structure and rendering pipeline
 - https://filamentphp.com/docs/forms/fields/builder

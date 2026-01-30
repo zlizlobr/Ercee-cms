@@ -45,8 +45,8 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 
 ## Local Development
 
-- Backend setup: `docs/local-backend-setup.md`
-- Astro frontend setup: `docs/local-frontend-setup.md`
+- Backend setup: `docs/guides/setup/local-backend-setup.md`
+- Astro frontend setup: `docs/guides/setup/local-frontend-setup.md`
 
 ## Available Commands
 
@@ -352,7 +352,7 @@ Reviews support an approval workflow:
 5. System marks Order as paid and dispatches `OrderPaid` event
 6. Marketing funnels are triggered automatically
 
-For more details, see [docs/commerce-guide.md](docs/commerce-guide.md).
+For more details, see [docs/guides/commerce/commerce-guide.md](docs/guides/commerce/commerce-guide.md).
 
 ## Marketing Automation (Funnels)
 
@@ -383,7 +383,7 @@ Funnels run asynchronously via Laravel queues. Start the queue worker:
 php artisan queue:work
 ```
 
-For more details, see [docs/funnel-guide.md](docs/funnel-guide.md).
+For more details, see [docs/guides/marketing/funnel-guide.md](docs/guides/marketing/funnel-guide.md).
 
 ## Project Structure
 
@@ -660,16 +660,17 @@ curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
   -d '{"reason": "manual"}'
 ```
 
-For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
+For local development setup, see [docs/guides/setup/local-frontend-setup.md](docs/guides/setup/local-frontend-setup.md).
 
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
-| [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
-| [docs/astro-frontend-guide.md](docs/astro-frontend-guide.md) | Astro frontend architecture & development |
-| [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
-| [docs/local-backend-setup.md](docs/local-backend-setup.md) | Local backend setup (Laravel API + admin) |
-| [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
-| [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
-| [docs/frontend-menu-integration.md](docs/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
+| [docs/README.md](docs/README.md) | Documentation index |
+| [docs/guides/frontend/preview-frontend-guide.md](docs/guides/frontend/preview-frontend-guide.md) | Admin preview frontend guide |
+| [docs/guides/frontend/astro-frontend-guide.md](docs/guides/frontend/astro-frontend-guide.md) | Astro frontend architecture & development |
+| [docs/guides/setup/local-frontend-setup.md](docs/guides/setup/local-frontend-setup.md) | Local frontend testing setup |
+| [docs/guides/setup/local-backend-setup.md](docs/guides/setup/local-backend-setup.md) | Local backend setup (Laravel API + admin) |
+| [docs/guides/commerce/commerce-guide.md](docs/guides/commerce/commerce-guide.md) | Commerce & Checkout developer guide |
+| [docs/guides/marketing/funnel-guide.md](docs/guides/marketing/funnel-guide.md) | Marketing Automation developer guide |
+| [docs/guides/frontend/frontend-menu-integration.md](docs/guides/frontend/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |

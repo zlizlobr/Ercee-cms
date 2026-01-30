@@ -6,7 +6,7 @@ This guide explains how to set up and test the Astro frontend locally alongside 
 
 - Node.js 20+
 - npm or pnpm
-- Laravel CMS running locally (see docs/local-backend-setup.md)
+- Laravel CMS running locally (see docs/guides/setup/local-backend-setup.md)
 
 ## Quick Start
 
@@ -42,7 +42,7 @@ SITE_URL=http://localhost:4321
 
 ### 4. Start Development Server
 
-Start the Laravel API and queue worker first (see docs/local-backend-setup.md).
+Start the Laravel API and queue worker first (see docs/guides/setup/local-backend-setup.md).
 
 **Astro Frontend:**
 
