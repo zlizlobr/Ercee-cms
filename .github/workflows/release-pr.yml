@@ -1,0 +1,26 @@
+name: Release PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  release-pr:
+    if: startsWith(github.event.pull_request.title, 'release:')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Release PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "PR title: $TITLE"
+
+          if [[ "$TITLE" =~ ^release:\ (patch|minor|major)$ ]]; then
+            echo "✅ Release PR OK"
+            exit 0
+          fi
+
+          echo "❌ Invalid release PR title"
+          echo "Use exactly: release: patch | release: minor | release: major"
+          exit 1
