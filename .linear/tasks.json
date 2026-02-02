@@ -1,0 +1,17 @@
+{
+  "tasks": [
+    {
+      "id": "local-20260202-001",
+      "title": "Testovac\u00ed \u00fakol z Codexu",
+      "description": "Testovac\u00ed task vytvo\u0159en\u00fd agentem Codex; slou\u017e\u00ed k ov\u011b\u0159en\u00ed toku p\u0159es .linear/tasks.json.",
+      "priority": "low",
+      "state": "synced",
+      "linearId": "a4df1231-f039-4d5d-b635-4ff07f1d97ac",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "llm-codex",
+        "test"
+      ]
+    }
+  ]
+}
