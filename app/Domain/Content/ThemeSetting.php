@@ -42,13 +42,17 @@ class ThemeSetting extends Model
             'logo_text' => 'Ercee',
             'logo_image' => null,
             'logo_media_uuid' => null,
-            'logo_link_type' => 'url',
-            'logo_url' => '/',
-            'logo_page_id' => null,
+            'logo' => [
+                'link_type' => 'url',
+                'url' => '/',
+                'page_id' => null,
+            ],
             'cta_label' => 'Kontaktujte nás',
-            'cta_link_type' => 'url',
-            'cta_url' => '/rfq',
-            'cta_page_id' => null,
+            'cta' => [
+                'link_type' => 'url',
+                'url' => '/rfq',
+                'page_id' => null,
+            ],
         ];
     }
 
@@ -62,14 +66,18 @@ class ThemeSetting extends Model
             'logo_text' => null,
             'logo_image' => null,
             'logo_media_uuid' => null,
-            'logo_link_type' => null,
-            'logo_url' => null,
-            'logo_page_id' => null,
+            'logo' => [
+                'link_type' => null,
+                'url' => null,
+                'page_id' => null,
+            ],
             'menu_id' => null,
             'cta_label' => null,
-            'cta_link_type' => null,
-            'cta_url' => null,
-            'cta_page_id' => null,
+            'cta' => [
+                'link_type' => null,
+                'url' => null,
+                'page_id' => null,
+            ],
         ];
     }
 
@@ -89,9 +97,11 @@ class ThemeSetting extends Model
             'contact_menu_id' => null,
             'legal_menu_id' => null,
             'cta_label' => null,
-            'cta_link_type' => null,
-            'cta_url' => null,
-            'cta_page_id' => null,
+            'cta' => [
+                'link_type' => null,
+                'url' => null,
+                'page_id' => null,
+            ],
             'copyright_text' => null,
         ];
     }
@@ -111,20 +121,28 @@ class ThemeSetting extends Model
     {
         $global = $this->getGlobal();
         $header = $this->header ?? [];
+        $headerLogo = $header['logo'] ?? [];
+        $globalLogo = $global['logo'] ?? [];
+        $headerCta = $header['cta'] ?? [];
+        $globalCta = $global['cta'] ?? [];
 
         return [
             'logo_type' => $header['logo_type'] ?? $global['logo_type'],
             'logo_text' => $header['logo_text'] ?? $global['logo_text'],
             'logo_image' => $header['logo_image'] ?? $global['logo_image'],
             'logo_media_uuid' => $header['logo_media_uuid'] ?? $global['logo_media_uuid'],
-            'logo_link_type' => $header['logo_link_type'] ?? $global['logo_link_type'],
-            'logo_url' => $header['logo_url'] ?? $global['logo_url'],
-            'logo_page_id' => $header['logo_page_id'] ?? $global['logo_page_id'],
+            'logo' => [
+                'link_type' => $headerLogo['link_type'] ?? $globalLogo['link_type'] ?? 'url',
+                'url' => $headerLogo['url'] ?? $globalLogo['url'] ?? '/',
+                'page_id' => $headerLogo['page_id'] ?? $globalLogo['page_id'] ?? null,
+            ],
             'menu_id' => $header['menu_id'] ?? null,
             'cta_label' => $header['cta_label'] ?? $global['cta_label'],
-            'cta_link_type' => $header['cta_link_type'] ?? $global['cta_link_type'],
-            'cta_url' => $header['cta_url'] ?? $global['cta_url'],
-            'cta_page_id' => $header['cta_page_id'] ?? $global['cta_page_id'],
+            'cta' => [
+                'link_type' => $headerCta['link_type'] ?? $globalCta['link_type'] ?? 'url',
+                'url' => $headerCta['url'] ?? $globalCta['url'] ?? null,
+                'page_id' => $headerCta['page_id'] ?? $globalCta['page_id'] ?? null,
+            ],
         ];
     }
 
@@ -135,6 +153,8 @@ class ThemeSetting extends Model
     {
         $global = $this->getGlobal();
         $footer = $this->footer ?? self::defaultFooter();
+        $footerCta = $footer['cta'] ?? [];
+        $globalCta = $global['cta'] ?? [];
 
         return [
             'logo_type' => $footer['logo_type'] ?? $global['logo_type'],
@@ -147,9 +167,11 @@ class ThemeSetting extends Model
             'contact_menu_id' => $footer['contact_menu_id'] ?? null,
             'legal_menu_id' => $footer['legal_menu_id'] ?? null,
             'cta_label' => $footer['cta_label'] ?? $global['cta_label'],
-            'cta_link_type' => $footer['cta_link_type'] ?? $global['cta_link_type'],
-            'cta_url' => $footer['cta_url'] ?? $global['cta_url'],
-            'cta_page_id' => $footer['cta_page_id'] ?? $global['cta_page_id'],
+            'cta' => [
+                'link_type' => $footerCta['link_type'] ?? $globalCta['link_type'] ?? 'url',
+                'url' => $footerCta['url'] ?? $globalCta['url'] ?? null,
+                'page_id' => $footerCta['page_id'] ?? $globalCta['page_id'] ?? null,
+            ],
             'copyright_text' => $footer['copyright_text'] ?? null,
         ];
     }

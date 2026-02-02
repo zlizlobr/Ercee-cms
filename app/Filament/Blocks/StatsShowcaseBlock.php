@@ -3,6 +3,8 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -30,9 +32,8 @@ class StatsShowcaseBlock extends BaseBlock
                     ->rows(3)
                     ->maxLength(600)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('background_media_uuid')
+                MediaPicker::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_media_uuid'))
-                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('stats')
                     ->label(__('admin.page.fields.stats'))
@@ -45,12 +46,7 @@ class StatsShowcaseBlock extends BaseBlock
                         ->label(__('admin.page.fields.label'))
                         ->required()
                         ->maxLength(120),
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     ])
                     ->defaultItems(3)
                     ->minItems(1),

@@ -53,12 +53,14 @@ class TemplatePagesSeeder extends Seeder
                         'subtitle' => 'Truhlarstvi s tradicí',
                         'description' => 'Vyrабime kvalitni nabytek, kuchyne a drevene interiery presne podle vasich predstav. Kazdy kus je original vytvoreny s laskou k drevu.',
                         'background_media_uuid' => null,
-                        'cta_primary_label' => 'Nezavazna poptavka',
-                        'cta_primary_page_id' => null,
-                        'cta_primary_url' => '/rfq',
-                        'cta_secondary_label' => 'Nase realizace',
-                        'cta_secondary_page_id' => null,
-                        'cta_secondary_url' => '/use-cases',
+                        'primary' => [
+                            'label' => 'Nezavazna poptavka',
+                            'link' => ['page_id' => null, 'url' => '/rfq', 'anchor' => null],
+                        ],
+                        'secondary' => [
+                            'label' => 'Nase realizace',
+                            'link' => ['page_id' => null, 'url' => '/use-cases', 'anchor' => null],
+                        ],
                         'stats' => [
                             ['value' => '500+', 'label' => 'Vyrobenych kusu'],
                             ['value' => '25+', 'label' => 'Let zkusenosti'],

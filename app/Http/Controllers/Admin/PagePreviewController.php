@@ -147,6 +147,8 @@ class PagePreviewController extends Controller
 
         $data = $this->resolveHeroCta($data, 'cta_primary');
         $data = $this->resolveHeroCta($data, 'cta_secondary');
+        $data = $this->resolveHeroCta($data, 'primary');
+        $data = $this->resolveHeroCta($data, 'secondary');
 
         return $data;
     }
@@ -223,6 +225,8 @@ class PagePreviewController extends Controller
 
         $data = $this->resolveHeroCta($data, 'cta_primary');
         $data = $this->resolveHeroCta($data, 'cta_secondary');
+        $data = $this->resolveHeroCta($data, 'primary');
+        $data = $this->resolveHeroCta($data, 'secondary');
 
         return $data;
     }
@@ -300,8 +304,14 @@ class PagePreviewController extends Controller
         if (isset($data[$prefix]) && is_array($data[$prefix])) {
             $cta = $data[$prefix];
             $label = $cta['label'] ?? $label;
-            $url = $cta['url'] ?? $url;
-            $pageId = $cta['page_id'] ?? $pageId;
+
+            if (isset($cta['link']) && is_array($cta['link'])) {
+                $url = $cta['link']['url'] ?? $url;
+                $pageId = $cta['link']['page_id'] ?? $pageId;
+            } else {
+                $url = $cta['url'] ?? $url;
+                $pageId = $cta['page_id'] ?? $pageId;
+            }
         }
 
         if (empty($url) && ! empty($pageId)) {

@@ -3,6 +3,9 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
+use App\Filament\Components\LinkPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -30,9 +33,8 @@ class TechnologyInnovationBlock extends BaseBlock
                     ->rows(3)
                     ->maxLength(600)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('image_media_uuid')
+                MediaPicker::make('image_media_uuid')
                     ->label(__('admin.page.fields.image_media_uuid'))
-                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('items')
                     ->label(__('admin.page.fields.items'))
@@ -47,12 +49,7 @@ class TechnologyInnovationBlock extends BaseBlock
                         ->rows(3)
                         ->maxLength(400)
                         ->columnSpanFull(),
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     ])
                     ->defaultItems(3)
                     ->minItems(1)
@@ -60,16 +57,7 @@ class TechnologyInnovationBlock extends BaseBlock
                 Forms\Components\TextInput::make('cta.label')
                     ->label(__('admin.page.fields.cta.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta.link.page_id')
-                    ->label(__('admin.page.fields.cta.link.page_id'))
-                    ->options([])
-                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                Forms\Components\TextInput::make('cta.link.url')
-                    ->label(__('admin.page.fields.cta.link.url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                Forms\Components\TextInput::make('cta.link.anchor')
-                    ->label(__('admin.page.fields.cta.link.anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('cta.link')->fields(),
             ]);
     }
 }

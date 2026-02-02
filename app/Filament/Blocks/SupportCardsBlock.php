@@ -3,6 +3,8 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
+use App\Filament\Components\LinkPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -33,12 +35,7 @@ class SupportCardsBlock extends BaseBlock
                 Forms\Components\Repeater::make('cards')
                     ->label(__('admin.page.fields.cards'))
                     ->schema([
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()
@@ -50,16 +47,7 @@ class SupportCardsBlock extends BaseBlock
                     Forms\Components\TextInput::make('link_label')
                         ->label(__('admin.page.fields.link_label'))
                         ->maxLength(80),
-                    Forms\Components\Select::make('link.page_id')
-                        ->label(__('admin.page.fields.link.page_id'))
-                        ->options([])
-                        ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                    Forms\Components\TextInput::make('link.url')
-                        ->label(__('admin.page.fields.link.url'))
-                        ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                    Forms\Components\TextInput::make('link.anchor')
-                        ->label(__('admin.page.fields.link.anchor'))
-                        ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                    ...LinkPicker::make('link')->fields(),
                     ])
                     ->defaultItems(3)
                     ->minItems(1)
