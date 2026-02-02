@@ -31,5 +31,6 @@ yarn-error.log
 .phpunit.result.cache
 .php-cs-fixer.cache
 phpstan.cache
+.linear/tasks.json
 app/Filament/Resources/frontend-rebuild-guide.md
 git-worktree-llm-flow.md
