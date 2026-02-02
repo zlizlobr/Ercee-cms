@@ -39,6 +39,10 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
   - **Payments** - Multi-gateway payment processing (Stripe, GoPay, Comgate)
   - **Menus & Navigation** - Multi-menu system with hierarchical navigation items (supports pages, custom URLs, anchors)
   - **Theme Settings** - Global/header/footer configuration with menu mapping and CTA overrides for the frontend
+<<<<<<< HEAD
+  - **Theme Settings** - Global/header/footer configuration with menu mapping and CTA overrides for the frontend
+=======
+>>>>>>> origin/main
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
   - **Product Reviews** - Customer reviews with approval workflow
@@ -49,8 +53,13 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 
 ## Local Development
 
+<<<<<<< HEAD
+- Backend setup: `docs/guides/setup/local-backend-setup.md`
+- Astro frontend setup: `docs/guides/setup/local-frontend-setup.md`
+=======
 - Backend setup: `docs/local-backend-setup.md`
 - Astro frontend setup: `docs/local-frontend-setup.md`
+>>>>>>> origin/main
 
 ## Available Commands
 
@@ -134,6 +143,10 @@ Access the admin panel at `http://localhost:8000/admin`
 | Commerce | Orders, Payments |
 | Marketing | Subscribers, Funnels, Contracts |
 | Thema | Theme Settings |
+<<<<<<< HEAD
+| Thema | Theme Settings |
+=======
+>>>>>>> origin/main
 
 ## Public API
 
@@ -156,6 +169,10 @@ API documentation:
 | GET | `/api/v1/navigation/{menuSlug}` | Get navigation items by menu slug |
 | GET | `/api/v1/menus/{menuSlug}` | Get full menu with metadata and items |
 | GET | `/api/v1/theme` | Get theme settings (global, header, footer) |
+<<<<<<< HEAD
+| GET | `/api/v1/theme` | Get theme settings (global, header, footer) |
+=======
+>>>>>>> origin/main
 | GET | `/api/v1/products` | Get active products list (with filters) |
 | GET | `/api/v1/products/{id}` | Get single product with variants, taxonomies, attributes |
 | GET | `/api/v1/forms/{id}` | Get form schema for rendering |
@@ -382,7 +399,7 @@ Reviews support an approval workflow:
 5. System marks Order as paid and dispatches `OrderPaid` event
 6. Marketing funnels are triggered automatically
 
-For more details, see [docs/commerce-guide.md](docs/commerce-guide.md).
+For more details, see [docs/guides/commerce/commerce-guide.md](docs/guides/commerce/commerce-guide.md).
 
 ## Marketing Automation (Funnels)
 
@@ -413,7 +430,7 @@ Funnels run asynchronously via Laravel queues. Start the queue worker:
 php artisan queue:work
 ```
 
-For more details, see [docs/funnel-guide.md](docs/funnel-guide.md).
+For more details, see [docs/guides/marketing/funnel-guide.md](docs/guides/marketing/funnel-guide.md).
 
 ## Project Structure
 
@@ -700,12 +717,22 @@ curl -X POST https://api.yourdomain.com/api/internal/rebuild-frontend \
   -d '{"reason": "manual"}'
 ```
 
-For local development setup, see [docs/local-frontend-setup.md](docs/local-frontend-setup.md).
+For local development setup, see [docs/guides/setup/local-frontend-setup.md](docs/guides/setup/local-frontend-setup.md).
 
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
+<<<<<<< HEAD
+| [docs/README.md](docs/README.md) | Documentation index |
+| [docs/guides/frontend/preview-frontend-guide.md](docs/guides/frontend/preview-frontend-guide.md) | Admin preview frontend guide |
+| [docs/guides/frontend/astro-frontend-guide.md](docs/guides/frontend/astro-frontend-guide.md) | Astro frontend architecture & development |
+| [docs/guides/setup/local-frontend-setup.md](docs/guides/setup/local-frontend-setup.md) | Local frontend testing setup |
+| [docs/guides/setup/local-backend-setup.md](docs/guides/setup/local-backend-setup.md) | Local backend setup (Laravel API + admin) |
+| [docs/guides/commerce/commerce-guide.md](docs/guides/commerce/commerce-guide.md) | Commerce & Checkout developer guide |
+| [docs/guides/marketing/funnel-guide.md](docs/guides/marketing/funnel-guide.md) | Marketing Automation developer guide |
+| [docs/guides/frontend/frontend-menu-integration.md](docs/guides/frontend/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
+=======
 | [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
 | [docs/astro-frontend-guide.md](docs/astro-frontend-guide.md) | Astro frontend architecture & development |
 | [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
@@ -713,3 +740,4 @@ For local development setup, see [docs/local-frontend-setup.md](docs/local-front
 | [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
 | [docs/frontend-menu-integration.md](docs/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
+>>>>>>> origin/main
