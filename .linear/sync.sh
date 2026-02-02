@@ -219,3 +219,9 @@ if changed:
         f.write("\n")
 log(f"[linear-sync] Done. Created: {created}, Skipped: {skipped}, Deferred: {deferred}")
 PY
+
+if [[ "${LINEAR_VERBOSE}" == "1" ]]; then
+  "$ROOT_DIR/.linear/pull.sh" --verbose
+else
+  "$ROOT_DIR/.linear/pull.sh"
+fi
