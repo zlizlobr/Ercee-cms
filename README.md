@@ -35,6 +35,7 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
   - **Payments** - Multi-gateway payment processing (Stripe, GoPay, Comgate)
   - **Menus & Navigation** - Multi-menu system with hierarchical navigation items (supports pages, custom URLs, anchors)
   - **Theme Settings** - Global/header/footer configuration with menu mapping and CTA overrides for the frontend
+  - **Theme Settings** - Global/header/footer configuration with menu mapping and CTA overrides for the frontend
   - **Forms** - Dynamic form builder with schema validation
   - **Contracts** - Lead capture and form submissions
   - **Product Reviews** - Customer reviews with approval workflow
@@ -111,6 +112,7 @@ Access the admin panel at `http://localhost:8000/admin`
 | Commerce | Orders, Payments |
 | Marketing | Subscribers, Funnels, Contracts |
 | Thema | Theme Settings |
+| Thema | Theme Settings |
 
 ## Public API
 
@@ -125,6 +127,7 @@ The CMS exposes a REST API for frontend consumption.
 | GET | `/api/v1/navigation` | Get main menu navigation items (default) |
 | GET | `/api/v1/navigation/{menuSlug}` | Get navigation items by menu slug |
 | GET | `/api/v1/menus/{menuSlug}` | Get full menu with metadata and items |
+| GET | `/api/v1/theme` | Get theme settings (global, header, footer) |
 | GET | `/api/v1/theme` | Get theme settings (global, header, footer) |
 | GET | `/api/v1/products` | Get active products list (with filters) |
 | GET | `/api/v1/products/{id}` | Get single product with variants, taxonomies, attributes |

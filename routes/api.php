@@ -17,8 +17,8 @@ Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/navigation/{menuSlug}', [NavigationController::class, 'index']);
     Route::get('/menus/{menuSlug}', [NavigationController::class, 'show']);
     Route::get('/products', [ProductController::class, 'index']);
-    Route::get('/products/{id}', [ProductController::class, 'show'])->whereNumber('id');
-    Route::get('/forms/{id}', [FormController::class, 'show'])->whereNumber('id');
+    Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::get('/forms/{id}', [FormController::class, 'show']);
     Route::get('/theme', [ThemeController::class, 'index']);
 
     Route::post('/forms/{id}/submit', [FormController::class, 'submit'])

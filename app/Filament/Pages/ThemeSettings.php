@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Storage;
 
 class ThemeSettings extends Page
 {
@@ -265,7 +266,7 @@ class ThemeSettings extends Page
     {
         $data = $this->form->getState();
 
-        $settings = ThemeSetting::first() ?? new ThemeSetting;
+        $settings = ThemeSetting::first() ?? new ThemeSetting();
         $settings->global = $data['global'] ?? [];
         $settings->header = $data['header'] ?? [];
         $settings->footer = $data['footer'] ?? [];
