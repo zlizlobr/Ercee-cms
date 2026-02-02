@@ -1,0 +1,26 @@
+name: Task PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  task-pr:
+    if: startsWith(github.event.pull_request.title, 'LIN-')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Task PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "PR title: $TITLE"
+
+          if [[ "$TITLE" =~ ^LIN-[0-9]+ ]]; then
+            echo "✅ Linear task detected"
+            exit 0
+          fi
+
+          echo "❌ Invalid PR title"
+          echo "PR must start with LIN-123 (task PR)"
+          exit 1
