@@ -1,7 +1,7 @@
 @php
     $data = $block['data'] ?? $block;
     $formId = $data['form_id'] ?? null;
-    $form = $formId ? \App\Domain\Form\Form::active()->find($formId) : null;
+    $form = $formId ? \Modules\Forms\Domain\Form::active()->find($formId) : null;
 @endphp
 
 @if($form)

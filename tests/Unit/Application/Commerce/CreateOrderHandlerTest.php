@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Application\Commerce;
 
-use App\Application\Commerce\Commands\CreateOrderCommand;
-use App\Application\Commerce\CreateOrderHandler;
-use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Application\Commands\CreateOrderCommand;
+use Modules\Commerce\Application\CreateOrderHandler;
+use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Subscriber\Subscriber;
 use App\Domain\Subscriber\SubscriberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;

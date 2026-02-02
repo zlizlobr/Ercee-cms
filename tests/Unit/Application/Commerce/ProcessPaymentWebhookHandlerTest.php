@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Application\Commerce;
 
-use App\Application\Commerce\Commands\ProcessWebhookCommand;
-use App\Application\Commerce\ProcessPaymentWebhookHandler;
-use App\Domain\Commerce\Events\OrderPaid;
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Payment;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Application\Commands\ProcessWebhookCommand;
+use Modules\Commerce\Application\ProcessPaymentWebhookHandler;
+use Modules\Commerce\Domain\Events\OrderPaid;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Payment;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -32,6 +32,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'non-existent-transaction',
             status: Payment::STATUS_PAID,
             success: true,
+            signatureVerified: true,
         );
 
         $result = $this->handler->handle($command);
@@ -63,6 +64,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'txn_123',
             status: Payment::STATUS_PAID,
             success: true,
+            signatureVerified: true,
             payload: ['event_id' => 'evt_123'],
         );
 
@@ -105,6 +107,7 @@ class ProcessPaymentWebhookHandlerTest extends TestCase
             transactionId: 'txn_456',
             status: Payment::STATUS_FAILED,
             success: false,
+            signatureVerified: true,
         );
 
         $result = $this->handler->handle($command);

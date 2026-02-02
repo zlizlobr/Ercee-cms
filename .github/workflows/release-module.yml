@@ -1,0 +1,111 @@
+name: Release Module
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: 'Module to release (forms, commerce, funnel)'
+        required: true
+        type: choice
+        options:
+          - forms
+          - commerce
+          - funnel
+      version:
+        description: 'Version tag (e.g. 1.2.0)'
+        required: true
+        type: string
+
+jobs:
+  validate:
+    name: Validate release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate version format
+        run: |
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Invalid version format. Use semver: X.Y.Z"
+            exit 1
+          fi
+
+      - name: Verify module exists
+        run: |
+          if [ ! -d "modules/${{ inputs.module }}" ]; then
+            echo "::error::Module '${{ inputs.module }}' not found"
+            exit 1
+          fi
+
+      - name: Check version in composer.json
+        run: |
+          MODULE_VERSION=$(jq -r '.version' modules/${{ inputs.module }}/composer.json)
+          if [ "$MODULE_VERSION" != "${{ inputs.version }}" ]; then
+            echo "::error::Version mismatch: composer.json has $MODULE_VERSION, expected ${{ inputs.version }}"
+            echo "::error::Update modules/${{ inputs.module }}/composer.json before releasing"
+            exit 1
+          fi
+
+  test:
+    name: Run tests
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Run module tests
+        run: php artisan test --filter=${{ inputs.module }}
+
+  split-and-tag:
+    name: Split & tag module
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup git-subtree
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Split subtree
+        run: |
+          git subtree split --prefix=modules/${{ inputs.module }} -b module-${{ inputs.module }}-split
+
+      - name: Push to module repo
+        run: |
+          git remote add module-${{ inputs.module }} https://x-access-token:${{ secrets.MODULE_REPO_TOKEN }}@github.com/${{ github.repository_owner }}/ercee-module-${{ inputs.module }}.git || true
+          git push module-${{ inputs.module }} module-${{ inputs.module }}-split:main --force
+          git tag v${{ inputs.version }} module-${{ inputs.module }}-split
+          git push module-${{ inputs.module }} v${{ inputs.version }}
+
+      - name: Create GitHub release on module repo
+        env:
+          GH_TOKEN: ${{ secrets.MODULE_REPO_TOKEN }}
+        run: |
+          gh release create v${{ inputs.version }} \
+            --repo ${{ github.repository_owner }}/ercee-module-${{ inputs.module }} \
+            --title "v${{ inputs.version }}" \
+            --generate-notes

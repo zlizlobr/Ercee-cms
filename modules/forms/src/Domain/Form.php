@@ -2,11 +2,20 @@
 
 namespace Modules\Forms\Domain;
 
+use Database\Factories\FormFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Form extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory(): FormFactory
+    {
+        return FormFactory::new();
+    }
+
     protected $fillable = [
         'name',
         'schema',

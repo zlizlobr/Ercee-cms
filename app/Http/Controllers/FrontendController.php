@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Payment;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Payment;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use Illuminate\Http\Request;

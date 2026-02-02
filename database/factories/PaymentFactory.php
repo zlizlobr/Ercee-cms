@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Payment;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

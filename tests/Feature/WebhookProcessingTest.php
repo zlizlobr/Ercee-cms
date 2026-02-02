@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
-use App\Domain\Commerce\Events\OrderPaid;
-use App\Domain\Commerce\Order;
-use App\Domain\Commerce\Payment;
-use App\Domain\Commerce\PaymentResult;
-use App\Domain\Commerce\Product;
+use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
+use Modules\Commerce\Domain\Events\OrderPaid;
+use Modules\Commerce\Domain\Order;
+use Modules\Commerce\Domain\Payment;
+use Modules\Commerce\Domain\PaymentResult;
+use Modules\Commerce\Domain\Product;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;

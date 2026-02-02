@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Application\Form;
 
-use App\Application\Form\Commands\SubmitFormCommand;
-use App\Application\Form\SubmitFormHandler;
-use App\Domain\Form\Contract;
-use App\Domain\Form\Events\ContractCreated;
-use App\Domain\Form\Form;
+use Modules\Forms\Application\Commands\SubmitFormCommand;
+use Modules\Forms\Application\SubmitFormHandler;
+use Modules\Forms\Domain\Contract;
+use Modules\Forms\Domain\Events\ContractCreated;
+use Modules\Forms\Domain\Form;
 use App\Domain\Subscriber\Subscriber;
 use App\Domain\Subscriber\SubscriberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;

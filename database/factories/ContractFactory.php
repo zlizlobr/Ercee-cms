@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Form\Contract;
-use App\Domain\Form\Form;
+use Modules\Forms\Domain\Contract;
+use Modules\Forms\Domain\Form;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -32,7 +32,10 @@ class CommerceModuleServiceProvider extends BaseModuleServiceProvider
 
     protected function registerBindings(): void
     {
-        // Register module-specific bindings
+        $this->app->bind(
+            \Modules\Commerce\Domain\Contracts\PaymentGatewayInterface::class,
+            \Modules\Commerce\Domain\Gateways\StripeGateway::class
+        );
     }
 
     public function getEventListeners(): array
@@ -45,12 +48,12 @@ class CommerceModuleServiceProvider extends BaseModuleServiceProvider
     public function getResources(): array
     {
         return [
-            // Filament resources will be registered here after migration
-            // \Modules\Commerce\Filament\Resources\ProductResource::class,
-            // \Modules\Commerce\Filament\Resources\OrderResource::class,
-            // \Modules\Commerce\Filament\Resources\PaymentResource::class,
-            // \Modules\Commerce\Filament\Resources\AttributeResource::class,
-            // \Modules\Commerce\Filament\Resources\TaxonomyResource::class,
+            \Modules\Commerce\Filament\Resources\ProductResource::class,
+            \Modules\Commerce\Filament\Resources\OrderResource::class,
+            \Modules\Commerce\Filament\Resources\PaymentResource::class,
+            \Modules\Commerce\Filament\Resources\AttributeResource::class,
+            \Modules\Commerce\Filament\Resources\TaxonomyResource::class,
+            \Modules\Commerce\Filament\Resources\ProductReviewResource::class,
         ];
     }
 

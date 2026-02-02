@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Application\Commerce\Commands\ProcessWebhookCommand;
-use App\Application\Commerce\ProcessPaymentWebhookHandler;
-use App\Domain\Commerce\Contracts\PaymentGatewayInterface;
+use Modules\Commerce\Application\Commands\ProcessWebhookCommand;
+use Modules\Commerce\Application\ProcessPaymentWebhookHandler;
+use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -39,6 +39,7 @@ class WebhookController extends Controller
             transactionId: $gatewayResult->transactionId,
             status: $gatewayResult->status,
             success: $gatewayResult->success,
+            signatureVerified: true,
             payload: $gatewayResult->payload,
         );
 
