@@ -54,7 +54,9 @@ def fetch_issue(issue_id):
         "    id"
         "    identifier"
         "    title"
+        "    completedAt"
         "    archivedAt"
+        "    parent { id }"
         "  }"
         "}"
     )
@@ -95,6 +97,12 @@ for task in tasks:
     issue = fetch_issue(issue_id)
     identifier = issue.get("identifier")
     title = issue.get("title") or ""
+    parent = issue.get("parent") or {}
+    parent_id = parent.get("id")
+    if parent_id and task.get("parentLinearId") != parent_id:
+        task["parentLinearId"] = parent_id
+        changed = True
+        updated += 1
     if identifier and not task.get("branchName"):
         slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in title)
         slug = "-".join(filter(None, slug.split("-")))
@@ -104,7 +112,7 @@ for task in tasks:
             task["branchName"] = f"feature/{identifier}"
         changed = True
         updated += 1
-    if issue.get("archivedAt"):
+    if issue.get("archivedAt") or issue.get("completedAt"):
         if task.get("state") != "archived":
             task["state"] = "archived"
             changed = True

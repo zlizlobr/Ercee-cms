@@ -105,12 +105,14 @@ def fetch_all_labels():
     log(f"[linear-sync] Labels fetched: {len(labels)}")
     return labels
 
-def create_issue(task, label_map):
+def create_issue(task, label_map, parent_linear_id=None):
     input_payload = {
         "title": task["title"],
         "description": task["description"],
         "teamId": team_id,
     }
+    if parent_linear_id:
+        input_payload["parentId"] = parent_linear_id
 
     labels = task.get("labels")
     if labels:
@@ -161,28 +163,59 @@ def create_issue(task, label_map):
     issue = payload_data.get("issue") or {}
     return issue.get("id")
 
+def resolve_parent_linear_id(task, task_map):
+    parent_ref = task.get("parentId")
+    if not parent_ref:
+        return None
+    parent_task = task_map.get(parent_ref)
+    if parent_task:
+        return parent_task.get("linearId")
+    if isinstance(parent_ref, str) and len(parent_ref) >= 32:
+        return parent_ref
+    return None
+
 label_map = fetch_all_labels()
+task_map = {t.get("id"): t for t in tasks if t.get("id")}
 changed = False
 created = 0
 skipped = 0
+deferred = 0
+
+max_passes = max(1, len(tasks))
+for _ in range(max_passes):
+    progress = False
+    for task in tasks:
+        if task.get("state") != "draft":
+            continue
+        if task.get("linearId"):
+            continue
+        parent_linear_id = resolve_parent_linear_id(task, task_map)
+        if task.get("parentId") and not parent_linear_id:
+            deferred += 1
+            continue
+        log(f"[linear-sync] Creating issue for task {task.get('id')}: {task.get('title')}")
+        issue_id = create_issue(task, label_map, parent_linear_id)
+        if issue_id:
+            task["linearId"] = issue_id
+            task["state"] = "synced"
+            changed = True
+            created += 1
+            progress = True
+    if not progress:
+        break
+
 for task in tasks:
     if task.get("state") != "draft":
-        skipped += 1
         continue
     if task.get("linearId"):
-        skipped += 1
         continue
-    log(f"[linear-sync] Creating issue for task {task.get('id')}: {task.get('title')}")
-    issue_id = create_issue(task, label_map)
-    if issue_id:
-        task["linearId"] = issue_id
-        task["state"] = "synced"
-        changed = True
-        created += 1
+    if task.get("parentId") and not resolve_parent_linear_id(task, task_map):
+        log(f"[linear-sync] Skipping task {task.get('id')} due to missing parent: {task.get('parentId')}")
+        skipped += 1
 
 if changed:
     with open(tasks_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
-log(f"[linear-sync] Done. Created: {created}, Skipped: {skipped}")
+log(f"[linear-sync] Done. Created: {created}, Skipped: {skipped}, Deferred: {deferred}")
 PY

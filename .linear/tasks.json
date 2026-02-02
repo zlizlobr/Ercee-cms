@@ -1,17 +1,90 @@
 {
   "tasks": [
     {
-      "id": "local-20260202-001",
-      "title": "Testovac\u00ed \u00fakol z Codexu",
-      "description": "Testovac\u00ed task vytvo\u0159en\u00fd agentem Codex; slou\u017e\u00ed k ov\u011b\u0159en\u00ed toku p\u0159es .linear/tasks.json.",
-      "priority": "low",
+      "id": "local-20260202-010",
+      "title": "Modules: Odd\u011blen\u00ed Forms do vlastn\u00edho repozit\u00e1\u0159e",
+      "description": "Parent task pro rozd\u011blen\u00ed Forms modulu do samostatn\u00e9ho repa a napojen\u00ed p\u0159es Composer path repo (vzor blade-cms).",
+      "priority": "high",
       "state": "synced",
-      "linearId": "a4df1231-f039-4d5d-b635-4ff07f1d97ac",
+      "linearId": "09c4d5f2-b01d-409b-9f91-7ab18d2732a3",
       "createdAt": "2026-02-02",
       "labels": [
-        "llm-codex",
-        "test"
+        "modules",
+        "forms"
       ]
+    },
+    {
+      "id": "local-20260202-002",
+      "title": "Rozhodnout um\u00edst\u011bn\u00ed a n\u00e1zev repo pro Forms modul",
+      "description": "Potvrdit cestu pro odd\u011blen\u00fd modul (nap\u0159. /usr/local/var/www/ercee-modules/ercee-module-forms) a zvolit, zda zachovat git historii.",
+      "priority": "medium",
+      "state": "synced",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "modules",
+        "forms"
+      ],
+      "linearId": "d5b5704b-d0fe-4538-b7fc-63c2db18e716",
+      "parentId": "local-20260202-010"
+    },
+    {
+      "id": "local-20260202-003",
+      "title": "Vy\u010dlent Forms modul do samostatn\u00e9ho repo",
+      "description": "P\u0159esunout modules/forms do nov\u00e9ho repa, p\u0159\u00edpadn\u011b zachovat historii (subtree split / filter-repo) podle rozhodnut\u00ed z p\u0159edchoz\u00edho tasku.",
+      "priority": "high",
+      "state": "synced",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "modules",
+        "forms",
+        "git"
+      ],
+      "linearId": "66e7b641-2328-4c26-9616-8c28f3f8b3fd",
+      "parentId": "local-20260202-010"
+    },
+    {
+      "id": "local-20260202-004",
+      "title": "Upravit composer.json v Ercee-cms pro extern\u00ed Forms modul",
+      "description": "P\u0159idat path repository na novou slo\u017eku s moduly (nap\u0159. ../ercee-modules/*), p\u0159idat require ercee/module-forms @dev, odstranit PSR-4 autoload pro Modules\\\\Forms.",
+      "priority": "high",
+      "state": "synced",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "composer",
+        "modules",
+        "forms"
+      ],
+      "linearId": "6eeeae66-a7da-41c2-a762-f169e0f18c72",
+      "parentId": "local-20260202-010"
+    },
+    {
+      "id": "local-20260202-005",
+      "title": "Aktualizovat dokumentaci a skripty po odd\u011blen\u00ed Forms",
+      "description": "Proj\u00edt docs/developer-workflow.md a push-all.sh, upravit cesty na nov\u00fd modulov\u00fd repo layout.",
+      "priority": "medium",
+      "state": "synced",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "docs",
+        "modules",
+        "forms"
+      ],
+      "linearId": "6ad53d6b-557c-4620-88d3-b9699e7fd0bf",
+      "parentId": "local-20260202-010"
+    },
+    {
+      "id": "local-20260202-006",
+      "title": "Refresh autoload a cache po napojen\u00ed extern\u00edho modulu",
+      "description": "Spustit composer update/dump-autoload a vy\u010distit cache (php artisan config:clear, cache:clear) po p\u0159epojen\u00ed modulu.",
+      "priority": "medium",
+      "state": "synced",
+      "createdAt": "2026-02-02",
+      "labels": [
+        "composer",
+        "cache"
+      ],
+      "linearId": "b01362fc-b2c1-462c-8139-15b2d46bbabd",
+      "parentId": "local-20260202-010"
     }
   ]
 }
