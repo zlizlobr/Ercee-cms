@@ -17,13 +17,11 @@ class ThemeController extends Controller
 {
     /**
      * Get complete theme settings with resolved menus.
-     *
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
         $data = Cache::remember(ThemeSetting::CACHE_KEY, 3600, function () {
-            $settings = ThemeSetting::first() ?? new ThemeSetting();
+            $settings = ThemeSetting::first() ?? new ThemeSetting;
 
             return [
                 'global' => $this->formatGlobal($settings),
@@ -141,7 +139,7 @@ class ThemeController extends Controller
 
         $page = Page::find($pageId);
 
-        return $page ? '/' . $page->slug : null;
+        return $page ? '/'.$page->slug : null;
     }
 
     /**
