@@ -1,3 +1,11 @@
+## [v0.6.3] – 2026-02-02
+
+- release: patch -- Update docs (#38)
+ * update all docs
+- Implement  Link/Icon/Media Filament component (#39)
+* add Link/Icon/Media Filament component
+- chore: update changelog for v0.6.2
+
 ## [v0.6.2] – 2026-01-30
 
 - release: patch --  Refactor Thema Options(#37)
