@@ -53,6 +53,7 @@ def fetch_issue(issue_id):
         "  issue(id: $id) {"
         "    id"
         "    identifier"
+        "    title"
         "    archivedAt"
         "  }"
         "}"
@@ -92,6 +93,17 @@ for task in tasks:
         continue
     log(f"[linear-pull] Fetching issue for task {task.get('id')}: {task.get('title')}")
     issue = fetch_issue(issue_id)
+    identifier = issue.get("identifier")
+    title = issue.get("title") or ""
+    if identifier and not task.get("branchName"):
+        slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in title)
+        slug = "-".join(filter(None, slug.split("-")))
+        if slug:
+            task["branchName"] = f"feature/{identifier}-{slug}"
+        else:
+            task["branchName"] = f"feature/{identifier}"
+        changed = True
+        updated += 1
     if issue.get("archivedAt"):
         if task.get("state") != "archived":
             task["state"] = "archived"

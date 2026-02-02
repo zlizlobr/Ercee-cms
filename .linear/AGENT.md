@@ -94,6 +94,7 @@ Each task must contain at least:
   "state": "draft",
   "linearId": null,
   "createdAt": "YYYY-MM-DD",
+  "branchName": "feature/LIN-123-short-title",
   "labels": ["llm-codex", "no-llm"]
 }
 ```
@@ -101,6 +102,8 @@ Each task must contain at least:
 IDs must be unique within the file.
 
 Labels are specified by **name** (string). The sync script resolves names to Linear label IDs via the GraphQL API.
+
+`branchName` is filled during pull based on the Linear issue identifier and title, using the pattern `feature/<IDENTIFIER>-<slug>`.
 
 ---
 
