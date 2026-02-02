@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -31,9 +32,8 @@ class DocumentationHeroBlock extends BaseBlock
                     ->rows(3)
                     ->maxLength(600)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('background_media_uuid')
+                MediaPicker::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_media_uuid'))
-                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\Repeater::make('badges')
                     ->label(__('admin.page.fields.badges'))

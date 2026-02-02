@@ -32,6 +32,8 @@ Create `app/Filament/Blocks/GalleryBlock.php`:
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -44,18 +46,30 @@ class GalleryBlock extends BaseBlock
         return Block::make(Page::BLOCK_TYPE_GALLERY)
             ->label(__('admin.page.blocks.gallery'))
             ->icon('heroicon-o-squares-2x2')
+            ->columns(2)
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->label(__('admin.page.fields.gallery_title'))
-                    ->maxLength(255)
+                    ->label(__('admin.page.fields.title'))
+                    ->maxLength(200)
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('images')
-                    ->label(__('admin.page.fields.gallery_images'))
-                    ->image()
-                    ->multiple()
-                    ->reorderable()
-                    ->directory('pages/galleries')
-                    ->columnSpanFull(),
+                Forms\Components\Repeater::make('items')
+                    ->label(__('admin.page.fields.items'))
+                    ->schema([
+                    Forms\Components\TextInput::make('title')
+                        ->label(__('admin.page.fields.title'))
+                        ->maxLength(160)
+                        ->columnSpanFull(),
+                    MediaPicker::make('image_media_uuid')
+                        ->label(__('admin.page.fields.image_media_uuid'))
+                        ->columnSpanFull(),
+                    ])
+                    ->defaultItems(3)
+                    ->minItems(1)
+                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                Forms\Components\TextInput::make('cta.label')
+                    ->label(__('admin.page.fields.cta.label'))
+                    ->maxLength(80),
+                ...LinkPicker::make('cta.link')->fields(),
             ]);
     }
 }
@@ -100,12 +114,79 @@ All blocks are stored in `pages.content`:
 ]
 ```
 
+## Standardized UI Components
+
+When building blocks, always use the project's standardized components instead of raw Filament fields:
+
+### LinkPicker (links / CTAs)
+
+Use `App\Filament\Components\LinkPicker` for any link or CTA field. It generates `page_id`, `url`, and `anchor` fields automatically.
+
+```php
+use App\Filament\Components\LinkPicker;
+
+// Simple CTA link (page_id + url + anchor)
+Forms\Components\TextInput::make('cta.label')
+    ->label(__('admin.page.fields.cta.label'))
+    ->maxLength(80),
+...LinkPicker::make('cta.link')->fields(),
+
+// Primary + secondary CTA pair
+Forms\Components\TextInput::make('primary.label')
+    ->label(__('admin.page.fields.primary.label'))
+    ->maxLength(80),
+...LinkPicker::make('primary.link')->fields(),
+Forms\Components\TextInput::make('secondary.label')
+    ->label(__('admin.page.fields.secondary.label'))
+    ->maxLength(80),
+...LinkPicker::make('secondary.link')->fields(),
+
+// Inside a repeater
+...LinkPicker::make('link')->fields(),
+
+// Without anchor field
+...LinkPicker::make('link')->withoutAnchor()->fields(),
+
+// With target (_self/_blank)
+...LinkPicker::make()->withoutAnchor()->withTarget()->fields(),
+```
+
+### IconPicker (icons)
+
+Use `App\Filament\Components\IconPicker` for icon selection fields. It provides a searchable Select with centralized icon options.
+
+```php
+use App\Filament\Components\IconPicker;
+
+IconPicker::make()->field(),
+// or with custom field name:
+IconPicker::make('custom_icon')->field(),
+```
+
+### MediaPicker (images / media)
+
+Use `App\Filament\Components\MediaPicker` for any image or media UUID field. Never use raw `TextInput` for media UUIDs.
+
+```php
+use App\Filament\Components\MediaPicker;
+
+MediaPicker::make('background_media_uuid')
+    ->label(__('admin.page.fields.background_image'))
+    ->columnSpanFull(),
+
+MediaPicker::make('image_media_uuid')
+    ->label(__('admin.page.fields.image_media_uuid'))
+    ->columnSpanFull(),
+```
+
 ## Best Practices
 
 1. Keep blocks focused and reusable.
 2. Provide sensible defaults and helper text.
 3. Validate inputs with `->required()` and `->maxLength()`.
 4. Use `resources/views/components/blocks/` for preview templates.
+5. **Always** use `LinkPicker` for links, `IconPicker` for icons, `MediaPicker` for media/images.
+6. Never use raw `TextInput` for `*_media_uuid` fields, `*_page_id` / `*_url` link fields, or `icon_key` fields.
 
 ## Related Documentation
 

@@ -88,6 +88,8 @@ class BlockMediaResolver
 
         $data = $this->resolveHeroCta($data, 'cta_primary');
         $data = $this->resolveHeroCta($data, 'cta_secondary');
+        $data = $this->resolveHeroCta($data, 'primary');
+        $data = $this->resolveHeroCta($data, 'secondary');
 
         unset(
             $data['background_media_uuid'],
@@ -155,7 +157,9 @@ class BlockMediaResolver
                     return $button;
                 }
 
-                if (empty($button['url']) && ! empty($button['page_id'])) {
+                if (isset($button['link']) && is_array($button['link'])) {
+                    $button['link'] = $this->resolveBlockLink($button['link']);
+                } elseif (empty($button['url']) && ! empty($button['page_id'])) {
                     $page = Page::find($button['page_id']);
                     if ($page) {
                         $button['url'] = '/'.$page->slug;
@@ -244,8 +248,14 @@ class BlockMediaResolver
         if (isset($data[$prefix]) && is_array($data[$prefix])) {
             $cta = $data[$prefix];
             $label = $cta['label'] ?? $label;
-            $url = $cta['url'] ?? $url;
-            $pageId = $cta['page_id'] ?? $pageId;
+
+            if (isset($cta['link']) && is_array($cta['link'])) {
+                $url = $cta['link']['url'] ?? $url;
+                $pageId = $cta['link']['page_id'] ?? $pageId;
+            } else {
+                $url = $cta['url'] ?? $url;
+                $pageId = $cta['page_id'] ?? $pageId;
+            }
         }
 
         if (empty($url) && ! empty($pageId)) {

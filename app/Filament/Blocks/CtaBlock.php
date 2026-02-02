@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -31,11 +32,7 @@ class CtaBlock extends BaseBlock
                     ->label(__('admin.page.fields.button_text'))
                     ->required()
                     ->maxLength(100),
-                Forms\Components\TextInput::make('button_url')
-                    ->label(__('admin.page.fields.button_url'))
-                    ->url()
-                    ->required()
-                    ->maxLength(255),
+                ...LinkPicker::make('link')->withoutAnchor()->fields(),
                 Forms\Components\Select::make('style')
                     ->label(__('admin.page.fields.style'))
                     ->options([

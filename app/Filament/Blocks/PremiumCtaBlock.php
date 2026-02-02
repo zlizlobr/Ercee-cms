@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
 use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
@@ -41,16 +42,7 @@ class PremiumCtaBlock extends BaseBlock
                             ->label(__('admin.page.fields.button_label'))
                             ->required()
                             ->maxLength(80),
-                        Forms\Components\Select::make('page_id')
-                            ->label(__('admin.page.fields.button_page'))
-                            ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
-                            ->searchable()
-                            ->placeholder(__('admin.page.fields.button_page_placeholder'))
-                            ->helperText(__('admin.page.fields.button_page_helper')),
-                        Forms\Components\TextInput::make('url')
-                            ->label(__('admin.page.fields.button_url'))
-                            ->placeholder(__('admin.page.fields.button_url_placeholder'))
-                            ->helperText(__('admin.page.fields.button_url_helper')),
+                        ...LinkPicker::make('link')->withoutAnchor()->fields(),
                         Forms\Components\Select::make('style')
                             ->label(__('admin.page.fields.button_style'))
                             ->options([

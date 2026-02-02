@@ -93,7 +93,51 @@ Volitelne klice:
 }
 ```
 
-### Podporovane typy poli
+### Standardizovane UI komponenty
+
+Projekt pouziva tri vlastni komponenty pro konzistentni tvorbu bloku.
+**Vzdy je pouzivejte misto surovych Filament poli.**
+
+#### LinkPicker (`App\Filament\Components\LinkPicker`)
+
+Pro vsechna pole s odkazem / CTA. Generuje `page_id` (Select), `url` (TextInput) a `anchor` (TextInput).
+
+```php
+use App\Filament\Components\LinkPicker;
+
+// CTA odkaz
+...LinkPicker::make('cta.link')->fields(),
+
+// Bez kotvy
+...LinkPicker::make('link')->withoutAnchor()->fields(),
+
+// S target (_self/_blank) - pro navigaci
+...LinkPicker::make()->withoutAnchor()->withTarget()->fields(),
+```
+
+#### IconPicker (`App\Filament\Components\IconPicker`)
+
+Pro vyber ikony. Centralizovany seznam ikon v `IconPicker::iconOptions()`.
+
+```php
+use App\Filament\Components\IconPicker;
+
+IconPicker::make()->field(),
+```
+
+#### MediaPicker (`App\Filament\Components\MediaPicker`)
+
+Pro vsechny obrazky a media. Nikdy nepouzivejte `TextInput` pro `*_media_uuid`.
+
+```php
+use App\Filament\Components\MediaPicker;
+
+MediaPicker::make('image_media_uuid')
+    ->label(__('admin.page.fields.image_media_uuid'))
+    ->columnSpanFull(),
+```
+
+### Podporovane typy poli (make:cms-block)
 
 Kryti odpovida `app/Console/Commands/MakeCmsBlock.php`.
 

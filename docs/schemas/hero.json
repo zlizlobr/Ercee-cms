@@ -31,56 +31,39 @@
       "columnSpanFull": true
     },
     {
-      "type": "text",
+      "_comment": "MediaPicker in admin UI",
+      "type": "media_picker",
       "name": "background_media_uuid",
       "label": "Background image",
       "label_cs": "Obrazek na pozadi",
-      "helperText": "Media UUID (MediaPicker in CMS).",
       "columnSpanFull": true
     },
     {
       "type": "text",
-      "name": "cta_primary_label",
+      "name": "primary.label",
       "label": "Primary CTA label",
       "label_cs": "Text primarniho CTA",
       "maxLength": 80
     },
     {
-      "type": "select",
-      "name": "cta_primary_page_id",
-      "label": "Primary CTA page",
-      "label_cs": "Stranka primarniho CTA",
-      "options": {},
-      "placeholder": "Select a page..."
+      "_comment": "LinkPicker generates page_id + url + anchor fields",
+      "type": "link_picker",
+      "name": "primary.link",
+      "label": "Primary CTA link",
+      "label_cs": "Odkaz primarniho CTA"
     },
     {
       "type": "text",
-      "name": "cta_primary_url",
-      "label": "Primary CTA URL",
-      "label_cs": "URL primarniho CTA",
-      "placeholder": "/page, #section, https://..."
-    },
-    {
-      "type": "text",
-      "name": "cta_secondary_label",
+      "name": "secondary.label",
       "label": "Secondary CTA label",
       "label_cs": "Text sekundarniho CTA",
       "maxLength": 80
     },
     {
-      "type": "select",
-      "name": "cta_secondary_page_id",
-      "label": "Secondary CTA page",
-      "label_cs": "Stranka sekundarniho CTA",
-      "options": {},
-      "placeholder": "Select a page..."
-    },
-    {
-      "type": "text",
-      "name": "cta_secondary_url",
-      "label": "Secondary CTA URL",
-      "label_cs": "URL sekundarniho CTA",
-      "placeholder": "/page, #section, https://..."
+      "type": "link_picker",
+      "name": "secondary.link",
+      "label": "Secondary CTA link",
+      "label_cs": "Odkaz sekundarniho CTA"
     },
     {
       "type": "repeater",

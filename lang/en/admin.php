@@ -127,13 +127,12 @@ return [
         ],
         'blocks' => [
             'hero' => 'Hero',
-            'hero' => 'Hero',
             'text' => 'Text',
             'image' => 'Image',
             'cta' => 'Call to Action',
             'form_embed' => 'Form Embed',
             'testimonials' => 'Testimonials',
-                        'contact_form' => 'Contact form',
+            'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
             'premium_cta' => 'Premium CTA',
             'documentation_hero' => 'Documentation Hero',
@@ -165,68 +164,81 @@ return [
             'add_block' => 'Add Block',
         ],
         'fields' => [
+            // Common fields
+            'title' => 'Title',
+            'subtitle' => 'Subtitle',
             'heading' => 'Heading',
             'subheading' => 'Subheading',
+            'description' => 'Description',
             'body' => 'Body Text',
+            'text' => 'Text',
+            'label' => 'Label',
+            'name' => 'Name',
+            'value' => 'Value',
+            'type' => 'Type',
+            'style' => 'Style',
+            'number' => 'Number',
+            'step' => 'Step',
+            'helper' => 'Helper',
+            'note' => 'Note',
+            'placeholder' => 'Placeholder',
+
+            // Media fields
             'background_image' => 'Background Image',
+            'background_media_uuid' => 'Background image',
+            'image_media_uuid' => 'Image',
+            'cta_background_media_uuid' => 'CTA background image',
             'alt' => 'Alt Text',
             'caption' => 'Caption',
+            'photo' => 'Photo',
+            'background_image_helper' => 'URL or media UUID depending on media strategy.',
+            'media_uuid_helper' => 'Media UUID (MediaPicker in CMS).',
+            'override_media_alt_text_helper' => 'Override media alt text',
+
+            // Icon fields
+            'icon' => 'Icon',
+            'icon_key' => 'Icon',
+            'icon_placeholder' => 'Select icon...',
+
+            // LinkPicker-powered CTA fields (nested dot-notation)
+            'primary.label' => 'Primary CTA label',
+            'primary.link.page_id' => 'Primary CTA page',
+            'primary.link.url' => 'Primary CTA URL',
+            'primary.link.anchor' => 'Primary CTA anchor',
+            'secondary.label' => 'Secondary CTA label',
+            'secondary.link.page_id' => 'Secondary CTA page',
+            'secondary.link.url' => 'Secondary CTA URL',
+            'secondary.link.anchor' => 'Secondary CTA anchor',
+            'cta.label' => 'CTA label',
+            'cta.link.page_id' => 'CTA page',
+            'cta.link.url' => 'CTA URL',
+            'cta.link.anchor' => 'CTA anchor',
+            'cta_button.label' => 'CTA button label',
+            'cta_button.link.page_id' => 'CTA button page',
+            'cta_button.link.url' => 'CTA button URL',
+            'cta_button.link.anchor' => 'CTA button anchor',
+            'link.page_id' => 'Link page',
+            'link.url' => 'Link URL',
+            'link.anchor' => 'Link anchor',
+            'link_label' => 'Link label',
+
+            // Legacy CTA fields (flat keys, kept for backward compatibility)
             'cta_title' => 'CTA Title',
+            'cta_label' => 'CTA label',
+            'cta_page' => 'CTA page',
+            'cta_url' => 'CTA URL',
+            'cta_anchor' => 'CTA anchor',
+            'cta_description' => 'CTA description',
+            'cta_primary_label' => 'Primary CTA label',
+            'cta_primary_page' => 'Primary CTA page',
+            'cta_primary_url' => 'Primary CTA URL',
+            'cta_secondary_label' => 'Secondary CTA label',
+            'cta_secondary_page' => 'Secondary CTA page',
+            'cta_secondary_url' => 'Secondary CTA URL',
+
+            // Button fields
             'button_text' => 'Button Text',
             'button_url' => 'Button URL',
-            'cta_primary_label' => 'Primary CTA label',
-            'cta_primary_page' => 'Primary CTA page',
-            'cta_primary_url' => 'Primary CTA URL',
-            'cta_secondary_label' => 'Secondary CTA label',
-            'cta_secondary_page' => 'Secondary CTA page',
-            'cta_secondary_url' => 'Secondary CTA URL',
-            'cta_primary_label' => 'Primary CTA label',
-            'cta_primary_page' => 'Primary CTA page',
-            'cta_primary_url' => 'Primary CTA URL',
-            'cta_secondary_label' => 'Secondary CTA label',
-            'cta_secondary_page' => 'Secondary CTA page',
-            'cta_secondary_url' => 'Secondary CTA URL',
-            'style' => 'Style',
-            'form_id' => 'Form',
-            'form_title' => 'Form Title',
-            'subtitle' => 'Subtitle',
-            'testimonials' => 'Testimonials',
-            'quote' => 'Quote',
-            'role' => 'Role',
-            'photo' => 'Photo',
-            'rating' => 'Rating',
-            'success_title' => 'Success title',
-            'success_message' => 'Success message',
-            'submit_label' => 'Submit label',
-            'more_info_label' => 'More info label',
-            'services' => 'Services',
-            'service_page' => 'Service page',
-            'service_url' => 'Service URL',
-            'service_anchor' => 'Service anchor',
-            'cta_label' => 'CTA label',
-            'cta_page' => 'CTA page',
-            'cta_url' => 'CTA URL',
-            'cta_anchor' => 'CTA anchor',
-            'rating' => 'Rating',
-            'success_title' => 'Success title',
-            'success_message' => 'Success message',
-            'submit_label' => 'Submit label',
-            'more_info_label' => 'More info label',
-            'services' => 'Services',
-            'service_page' => 'Service page',
-            'service_url' => 'Service URL',
-            'service_anchor' => 'Service anchor',
-            'cta_label' => 'CTA label',
-            'cta_page' => 'CTA page',
-            'cta_url' => 'CTA URL',
-            'cta_anchor' => 'CTA anchor',
-            'items' => 'Items',
-            'features' => 'Features',
-            'feature' => 'Feature',
-            'icon' => 'Icon',
-            'icon_placeholder' => 'Select icon...',
-            'background_image_helper' => 'URL or media UUID depending on media strategy.',
-            'buttons' => 'Buttons',
             'button_label' => 'Button label',
             'button_style' => 'Button style',
             'button_page' => 'Button page',
@@ -234,99 +246,75 @@ return [
             'button_page_helper' => 'Or use custom URL below.',
             'button_url_placeholder' => '/page, #section, https://...',
             'button_url_helper' => 'Supports: /relative-path, #anchor, https://external.com',
+            'buttons' => 'Buttons',
+
+            // Repeater / collection fields
+            'items' => 'Items',
+            'features' => 'Features',
+            'feature' => 'Feature',
+            'services' => 'Services',
             'stats' => 'Stats',
             'stat_value' => 'Value',
-            'stat_label' => 'Label',            'background_media_uuid' => 'Background image',            'badges' => 'Badges',            'primary.label' => 'Primary CTA label',            'primary.link.page_id' => 'Primary CTA page',            'primary.link.url' => 'Primary CTA URL',            'primary.link.anchor' => 'Primary CTA anchor',            'secondary.label' => 'Secondary CTA label',            'secondary.link.page_id' => 'Secondary CTA page',            'secondary.link.url' => 'Secondary CTA URL',            'secondary.link.anchor' => 'Secondary CTA anchor',            'cta.label' => 'CTA label',            'cta.link.page_id' => 'CTA page',            'cta.link.url' => 'CTA URL',            'cta.link.anchor' => 'CTA anchor',            'image_media_uuid' => 'Image',            'steps' => 'Steps',            'benefits' => 'Benefits',            'logos' => 'Trusted logos',            'note' => 'Note',            'sidebar_title' => 'Sidebar title',            'contact_items' => 'Contact items',            'trust_items' => 'Trust indicators',            'cards' => 'Cards',            'cta_description' => 'CTA description',            'cta_background_media_uuid' => 'CTA background image',            'cta_button.label' => 'CTA button label',            'cta_button.link.page_id' => 'CTA button page',            'cta_button.link.url' => 'CTA button URL',            'cta_button.link.anchor' => 'CTA button anchor',            'placeholder' => 'Placeholder',            'quick_links' => 'Quick links',
-            'address' => 'Address',
-            'anchor' => 'Anchor',
-            'anchor_placeholder' => 'section-id',
-            'answer' => 'Answer',
+            'stat_label' => 'Label',
+            'steps' => 'Steps',
+            'benefits' => 'Benefits',
+            'badges' => 'Badges',
+            'logos' => 'Trusted logos',
+            'cards' => 'Cards',
             'categories' => 'Categories',
             'certifications' => 'Certifications',
-            'challenge' => 'Challenge',
-            'description' => 'Description',
+            'results' => 'Results',
+            'quick_links' => 'Quick links',
+            'contact_items' => 'Contact items',
+            'trust_items' => 'Trust indicators',
             'docs' => 'Documents',
-            'email' => 'Email',
-            'file_url' => 'File URL',
-            'file_url_placeholder' => '/media/... or https://...',
-            'helper' => 'Helper',
-            'hours' => 'Hours',
-            'icon_key' => 'Icon',
+            'testimonials' => 'Testimonials',
+
+            // Service fields
+            'service_page' => 'Service page',
+            'service_url' => 'Service URL',
+            'service_anchor' => 'Service anchor',
+
+            // Anchor fields
+            'anchor' => 'Anchor',
+            'anchor_placeholder' => 'section-id',
+
+            // Form fields
+            'form_id' => 'Form',
+            'form_title' => 'Form Title',
+            'submit_label' => 'Submit label',
+            'success_title' => 'Success title',
+            'success_message' => 'Success message',
+            'more_info_label' => 'More info label',
+            'more_info_label_helper' => 'Fallback: home.services.moreInfo',
+            'sidebar_title' => 'Sidebar title',
+
+            // Testimonial fields
+            'quote' => 'Quote',
+            'role' => 'Role',
+            'rating' => 'Rating',
+
+            // Use case / industry fields
             'industry' => 'Industry',
-            'label' => 'Label',
-            'link.anchor' => 'Link anchor',
-            'link.page_id' => 'Link page',
-            'link.url' => 'Link URL',
-            'link_label' => 'Link label',
+            'challenge' => 'Challenge',
+            'solution' => 'Solution',
+
+            // Contact / location fields
+            'address' => 'Address',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'hours' => 'Hours',
             'location' => 'Location',
             'manager' => 'Manager',
-            'media_uuid_helper' => 'Media UUID (MediaPicker in CMS).',
-            'more_info_label_helper' => 'Fallback: home.services.moreInfo',
-            'name' => 'Name',
-            'number' => 'Number',
-            'override_media_alt_text_helper' => 'Override media alt text',
-            'phone' => 'Phone',
-            'question' => 'Question',
-            'results' => 'Results',
+
+            // Document fields
+            'file_url' => 'File URL',
+            'file_url_placeholder' => '/media/... or https://...',
             'size' => 'Size',
-            'solution' => 'Solution',
-            'step' => 'Step',
-            'text' => 'Text',
-            'title' => 'Title',
-            'type' => 'Type',
-            'value' => 'Value',
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+            // FAQ fields
+            'question' => 'Question',
+            'answer' => 'Answer',
         ],
         'seo' => [
             'title' => 'SEO Title',
@@ -362,15 +350,6 @@ return [
             'is_active' => 'Active',
             'short_description' => 'Short Description',
             'description' => 'Product Description',
-        
-        
-        
-        
-        
-        
-        
-        
-        
         ],
         'price_helper' => 'Price in :currency',
         'price_variable_helper' => 'Price is set on variants for variable products',
@@ -391,15 +370,6 @@ return [
             'shipping' => 'Shipping',
             'tax' => 'Tax',
             'total' => 'Total',
-        
-        
-        
-        
-        
-        
-        
-        
-        
         ],
         'statuses' => [
             'pending' => 'Pending',
@@ -409,6 +379,25 @@ return [
             'cancelled' => 'Cancelled',
             'refunded' => 'Refunded',
         ],
+    ],
+
+    // LinkPicker component
+    'link_picker' => [
+        'link_type' => 'Link Type',
+        'type_url' => 'Custom URL',
+        'type_page' => 'Page',
+        'page' => 'Page',
+        'page_placeholder' => 'Select a page...',
+        'page_helper' => 'Or use custom URL below.',
+        'url' => 'URL',
+        'url_placeholder' => '/page, #section, https://...',
+        'url_helper' => 'Supports: /relative-path, #anchor, https://external.com',
+        'anchor' => 'Anchor',
+        'anchor_placeholder' => 'section-id',
+        'target' => 'Open in',
+        'target_self' => 'Same window',
+        'target_blank' => 'New window/tab',
+        'use_global' => 'Use global setting',
     ],
 
     // Styles

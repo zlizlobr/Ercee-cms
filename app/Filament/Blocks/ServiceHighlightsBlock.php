@@ -3,6 +3,8 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
+use App\Filament\Components\LinkPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -49,48 +51,8 @@ class ServiceHighlightsBlock extends BaseBlock
                             ->rows(3)
                             ->maxLength(400)
                             ->columnSpanFull(),
-                        Forms\Components\Select::make('icon_key')
-                            ->label(__('admin.page.fields.icon'))
-                            ->options([
-                                'default' => 'Default',
-                                'check' => 'Check',
-                                'star' => 'Star',
-                                'shield' => 'Shield',
-                                'user' => 'User',
-                                'mail' => 'Mail',
-                                'phone' => 'Phone',
-                                'building' => 'Building',
-                                'briefcase' => 'Briefcase',
-                                'calendar' => 'Calendar',
-                                'file-text' => 'File text',
-                                'message-square' => 'Message',
-                                'globe' => 'Globe',
-                                'map-pin' => 'Map pin',
-                                'info' => 'Info',
-                                'check-circle' => 'Check circle',
-                                'chat' => 'Chat',
-                                'cog' => 'Settings',
-                                'support' => 'Support',
-                                'academic' => 'Academic cap',
-                            ])
-                            ->searchable()
-                            ->preload()
-                            ->placeholder(__('admin.page.fields.icon_placeholder')),
-                        Forms\Components\Select::make('link.page_id')
-                            ->label(__('admin.page.fields.service_page'))
-                            ->options(fn () => Page::all()->mapWithKeys(
-                                fn ($page) => [$page->id => $page->getLocalizedTitle()]
-                            ))
-                            ->searchable()
-                            ->placeholder(__('admin.page.fields.button_page_placeholder'))
-                            ->helperText(__('admin.page.fields.button_page_helper')),
-                        Forms\Components\TextInput::make('link.url')
-                            ->label(__('admin.page.fields.service_url'))
-                            ->placeholder(__('admin.page.fields.button_url_placeholder'))
-                            ->helperText(__('admin.page.fields.button_url_helper')),
-                        Forms\Components\TextInput::make('link.anchor')
-                            ->label(__('admin.page.fields.service_anchor'))
-                            ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                        IconPicker::make()->field(),
+                        ...LinkPicker::make('link')->fields(),
                     ])
                     ->defaultItems(4)
                     ->minItems(1)
@@ -98,21 +60,7 @@ class ServiceHighlightsBlock extends BaseBlock
                 Forms\Components\TextInput::make('cta.label')
                     ->label(__('admin.page.fields.cta_label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta.link.page_id')
-                    ->label(__('admin.page.fields.cta_page'))
-                    ->options(fn () => Page::all()->mapWithKeys(
-                        fn ($page) => [$page->id => $page->getLocalizedTitle()]
-                    ))
-                    ->searchable()
-                    ->placeholder(__('admin.page.fields.button_page_placeholder'))
-                    ->helperText(__('admin.page.fields.button_page_helper')),
-                Forms\Components\TextInput::make('cta.link.url')
-                    ->label(__('admin.page.fields.cta_url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder'))
-                    ->helperText(__('admin.page.fields.button_url_helper')),
-                Forms\Components\TextInput::make('cta.link.anchor')
-                    ->label(__('admin.page.fields.cta_anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('cta.link')->fields(),
             ]);
     }
 }
