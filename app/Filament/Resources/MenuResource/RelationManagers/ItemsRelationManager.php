@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\MenuResource\RelationManagers;
 
 use App\Domain\Content\Navigation;
-use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -44,25 +44,10 @@ class ItemsRelationManager extends RelationManager
                     ->placeholder('None (Root Item)')
                     ->searchable(),
 
-                Forms\Components\Select::make('page_id')
-                    ->label('Link to Page')
-                    ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
-                    ->searchable()
-                    ->placeholder('Select a page...')
-                    ->helperText('Or use custom URL below'),
-
-                Forms\Components\TextInput::make('url')
-                    ->label('Custom URL / Anchor')
-                    ->placeholder('/page, #section, https://...')
-                    ->helperText('Supports: /relative-path, #anchor, https://external.com'),
-
-                Forms\Components\Select::make('target')
-                    ->label('Open in')
-                    ->options([
-                        '_self' => 'Same window',
-                        '_blank' => 'New window/tab',
-                    ])
-                    ->default('_self'),
+                ...LinkPicker::make()
+                    ->withoutAnchor()
+                    ->withTarget()
+                    ->fields(),
 
                 Forms\Components\TextInput::make('position')
                     ->numeric()

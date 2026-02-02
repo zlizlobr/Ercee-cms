@@ -76,14 +76,11 @@ class ThemeController extends Controller
         ];
     }
 
-    /**
-     * Resolve link URL based on link_type (url or page).
-     */
-    protected function resolveLink(array $settings, string $prefix): ?string
+    protected function resolveLinkData(array $linkData): ?string
     {
-        $linkType = $settings["{$prefix}_link_type"] ?? 'url';
-        $url = $settings["{$prefix}_url"] ?? null;
-        $pageId = $settings["{$prefix}_page_id"] ?? null;
+        $linkType = $linkData['link_type'] ?? 'url';
+        $url = $linkData['url'] ?? null;
+        $pageId = $linkData['page_id'] ?? null;
 
         if ($linkType === 'page' && $pageId) {
             return $this->resolvePageUrl($pageId);
@@ -92,14 +89,13 @@ class ThemeController extends Controller
         return $url;
     }
 
-    /**
-     * Format CTA with resolved URL (from page or direct URL).
-     */
     protected function formatCta(array $settings): array
     {
+        $ctaData = $settings['cta'] ?? [];
+
         return [
             'label' => $settings['cta_label'],
-            'url' => $this->resolveLink($settings, 'cta'),
+            'url' => $this->resolveLinkData($ctaData),
         ];
     }
 
@@ -160,7 +156,8 @@ class ThemeController extends Controller
         }
 
         if ($includeUrl) {
-            $logo['url'] = $this->resolveLink($settings, 'logo');
+            $logoLink = $settings['logo'] ?? [];
+            $logo['url'] = $this->resolveLinkData($logoLink);
         }
 
         return $logo;

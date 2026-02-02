@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\ThemeSettingResource\Pages;
 
 use App\Domain\Content\Menu;
-use App\Domain\Content\Page as ContentPage;
 use App\Domain\Content\ThemeSetting;
+use App\Filament\Components\LinkPicker;
 use App\Filament\Components\MediaPicker;
 use App\Filament\Resources\ThemeSettingResource;
 use Filament\Forms;
@@ -50,37 +50,15 @@ class ManageThemeSettings extends Page
             ->statePath('data');
     }
 
-    /**
-     * Create link fields group (link_type, url, page_id).
-     */
-    protected function linkFields(string $prefix, string $label, ?string $defaultUrl = null, bool $isOverride = false): array
+    protected function linkFields(string $name, string $label, ?string $defaultUrl = null, bool $isOverride = false): array
     {
-        $linkTypeKey = "{$prefix}_link_type";
-        $urlKey = "{$prefix}_url";
-        $pageIdKey = "{$prefix}_page_id";
-
-        return [
-            Forms\Components\Select::make($linkTypeKey)
-                ->label("{$label} Link Type")
-                ->options([
-                    'url' => 'Custom URL',
-                    'page' => 'Page',
-                ])
-                ->default($isOverride ? null : 'url')
-                ->placeholder($isOverride ? 'Use global setting' : null)
-                ->live(),
-            Forms\Components\TextInput::make($urlKey)
-                ->label("{$label} URL")
-                ->default($defaultUrl)
-                ->placeholder($isOverride ? 'Use global setting' : null)
-                ->visible(fn (Forms\Get $get) => in_array($get($linkTypeKey), [null, 'url'])),
-            Forms\Components\Select::make($pageIdKey)
-                ->label("{$label} Page")
-                ->options(ContentPage::where('status', 'published')->pluck('title', 'id'))
-                ->searchable()
-                ->placeholder('Select a page')
-                ->visible(fn (Forms\Get $get) => $get($linkTypeKey) === 'page'),
-        ];
+        return LinkPicker::make($name)
+            ->label($label)
+            ->withLinkType()
+            ->withoutAnchor()
+            ->defaultUrl($defaultUrl)
+            ->isOverride($isOverride)
+            ->fields();
     }
 
     protected function globalTab(): Forms\Components\Tabs\Tab

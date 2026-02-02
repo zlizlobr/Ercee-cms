@@ -3,6 +3,8 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -42,9 +44,8 @@ class ImageGridBlock extends BaseBlock
                         ->rows(2)
                         ->maxLength(300)
                         ->columnSpanFull(),
-                    Forms\Components\TextInput::make('image_media_uuid')
+                    MediaPicker::make('image_media_uuid')
                         ->label(__('admin.page.fields.image_media_uuid'))
-                        ->helperText(__('admin.page.fields.media_uuid_helper'))
                         ->columnSpanFull(),
                     ])
                     ->defaultItems(3)
@@ -53,16 +54,7 @@ class ImageGridBlock extends BaseBlock
                 Forms\Components\TextInput::make('cta.label')
                     ->label(__('admin.page.fields.cta.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta.link.page_id')
-                    ->label(__('admin.page.fields.cta.link.page_id'))
-                    ->options([])
-                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                Forms\Components\TextInput::make('cta.link.url')
-                    ->label(__('admin.page.fields.cta.link.url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                Forms\Components\TextInput::make('cta.link.anchor')
-                    ->label(__('admin.page.fields.cta.link.anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('cta.link')->fields(),
             ]);
     }
 }

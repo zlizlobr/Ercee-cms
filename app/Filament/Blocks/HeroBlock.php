@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
 use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
@@ -41,32 +42,14 @@ class HeroBlock extends BaseBlock
                 MediaPicker::make('background_media_uuid')
                     ->label(__('admin.page.fields.background_image'))
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('cta_primary_label')
-                    ->label(__('admin.page.fields.cta_primary_label'))
+                Forms\Components\TextInput::make('primary.label')
+                    ->label(__('admin.page.fields.primary.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta_primary_page_id')
-                    ->label(__('admin.page.fields.cta_primary_page'))
-                    ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
-                    ->searchable()
-                    ->placeholder(__('admin.page.fields.button_page_placeholder'))
-                    ->helperText(__('admin.page.fields.button_page_helper')),
-                Forms\Components\TextInput::make('cta_primary_url')
-                    ->label(__('admin.page.fields.cta_primary_url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder'))
-                    ->helperText(__('admin.page.fields.button_url_helper')),
-                Forms\Components\TextInput::make('cta_secondary_label')
-                    ->label(__('admin.page.fields.cta_secondary_label'))
+                ...LinkPicker::make('primary.link')->fields(),
+                Forms\Components\TextInput::make('secondary.label')
+                    ->label(__('admin.page.fields.secondary.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta_secondary_page_id')
-                    ->label(__('admin.page.fields.cta_secondary_page'))
-                    ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
-                    ->searchable()
-                    ->placeholder(__('admin.page.fields.button_page_placeholder'))
-                    ->helperText(__('admin.page.fields.button_page_helper')),
-                Forms\Components\TextInput::make('cta_secondary_url')
-                    ->label(__('admin.page.fields.cta_secondary_url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder'))
-                    ->helperText(__('admin.page.fields.button_url_helper')),
+                ...LinkPicker::make('secondary.link')->fields(),
                 Forms\Components\Repeater::make('stats')
                     ->label(__('admin.page.fields.stats'))
                     ->schema([

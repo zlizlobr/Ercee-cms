@@ -3,6 +3,7 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -28,12 +29,7 @@ class RFQFormSidebarBlock extends BaseBlock
                 Forms\Components\Repeater::make('contact_items')
                     ->label(__('admin.page.fields.contact_items'))
                     ->schema([
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()
@@ -69,12 +65,7 @@ class RFQFormSidebarBlock extends BaseBlock
                 Forms\Components\Repeater::make('trust_items')
                     ->label(__('admin.page.fields.trust_items'))
                     ->schema([
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     Forms\Components\TextInput::make('text')
                         ->label(__('admin.page.fields.text'))
                         ->required()

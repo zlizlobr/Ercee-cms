@@ -25,29 +25,47 @@ All blocks follow this format when stored in the database:
 
 ### Hero Block (`hero`)
 
-Full-width hero section with background image support.
+Full-width hero section with background image and dual CTA support.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `heading` | string | Yes | Main headline (max 255 chars) |
-| `subheading` | string | No | Supporting text (max 500 chars) |
-| `background_image` | string | No | Path to background image |
-| `button_text` | string | No | CTA button label (max 100 chars) |
-| `button_url` | string | No | CTA button URL (max 255 chars) |
+| `title` | string | Yes | Main headline (max 160 chars) |
+| `subtitle` | string | No | Subtitle text (max 160 chars) |
+| `description` | string | No | Description (max 500 chars) |
+| `background_media_uuid` | uuid | No | Media UUID for background image |
+| `primary.label` | string | No | Primary CTA button label (max 80 chars) |
+| `primary.link.page_id` | int | No | Primary CTA linked page ID |
+| `primary.link.url` | string | No | Primary CTA custom URL |
+| `primary.link.anchor` | string | No | Primary CTA anchor |
+| `secondary.label` | string | No | Secondary CTA button label |
+| `secondary.link.*` | object | No | Same structure as primary.link |
+| `stats` | array | No | Array of `{value, label}` stat items |
 
 **Example:**
 ```json
 {
   "type": "hero",
   "data": {
-    "heading": "Welcome to Our Site",
-    "subheading": "Discover amazing things",
-    "background_image": "pages/heroes/hero-bg.jpg",
-    "button_text": "Get Started",
-    "button_url": "/signup"
+    "title": "Welcome to Our Site",
+    "subtitle": "Industry Leader",
+    "description": "Discover amazing things",
+    "background_media_uuid": "a1b2c3d4-...",
+    "primary": {
+      "label": "Get Started",
+      "link": { "page_id": null, "url": "/signup", "anchor": null }
+    },
+    "secondary": {
+      "label": "Learn More",
+      "link": { "page_id": 5, "url": null, "anchor": "features" }
+    },
+    "stats": [
+      { "value": "500+", "label": "Clients" }
+    ]
   }
 }
 ```
+
+> **Link data convention:** All link fields use nested `{page_id, url, anchor}` objects. In the admin UI these are rendered by `LinkPicker`. Media fields store UUIDs resolved by `BlockMediaResolver` at API response time.
 
 ### Text Block (`text`)
 

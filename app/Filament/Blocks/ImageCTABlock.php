@@ -3,6 +3,8 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\LinkPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -31,36 +33,17 @@ class ImageCTABlock extends BaseBlock
                     ->rows(3)
                     ->maxLength(600)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('background_media_uuid')
-                    ->label(__('admin.page.fields.background_media_uuid'))
-                    ->helperText(__('admin.page.fields.media_uuid_helper'))
+                MediaPicker::make('background_media_uuid')
+                    ->label(__('admin.page.fields.background_image'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('primary.label')
                     ->label(__('admin.page.fields.primary.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('primary.link.page_id')
-                    ->label(__('admin.page.fields.primary.link.page_id'))
-                    ->options([])
-                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                Forms\Components\TextInput::make('primary.link.url')
-                    ->label(__('admin.page.fields.primary.link.url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                Forms\Components\TextInput::make('primary.link.anchor')
-                    ->label(__('admin.page.fields.primary.link.anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('primary.link')->fields(),
                 Forms\Components\TextInput::make('secondary.label')
                     ->label(__('admin.page.fields.secondary.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('secondary.link.page_id')
-                    ->label(__('admin.page.fields.secondary.link.page_id'))
-                    ->options([])
-                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                Forms\Components\TextInput::make('secondary.link.url')
-                    ->label(__('admin.page.fields.secondary.link.url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                Forms\Components\TextInput::make('secondary.link.anchor')
-                    ->label(__('admin.page.fields.secondary.link.anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('secondary.link')->fields(),
             ]);
     }
 }

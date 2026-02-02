@@ -3,6 +3,9 @@
 namespace App\Filament\Blocks;
 
 use App\Domain\Content\Page;
+use App\Filament\Components\IconPicker;
+use App\Filament\Components\LinkPicker;
+use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
@@ -33,12 +36,7 @@ class TrustShowcaseBlock extends BaseBlock
                 Forms\Components\Repeater::make('cards')
                     ->label(__('admin.page.fields.cards'))
                     ->schema([
-                    Forms\Components\Select::make('icon_key')
-                        ->label(__('admin.page.fields.icon_key'))
-                        ->options(['default' => 'Default', 'check' => 'Check', 'star' => 'Star', 'shield' => 'Shield', 'user' => 'User', 'mail' => 'Mail', 'phone' => 'Phone', 'building' => 'Building', 'briefcase' => 'Briefcase', 'calendar' => 'Calendar', 'file-text' => 'File text', 'message-square' => 'Message', 'globe' => 'Globe', 'map-pin' => 'Map pin', 'info' => 'Info', 'check-circle' => 'Check circle', 'chat' => 'Chat', 'cog' => 'Settings', 'support' => 'Support', 'academic' => 'Academic cap'])
-                        ->searchable()
-                        ->preload()
-                        ->placeholder(__('admin.page.fields.icon_placeholder')),
+                    IconPicker::make()->field(),
                     Forms\Components\TextInput::make('title')
                         ->label(__('admin.page.fields.title'))
                         ->required()
@@ -60,23 +58,13 @@ class TrustShowcaseBlock extends BaseBlock
                     ->rows(2)
                     ->maxLength(400)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('cta_background_media_uuid')
+                MediaPicker::make('cta_background_media_uuid')
                     ->label(__('admin.page.fields.cta_background_media_uuid'))
-                    ->helperText(__('admin.page.fields.media_uuid_helper'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('cta_button.label')
                     ->label(__('admin.page.fields.cta_button.label'))
                     ->maxLength(80),
-                Forms\Components\Select::make('cta_button.link.page_id')
-                    ->label(__('admin.page.fields.cta_button.link.page_id'))
-                    ->options([])
-                    ->placeholder(__('admin.page.fields.button_page_placeholder')),
-                Forms\Components\TextInput::make('cta_button.link.url')
-                    ->label(__('admin.page.fields.cta_button.link.url'))
-                    ->placeholder(__('admin.page.fields.button_url_placeholder')),
-                Forms\Components\TextInput::make('cta_button.link.anchor')
-                    ->label(__('admin.page.fields.cta_button.link.anchor'))
-                    ->placeholder(__('admin.page.fields.anchor_placeholder')),
+                ...LinkPicker::make('cta_button.link')->fields(),
             ]);
     }
 }
