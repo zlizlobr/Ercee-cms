@@ -6,26 +6,17 @@ use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
-/**
- * Manages navigation items attached to a menu.
- *
- * @extends RelationManager<Navigation>
- */
 class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'allItems';
 
     protected static ?string $title = 'Navigation Items';
 
-    /**
-     * Build the navigation item form schema.
-     */
     public function form(Form $form): Form
     {
         return $form
@@ -35,6 +26,8 @@ class ItemsRelationManager extends RelationManager
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state ?? ''))),
+
+                Forms\Components\Hidden::make('slug'),
 
                 Forms\Components\TextInput::make('classes')
                     ->maxLength(255)
@@ -51,36 +44,17 @@ class ItemsRelationManager extends RelationManager
                     ->placeholder('None (Root Item)')
                     ->searchable(),
 
-                Forms\Components\Select::make('link_type')
-                    ->label('Link Type')
-                    ->options([
-                        'page' => 'Page',
-                        'url' => 'Custom URL / Anchor',
-                    ])
-                    ->default('url')
-                    ->live()
-                    ->dehydrated(false),
-
-                Forms\Components\Select::make('navigable_id')
-                    ->label('Select Page')
+                Forms\Components\Select::make('page_id')
+                    ->label('Link to Page')
                     ->options(fn () => Page::all()->mapWithKeys(fn ($page) => [$page->id => $page->getLocalizedTitle()]))
                     ->searchable()
-                    ->visible(fn (Get $get) => $get('link_type') === 'page')
-                    ->afterStateHydrated(function (Forms\Components\Select $component, $state, $record) {
-                        if ($record && $record->navigable_type === Page::class) {
-                            $component->state($record->navigable_id);
-                        }
-                    })
-                    ->dehydrateStateUsing(fn ($state) => $state),
-
-                Forms\Components\Hidden::make('navigable_type')
-                    ->dehydrateStateUsing(fn (Get $get) => $get('link_type') === 'page' ? Page::class : null),
+                    ->placeholder('Select a page...')
+                    ->helperText('Or use custom URL below'),
 
                 Forms\Components\TextInput::make('url')
-                    ->label('URL / Anchor')
+                    ->label('Custom URL / Anchor')
                     ->placeholder('/page, #section, https://...')
-                    ->helperText('Supports: /relative-path, #anchor, https://external.com')
-                    ->visible(fn (Get $get) => $get('link_type') === 'url'),
+                    ->helperText('Supports: /relative-path, #anchor, https://external.com'),
 
                 Forms\Components\Select::make('target')
                     ->label('Open in')
@@ -101,9 +75,6 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
-    /**
-     * Build the navigation items table.
-     */
     public function table(Table $table): Table
     {
         return $table
@@ -114,6 +85,10 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('parent.title')
                     ->label('Parent')
                     ->placeholder('Root'),
+                Tables\Columns\TextColumn::make('page.slug')
+                    ->label('Linked Page')
+                    ->formatStateUsing(fn ($record) => $record->page?->getLocalizedTitle())
+                    ->placeholder('-'),
                 Tables\Columns\TextColumn::make('url')
                     ->label('URL')
                     ->formatStateUsing(fn ($record) => $record->getUrl() ?? '-')
@@ -131,44 +106,10 @@ class ItemsRelationManager extends RelationManager
                     ->label('Active'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        // Set navigable fields based on link_type
-                        if (($data['link_type'] ?? null) === 'page' && ! empty($data['navigable_id'])) {
-                            $data['navigable_type'] = Page::class;
-                        } else {
-                            $data['navigable_type'] = null;
-                            $data['navigable_id'] = null;
-                        }
-                        unset($data['link_type']);
-
-                        return $data;
-                    }),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->mutateRecordDataUsing(function (array $data, $record): array {
-                        // Determine link_type based on existing data
-                        if ($record->navigable_type === Page::class) {
-                            $data['link_type'] = 'page';
-                        } else {
-                            $data['link_type'] = 'url';
-                        }
-
-                        return $data;
-                    })
-                    ->mutateFormDataUsing(function (array $data): array {
-                        if (($data['link_type'] ?? null) === 'page' && ! empty($data['navigable_id'])) {
-                            $data['navigable_type'] = Page::class;
-                            $data['url'] = null;
-                        } else {
-                            $data['navigable_type'] = null;
-                            $data['navigable_id'] = null;
-                        }
-                        unset($data['link_type']);
-
-                        return $data;
-                    }),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
