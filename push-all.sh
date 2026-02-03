@@ -37,10 +37,7 @@ commit_if_staged "refactor(modules): extract commerce module"
 git add app/Application/Funnel app/Domain/Funnel modules/funnel
 commit_if_staged "refactor(modules): extract funnel module"
 
-# Forms module + related events
-
-git add app/Domain/Form app/Domain/Content/Events app/Domain/Media/Events modules/forms
-commit_if_staged "refactor(modules): extract forms module"
+# Forms module is maintained in external repo now (no staging here).
 
 # Docs + notes
 

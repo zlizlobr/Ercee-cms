@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ercee/module-forms": "@dev",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.3",
         "laravel/framework": "^12.0",
@@ -36,7 +37,6 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Modules\\Forms\\": "modules/forms/src/",
             "Modules\\Commerce\\": "modules/commerce/src/",
             "Modules\\Funnel\\": "modules/funnel/src/"
         }
@@ -112,7 +112,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "modules/forms",
+            "url": "../ercee-modules/ercee-module-forms",
             "options": {
                 "symlink": true
             }
