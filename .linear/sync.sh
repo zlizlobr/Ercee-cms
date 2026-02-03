@@ -127,7 +127,7 @@ def create_issue(task, label_map, parent_linear_id=None):
         "mutation IssueCreate($input: IssueCreateInput!) {"
         "  issueCreate(input: $input) {"
         "    success"
-        "    issue { id identifier }"
+        "    issue { id identifier state { id } }"
         "  }"
         "}"
     )
@@ -161,7 +161,7 @@ def create_issue(task, label_map, parent_linear_id=None):
         raise RuntimeError("issueCreate failed")
 
     issue = payload_data.get("issue") or {}
-    return issue.get("id")
+    return issue.get("id"), (issue.get("state") or {}).get("id")
 
 def resolve_parent_linear_id(task, task_map):
     parent_ref = task.get("parentId")
@@ -194,9 +194,11 @@ for _ in range(max_passes):
             deferred += 1
             continue
         log(f"[linear-sync] Creating issue for task {task.get('id')}: {task.get('title')}")
-        issue_id = create_issue(task, label_map, parent_linear_id)
+        issue_id, state_id = create_issue(task, label_map, parent_linear_id)
         if issue_id:
             task["linearId"] = issue_id
+            if state_id:
+                task["workflowStateId"] = state_id
             task["state"] = "synced"
             changed = True
             created += 1

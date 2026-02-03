@@ -57,6 +57,8 @@ def fetch_issue(issue_id):
         "    completedAt"
         "    archivedAt"
         "    parent { id }"
+        "    team { id }"
+        "    state { id type }"
         "  }"
         "}"
     )
@@ -85,9 +87,86 @@ def fetch_issue(issue_id):
         raise RuntimeError(response["errors"])
     return response.get("data", {}).get("issue", {})
 
+def fetch_done_state_id(team_id):
+    query = (
+        "query TeamStates($id: String!) {"
+        "  team(id: $id) {"
+        "    states { nodes { id type name } }"
+        "  }"
+        "}"
+    )
+    payload = json.dumps({"query": query, "variables": {"id": team_id}}).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.linear.app/graphql",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": api_key,
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req) as resp:
+            body = resp.read().decode("utf-8")
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8") if exc.fp else ""
+        raise RuntimeError(f"Team states fetch failed: HTTP {exc.code} {exc.reason} {body}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"Team states fetch failed: {exc}") from exc
+
+    response = json.loads(body)
+    if "errors" in response:
+        raise RuntimeError(response["errors"])
+
+    team = response.get("data", {}).get("team", {})
+    for node in team.get("states", {}).get("nodes", []):
+        if node.get("type") == "completed":
+            return node.get("id")
+    return None
+
+def update_issue_state(issue_id, state_id):
+    query = (
+        "mutation IssueUpdate($id: String!, $input: IssueUpdateInput!) {"
+        "  issueUpdate(id: $id, input: $input) {"
+        "    success"
+        "  }"
+        "}"
+    )
+    payload = json.dumps(
+        {"query": query, "variables": {"id": issue_id, "input": {"stateId": state_id}}}
+    ).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.linear.app/graphql",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": api_key,
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req) as resp:
+            body = resp.read().decode("utf-8")
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8") if exc.fp else ""
+        raise RuntimeError(f"Issue update failed: HTTP {exc.code} {exc.reason} {body}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"Issue update failed: {exc}") from exc
+
+    response = json.loads(body)
+    if "errors" in response:
+        raise RuntimeError(response["errors"])
+    payload_data = response.get("data", {}).get("issueUpdate")
+    if not payload_data or not payload_data.get("success"):
+        raise RuntimeError("issueUpdate failed")
+    return True
+
 changed = False
 updated = 0
 skipped = 0
+done_state_id = None
 for task in tasks:
     issue_id = task.get("linearId")
     if not issue_id:
@@ -103,6 +182,14 @@ for task in tasks:
         task["parentLinearId"] = parent_id
         changed = True
         updated += 1
+    team_id = (issue.get("team") or {}).get("id")
+    state_id = (issue.get("state") or {}).get("id")
+    if state_id and task.get("workflowStateId") != state_id:
+        task["workflowStateId"] = state_id
+        changed = True
+        updated += 1
+    if done_state_id is None and team_id:
+        done_state_id = fetch_done_state_id(team_id)
     if identifier and not task.get("branchName"):
         slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in title)
         slug = "-".join(filter(None, slug.split("-")))
@@ -124,6 +211,24 @@ for task in tasks:
             updated += 1
     if task.get("state") != "archived" and task.get("state") != "draft":
         skipped += 1
+
+# Cascade archive to children when parent is archived + mark child done in Linear
+archived_ids = {t.get("id") for t in tasks if t.get("state") == "archived" and t.get("id")}
+archived_linear_ids = {
+    t.get("linearId") for t in tasks if t.get("state") == "archived" and t.get("linearId")
+}
+for task in tasks:
+    if task.get("state") == "archived":
+        continue
+    if task.get("parentId") in archived_ids or task.get("parentLinearId") in archived_linear_ids:
+        log(f"[linear-pull] Archiving child due to parent archived: {task.get('id')}")
+        if done_state_id and task.get("linearId"):
+            log(f"[linear-pull] Marking child done in Linear: {task.get('id')}")
+            update_issue_state(task["linearId"], done_state_id)
+            task["workflowStateId"] = done_state_id
+        task["state"] = "archived"
+        changed = True
+        updated += 1
 
 if changed:
     with open(tasks_path, "w", encoding="utf-8") as f:
