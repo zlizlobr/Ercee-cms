@@ -19,6 +19,7 @@
 /.phpunit.result.cache
 /database/*.sqlite
 /database/*.sqlite-journal
+.run-tasks/
 Homestead.json
 Homestead.yaml
 npm-debug.log
