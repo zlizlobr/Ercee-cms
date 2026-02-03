@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "594c728613591c5c84a9e5581e5eb18e",
+    "content-hash": "394b5b65c3b555deca050f01bd3a6d05",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1216,8 +1216,8 @@
             "version": "1.0.0",
             "dist": {
                 "type": "path",
-                "url": "../ercee-modules/ercee-module-commerce",
-                "reference": "c3f414d68804b911de822013e5ed50919568f220"
+                "url": "modules/commerce",
+                "reference": "12d99bd4ba78eaa4fbd0e5c75e9aaa1185dfd6f9"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1283,6 +1283,46 @@
                 "proprietary"
             ],
             "description": "Form builder and contract management module for Ercee CMS",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-funnel",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-funnel",
+                "reference": "de1b312990d49818f0b29922b0695de4050bd6bd"
+            },
+            "require": {
+                "ercee/module-commerce": "^1.0",
+                "ercee/module-forms": "^1.0",
+                "filament/filament": "^3.2",
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "type": "ercee-module",
+            "extra": {
+                "ercee": {
+                    "provider": "Modules\\Funnel\\FunnelModuleServiceProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Funnel\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Modules\\Funnel\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Marketing automation funnel module for Ercee CMS",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -11836,8 +11876,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ercee/module-commerce": 20,
-        "ercee/module-forms": 20
+        "ercee/module-forms": 20,
+        "ercee/module-funnel": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

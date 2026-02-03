@@ -46,6 +46,8 @@ The agent MUST:
 - Assign `state = "draft"` to all new tasks
 - Generate **atomic, actionable tasks**
 - Preserve existing tasks in `tasks.json`
+- Create **exactly one** top-level (parent) task per command
+- Represent all additional tasks as **subtasks** linked to that parent
 
 ---
 
@@ -101,6 +103,10 @@ Each task must contain at least:
 ```
 
 IDs must be unique within the file.
+Parent/child structure:
+- The **single** top-level task has no `parentId`.
+- Every additional task **must** include `parentId` pointing to the top-level task's `id`.
+- `parentLinearId` must be `null` for new tasks.
 
 Labels are specified by **name** (string). The sync script resolves names to Linear label IDs via the GraphQL API.
 Allowed labels are **only**:
