@@ -24,6 +24,7 @@ python3 - <<'PY'
 import json
 import os
 import sys
+import re
 import urllib.request
 import urllib.error
 
@@ -125,6 +126,12 @@ def fetch_done_state_id(team_id):
             return node.get("id")
     return None
 
+def slugify(title, max_words=4):
+    words = re.findall(r"[a-z0-9]+", (title or "").lower())
+    if max_words:
+        words = words[:max_words]
+    return "-".join(words)
+
 def update_issue_state(issue_id, state_id):
     query = (
         "mutation IssueUpdate($id: String!, $input: IssueUpdateInput!) {"
@@ -190,9 +197,8 @@ for task in tasks:
         updated += 1
     if done_state_id is None and team_id:
         done_state_id = fetch_done_state_id(team_id)
-    if identifier and not task.get("branchName"):
-        slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in title)
-        slug = "-".join(filter(None, slug.split("-")))
+    if identifier and not task.get("branchName"):s
+        slug = slugify(title, max_words=3)
         if slug:
             task["branchName"] = f"feature/{identifier}-{slug}"
         else:
