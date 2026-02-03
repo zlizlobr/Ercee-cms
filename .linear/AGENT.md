@@ -110,7 +110,7 @@ Allowed labels are **only**:
 - `no-llm`
 The agent MUST NOT create or use any other label names.
 
-`branchName` is filled during pull based on the Linear issue identifier and title, using the pattern `feature/<IDENTIFIER>-<slug>`.
+`branchName` is filled during pull based on the Linear issue identifier and title, using the pattern `feature/<IDENTIFIER>-<slug>` where `<slug>` uses only the first 3 words of the title (short, concise).
 `workflowStateId` is filled during sync/pull from Linear and represents the current workflow state ID.
 
 ---
