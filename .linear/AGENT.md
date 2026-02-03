@@ -103,6 +103,12 @@ Each task must contain at least:
 IDs must be unique within the file.
 
 Labels are specified by **name** (string). The sync script resolves names to Linear label IDs via the GraphQL API.
+Allowed labels are **only**:
+- `llm-claude`
+- `llm-codex`
+- `llm-gemini`
+- `no-llm`
+The agent MUST NOT create or use any other label names.
 
 `branchName` is filled during pull based on the Linear issue identifier and title, using the pattern `feature/<IDENTIFIER>-<slug>`.
 `workflowStateId` is filled during sync/pull from Linear and represents the current workflow state ID.
