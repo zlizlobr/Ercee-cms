@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78be8446af620409f8a144ecda5032b8",
+    "content-hash": "594c728613591c5c84a9e5581e5eb18e",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1212,12 +1212,51 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
+            "name": "ercee/module-commerce",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-commerce",
+                "reference": "c3f414d68804b911de822013e5ed50919568f220"
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "laravel/framework": "^12.0",
+                "php": "^8.2",
+                "stripe/stripe-php": "^17.0"
+            },
+            "type": "ercee-module",
+            "extra": {
+                "ercee": {
+                    "provider": "Modules\\Commerce\\CommerceModuleServiceProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Commerce\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Modules\\Commerce\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "E-commerce module for Ercee CMS",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "ercee/module-forms",
             "version": "1.0.0",
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-forms",
-                "reference": "62826aeafd899f941b61a2d4914c77e64d1bdee9"
+                "reference": "93b91ff37c4f70d76f180deb65523ed35ad040fa"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -6156,6 +6195,65 @@
                 }
             ],
             "time": "2026-01-12T07:42:22+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v17.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "a6219df5df1324a0d3f1da25fb5e4b8a3307ea16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a6219df5df1324a0d3f1da25fb5e4b8a3307ea16",
+                "reference": "a6219df5df1324a0d3f1da25fb5e4b8a3307ea16",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.72.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v17.6.0"
+            },
+            "time": "2025-08-27T19:32:42+00:00"
         },
         {
             "name": "symfony/clock",
@@ -11738,6 +11836,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ercee/module-commerce": 20,
         "ercee/module-forms": 20
     },
     "prefer-stable": true,
