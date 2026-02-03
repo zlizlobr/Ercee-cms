@@ -175,47 +175,51 @@ updated = 0
 skipped = 0
 done_state_id = None
 for task in tasks:
-    issue_id = task.get("linearId")
-    if not issue_id:
-        skipped += 1
-        continue
-    log(f"[linear-pull] Fetching issue for task {task.get('id')}: {task.get('title')}")
-    issue = fetch_issue(issue_id)
-    identifier = issue.get("identifier")
-    title = issue.get("title") or ""
-    parent = issue.get("parent") or {}
-    parent_id = parent.get("id")
-    if parent_id and task.get("parentLinearId") != parent_id:
-        task["parentLinearId"] = parent_id
-        changed = True
-        updated += 1
-    team_id = (issue.get("team") or {}).get("id")
-    state_id = (issue.get("state") or {}).get("id")
-    if state_id and task.get("workflowStateId") != state_id:
-        task["workflowStateId"] = state_id
-        changed = True
-        updated += 1
-    if done_state_id is None and team_id:
-        done_state_id = fetch_done_state_id(team_id)
-    if identifier and not task.get("branchName"):s
-        slug = slugify(title, max_words=3)
-        if slug:
-            task["branchName"] = f"feature/{identifier}-{slug}"
+    try:
+        issue_id = task.get("linearId")
+        if not issue_id:
+            skipped += 1
+            continue
+        log(f"[linear-pull] Fetching issue for task {task.get('id')}: {task.get('title')}")
+        issue = fetch_issue(issue_id)
+        identifier = issue.get("identifier")
+        title = issue.get("title") or ""
+        parent = issue.get("parent") or {}
+        parent_id = parent.get("id")
+        if parent_id and task.get("parentLinearId") != parent_id:
+            task["parentLinearId"] = parent_id
+            changed = True
+            updated += 1
+        team_id = (issue.get("team") or {}).get("id")
+        state_id = (issue.get("state") or {}).get("id")
+        if state_id and task.get("workflowStateId") != state_id:
+            task["workflowStateId"] = state_id
+            changed = True
+            updated += 1
+        if done_state_id is None and team_id:
+            done_state_id = fetch_done_state_id(team_id)
+        if identifier and not task.get("branchName"):
+            slug = slugify(title, max_words=3)
+            if slug:
+                task["branchName"] = f"feature/{identifier}-{slug}"
+            else:
+                task["branchName"] = f"feature/{identifier}"
+            changed = True
+            updated += 1
+        if issue.get("archivedAt") or issue.get("completedAt"):
+            if task.get("state") != "archived":
+                task["state"] = "archived"
+                changed = True
+                updated += 1
         else:
-            task["branchName"] = f"feature/{identifier}"
-        changed = True
-        updated += 1
-    if issue.get("archivedAt") or issue.get("completedAt"):
-        if task.get("state") != "archived":
-            task["state"] = "archived"
-            changed = True
-            updated += 1
-    else:
-        if task.get("state") == "draft":
-            task["state"] = "synced"
-            changed = True
-            updated += 1
-    if task.get("state") != "archived" and task.get("state") != "draft":
+            if task.get("state") == "draft":
+                task["state"] = "synced"
+                changed = True
+                updated += 1
+        if task.get("state") != "archived" and task.get("state") != "draft":
+            skipped += 1
+    except Exception as exc:
+        log(f"[linear-pull] Error processing task {task.get('id')}: {exc}")
         skipped += 1
 
 # Cascade archive to children when parent is archived + mark child done in Linear
