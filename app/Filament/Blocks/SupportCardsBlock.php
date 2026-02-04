@@ -12,6 +12,7 @@ class SupportCardsBlock extends BaseBlock
 {
     public static int $order = 50;
 
+    public static string $group = 'data';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_SUPPORT_CARDS)

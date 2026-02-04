@@ -11,6 +11,7 @@ class FacilityStatsBlock extends BaseBlock
 {
     public static int $order = 30;
 
+    public static string $group = 'data';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_FACILITY_STATS)

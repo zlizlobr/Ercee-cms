@@ -77,6 +77,8 @@ class PageResource extends Resource
                             ->schema([
                                 Builder::make('content')
                                     ->blocks(BlockRegistry::all())
+                                    ->blockPickerColumns(3)
+                                    ->blockPickerWidth('5xl')
                                     ->reorderable()
                                     ->reorderableWithButtons()
                                     ->collapsible()

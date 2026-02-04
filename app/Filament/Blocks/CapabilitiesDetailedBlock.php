@@ -12,6 +12,7 @@ class CapabilitiesDetailedBlock extends BaseBlock
 {
     public static int $order = 70;
 
+    public static string $group = 'features';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_CAPABILITIES_DETAILED)

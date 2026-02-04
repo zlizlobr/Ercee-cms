@@ -12,6 +12,7 @@ class UseCaseTabsBlock extends BaseBlock
 {
     public static int $order = 60;
 
+    public static string $group = 'features';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_USE_CASE_TABS)

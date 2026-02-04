@@ -12,6 +12,7 @@ class FacilitiesGridBlock extends BaseBlock
 {
     public static int $order = 60;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_FACILITIES_GRID)

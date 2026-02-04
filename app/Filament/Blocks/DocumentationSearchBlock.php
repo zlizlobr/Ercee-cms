@@ -10,6 +10,7 @@ class DocumentationSearchBlock extends BaseBlock
 {
     public static int $order = 20;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_DOCUMENTATION_SEARCH)

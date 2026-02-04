@@ -19,7 +19,9 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
+use Illuminate\Support\HtmlString;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -84,6 +86,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => new HtmlString('
+                    <style>
+                        .fi-fo-builder-block-picker .fi-dropdown-list-item-icon { width: 1.25rem; height: 1.25rem; }
+                        .fi-fo-builder-block-picker .fi-dropdown-list-item { padding-block: 0.5rem; }
+                        .fi-fo-builder-block-picker .fi-dropdown-header {
+                            font-weight: 600; font-size: 0.7rem; text-transform: uppercase;
+                            letter-spacing: 0.05em; border-bottom: 1px solid rgb(229 231 235);
+                            margin-bottom: 0.25rem; padding-block: 0.25rem;
+                        }
+                    </style>
+                '),
+            );
     }
 }
