@@ -4,8 +4,8 @@
 
 CMS se skl z:
 - **Core** (`app/`) -- Content, Media, ThemeSetting, Subscriber, modulovy system
-- **Moduly** (`modules/`) -- Commerce, Funnel
-- **Externi modul** -- Forms je v samostatnem repu a napojen pres Composer
+- **Moduly** (`modules/`) -- Funnel
+- **Externi moduly** -- Forms a Commerce jsou v samostatnych repech a napojene pres Composer
 
 Moduly jsou registrovane v `config/modules.php` a nahrane pres `ModuleManager`.
 
@@ -37,11 +37,12 @@ modules/<name>/
 
 ## Lokalni vyvoj
 
-Forms je napojen jako externi `path` repository v `composer.json`:
+Externi moduly jsou napojene jako `path` repository v `composer.json`:
 
 ```json
 "repositories": [
-    { "type": "path", "url": "../ercee-modules/ercee-module-forms", "options": { "symlink": true } }
+    { "type": "path", "url": "../ercee-modules/ercee-module-forms", "options": { "symlink": true } },
+    { "type": "path", "url": "../ercee-modules/ercee-module-commerce", "options": { "symlink": true } }
 ]
 ```
 
@@ -52,7 +53,7 @@ Pro lokalni modul v mono-repu je autoload definovany primo v root `composer.json
 ```json
 "autoload": {
     "psr-4": {
-        "Modules\\Commerce\\": "modules/commerce/src/"
+        "Modules\\Funnel\\": "modules/funnel/src/"
     }
 }
 ```
@@ -61,7 +62,7 @@ Po pridani noveho modulu:
 1. Vytvorit adresarovou strukturu v `modules/<name>/`
 2. Pridat `composer.json` s `name: ercee/module-<name>`, `type: ercee-module`
 3. Pridat PSR-4 autoload do root `composer.json` (jen pro lokalni moduly v `modules/`)
-4. Pridat path repository do root `composer.json` (lokalni nebo externi dle umisteni)
+4. Pridat path repository do root `composer.json` (pro externi moduly)
 5. Pridat konfiguraci do `config/modules.php`
 6. Spustit `composer dump-autoload`
 
