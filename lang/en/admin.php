@@ -125,6 +125,14 @@ return [
             'publishing' => 'Publishing',
             'open_graph' => 'Open Graph',
         ],
+        'block_groups' => [
+            'hero' => 'Hero',
+            'content' => 'Content',
+            'cta' => 'CTA & Forms',
+            'features' => 'Features & Showcase',
+            'data' => 'Stats & Data',
+            'layout' => 'Layout & Navigation',
+        ],
         'blocks' => [
             'hero' => 'Hero',
             'text' => 'Text',

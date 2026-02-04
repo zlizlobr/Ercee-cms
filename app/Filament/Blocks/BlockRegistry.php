@@ -12,6 +12,8 @@ class BlockRegistry
 {
     public const CACHE_KEY = 'filament.blocks';
 
+    protected static array $blockGroupMap = [];
+
     /**
      * Get all registered and enabled blocks.
      *
@@ -37,17 +39,49 @@ class BlockRegistry
             ->all();
 
         $coreBlocks = collect($filteredCoreClasses)
-            ->map(fn (string $class) => $class::make())
+            ->map(fn (string $class) => self::makeWithGroup($class))
             ->all();
 
         $moduleBlocks = collect($moduleBlockClasses)
             ->filter(fn (string $class) => class_exists($class) && self::isValidBlockClass($class))
             ->sortBy(fn (string $class) => $class::$order)
-            ->map(fn (string $class) => $class::make())
+            ->map(fn (string $class) => self::makeWithGroup($class))
             ->values()
             ->all();
 
         return array_merge($coreBlocks, $moduleBlocks);
+    }
+
+    protected static array $groupOrder = [
+        'hero' => 1,
+        'content' => 2,
+        'cta' => 3,
+        'features' => 4,
+        'data' => 5,
+        'layout' => 6,
+    ];
+
+    protected static function makeWithGroup(string $class): Block
+    {
+        $block = $class::make();
+        $group = $class::$group;
+        self::$blockGroupMap[$block->getName()] = __("admin.page.block_groups.{$group}");
+
+        return $block;
+    }
+
+    public static function getGroupForBlock(string $blockName): ?string
+    {
+        return self::$blockGroupMap[$blockName] ?? null;
+    }
+
+    protected static function groupSortKey(string $class): string
+    {
+        $groupOrder = self::$groupOrder[$class::$group] ?? 99;
+
+        return str_pad((string) $groupOrder, 3, '0', STR_PAD_LEFT)
+            .'-'
+            .str_pad((string) $class::$order, 5, '0', STR_PAD_LEFT);
     }
 
     protected static function getModuleBlockClasses(): array
@@ -89,7 +123,7 @@ class BlockRegistry
             ->filter(fn (string $filename) => ! in_array($filename, ['BaseBlock', 'BlockRegistry']))
             ->map(fn (string $filename) => $namespace.$filename)
             ->filter(fn (string $class) => self::isValidBlockClass($class))
-            ->sortBy(fn (string $class) => $class::$order)
+            ->sortBy(fn (string $class) => self::groupSortKey($class))
             ->values()
             ->all();
     }

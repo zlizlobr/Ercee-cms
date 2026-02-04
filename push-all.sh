@@ -29,6 +29,12 @@ commit_if_staged "refactor(modules): add core module infrastructure"
 
 # Commerce module is maintained in external repo now (no staging here).
 
+<<<<<<< HEAD
+git add app/Application/Commerce app/Domain/Commerce modules/commerce
+commit_if_staged "refactor(modules): extract commerce module"
+
+=======
+>>>>>>> origin/main
 # Funnel and Forms modules are maintained in external repos now (no staging here).
 
 # Docs + notes

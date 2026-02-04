@@ -125,8 +125,15 @@ return [
             'publishing' => 'Publikování',
             'open_graph' => 'Open Graph',
         ],
-        'blocks' => [
+        'block_groups' => [
             'hero' => 'Hero',
+            'content' => 'Obsah',
+            'cta' => 'CTA a formuláře',
+            'features' => 'Funkce a prezentace',
+            'data' => 'Statistiky a data',
+            'layout' => 'Rozložení a navigace',
+        ],
+        'blocks' => [
             'hero' => 'Hero',
             'text' => 'Text',
             'image' => 'Obrázek',

@@ -12,6 +12,7 @@ class StatsShowcaseBlock extends BaseBlock
 {
     public static int $order = 85;
 
+    public static string $group = 'data';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_STATS_SHOWCASE)

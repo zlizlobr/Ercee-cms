@@ -12,6 +12,7 @@ class ProcessWorkflowBlock extends BaseBlock
 {
     public static int $order = 75;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_PROCESS_WORKFLOW)

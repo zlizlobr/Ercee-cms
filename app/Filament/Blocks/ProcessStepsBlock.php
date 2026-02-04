@@ -11,6 +11,7 @@ class ProcessStepsBlock extends BaseBlock
 {
     public static int $order = 72;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_PROCESS_STEPS)

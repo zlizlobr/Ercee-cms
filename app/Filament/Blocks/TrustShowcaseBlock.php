@@ -13,6 +13,7 @@ class TrustShowcaseBlock extends BaseBlock
 {
     public static int $order = 75;
 
+    public static string $group = 'features';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_TRUST_SHOWCASE)

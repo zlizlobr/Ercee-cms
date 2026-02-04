@@ -15,6 +15,8 @@ class HeroBlock extends BaseBlock
 {
     public static int $order = 10;
 
+    public static string $group = 'hero';
+
     /**
      * Build the block schema.
      */

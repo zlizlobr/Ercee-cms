@@ -12,6 +12,7 @@ class DocCategoriesBlock extends BaseBlock
 {
     public static int $order = 30;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_DOC_CATEGORIES)

@@ -11,6 +11,7 @@ class CtaBlock extends BaseBlock
 {
     public static int $order = 40;
 
+    public static string $group = 'cta';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_CTA)

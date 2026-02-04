@@ -10,6 +10,7 @@ class MapPlaceholderBlock extends BaseBlock
 {
     public static int $order = 65;
 
+    public static string $group = 'layout';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_MAP_PLACEHOLDER)

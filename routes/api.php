@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RebuildFrontendController;
+use App\Http\Controllers\Api\TaxonomyMappingController;
 use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/media', [MediaController::class, 'index']);
     Route::get('/media/{uuid}', [MediaController::class, 'show']);
     Route::post('/media/resolve', [MediaController::class, 'resolve']);
+    Route::get('/taxonomies/mapping', [TaxonomyMappingController::class, 'index']);
+    Route::get('/taxonomy-mapping', [TaxonomyMappingController::class, 'index']);
 
     Route::post('/forms/{id}/submit', [FormController::class, 'submit'])
         ->whereNumber('id')

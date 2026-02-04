@@ -12,6 +12,7 @@ class PageHeroBlock extends BaseBlock
 {
     public static int $order = 10;
 
+    public static string $group = 'hero';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_PAGE_HERO)

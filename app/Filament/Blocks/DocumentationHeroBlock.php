@@ -11,6 +11,7 @@ class DocumentationHeroBlock extends BaseBlock
 {
     public static int $order = 10;
 
+    public static string $group = 'hero';
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_DOCUMENTATION_HERO)
