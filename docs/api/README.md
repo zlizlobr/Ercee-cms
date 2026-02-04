@@ -12,5 +12,6 @@
 - `docs/api/endpoints/navigation.md`
 - `docs/api/endpoints/pages.md`
 - `docs/api/endpoints/products.md`
+- `docs/api/endpoints/taxonomy-mapping.md`
 - `docs/api/endpoints/theme.md`
 - `docs/api/endpoints/webhooks.md`
