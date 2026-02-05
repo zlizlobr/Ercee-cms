@@ -48,17 +48,6 @@ None.
           "heading": "Welcome",
           "body": "<p>Intro text</p>"
         }
-      },
-      {
-        "type": "cta",
-        "position": 1,
-        "data": {
-          "title": "Get Started",
-          "description": "Join us today",
-          "button_text": "Sign up",
-          "button_url": "/signup",
-          "style": "primary"
-        }
       }
     ],
     "seo": {
@@ -80,14 +69,13 @@ None.
 ### Block object
 | name | type | required | description | default |
 | --- | --- | --- | --- | --- |
-| type | string | yes | Block type: `text`, `image`, `cta`, `form_embed` | - |
+| type | string | yes | Block type: `text`, `image`, `form_embed` | - |
 | position | integer | no | Order index used for sorting | - |
 | data | object | no | Block data payload | - |
 
 ### Block data fields
 - `text`: `heading` (string), `body` (string, HTML)
 - `image`: `image` (string), `alt` (string), `caption` (string)
-- `cta`: `title` (string), `description` (string), `button_text` (string), `button_url` (string), `style` (`primary`, `secondary`, `outline`)
 - `form_embed`: `form_id` (string), `title` (string), `description` (string)
 
 ### Error responses

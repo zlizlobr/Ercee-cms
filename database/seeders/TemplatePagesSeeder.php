@@ -492,7 +492,7 @@ class TemplatePagesSeeder extends Seeder
             ],
             'content' => [
                 [
-                    'type' => 'documentation_hero',
+                    'type' => 'page_hero',
                     'position' => 10,
                     'data' => [
                         'subtitle' => 'Dokumentace',

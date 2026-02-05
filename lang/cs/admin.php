@@ -143,7 +143,6 @@ return [
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
-            'documentation_hero' => 'Dokumentace hero',
             'page_hero' => 'Hero stranky',
             'service_highlights' => 'Sluzby - prehled',
             'capabilities_detailed' => 'Detailni schopnosti',
