@@ -2,31 +2,41 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Modules\Commerce\Domain\Taxonomy;
 
-class TaxonomyMappingController extends Controller
+/**
+ * Provide read-only taxonomy mappings for frontend routing.
+ */
+class TaxonomyMappingController extends ApiController
 {
+    /**
+     * Return taxonomy slug mappings for active products.
+     */
     public function index(): JsonResponse
     {
-        $mapping = Cache::remember('taxonomy-mapping:products', 3600, function () {
-            return [
-                'products' => [
-                    Taxonomy::TYPE_CATEGORY => $this->taxonomySlugs(Taxonomy::TYPE_CATEGORY),
-                    Taxonomy::TYPE_TAG => $this->taxonomySlugs(Taxonomy::TYPE_TAG),
-                    Taxonomy::TYPE_BRAND => $this->taxonomySlugs(Taxonomy::TYPE_BRAND),
-                ],
-            ];
-        });
+        return $this->safeGet(function () {
+            $mapping = Cache::remember('taxonomy-mapping:products', 3600, function () {
+                return [
+                    'products' => [
+                        Taxonomy::TYPE_CATEGORY => $this->taxonomySlugs(Taxonomy::TYPE_CATEGORY),
+                        Taxonomy::TYPE_TAG => $this->taxonomySlugs(Taxonomy::TYPE_TAG),
+                        Taxonomy::TYPE_BRAND => $this->taxonomySlugs(Taxonomy::TYPE_BRAND),
+                    ],
+                ];
+            });
 
-        return response()->json([
-            'data' => $mapping,
-        ]);
+            return response()->json([
+                'data' => $mapping,
+            ]);
+        });
     }
 
     /**
+     * Return unique taxonomy slugs for a taxonomy type.
+     *
      * @return array<int, string>
      */
     private function taxonomySlugs(string $type): array

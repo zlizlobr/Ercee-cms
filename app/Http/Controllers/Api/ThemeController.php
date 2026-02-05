@@ -6,33 +6,44 @@ use App\Domain\Content\Menu;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
 use App\Domain\Media\ThemeMediaResolver;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
-class ThemeController extends Controller
+/**
+ * Provide read-only access to theme settings and menus.
+ */
+class ThemeController extends ApiController
 {
     public function __construct(
         private readonly ThemeMediaResolver $mediaResolver,
     ) {}
 
+    /**
+     * Return the aggregated theme configuration for the frontend.
+     */
     public function index(): JsonResponse
     {
-        $data = Cache::remember(ThemeSetting::CACHE_KEY, 3600, function () {
-            $settings = ThemeSetting::first() ?? new ThemeSetting;
+        return $this->safeGet(function () {
+            $data = Cache::remember(ThemeSetting::CACHE_KEY, 3600, function () {
+                $settings = ThemeSetting::first() ?? new ThemeSetting;
 
-            return [
-                'global' => $this->formatGlobal($settings),
-                'header' => $this->formatHeader($settings),
-                'footer' => $this->formatFooter($settings),
-            ];
+                return [
+                    'global' => $this->formatGlobal($settings),
+                    'header' => $this->formatHeader($settings),
+                    'footer' => $this->formatFooter($settings),
+                ];
+            });
+
+            return response()->json([
+                'data' => $data,
+            ]);
         });
-
-        return response()->json([
-            'data' => $data,
-        ]);
     }
 
+    /**
+     * Format the global theme settings.
+     */
     protected function formatGlobal(ThemeSetting $settings): array
     {
         $global = $settings->getGlobal();
@@ -43,6 +54,9 @@ class ThemeController extends Controller
         ];
     }
 
+    /**
+     * Format the header theme settings.
+     */
     protected function formatHeader(ThemeSetting $settings): array
     {
         $header = $settings->getHeader();
@@ -54,6 +68,9 @@ class ThemeController extends Controller
         ];
     }
 
+    /**
+     * Format the footer theme settings.
+     */
     protected function formatFooter(ThemeSetting $settings): array
     {
         $footer = $settings->getFooter();
@@ -76,6 +93,9 @@ class ThemeController extends Controller
         ];
     }
 
+    /**
+     * Resolve link data to a URL string.
+     */
     protected function resolveLinkData(array $linkData): ?string
     {
         $linkType = $linkData['link_type'] ?? 'url';
@@ -89,6 +109,9 @@ class ThemeController extends Controller
         return $url;
     }
 
+    /**
+     * Format a call-to-action configuration.
+     */
     protected function formatCta(array $settings): array
     {
         $ctaData = $settings['cta'] ?? [];
@@ -100,7 +123,7 @@ class ThemeController extends Controller
     }
 
     /**
-     * Resolve page URL by ID.
+     * Resolve a page URL by ID.
      */
     protected function resolvePageUrl(?int $pageId): ?string
     {
@@ -114,7 +137,7 @@ class ThemeController extends Controller
     }
 
     /**
-     * Resolve menu by ID and format for API response.
+     * Resolve a menu by ID and format it for the API response.
      */
     protected function resolveMenu(?int $menuId): ?array
     {
@@ -142,6 +165,9 @@ class ThemeController extends Controller
         ];
     }
 
+    /**
+     * Format a logo configuration for API output.
+     */
     protected function formatLogo(array $settings, bool $includeUrl): array
     {
         $logo = [
