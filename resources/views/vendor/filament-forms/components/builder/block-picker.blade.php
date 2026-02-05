@@ -25,12 +25,12 @@
 
     <x-filament::dropdown.list>
         @foreach ($grouped as $groupLabel => $groupBlocks)
-            <li class="fi-dropdown-header px-3 pt-2 pb-1">
+            <div class="fi-dropdown-header px-3 pt-2 pb-1">
                 <span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
                       style="border-bottom: 1px solid rgb(229 231 235); display: block; padding-bottom: 0.25rem;">
                     {{ $groupLabel }}
                 </span>
-            </li>
+            </div>
 
             <x-filament::grid
                 :default="$columns['default'] ?? 1"

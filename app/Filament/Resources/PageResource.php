@@ -74,7 +74,7 @@ class PageResource extends Resource
                 Forms\Components\Grid::make(['default' => 1, 'lg' => 5])
                     ->schema([
                         Forms\Components\Section::make(__('admin.page.sections.content_blocks'))
-                            ->schema([
+                        ->schema([
                                 Builder::make('content')
                                     ->blocks(BlockRegistry::all())
                                     ->blockPickerColumns(3)

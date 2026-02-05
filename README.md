@@ -706,7 +706,6 @@ For local development setup, see [docs/guides/setup/local-frontend-setup.md](doc
 
 | Document | Description |
 |----------|-------------|
-<<<<<<< HEAD
 | [docs/README.md](docs/README.md) | Documentation index |
 | [docs/guides/frontend/preview-frontend-guide.md](docs/guides/frontend/preview-frontend-guide.md) | Admin preview frontend guide |
 | [docs/guides/frontend/astro-frontend-guide.md](docs/guides/frontend/astro-frontend-guide.md) | Astro frontend architecture & development |
@@ -715,12 +714,3 @@ For local development setup, see [docs/guides/setup/local-frontend-setup.md](doc
 | [docs/guides/commerce/commerce-guide.md](docs/guides/commerce/commerce-guide.md) | Commerce & Checkout developer guide |
 | [docs/guides/marketing/funnel-guide.md](docs/guides/marketing/funnel-guide.md) | Marketing Automation developer guide |
 | [docs/guides/frontend/frontend-menu-integration.md](docs/guides/frontend/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
-=======
-| [docs/frontend-guide.md](docs/frontend-guide.md) | Frontend development guide |
-| [docs/astro-frontend-guide.md](docs/astro-frontend-guide.md) | Astro frontend architecture & development |
-| [docs/local-frontend-setup.md](docs/local-frontend-setup.md) | Local frontend testing setup |
-| [docs/local-backend-setup.md](docs/local-backend-setup.md) | Local backend setup (Laravel API + admin) |
-| [docs/commerce-guide.md](docs/commerce-guide.md) | Commerce & Checkout developer guide |
-| [docs/funnel-guide.md](docs/funnel-guide.md) | Marketing Automation developer guide |
-| [docs/frontend-menu-integration.md](docs/frontend-menu-integration.md) | Frontend navigation/menu integration tasks |
->>>>>>> origin/main
