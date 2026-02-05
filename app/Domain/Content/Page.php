@@ -28,8 +28,6 @@ class Page extends Model
 
     public const BLOCK_TYPE_IMAGE = 'image';
 
-    public const BLOCK_TYPE_CTA = 'cta';
-
     public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
 
     public const BLOCK_TYPE_SERVICE_HIGHLIGHTS = 'service_highlights';
@@ -37,8 +35,6 @@ class Page extends Model
     public const BLOCK_TYPE_CONTACT_FORM = 'contact_form';
 
     public const BLOCK_TYPE_TESTIMONIALS = 'testimonials';
-
-    public const BLOCK_TYPE_CAPABILITIES = 'capabilities';
 
     public const BLOCK_TYPE_PREMIUM_CTA = 'premium_cta';
 
@@ -113,10 +109,8 @@ class Page extends Model
             self::BLOCK_TYPE_HERO => __('admin.page.blocks.hero'),
             self::BLOCK_TYPE_TEXT => __('admin.page.blocks.text'),
             self::BLOCK_TYPE_IMAGE => __('admin.page.blocks.image'),
-            self::BLOCK_TYPE_CTA => __('admin.page.blocks.cta'),
             self::BLOCK_TYPE_FORM_EMBED => __('admin.page.blocks.form_embed'),
             self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
-            self::BLOCK_TYPE_CAPABILITIES => __('admin.page.blocks.capabilities'),
             self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
             self::BLOCK_TYPE_DOCUMENTATION_HERO => __('admin.page.blocks.documentation_hero'),
             self::BLOCK_TYPE_PAGE_HERO => __('admin.page.blocks.page_hero'),
