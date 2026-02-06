@@ -28,8 +28,6 @@ class Page extends Model
 
     public const BLOCK_TYPE_IMAGE = 'image';
 
-    public const BLOCK_TYPE_FORM_EMBED = 'form_embed';
-
     public const BLOCK_TYPE_SERVICE_HIGHLIGHTS = 'service_highlights';
 
     public const BLOCK_TYPE_CONTACT_FORM = 'contact_form';
@@ -63,8 +61,6 @@ class Page extends Model
     public const BLOCK_TYPE_USE_CASE_TABS = 'use_case_tabs';
 
     public const BLOCK_TYPE_IMAGE_GRID = 'image_grid';
-
-    public const BLOCK_TYPE_RFQ_FORM_SIDEBAR = 'rfq_form_sidebar';
 
     public const BLOCK_TYPE_INDUSTRIES_SERVED = 'industries_served';
 
@@ -107,7 +103,6 @@ class Page extends Model
             self::BLOCK_TYPE_HERO => __('admin.page.blocks.hero'),
             self::BLOCK_TYPE_TEXT => __('admin.page.blocks.text'),
             self::BLOCK_TYPE_IMAGE => __('admin.page.blocks.image'),
-            self::BLOCK_TYPE_FORM_EMBED => __('admin.page.blocks.form_embed'),
             self::BLOCK_TYPE_TESTIMONIALS => __('admin.page.blocks.testimonials'),
             self::BLOCK_TYPE_PREMIUM_CTA => __('admin.page.blocks.premium_cta'),
             self::BLOCK_TYPE_PAGE_HERO => __('admin.page.blocks.page_hero'),
@@ -124,7 +119,6 @@ class Page extends Model
             self::BLOCK_TYPE_MAP_PLACEHOLDER => __('admin.page.blocks.map_placeholder'),
             self::BLOCK_TYPE_USE_CASE_TABS => __('admin.page.blocks.use_case_tabs'),
             self::BLOCK_TYPE_IMAGE_GRID => __('admin.page.blocks.image_grid'),
-            self::BLOCK_TYPE_RFQ_FORM_SIDEBAR => __('admin.page.blocks.rfq_form_sidebar'),
             self::BLOCK_TYPE_INDUSTRIES_SERVED => __('admin.page.blocks.industries_served'),
             self::BLOCK_TYPE_TRUST_SHOWCASE => __('admin.page.blocks.trust_showcase'),
             self::BLOCK_TYPE_TECHNOLOGY_INNOVATION => __('admin.page.blocks.technology_innovation'),

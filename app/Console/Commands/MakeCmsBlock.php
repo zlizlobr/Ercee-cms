@@ -665,7 +665,7 @@ STUB;
         $newConstant = "public const BLOCK_TYPE_{$constantName} = '{$this->blockType}';";
 
         // Insert new constant after the last BLOCK_TYPE constant
-        $pattern = '/(public const BLOCK_TYPE_FORM_EMBED = \'form_embed\';)/';
+        $pattern = '/(public const BLOCK_TYPE_IMAGE = \'image\';)/';
         $content = preg_replace(
             $pattern,
             "$1\n\n    {$newConstant}",
@@ -674,7 +674,7 @@ STUB;
 
         // Add to blockTypes() method - insert before closing bracket
         $newEntry = "            self::BLOCK_TYPE_{$constantName} => __('admin.page.blocks.{$this->blockType}'),";
-        $pattern = '/(self::BLOCK_TYPE_FORM_EMBED => __\(\'admin\.page\.blocks\.form_embed\'\),)(\s*\];)/';
+        $pattern = '/(self::BLOCK_TYPE_IMAGE => __\(\'admin\.page\.blocks\.image\'\),)(\s*\];)/';
         $content = preg_replace(
             $pattern,
             "$1\n{$newEntry}$2",
