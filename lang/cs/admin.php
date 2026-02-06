@@ -139,7 +139,6 @@ return [
             'image' => 'Obrázek',
             'testimonials' => 'Reference',
                         'contact_form' => 'Kontaktni formular',
-            'capabilities' => 'Schopnosti',
             'premium_cta' => 'Prémiové CTA',
             'page_hero' => 'Hero stranky',
             'service_highlights' => 'Sluzby - prehled',

@@ -139,7 +139,6 @@ return [
             'image' => 'Image',
             'testimonials' => 'Testimonials',
             'contact_form' => 'Contact form',
-            'capabilities' => 'Capabilities',
             'premium_cta' => 'Premium CTA',
             'page_hero' => 'Page Hero',
             'service_highlights' => 'Service Highlights',
