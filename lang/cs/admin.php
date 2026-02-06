@@ -138,7 +138,6 @@ return [
             'text' => 'Text',
             'image' => 'Obrázek',
             'cta' => 'Výzva k akci',
-            'form_embed' => 'Vložený formulář',
             'testimonials' => 'Reference',
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',

@@ -69,14 +69,13 @@ None.
 ### Block object
 | name | type | required | description | default |
 | --- | --- | --- | --- | --- |
-| type | string | yes | Block type: `text`, `image`, `form_embed` | - |
+| type | string | yes | Block type: `text`, `image` | - |
 | position | integer | no | Order index used for sorting | - |
 | data | object | no | Block data payload | - |
 
 ### Block data fields
 - `text`: `heading` (string), `body` (string, HTML)
 - `image`: `image` (string), `alt` (string), `caption` (string)
-- `form_embed`: `form_id` (string), `title` (string), `description` (string)
 
 ### Error responses
 - `404 Not Found` - page not found

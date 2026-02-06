@@ -138,7 +138,6 @@ return [
             'text' => 'Text',
             'image' => 'Image',
             'cta' => 'Call to Action',
-            'form_embed' => 'Form Embed',
             'testimonials' => 'Testimonials',
             'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
