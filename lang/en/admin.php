@@ -158,7 +158,6 @@ return [
             'map_placeholder' => 'Map Placeholder',
             'process_steps' => 'Process Steps',
             'process_workflow' => 'Process Workflow',
-            'rfq_form_sidebar' => 'RFQ Form Sidebar',
             'stats_cards' => 'Stats Cards',
             'stats_showcase' => 'Stats Showcase',
             'support_cards' => 'Support Cards',

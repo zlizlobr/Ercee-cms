@@ -158,7 +158,6 @@ return [
             'map_placeholder' => 'Misto mapy',
             'process_steps' => 'Kroky procesu',
             'process_workflow' => 'Prubeh procesu',
-            'rfq_form_sidebar' => 'Postranni panel RFQ',
             'stats_cards' => 'Karty statistik',
             'stats_showcase' => 'Prezentace statistik',
             'support_cards' => 'Karty podpory',
