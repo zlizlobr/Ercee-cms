@@ -822,29 +822,6 @@ class TemplatePagesSeeder extends Seeder
                     ],
                 ],
                 [
-                    'type' => 'rfq_form_sidebar',
-                    'position' => 20,
-                    'data' => [
-                        'form_id' => '1',
-                        'sidebar_title' => 'Jak bude spoluprace probihat',
-                        'contact_items' => [
-                            ['icon_key' => 'mail', 'title' => 'Email', 'value' => 'hello@example.com', 'helper' => 'Odpovime do 24h'],
-                            ['icon_key' => 'phone', 'title' => 'Telefon', 'value' => '+420 123 456 789', 'helper' => 'Po-Pa 9:00-17:00'],
-                            ['icon_key' => 'map-pin', 'title' => 'Lokace', 'value' => 'Praha / Brno', 'helper' => 'Schuzky i online'],
-                        ],
-                        'steps' => [
-                            ['step' => '01', 'title' => 'Zadani', 'description' => 'Zpracujeme vase cilove body.'],
-                            ['step' => '02', 'title' => 'Navrh', 'description' => 'Pripravime scope a harmonogram.'],
-                            ['step' => '03', 'title' => 'Realizace', 'description' => 'Dodame web a nastavime mereni.'],
-                        ],
-                        'trust_items' => [
-                            ['icon_key' => 'check-circle', 'text' => 'Zkusenosti z 120+ webu'],
-                            ['icon_key' => 'shield', 'text' => 'Bezpecny a stabilni provoz'],
-                            ['icon_key' => 'chat', 'text' => 'Jediny kontaktni bod'],
-                        ],
-                    ],
-                ],
-                [
                     'type' => 'trust_showcase',
                     'position' => 30,
                     'data' => [

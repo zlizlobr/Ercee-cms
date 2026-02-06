@@ -165,5 +165,10 @@ abstract class BaseModuleServiceProvider extends ServiceProvider implements
         return [];
     }
 
+    public function getRebuildRules(): array
+    {
+        return [];
+    }
+
     abstract protected function getModulePath(string $path = ''): string;
 }
