@@ -8,12 +8,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Handle checkout requests and order creation.
+ */
 class CheckoutController extends Controller
 {
     public function __construct(
         private CreateOrderHandler $createOrderHandler
     ) {}
 
+    /**
+     * Create an order for a product checkout.
+     */
     public function checkout(CheckoutRequest $request): JsonResponse
     {
         $validated = $request->validated();

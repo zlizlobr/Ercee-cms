@@ -8,12 +8,18 @@ use App\Infrastructure\GitHub\GitHubDispatchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Trigger frontend rebuilds for internal automation.
+ */
 class RebuildFrontendController extends Controller
 {
     public function __construct(
         private readonly GitHubDispatchService $gitHubDispatch
     ) {}
 
+    /**
+     * Dispatch a frontend rebuild request.
+     */
     public function rebuild(RebuildFrontendRequest $request): JsonResponse
     {
         $reason = $request->input('reason', 'manual');

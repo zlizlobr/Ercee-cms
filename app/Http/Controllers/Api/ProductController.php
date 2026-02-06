@@ -5,84 +5,100 @@ namespace App\Http\Controllers\Api;
 use Modules\Commerce\Domain\Product;
 use Modules\Commerce\Domain\Services\ProductPricingService;
 use App\Domain\Media\MediaManifestService;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ProductController extends Controller
+/**
+ * Provide read-only access to products and product details.
+ */
+class ProductController extends ApiController
 {
     public function __construct(
         private readonly ProductPricingService $pricingService,
         private readonly MediaManifestService $mediaManifestService,
     ) {}
 
+    /**
+     * Return a filtered list of active products.
+     */
     public function index(Request $request): JsonResponse
     {
-        $cacheKey = 'products:active:'.md5(serialize($request->only(['type', 'category', 'tag', 'brand'])));
+        return $this->safeGet(function () use ($request) {
+            $cacheKey = 'products:active:'.md5(serialize($request->only(['type', 'category', 'tag', 'brand'])));
 
-        $products = Cache::remember($cacheKey, 3600, function () use ($request) {
-            $query = Product::active()
-                ->with(['categories', 'tags', 'brands']);
+            $products = Cache::remember($cacheKey, 3600, function () use ($request) {
+                $query = Product::active()
+                    ->with(['categories', 'tags', 'brands']);
 
-            // Filter by type
-            if ($request->has('type')) {
-                $query->ofType($request->input('type'));
-            }
+                // Filter by type
+                if ($request->has('type')) {
+                    $query->ofType($request->input('type'));
+                }
 
-            // Filter by category
-            if ($request->has('category')) {
-                $query->filterByCategories((array) $request->input('category'));
-            }
+                // Filter by category
+                if ($request->has('category')) {
+                    $query->filterByCategories((array) $request->input('category'));
+                }
 
-            // Filter by tag
-            if ($request->has('tag')) {
-                $query->filterByTags((array) $request->input('tag'));
-            }
+                // Filter by tag
+                if ($request->has('tag')) {
+                    $query->filterByTags((array) $request->input('tag'));
+                }
 
-            // Filter by brand
-            if ($request->has('brand')) {
-                $query->filterByBrands((array) $request->input('brand'));
-            }
+                // Filter by brand
+                if ($request->has('brand')) {
+                    $query->filterByBrands((array) $request->input('brand'));
+                }
 
-            return $query->orderBy('name')->get();
+                return $query->orderBy('name')->get();
+            });
+
+            return response()->json([
+                'data' => $products->map(fn (Product $product) => $this->formatProductListItem($product)),
+            ]);
         });
-
-        return response()->json([
-            'data' => $products->map(fn (Product $product) => $this->formatProductListItem($product)),
-        ]);
     }
 
+    /**
+     * Return a single active product by ID.
+     */
     public function show(int $id): JsonResponse
     {
-        $cacheKey = "product:{$id}";
+        return $this->safeGet(function () use ($id) {
+            $cacheKey = "product:{$id}";
 
-        $product = Cache::remember($cacheKey, 3600, function () use ($id) {
-            return Product::active()
-                ->with([
-                    'categories',
-                    'tags',
-                    'brands',
-                    'attributeValues.attribute',
-                    'variants.attributeValues',
-                    'reviews' => fn ($q) => $q->approved()->latest()->take(10),
-                ])
-                ->find($id);
-        });
+            $product = Cache::remember($cacheKey, 3600, function () use ($id) {
+                return Product::active()
+                    ->with([
+                        'categories',
+                        'tags',
+                        'brands',
+                        'attributeValues.attribute',
+                        'variants.attributeValues',
+                        'reviews' => fn ($q) => $q->approved()->latest()->take(10),
+                    ])
+                    ->find($id);
+            });
 
-        if (! $product) {
+            if (! $product) {
+                return response()->json([
+                    'error' => 'Product not found',
+                ], 404);
+            }
+
             return response()->json([
-                'error' => 'Product not found',
-            ], 404);
-        }
-
-        return response()->json([
-            'data' => $this->formatProductDetail($product),
-        ]);
+                'data' => $this->formatProductDetail($product),
+            ]);
+        });
     }
 
+    /**
+     * Map a product model to the list response shape.
+     */
     private function formatProductListItem(Product $product): array
     {
         return [
@@ -112,6 +128,9 @@ class ProductController extends Controller
         ];
     }
 
+    /**
+     * Map a product model to the detail response shape.
+     */
     private function formatProductDetail(Product $product): array
     {
         $data = [
@@ -182,6 +201,9 @@ class ProductController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve a media reference to a public URL.
+     */
     private function resolveMediaUrl(?string $reference): ?string
     {
         if (blank($reference)) {
@@ -198,6 +220,9 @@ class ProductController extends Controller
     /**
      * @param array<int, string> $references
      * @return array<int, string>
+     */
+    /**
+     * Resolve an array of media references to public URLs.
      */
     private function resolveMediaUrls(array $references): array
     {

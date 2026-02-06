@@ -4,75 +4,79 @@ namespace App\Http\Controllers\Api;
 
 use App\Domain\Content\Menu;
 use App\Domain\Content\Navigation;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * API controller for menu navigation endpoints.
+ * Provide read-only access to navigation menus.
  */
-class NavigationController extends Controller
+class NavigationController extends ApiController
 {
     /**
-     * Get navigation by menu slug (default: 'main').
+     * Return navigation items for a menu slug.
      */
     public function index(?string $menuSlug = 'main'): JsonResponse
     {
-        $cacheKey = "navigation:{$menuSlug}";
+        return $this->safeGet(function () use ($menuSlug) {
+            $cacheKey = "navigation:{$menuSlug}";
 
-        $navigation = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
-            $menu = Menu::where('slug', $menuSlug)->first();
+            $navigation = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
+                $menu = Menu::where('slug', $menuSlug)->first();
 
-            if (! $menu) {
-                return [];
-            }
+                if (! $menu) {
+                    return [];
+                }
 
-            return Navigation::where('menu_id', $menu->id)
-                ->active()
-                ->roots()
-                ->ordered()
-                ->with([
-                    'page',
-                    'children' => fn ($q) => $q->active()->ordered(),
-                    'children.page',
-                ])
-                ->get()
-                ->map(fn ($item) => $item->toArray())
-                ->toArray();
+                return Navigation::where('menu_id', $menu->id)
+                    ->active()
+                    ->roots()
+                    ->ordered()
+                    ->with([
+                        'page',
+                        'children' => fn ($q) => $q->active()->ordered(),
+                        'children.page',
+                    ])
+                    ->get()
+                    ->map(fn ($item) => $item->toArray())
+                    ->toArray();
+            });
+
+            return response()->json([
+                'data' => $navigation,
+            ]);
         });
-
-        return response()->json([
-            'data' => $navigation,
-        ]);
     }
 
     /**
-     * Get specific menu by slug with all items.
+     * Return a menu with all items by slug.
      */
     public function show(string $menuSlug): JsonResponse
     {
-        $cacheKey = "menu:{$menuSlug}";
+        return $this->safeGet(function () use ($menuSlug) {
+            $cacheKey = "menu:{$menuSlug}";
 
-        $menu = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
-            $menu = Menu::where('slug', $menuSlug)
-                ->with([
-                    'items.page',
-                    'items.children' => fn ($q) => $q->active()->ordered(),
-                    'items.children.page',
-                ])
-                ->first();
+            $menu = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
+                $menu = Menu::where('slug', $menuSlug)
+                    ->with([
+                        'items.page',
+                        'items.children' => fn ($q) => $q->active()->ordered(),
+                        'items.children.page',
+                    ])
+                    ->first();
 
-            return $menu?->toArray();
-        });
+                return $menu?->toArray();
+            });
 
-        if (! $menu) {
+            if (! $menu) {
+                return response()->json([
+                    'error' => 'Menu not found',
+                ], 404);
+            }
+
             return response()->json([
-                'error' => 'Menu not found',
-            ], 404);
-        }
-
-        return response()->json([
-            'data' => $menu,
-        ]);
+                'data' => $menu,
+            ]);
+        });
     }
 }

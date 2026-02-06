@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Handle incoming payment webhooks.
+ */
 class WebhookController extends Controller
 {
     public function __construct(
@@ -17,6 +20,9 @@ class WebhookController extends Controller
         private ProcessPaymentWebhookHandler $webhookHandler
     ) {}
 
+    /**
+     * Process a Stripe webhook and enqueue domain handling.
+     */
     public function stripe(Request $request): Response
     {
         try {

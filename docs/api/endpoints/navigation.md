@@ -21,15 +21,6 @@ None.
       "page_slug": null,
       "target": "_self",
       "children": []
-    },
-    {
-      "id": 2,
-      "title": "Služby",
-      "slug": "capabilities",
-      "url": "/capabilities",
-      "page_slug": "capabilities",
-      "target": "_self",
-      "children": []
     }
   ]
 }
@@ -91,15 +82,6 @@ None.
         "slug": "",
         "url": "#contact",
         "page_slug": null,
-        "target": "_self",
-        "children": []
-      },
-      {
-        "id": 2,
-        "title": "Služby",
-        "slug": "capabilities",
-        "url": "/capabilities",
-        "page_slug": "capabilities",
         "target": "_self",
         "children": []
       }

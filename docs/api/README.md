@@ -8,7 +8,9 @@
 
 - `docs/api/endpoints/checkout.md`
 - `docs/api/endpoints/forms.md`
+- `docs/api/endpoints/health.md`
 - `docs/api/endpoints/internal.md`
+- `docs/api/endpoints/media.md`
 - `docs/api/endpoints/navigation.md`
 - `docs/api/endpoints/pages.md`
 - `docs/api/endpoints/products.md`
