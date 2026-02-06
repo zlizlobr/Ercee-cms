@@ -137,7 +137,6 @@ return [
             'hero' => 'Hero',
             'text' => 'Text',
             'image' => 'Obrázek',
-            'cta' => 'Výzva k akci',
             'testimonials' => 'Reference',
                         'contact_form' => 'Kontaktni formular',
             'capabilities' => 'Schopnosti',

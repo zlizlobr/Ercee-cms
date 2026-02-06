@@ -137,7 +137,6 @@ return [
             'hero' => 'Hero',
             'text' => 'Text',
             'image' => 'Image',
-            'cta' => 'Call to Action',
             'testimonials' => 'Testimonials',
             'contact_form' => 'Contact form',
             'capabilities' => 'Capabilities',
