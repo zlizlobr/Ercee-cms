@@ -351,4 +351,17 @@ class ModuleManager
 
         return $items;
     }
+
+    public function getModuleRebuildRules(): array
+    {
+        $rules = [];
+
+        foreach ($this->getModules() as $module) {
+            if (method_exists($module, 'getRebuildRules')) {
+                $rules = array_merge($rules, $module->getRebuildRules());
+            }
+        }
+
+        return $rules;
+    }
 }

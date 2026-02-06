@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\RebuildFrontendController;
-use App\Http\Controllers\Api\TaxonomyMappingController;
 use App\Http\Controllers\Api\ThemeController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +18,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/theme', [ThemeController::class, 'index'])->middleware('throttle:api-read');
     Route::get('/media', [MediaController::class, 'index'])->middleware('throttle:api-read');
     Route::get('/media/{uuid}', [MediaController::class, 'show'])->middleware('throttle:api-read');
-    Route::get('/taxonomies/mapping', [TaxonomyMappingController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/taxonomy-mapping', [TaxonomyMappingController::class, 'index'])->middleware('throttle:api-read');
 
     Route::post('/media/resolve', [MediaController::class, 'resolve'])
         ->middleware('throttle:media-resolve');
