@@ -10,8 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "ercee/module-funnel": "@dev",
+        "ercee/module-commerce": "@dev",
         "ercee/module-forms": "@dev",
+        "ercee/module-funnel": "@dev",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.3",
         "laravel/framework": "^12.0",
@@ -36,10 +37,9 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-        "Database\\Factories\\": "database/factories/",
-        "Database\\Seeders\\": "database/seeders/",
-        "Modules\\Commerce\\": "modules/commerce/src/"
-      }
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -112,21 +112,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../ercee-modules/ercee-module-forms",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "../ercee-modules/ercee-module-funnel",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "modules/commerce",
+            "url": "../ercee-modules/*",
             "options": {
                 "symlink": true
             }

@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-<<<<<<< HEAD
 use App\Http\Controllers\Api\ApiController;
-=======
-use App\Http\Controllers\Controller;
->>>>>>> origin/main
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Modules\Commerce\Domain\Taxonomy;
 
-<<<<<<< HEAD
 /**
  * Provide read-only taxonomy mappings for frontend routing.
  */
@@ -42,28 +37,6 @@ class TaxonomyMappingController extends ApiController
     /**
      * Return unique taxonomy slugs for a taxonomy type.
      *
-=======
-class TaxonomyMappingController extends Controller
-{
-    public function index(): JsonResponse
-    {
-        $mapping = Cache::remember('taxonomy-mapping:products', 3600, function () {
-            return [
-                'products' => [
-                    Taxonomy::TYPE_CATEGORY => $this->taxonomySlugs(Taxonomy::TYPE_CATEGORY),
-                    Taxonomy::TYPE_TAG => $this->taxonomySlugs(Taxonomy::TYPE_TAG),
-                    Taxonomy::TYPE_BRAND => $this->taxonomySlugs(Taxonomy::TYPE_BRAND),
-                ],
-            ];
-        });
-
-        return response()->json([
-            'data' => $mapping,
-        ]);
-    }
-
-    /**
->>>>>>> origin/main
      * @return array<int, string>
      */
     private function taxonomySlugs(string $type): array
