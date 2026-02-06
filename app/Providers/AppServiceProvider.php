@@ -60,24 +60,48 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureRateLimiting(): void
     {
+        // Isolate form submissions per form to prevent a noisy form from blocking others.
         RateLimiter::for('form-submissions', function (Request $request) {
-            return Limit::perMinute(5)->by($request->ip())->response(function () {
+            $formId = (string) ($request->route('id') ?? 'unknown');
+            $key = implode('|', [$request->ip(), 'form-submit', $formId]);
+
+            return Limit::perMinute(5)->by($key)->response(function () {
                 return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
             });
         });
 
+        // Protect checkout/payment flows with a dedicated limiter.
         RateLimiter::for('checkout', function (Request $request) {
-            return Limit::perMinute(10)->by($request->ip())->response(function () {
+            $key = implode('|', [$request->ip(), 'checkout']);
+
+            return Limit::perMinute(10)->by($key)->response(function () {
                 return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
             });
         });
 
+        // Read-only API endpoints are isolated by route+params in the key.
         RateLimiter::for('api-read', function (Request $request) {
-            return Limit::perMinute(60)->by($request->ip())->response(function () {
+            $route = $request->route();
+            $routeKey = $route ? $route->uri() : 'unknown';
+            $params = $route ? implode('|', $route->parameters()) : 'none';
+            $key = implode('|', [$request->ip(), 'api-read', $routeKey, $params]);
+
+            return Limit::perMinute(60)->by($key)->response(function () {
                 return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
             });
         });
 
+        // Media resolving is write-adjacent and should not impact read traffic.
+        RateLimiter::for('media-resolve', function (Request $request) {
+            $mediaKey = (string) ($request->input('uuid') ?? $request->input('id') ?? 'unknown');
+            $key = implode('|', [$request->ip(), 'media-resolve', $mediaKey]);
+
+            return Limit::perMinute(30)->by($key)->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
+        });
+
+        // Internal endpoints are scoped by auth token where possible.
         RateLimiter::for('api-internal', function (Request $request) {
             $key = $request->bearerToken() ?? $request->header('X-Api-Token') ?? $request->ip();
 
@@ -86,6 +110,7 @@ class AppServiceProvider extends ServiceProvider
             });
         });
 
+        // Webhooks are isolated to prevent third-party spikes from impacting the API.
         RateLimiter::for('webhooks', function (Request $request) {
             return Limit::perMinute(100)->by($request->ip())->response(function () {
                 return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);

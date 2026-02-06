@@ -109,32 +109,6 @@ Single image with caption support.
 }
 ```
 
-### CTA Block (`cta`)
-
-Call-to-action section with button.
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | string | Yes | CTA headline (max 255 chars) |
-| `description` | string | No | Supporting description (max 500 chars) |
-| `button_text` | string | Yes | Button label (max 100 chars) |
-| `button_url` | string | Yes | Button destination URL (max 255 chars) |
-| `style` | enum | No | Button style: `primary`, `secondary`, `outline` (default: `primary`) |
-
-**Example:**
-```json
-{
-  "type": "cta",
-  "data": {
-    "title": "Ready to get started?",
-    "description": "Join thousands of happy customers today.",
-    "button_text": "Sign Up Now",
-    "button_url": "/register",
-    "style": "primary"
-  }
-}
-```
-
 ### Form Embed Block (`form_embed`)
 
 Embeds a dynamic form from the Forms module.
@@ -163,7 +137,6 @@ The Astro frontend maps CMS data in `ercee-frontend/src/lib/api/endpoints/pages.
 
 - `text`: combines `heading` + `body` into a single HTML string (`content`)
 - `image`: maps `image` to `url`
-- `cta`: direct mapping
 - `form_embed`: direct mapping
 
 Other block types are passed through without mapping. If a block needs a different shape on the frontend, add a mapper.
