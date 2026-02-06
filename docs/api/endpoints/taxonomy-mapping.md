@@ -28,9 +28,3 @@ None.
 
 ### Error responses
 None.
-<<<<<<< HEAD
-
-### Notes
-- `GET /api/v1/taxonomy-mapping` is supported as a legacy alias for this endpoint.
-=======
->>>>>>> origin/main

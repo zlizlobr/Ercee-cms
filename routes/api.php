@@ -14,23 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/health', App\Http\Controllers\Api\HealthController::class);
 
-<<<<<<< HEAD
-Route::prefix('v1')->group(function () {
-    // Read-only endpoints share the api-read limiter, but are isolated by route+params in the key.
-    Route::get('/pages', [PageController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/pages/{slug}', [PageController::class, 'show'])->middleware('throttle:api-read');
-    Route::get('/navigation', [NavigationController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/navigation/{menuSlug}', [NavigationController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/menus/{menuSlug}', [NavigationController::class, 'show'])->middleware('throttle:api-read');
-    Route::get('/products', [ProductController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->whereNumber('id')->middleware('throttle:api-read');
-    Route::get('/forms/{id}', [FormController::class, 'show'])->whereNumber('id')->middleware('throttle:api-read');
-    Route::get('/theme', [ThemeController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/media', [MediaController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/media/{uuid}', [MediaController::class, 'show'])->middleware('throttle:api-read');
-    Route::get('/taxonomies/mapping', [TaxonomyMappingController::class, 'index'])->middleware('throttle:api-read');
-    Route::get('/taxonomy-mapping', [TaxonomyMappingController::class, 'index'])->middleware('throttle:api-read');
-=======
 Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
@@ -46,7 +29,6 @@ Route::prefix('v1')->middleware('throttle:api-read')->group(function () {
     Route::post('/media/resolve', [MediaController::class, 'resolve']);
     Route::get('/taxonomies/mapping', [TaxonomyMappingController::class, 'index']);
     Route::get('/taxonomy-mapping', [TaxonomyMappingController::class, 'index']);
->>>>>>> origin/main
 
     // Media resolve gets its own limiter to prevent write-heavy usage from impacting reads.
     Route::post('/media/resolve', [MediaController::class, 'resolve'])
