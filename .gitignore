@@ -1,5 +1,6 @@
 *.log
 AGENTS.md
+AGENTS.md
 .DS_Store
 .env
 .env.backup
@@ -34,6 +35,8 @@ yarn-error.log
 .php-cs-fixer.cache
 phpstan.cache
 .linear/tasks.json
+.linear/
+.linear~HEAD
 .linear/
 .linear~HEAD
 app/Filament/Resources/frontend-rebuild-guide.md
