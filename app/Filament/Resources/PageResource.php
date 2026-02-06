@@ -82,6 +82,7 @@ class PageResource extends Resource
                                     ->reorderable()
                                     ->reorderableWithButtons()
                                     ->collapsible()
+                                    ->collapsed()
                                     ->cloneable()
                                     ->blockNumbers(false)
                                     ->addActionLabel(__('admin.page.actions.add_block')),
