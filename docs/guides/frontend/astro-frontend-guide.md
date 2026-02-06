@@ -76,7 +76,7 @@ ercee-frontend/
 CMS returns raw builder blocks from `Page::getBlocks()`. The frontend maps the data in:
 `src/lib/api/endpoints/pages.ts`.
 
-- **Mapped blocks**: `text`, `image`, `form_embed`
+- **Mapped blocks**: `text`, `image`
 - **Pass-through blocks**: any other type (e.g. `hero`, `stats`, `testimonials`, `feature_grid`)
 
 If you add a new CMS block, update the mapping and types so Astro gets the shape it expects.
@@ -89,7 +89,6 @@ Supported components today:
 
 - `Text.astro`
 - `Image.astro`
-- `FormEmbed.astro`
 - `Hero.astro`
 - `Stats.astro`
 - `Testimonials.astro`

@@ -109,36 +109,12 @@ Single image with caption support.
 }
 ```
 
-### Form Embed Block (`form_embed`)
-
-Embeds a dynamic form from the Forms module.
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `form_id` | integer | Yes | ID of the form to embed |
-| `title` | string | No | Custom title override (max 255 chars) |
-| `description` | string | No | Custom description (max 500 chars) |
-
-**Example:**
-```json
-{
-  "type": "form_embed",
-  "data": {
-    "form_id": 1,
-    "title": "Contact Us",
-    "description": "Fill out the form below and we'll get back to you."
-  }
-}
-```
-
 ## Astro Mapping
 
 The Astro frontend maps CMS data in `ercee-frontend/src/lib/api/endpoints/pages.ts`.
 
 - `text`: combines `heading` + `body` into a single HTML string (`content`)
 - `image`: maps `image` to `url`
-- `form_embed`: direct mapping
-
 Other block types are passed through without mapping. If a block needs a different shape on the frontend, add a mapper.
 
 ## Rendering Pipeline
