@@ -4,7 +4,7 @@
 Get navigation items for the default menu (`main`).
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Request parameters
 None.
@@ -44,7 +44,7 @@ None. If the menu does not exist, the endpoint returns an empty array in `data`.
 Get navigation items for a specific menu by slug.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 | name | type | required | description | default |
@@ -61,7 +61,7 @@ None. If the menu does not exist, the endpoint returns an empty array in `data`.
 Get a menu (including its navigation items) by slug.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 | name | type | required | description | default |

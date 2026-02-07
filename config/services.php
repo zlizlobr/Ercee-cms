@@ -125,6 +125,8 @@ return [
     'api' => [
         'internal_token' => env('API_INTERNAL_TOKEN'),
         'token_abilities' => explode(',', env('API_TOKEN_ABILITIES', 'internal:rebuild')),
+        'public_token' => env('API_PUBLIC_TOKEN'),
+        'public_token_name' => env('API_PUBLIC_TOKEN_NAME', 'public-api'),
     ],
 
 ];

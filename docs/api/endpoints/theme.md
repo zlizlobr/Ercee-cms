@@ -4,7 +4,7 @@
 Fetch theme settings with resolved menus, URLs, and image URLs.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Request parameters
 None.

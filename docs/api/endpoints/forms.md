@@ -4,7 +4,7 @@
 Fetch an active form definition by ID.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 | name | type | required | description | default |
@@ -59,7 +59,7 @@ None.
 Submit a form response.
 
 ### Authorization
-None.
+None. This is the only `/api/v1/*` endpoint that does **not** require bearer token authentication.
 
 ### Headers
 - `X-Form-Source` (optional) - submission source label; defaults to `form:{id}`.
