@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "394b5b65c3b555deca050f01bd3a6d05",
+    "content-hash": "f532f2745424b9d8f90521b3d42f2895",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1216,8 +1216,8 @@
             "version": "1.0.0",
             "dist": {
                 "type": "path",
-                "url": "modules/commerce",
-                "reference": "12d99bd4ba78eaa4fbd0e5c75e9aaa1185dfd6f9"
+                "url": "../ercee-modules/ercee-module-commerce",
+                "reference": "c3f414d68804b911de822013e5ed50919568f220"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1229,6 +1229,11 @@
             "extra": {
                 "ercee": {
                     "provider": "Modules\\Commerce\\CommerceModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\Commerce\\CommerceModuleServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1267,6 +1272,11 @@
             "extra": {
                 "ercee": {
                     "provider": "Modules\\Forms\\FormsModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\Forms\\FormsModuleServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1294,7 +1304,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-funnel",
-                "reference": "de1b312990d49818f0b29922b0695de4050bd6bd"
+                "reference": "b19e491c3bcbbb91ea8c578461f76201f11d411c"
             },
             "require": {
                 "ercee/module-commerce": "^1.0",
@@ -1307,6 +1317,11 @@
             "extra": {
                 "ercee": {
                     "provider": "Modules\\Funnel\\FunnelModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\Funnel\\FunnelModuleServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1323,6 +1338,168 @@
                 "proprietary"
             ],
             "description": "Marketing automation funnel module for Ercee CMS",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-llm-claude",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-llm-claude",
+                "reference": "8fffde9b3ced03a277a8e704bf6b32706301d199"
+            },
+            "require": {
+                "ercee/module-llm-core": "@dev",
+                "filament/filament": "^3.2",
+                "guzzlehttp/guzzle": "^7.0",
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "ercee": {
+                    "name": "llm-claude",
+                    "provider": "Modules\\LlmClaude\\LlmClaudeModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\LlmClaude\\LlmClaudeModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\LlmClaude\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Ercee CMS LLM Claude Provider",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-llm-core",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-llm-core",
+                "reference": "ce5eda5ba02ac0c82df6a6d5c9926a04403d5498"
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "ercee": {
+                    "name": "llm-core",
+                    "provider": "Modules\\LlmCore\\LlmCoreModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\LlmCore\\LlmCoreModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\LlmCore\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Ercee CMS LLM Core module - provider-agnostic LLM integration",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-llm-gemini",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-llm-gemini",
+                "reference": "a5f6fdd1911146d31a752a7468162706e0116835"
+            },
+            "require": {
+                "ercee/module-llm-core": "@dev",
+                "filament/filament": "^3.2",
+                "guzzlehttp/guzzle": "^7.0",
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "ercee": {
+                    "name": "llm-gemini",
+                    "provider": "Modules\\LlmGemini\\LlmGeminiModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\LlmGemini\\LlmGeminiModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\LlmGemini\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Ercee CMS LLM Gemini Provider",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-llm-openai",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-llm-openai",
+                "reference": "b7715c57305c3e90107cf67bb5efee4bcbaf05b1"
+            },
+            "require": {
+                "ercee/module-llm-core": "@dev",
+                "filament/filament": "^3.2",
+                "laravel/framework": "^12.0",
+                "openai-php/client": "^0.10",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "ercee": {
+                    "name": "llm-openai",
+                    "provider": "Modules\\LlmOpenai\\LlmOpenaiModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\LlmOpenai\\LlmOpenaiModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\LlmOpenai\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Ercee CMS LLM OpenAI Provider",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -4451,6 +4628,97 @@
             "time": "2024-09-09T07:06:30+00:00"
         },
         {
+            "name": "openai-php/client",
+            "version": "v0.10.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openai-php/client.git",
+                "reference": "4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c",
+                "reference": "4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1.0",
+                "php-http/discovery": "^1.20.0",
+                "php-http/multipart-stream-builder": "^1.4.2",
+                "psr/http-client": "^1.0.3",
+                "psr/http-client-implementation": "^1.0.1",
+                "psr/http-factory-implementation": "*",
+                "psr/http-message": "^1.1.0|^2.0.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.9.2",
+                "guzzlehttp/psr7": "^2.7.0",
+                "laravel/pint": "^1.18.1",
+                "mockery/mockery": "^1.6.12",
+                "nunomaduro/collision": "^7.11.0|^8.5.0",
+                "pestphp/pest": "^2.36.0|^3.5.0",
+                "pestphp/pest-plugin-arch": "^2.7|^3.0",
+                "pestphp/pest-plugin-type-coverage": "^2.8.7|^3.1.0",
+                "phpstan/phpstan": "^1.12.7",
+                "symfony/var-dumper": "^6.4.11|^7.1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/OpenAI.php"
+                ],
+                "psr-4": {
+                    "OpenAI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                },
+                {
+                    "name": "Sandro Gehri"
+                }
+            ],
+            "description": "OpenAI PHP is a supercharged PHP API client that allows you to interact with the Open AI API",
+            "keywords": [
+                "GPT-3",
+                "api",
+                "client",
+                "codex",
+                "dall-e",
+                "language",
+                "natural",
+                "openai",
+                "php",
+                "processing",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/openai-php/client/issues",
+                "source": "https://github.com/openai-php/client/tree/v0.10.3"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/paypalme/enunomaduro",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/gehrisandro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-12T20:51:16+00:00"
+        },
+        {
             "name": "openspout/openspout",
             "version": "v4.32.0",
             "source": {
@@ -4542,6 +4810,141 @@
                 }
             ],
             "time": "2025-09-03T16:03:54+00:00"
+        },
+        {
+            "name": "php-http/discovery",
+            "version": "1.20.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/discovery.git",
+                "reference": "82fe4c73ef3363caed49ff8dd1539ba06044910d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/82fe4c73ef3363caed49ff8dd1539ba06044910d",
+                "reference": "82fe4c73ef3363caed49ff8dd1539ba06044910d",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0|^2.0",
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "nyholm/psr7": "<1.0",
+                "zendframework/zend-diactoros": "*"
+            },
+            "provide": {
+                "php-http/async-client-implementation": "*",
+                "php-http/client-implementation": "*",
+                "psr/http-client-implementation": "*",
+                "psr/http-factory-implementation": "*",
+                "psr/http-message-implementation": "*"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0.2|^2.0",
+                "graham-campbell/phpspec-skip-example-extension": "^5.0",
+                "php-http/httplug": "^1.0 || ^2.0",
+                "php-http/message-factory": "^1.0",
+                "phpspec/phpspec": "^5.1 || ^6.1 || ^7.3",
+                "sebastian/comparator": "^3.0.5 || ^4.0.8",
+                "symfony/phpunit-bridge": "^6.4.4 || ^7.0.1"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Http\\Discovery\\Composer\\Plugin",
+                "plugin-optional": true
+            },
+            "autoload": {
+                "psr-4": {
+                    "Http\\Discovery\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "src/Composer/Plugin.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                }
+            ],
+            "description": "Finds and installs PSR-7, PSR-17, PSR-18 and HTTPlug implementations",
+            "homepage": "http://php-http.org",
+            "keywords": [
+                "adapter",
+                "client",
+                "discovery",
+                "factory",
+                "http",
+                "message",
+                "psr17",
+                "psr7"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/discovery/issues",
+                "source": "https://github.com/php-http/discovery/tree/1.20.0"
+            },
+            "time": "2024-10-02T11:20:13+00:00"
+        },
+        {
+            "name": "php-http/multipart-stream-builder",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/multipart-stream-builder.git",
+                "reference": "10086e6de6f53489cca5ecc45b6f468604d3460e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/multipart-stream-builder/zipball/10086e6de6f53489cca5ecc45b6f468604d3460e",
+                "reference": "10086e6de6f53489cca5ecc45b6f468604d3460e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "php-http/discovery": "^1.15",
+                "psr/http-factory-implementation": "^1.0"
+            },
+            "require-dev": {
+                "nyholm/psr7": "^1.0",
+                "php-http/message": "^1.5",
+                "php-http/message-factory": "^1.0.2",
+                "phpunit/phpunit": "^7.5.15 || ^8.5 || ^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Http\\Message\\MultipartStream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com"
+                }
+            ],
+            "description": "A builder class that help you create a multipart stream",
+            "homepage": "http://php-http.org",
+            "keywords": [
+                "factory",
+                "http",
+                "message",
+                "multipart stream",
+                "stream"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/multipart-stream-builder/issues",
+                "source": "https://github.com/php-http/multipart-stream-builder/tree/1.4.2"
+            },
+            "time": "2024-09-04T13:22:54+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -11876,8 +12279,13 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ercee/module-commerce": 20,
         "ercee/module-forms": 20,
-        "ercee/module-funnel": 20
+        "ercee/module-funnel": 20,
+        "ercee/module-llm-claude": 20,
+        "ercee/module-llm-core": 20,
+        "ercee/module-llm-gemini": 20,
+        "ercee/module-llm-openai": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
