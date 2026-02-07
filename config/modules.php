@@ -51,6 +51,14 @@ return [
                 'commerce' => '^1.0',
             ],
         ],
+
+        'llm' => [
+            'enabled' => true,
+            'provider' => \Modules\Llm\LlmModuleServiceProvider::class,
+            'version' => '1.0.0',
+            'description' => 'Unified LLM Module (OpenAI, Claude, Gemini)',
+            'dependencies' => [],
+        ],
     ],
 
     /*
