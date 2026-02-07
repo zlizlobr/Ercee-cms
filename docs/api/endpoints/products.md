@@ -4,7 +4,7 @@
 List all active products with optional filtering.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Query parameters
 | name | type | required | description | example |
@@ -69,7 +69,7 @@ None.
 Fetch a single active product by ID with full details.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 | name | type | required | description | default |

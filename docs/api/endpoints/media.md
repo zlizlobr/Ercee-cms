@@ -4,7 +4,7 @@
 List media items.
 
 ### Authorization
-Public endpoint. No authentication required.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Query parameters
 None.
@@ -19,7 +19,7 @@ Standard error response format.
 Fetch a single media item by UUID.
 
 ### Authorization
-Public endpoint. No authentication required.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 - `uuid` (string) - Media UUID.
@@ -34,7 +34,7 @@ Standard error response format.
 Resolve media references from the request body.
 
 ### Authorization
-Public endpoint. No authentication required.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Request body
 Payload depends on the client usage; typically contains media identifiers to resolve.

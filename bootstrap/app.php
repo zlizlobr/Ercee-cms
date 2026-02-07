@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'webhook.whitelist' => \App\Http\Middleware\WebhookIpWhitelist::class,
             'redirect.frontend' => \App\Http\Middleware\RedirectToFrontend::class,
             'api.auth' => \App\Http\Middleware\ApiTokenAuth::class,
+            'api.public' => \App\Http\Middleware\PublicApiToken::class,
             'api.audit' => \App\Http\Middleware\ApiAuditLog::class,
             'api.idempotency' => \App\Http\Middleware\IdempotencyKey::class,
         ]);

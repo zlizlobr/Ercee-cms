@@ -4,7 +4,7 @@
 List all published page slugs.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Request parameters
 None.
@@ -23,7 +23,7 @@ None.
 Fetch a published page by slug.
 
 ### Authorization
-None.
+Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
 
 ### Path parameters
 | name | type | required | description | default |

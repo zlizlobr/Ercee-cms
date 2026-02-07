@@ -1,5 +1,11 @@
 # API Documentation
 
+## Getting Started
+
+- [API Overview](./overview.md) - API structure and conventions
+- [Authentication](./authentication.md) - Authentication methods and requirements
+- [API Token Setup Guide](../guides/setup/api-token-setup.md) - Step-by-step configuration
+
 ## Overview
 
 - `docs/api/overview.md`
