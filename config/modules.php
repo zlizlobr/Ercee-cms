@@ -59,6 +59,13 @@ return [
             'description' => 'Unified LLM Module (OpenAI, Claude, Gemini)',
             'dependencies' => [],
         ],
+
+        'theme-builds' => [
+            'enabled' => true,
+            'provider' => \Modules\ThemeBuilds\ThemeBuildsModuleServiceProvider::class,
+            'version' => '1.0.0',
+            'dependencies' => [],
+        ],
     ],
 
     /*
