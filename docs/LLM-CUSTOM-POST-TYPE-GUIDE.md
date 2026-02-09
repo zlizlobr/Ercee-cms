@@ -4,7 +4,7 @@
 This guide tells an LLM exactly how to add a **new custom post type** and wire it through the **JSON-driven field type system** and related dependencies. Follow these steps in order. Do not skip steps.
 
 ## Fast Path (Recommended) — Artisan Command
-Use the command to generate the JSON entry and translations in one go:
+Use the command to generate the JSON entry and translations in one go (command is registered by the Forms module):
 ```sh
 php artisan make:form-field-type <type_key>
 ```
@@ -47,7 +47,7 @@ After running the command, continue with **Step 5** if you introduced a **new re
 - No tests are required unless explicitly asked.
 
 ## Step 1 — Add the Field Type to JSON
-File: `resources/form-field-types.json`
+File: `modules/forms/resources/form-field-types.json`
 
 Add a new object entry with:
 - `label_key` and `description_key`
@@ -92,7 +92,7 @@ Rules:
 - Keep descriptions short and clear (one sentence).
 
 ## Step 3 — Ensure CMS UI Visibility is Driven by JSON
-File: `app/Support/FormFieldTypeRegistry.php`
+File: `modules/forms/src/Support/FormFieldTypeRegistry.php`
 
 The registry already reads:
 - `renderer`
@@ -119,7 +119,7 @@ Rules:
 - If the renderer is new (e.g., `checkbox_cards`), implement its HTML block in the renderer switch/branch.
 
 If you add a new renderer:
-1) Add it to `resources/form-field-types.json`.
+1) Add it to `modules/forms/resources/form-field-types.json`.
 2) Add its render block in `ContactForm.astro`.
 
 ## Step 6 — Keep the Frontend JSON in Sync
@@ -130,7 +130,7 @@ File: `/usr/local/var/www/ercee-frontend/.github/workflows/build-deploy.yml`
 
 Confirm this block includes:
 ```sh
-cp cms/resources/form-field-types.json public/form-field-types.json
+cp cms/modules/forms/resources/form-field-types.json public/form-field-types.json
 ```
 
 ## Step 7 — Verify the End-to-End Flow (Manual)

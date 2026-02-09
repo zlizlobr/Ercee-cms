@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Modules\Commerce\Domain\Order;
 use Modules\Commerce\Domain\Product;
-use App\Domain\Subscriber\Subscriber;
+use Modules\Forms\Domain\Subscriber\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -158,7 +158,7 @@ class StartFunnelsOnContractCreated
 ```php
 use App\Domain\Funnel\Funnel;
 use App\Domain\Funnel\Services\FunnelStarter;
-use App\Domain\Subscriber\Subscriber;
+use Modules\Forms\Domain\Subscriber\Subscriber;
 
 $starter = app(FunnelStarter::class);
 $subscriber = Subscriber::find(1);
@@ -182,7 +182,7 @@ namespace App\Domain\Funnel\StepExecutors;
 
 use App\Domain\Funnel\FunnelRun;
 use App\Domain\Funnel\FunnelStep;
-use App\Domain\Subscriber\Subscriber;
+use Modules\Forms\Domain\Subscriber\Subscriber;
 
 class SmsExecutor implements StepExecutorInterface
 {
