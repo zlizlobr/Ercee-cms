@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62ca91e75a198788f0668fdaa63135ce",
+    "content-hash": "170df8428ced2dfebc0f04aae093d289",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1261,12 +1261,15 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-forms",
-                "reference": "93b91ff37c4f70d76f180deb65523ed35ad040fa"
+                "reference": "e7444a69a1bc188352ffe95d8b33bc1944184572"
             },
             "require": {
                 "filament/filament": "^3.2",
                 "laravel/framework": "^12.0",
                 "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.0"
             },
             "type": "ercee-module",
             "extra": {
@@ -1349,7 +1352,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-llm",
-                "reference": "c5cdc6d68e15e66977993db96a0374b39c6fa98f"
+                "reference": "4878f389f3683a2b5503971e8f4947c12128320a"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1375,10 +1378,60 @@
                     "Modules\\Llm\\": "src/"
                 }
             },
+            "autoload-dev": {
+                "psr-4": {
+                    "Modules\\Llm\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "proprietary"
             ],
             "description": "Ercee CMS Unified LLM Module (OpenAI, Claude, Gemini)",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "ercee/module-theme-builds",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-theme-builds",
+                "reference": "f5c388952d2cdb35a372b6355553737929dc1b1f"
+            },
+            "require": {
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "ercee-module",
+            "extra": {
+                "ercee": {
+                    "provider": "Modules\\ThemeBuilds\\ThemeBuildsModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\ThemeBuilds\\ThemeBuildsModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\ThemeBuilds\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Modules\\ThemeBuilds\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Theme build jobs and API endpoints for Ercee CMS",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -12163,7 +12216,8 @@
         "ercee/module-commerce": 20,
         "ercee/module-forms": 20,
         "ercee/module-funnel": 20,
-        "ercee/module-llm": 20
+        "ercee/module-llm": 20,
+        "ercee/module-theme-builds": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

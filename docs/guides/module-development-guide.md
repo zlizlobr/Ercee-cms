@@ -87,6 +87,72 @@ V `config/modules.php` přidej do pole `modules`:
 php artisan module:list
 ```
 
+## Testy, CI a release workflow
+
+Nově platí, že každý modul musí mít základní testy a CI workflow.
+
+### Povinné soubory v modulu
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/pr-check.yml`
+- `.github/workflows/release.yml`
+- `phpunit.xml`
+- `tests/TestCase.php`
+- `tests/Unit/` (minimálně 1 unit test)
+- `CHANGELOG.md` (release workflow ho aktualizuje)
+
+### Doporučené kroky po scaffoldu
+
+1. Zkopíruj workflow z `../ercee-modules/ercee-module-forms/.github/workflows/`.
+2. Vytvoř `phpunit.xml` a `tests/` strukturu ve stejném formátu jako `ercee-module-forms`.
+3. Přidej minimální unit testy (bez DB/HTTP) ověřující DTO, value objekty nebo doménové konstanty.
+4. Přidej `CHANGELOG.md` se sekcí `## [Unreleased]`.
+
+### Šablony (kopírovat beze změn)
+
+`phpunit.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
+```
+
+`tests/TestCase.php`:
+
+```php
+<?php
+
+namespace Modules\Blog\Tests;
+
+use PHPUnit\Framework\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+}
+```
+
+### Příkazy pro lokální ověření
+
+V modulech spouštěj PHPUnit přímo (moduly nejsou plná Laravel aplikace):
+
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+Pokud potřebuješ testovat modul přes Laravel `php artisan test`, spouštěj testy z hlavního CMS projektu, ne z repo modulu.
+
 ## Adresářová struktura modulu
 
 | Adresář | Účel |

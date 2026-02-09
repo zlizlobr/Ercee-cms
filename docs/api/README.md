@@ -22,4 +22,5 @@
 - `docs/api/endpoints/products.md`
 - `docs/api/endpoints/taxonomy-mapping.md`
 - `docs/api/endpoints/theme.md`
+- `docs/api/endpoints/theme-builds.md`
 - `docs/api/endpoints/webhooks.md`

@@ -11,6 +11,7 @@ This document is a structured reference for LLM agents working with the Ercee CM
 - **Package name:** `ercee/module-{name}` (e.g. `ercee/module-commerce`)
 - **Config key:** `module.{name}` (merged from `config/module.php` in the module)
 - **Permissions prefix:** `module.{name}.{permission}` (e.g. `module.commerce.view_products`)
+- **CI + tests required:** every module must include workflows, PHPUnit config, and at least one unit test
 
 ## File Layout
 
@@ -18,6 +19,12 @@ When generating a module, use exactly this structure:
 
 ```
 ercee-module-{name}/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       ├── pr-check.yml
+│       └── release.yml
+├── CHANGELOG.md
 ├── composer.json
 ├── config/
 │   └── module.php
@@ -28,6 +35,10 @@ ercee-module-{name}/
 ├── routes/
 │   ├── api.php
 │   └── web.php
+├── phpunit.xml
+├── tests/
+│   ├── TestCase.php
+│   └── Unit/
 └── src/
     ├── {StudlyName}ModuleServiceProvider.php
     ├── Domain/           # Eloquent models, Events, Contracts, Services
@@ -40,6 +51,65 @@ ercee-module-{name}/
     │   └── Requests/     # Form Request validation
     ├── Listeners/        # Event listeners
     └── Observers/        # Eloquent model observers
+```
+
+## Tests & Workflows (Required)
+
+Every module must include:
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/pr-check.yml`
+- `.github/workflows/release.yml`
+- `phpunit.xml`
+- `tests/TestCase.php`
+- `tests/Unit/` (at least 1 unit test)
+- `CHANGELOG.md` (release workflow updates it)
+
+Recommended approach:
+
+1. Copy workflows from `../ercee-modules/ercee-module-forms/.github/workflows/`.
+2. Copy `phpunit.xml` and `tests/` layout from `ercee-module-forms`.
+3. Write unit tests that do not require DB/HTTP (DTOs, value objects, constants).
+
+Local test command (inside module repo):
+
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+### Templates (copy as-is)
+
+`phpunit.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
+```
+
+`tests/TestCase.php`:
+
+```php
+<?php
+
+namespace Modules\Blog\Tests;
+
+use PHPUnit\Framework\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+}
 ```
 
 ## Service Provider Template

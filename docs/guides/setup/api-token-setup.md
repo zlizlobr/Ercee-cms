@@ -108,7 +108,20 @@ dGhpc2lzYXJhbmRvbXRva2VuZm9ydGVzdGluZ3B1cnBvc2VzMTIzNDU2Nzg5MA==
    API_PUBLIC_TOKEN=paste_your_generated_token_here
    ```
 
-3. Restart your frontend dev server:
+3. **Important for Astro projects**: Ensure `astro.config.mjs` includes vite define config:
+   ```js
+   export default defineConfig({
+     // ... other config
+     vite: {
+       define: {
+         'import.meta.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL),
+         'import.meta.env.API_PUBLIC_TOKEN': JSON.stringify(process.env.API_PUBLIC_TOKEN),
+       },
+     },
+   });
+   ```
+
+4. Restart your frontend dev server:
    ```bash
    npm run dev
    ```
@@ -228,6 +241,36 @@ dGhpc2lzYXJhbmRvbXRva2VuZm9ydGVzdGluZ3B1cnBvc2VzMTIzNDU2Nzg5MA==
 1. Verify route in `routes/api.php` is **outside** the `middleware('api.public')` group
 2. Check the endpoint exactly matches: `POST /api/v1/forms/{id}/submit`
 3. Ensure backend middleware checks for form submission exception
+
+### Error: "Public API token not configured" during Astro build
+
+**Problem**: Astro build fails with `TypeError: Cannot read properties of null (reading 'data')` and backend returns 500 "Public API token not configured"
+
+**Cause**: Astro doesn't automatically expose non-PUBLIC_ environment variables to `import.meta.env`
+
+**Solution**:
+1. Add vite define config to `astro.config.mjs`:
+   ```js
+   export default defineConfig({
+     // ... other config
+     vite: {
+       define: {
+         'import.meta.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL),
+         'import.meta.env.API_PUBLIC_TOKEN': JSON.stringify(process.env.API_PUBLIC_TOKEN),
+       },
+     },
+   });
+   ```
+
+2. Ensure `.env` file has the token:
+   ```env
+   API_PUBLIC_TOKEN=your_token_here
+   ```
+
+3. Rebuild:
+   ```bash
+   npm run build
+   ```
 
 ---
 
