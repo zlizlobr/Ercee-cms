@@ -19,15 +19,24 @@ class NavigationController extends ApiController
     public function index(?string $menuSlug = 'main'): JsonResponse
     {
         return $this->safeGet(function () use ($menuSlug) {
-            $cacheKey = "navigation:{$menuSlug}";
+            $menu = Menu::where('slug', $menuSlug)->first();
 
-            $navigation = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
-                $menu = Menu::where('slug', $menuSlug)->first();
+            if (! $menu) {
+                return response()->json([
+                    'data' => [],
+                    'meta' => [
+                        'updated_at' => null,
+                    ],
+                ]);
+            }
 
-                if (! $menu) {
-                    return [];
-                }
+            $latestItemUpdatedAt = Navigation::where('menu_id', $menu->id)->max('updated_at');
+            $latestUpdatedAt = collect([$menu->updated_at, $latestItemUpdatedAt])->filter()->max();
+            $latestUpdatedAtIso = $this->normalizeIsoDate($latestUpdatedAt);
+            $latestUpdatedAtTs = $this->normalizeTimestamp($latestUpdatedAt);
+            $cacheKey = "navigation:{$menuSlug}:".($latestUpdatedAtTs ?? 'none');
 
+            $navigation = Cache::remember($cacheKey, 3600, function () use ($menu) {
                 return Navigation::where('menu_id', $menu->id)
                     ->active()
                     ->roots()
@@ -44,6 +53,9 @@ class NavigationController extends ApiController
 
             return response()->json([
                 'data' => $navigation,
+                'meta' => [
+                    'updated_at' => $latestUpdatedAtIso,
+                ],
             ]);
         });
     }
@@ -54,9 +66,21 @@ class NavigationController extends ApiController
     public function show(string $menuSlug): JsonResponse
     {
         return $this->safeGet(function () use ($menuSlug) {
-            $cacheKey = "menu:{$menuSlug}";
+            $menu = Menu::where('slug', $menuSlug)->first();
 
-            $menu = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
+            if (! $menu) {
+                return response()->json([
+                    'error' => 'Menu not found',
+                ], 404);
+            }
+
+            $latestItemUpdatedAt = Navigation::where('menu_id', $menu->id)->max('updated_at');
+            $latestUpdatedAt = collect([$menu->updated_at, $latestItemUpdatedAt])->filter()->max();
+            $latestUpdatedAtIso = $this->normalizeIsoDate($latestUpdatedAt);
+            $latestUpdatedAtTs = $this->normalizeTimestamp($latestUpdatedAt);
+            $cacheKey = "menu:{$menuSlug}:".($latestUpdatedAtTs ?? 'none');
+
+            $menuData = Cache::remember($cacheKey, 3600, function () use ($menuSlug) {
                 $menu = Menu::where('slug', $menuSlug)
                     ->with([
                         'items.page',
@@ -68,15 +92,56 @@ class NavigationController extends ApiController
                 return $menu?->toArray();
             });
 
-            if (! $menu) {
+            if (! $menuData) {
                 return response()->json([
                     'error' => 'Menu not found',
                 ], 404);
             }
 
             return response()->json([
-                'data' => $menu,
+                'data' => $menuData,
+                'meta' => [
+                    'updated_at' => $latestUpdatedAtIso,
+                ],
             ]);
         });
+    }
+
+    private function normalizeTimestamp(mixed $value): ?int
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->getTimestamp();
+        }
+
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? null : $parsed;
+    }
+
+    private function normalizeIsoDate(mixed $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(DATE_ATOM);
+        }
+
+        if (is_numeric($value)) {
+            return date(DATE_ATOM, (int) $value);
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? (string) $value : date(DATE_ATOM, $parsed);
     }
 }

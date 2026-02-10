@@ -26,6 +26,7 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
       "short_description": "High-quality cotton t-shirt available in multiple colors.",
       "price": 499.00,
       "price_formatted": "499.00 CZK",
+      "updated_at": "2026-02-06T13:26:07+00:00",
       "image": "https://example.com/storage/products/thumbnails/tshirt.jpg",
       "categories": [
         {
@@ -49,7 +50,10 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
         }
       ]
     }
-  ]
+  ],
+  "meta": {
+    "updated_at": "2026-02-06T13:26:07+00:00"
+  }
 }
 ```
 
@@ -90,6 +94,7 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
     "description": "<p>Full HTML description with <strong>formatting</strong>.</p>",
     "price": 1999.00,
     "price_formatted": "1,999.00 CZK",
+    "updated_at": "2026-02-06T13:26:07+00:00",
     "image": "https://example.com/storage/products/thumbnails/course.jpg",
     "gallery": [
       "https://example.com/storage/products/gallery/course-1.jpg",
@@ -134,6 +139,9 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
         }
       ]
     }
+  },
+  "meta": {
+    "updated_at": "2026-02-06T13:26:07+00:00"
   }
 }
 ```
@@ -151,6 +159,7 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
     "price": 0,
     "price_formatted": "0.00 CZK",
     "price_range": "399.00 CZK - 599.00 CZK",
+    "updated_at": "2026-02-06T13:26:07+00:00",
     "image": "https://example.com/storage/products/thumbnails/tshirt.jpg",
     "gallery": [],
     "categories": [
@@ -211,6 +220,9 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
       }
     ],
     "seo": null
+  },
+  "meta": {
+    "updated_at": "2026-02-06T13:26:07+00:00"
   }
 }
 ```

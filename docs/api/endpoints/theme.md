@@ -85,6 +85,9 @@ None.
       },
       "copyright_text": "© 2026 Ercee. Vsechna prava vyhrazena."
     }
+  },
+  "meta": {
+    "updated_at": "2026-02-10T11:19:21+00:00"
   }
 }
 ```

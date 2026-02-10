@@ -1,7 +1,7 @@
 # Pages
 
 ## GET /api/v1/pages
-List all published page slugs.
+List all published page slugs with update timestamps.
 
 ### Authorization
 Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
@@ -12,7 +12,13 @@ None.
 ### Successful response
 ```json
 {
-  "data": ["about", "contact"]
+  "data": [
+    { "slug": "about", "updated_at": "2026-02-04T12:56:01+00:00" },
+    { "slug": "contact", "updated_at": "2026-02-05T09:55:45+00:00" }
+  ],
+  "meta": {
+    "updated_at": "2026-02-05T09:55:45+00:00"
+  }
 }
 ```
 
@@ -59,7 +65,8 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
         "image": "pages/og/about.png"
       }
     },
-    "published_at": "2024-01-15T12:34:56Z"
+    "published_at": "2024-01-15T12:34:56Z",
+    "updated_at": "2026-02-05T09:55:45+00:00"
   }
 }
 ```

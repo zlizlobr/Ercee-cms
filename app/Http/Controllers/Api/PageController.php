@@ -25,14 +25,27 @@ class PageController extends ApiController
     public function index(): JsonResponse
     {
         return $this->safeGet(function () {
-            $slugs = Cache::remember('pages:slugs', 3600, function () {
+            $latestUpdatedAt = Page::published()->max('updated_at');
+            $latestUpdatedAtIso = $this->normalizeIsoDate($latestUpdatedAt);
+            $latestUpdatedAtTs = $this->normalizeTimestamp($latestUpdatedAt);
+            $cacheKey = 'pages:slugs:'.($latestUpdatedAtTs ?? 'none');
+
+            $pages = Cache::remember($cacheKey, 3600, function () {
                 return Page::published()
-                    ->pluck('slug')
+                    ->orderBy('slug')
+                    ->get(['slug', 'updated_at'])
+                    ->map(fn (Page $page) => [
+                        'slug' => $page->slug,
+                        'updated_at' => $page->updated_at?->toIso8601String(),
+                    ])
                     ->toArray();
             });
 
             return response()->json([
-                'data' => $slugs,
+                'data' => $pages,
+                'meta' => [
+                    'updated_at' => $latestUpdatedAtIso,
+                ],
             ]);
         });
     }
@@ -43,7 +56,8 @@ class PageController extends ApiController
     public function show(string $slug): JsonResponse
     {
         return $this->safeGet(function () use ($slug) {
-            $cacheKey = "page:{$slug}";
+            $updatedAt = Page::published()->where('slug', $slug)->value('updated_at');
+            $cacheKey = "page:{$slug}:".($this->normalizeTimestamp($updatedAt) ?? 'none');
 
             $page = Cache::remember($cacheKey, 3600, function () use ($slug) {
                 return Page::published()
@@ -67,9 +81,48 @@ class PageController extends ApiController
                     'blocks' => $blocks,
                     'seo' => $page->seo_meta,
                     'published_at' => $page->published_at?->toIso8601String(),
+                    'updated_at' => $page->updated_at?->toIso8601String(),
                 ],
             ]);
         });
+    }
+
+    private function normalizeTimestamp(mixed $value): ?int
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->getTimestamp();
+        }
+
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? null : $parsed;
+    }
+
+    private function normalizeIsoDate(mixed $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(DATE_ATOM);
+        }
+
+        if (is_numeric($value)) {
+            return date(DATE_ATOM, (int) $value);
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? (string) $value : date(DATE_ATOM, $parsed);
     }
 
     /**

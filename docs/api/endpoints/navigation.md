@@ -22,7 +22,10 @@ None.
       "target": "_self",
       "children": []
     }
-  ]
+  ],
+  "meta": {
+    "updated_at": "2026-02-04T14:22:15+00:00"
+  }
 }
 ```
 
@@ -86,6 +89,9 @@ Required: `Authorization: Bearer <token>` (uses `API_PUBLIC_TOKEN`).
         "children": []
       }
     ]
+  },
+  "meta": {
+    "updated_at": "2026-02-04T14:22:15+00:00"
   }
 }
 ```
