@@ -18,6 +18,9 @@ None.
       "tag": ["sale", "summer"],
       "brand": ["acme"]
     }
+  },
+  "meta": {
+    "updated_at": "2026-02-06T13:26:07+00:00"
   }
 }
 ```

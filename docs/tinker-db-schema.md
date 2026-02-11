@@ -14,7 +14,7 @@ $models = [
     App\Domain\Content\Page::class,
     App\Domain\Content\ThemeSetting::class,
     App\Domain\Media\MediaLibrary::class,
-    App\Domain\Subscriber\Subscriber::class,
+    Modules\Forms\Domain\Subscriber\Subscriber::class,
     Modules\Commerce\Domain\Attribute::class,
     Modules\Commerce\Domain\AttributeValue::class,
     Modules\Commerce\Domain\Order::class,
@@ -53,7 +53,7 @@ App\Domain\Content\Navigation::query()->first();
 App\Domain\Content\Page::query()->first();
 App\Domain\Content\ThemeSetting::query()->first();
 App\Domain\Media\MediaLibrary::query()->first();
-App\Domain\Subscriber\Subscriber::query()->first();
+Modules\Forms\Domain\Subscriber\Subscriber::query()->first();
 Modules\Commerce\Domain\Attribute::query()->first();
 Modules\Commerce\Domain\AttributeValue::query()->first();
 Modules\Commerce\Domain\Order::query()->first();

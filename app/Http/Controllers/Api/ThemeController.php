@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Domain\Content\Menu;
+use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
 use App\Domain\Content\ThemeSetting;
 use App\Domain\Media\ThemeMediaResolver;
@@ -25,9 +26,27 @@ class ThemeController extends ApiController
     public function index(): JsonResponse
     {
         return $this->safeGet(function () {
-            $data = Cache::remember(ThemeSetting::CACHE_KEY, 3600, function () {
-                $settings = ThemeSetting::first() ?? new ThemeSetting;
+            $settings = ThemeSetting::first() ?? new ThemeSetting;
+            $header = $settings->getHeader();
+            $footer = $settings->getFooter();
 
+            $menuIds = collect([
+                $header['menu_id'] ?? null,
+                $footer['quick_links_menu_id'] ?? null,
+                $footer['services_menu_id'] ?? null,
+                $footer['contact_menu_id'] ?? null,
+                $footer['legal_menu_id'] ?? null,
+            ])->filter()->unique()->values()->all();
+
+            $menuUpdatedAt = $menuIds ? Menu::whereIn('id', $menuIds)->max('updated_at') : null;
+            $navigationUpdatedAt = $menuIds ? Navigation::whereIn('menu_id', $menuIds)->max('updated_at') : null;
+            $latestUpdatedAt = collect([$settings->updated_at, $menuUpdatedAt, $navigationUpdatedAt])->filter()->max();
+
+            $latestUpdatedAtIso = $this->normalizeIsoDate($latestUpdatedAt);
+            $latestUpdatedAtTs = $this->normalizeTimestamp($latestUpdatedAt);
+            $cacheKey = ThemeSetting::CACHE_KEY.':'.($latestUpdatedAtTs ?? 'none');
+
+            $data = Cache::remember($cacheKey, 3600, function () use ($settings) {
                 return [
                     'global' => $this->formatGlobal($settings),
                     'header' => $this->formatHeader($settings),
@@ -37,8 +56,49 @@ class ThemeController extends ApiController
 
             return response()->json([
                 'data' => $data,
+                'meta' => [
+                    'updated_at' => $latestUpdatedAtIso,
+                ],
             ]);
         });
+    }
+
+    private function normalizeTimestamp(mixed $value): ?int
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->getTimestamp();
+        }
+
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? null : $parsed;
+    }
+
+    private function normalizeIsoDate(mixed $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(DATE_ATOM);
+        }
+
+        if (is_numeric($value)) {
+            return date(DATE_ATOM, (int) $value);
+        }
+
+        $parsed = strtotime((string) $value);
+
+        return $parsed === false ? (string) $value : date(DATE_ATOM, $parsed);
     }
 
     /**

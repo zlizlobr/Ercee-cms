@@ -23,13 +23,6 @@ Route::prefix('v1')->middleware('api.public')->group(function () {
         ->middleware('throttle:media-resolve');
 });
 
-// Public form submission endpoint (no authentication required)
-Route::post('/v1/forms/{id}/submit', function () {
-    // TODO: Implement form submission handler
-    // This endpoint is intentionally excluded from bearer token authentication
-    return response()->json(['message' => 'Form endpoint not yet implemented'], 501);
-});
-
 Route::prefix('internal')->middleware(['api.auth', 'throttle:api-internal'])->group(function () {
     Route::post('/rebuild-frontend', [RebuildFrontendController::class, 'rebuild']);
 });

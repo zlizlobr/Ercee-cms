@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Services;
 
-use App\Domain\Subscriber\Subscriber;
+use Modules\Forms\Domain\Subscriber\Subscriber;
 
 interface SubscriberServiceInterface
 {
