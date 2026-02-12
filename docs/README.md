@@ -14,7 +14,9 @@ This folder follows a structured information model:
 - Backend setup: `docs/guides/setup/local-backend-setup.md`
 - Frontend setup: `docs/guides/setup/local-frontend-setup.md`
 - Astro frontend guide: `docs/guides/frontend/astro-frontend-guide.md`
-- CMS block creation: `docs/guides/content/creating-custom-blocks.md`
+- CMS block creation: `docs/cms-block-integration-guide.md`
+- Testing flow (LLM): `docs/guides/testing-flow-llm.md`
+- Testing flow (Junior): `docs/guides/testing-flow-junior.md`
 
 ## Guides
 
@@ -26,11 +28,14 @@ This folder follows a structured information model:
   - `docs/guides/frontend/preview-frontend-guide.md`
   - `docs/guides/frontend/frontend-menu-integration.md`
 - Content
-  - `docs/guides/content/creating-custom-blocks.md`
+  - `docs/cms-block-integration-guide.md`
 - Commerce
   - `docs/guides/commerce/commerce-guide.md`
 - Marketing
   - `docs/guides/marketing/funnel-guide.md`
+- Testing
+  - `docs/guides/testing-flow-llm.md`
+  - `docs/guides/testing-flow-junior.md`
 
 ## API
 
