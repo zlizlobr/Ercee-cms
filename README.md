@@ -93,7 +93,7 @@ npm run dev
 
 Use the `make:cms-block` Artisan command to scaffold CMS blocks, Filament form schema, localization entries, and Astro components/types.
 
-- Guide: `docs/make-cms-block-guide.md`
+- Guide: `docs/cms-block-integration-guide.md`
 - Implementation plan: `docs/block-command-implementation.md`
 
 ## Code Quality

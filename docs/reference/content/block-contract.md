@@ -111,7 +111,7 @@ Single image with caption support.
 
 ## Astro Mapping
 
-The Astro frontend maps CMS data in `ercee-frontend/src/lib/api/endpoints/pages.ts`.
+The Astro frontend maps CMS data in `ercee-frontend/src/features/content/api/pages.ts`.
 
 - `text`: combines `heading` + `body` into a single HTML string (`content`)
 - `image`: maps `image` to `url`
@@ -122,8 +122,8 @@ Other block types are passed through without mapping. If a block needs a differe
 ### Public Frontend (Astro)
 
 1. `Page::getBlocks()` returns builder blocks via the API.
-2. Astro maps data in `ercee-frontend/src/lib/api/endpoints/pages.ts`.
-3. Blocks render via `ercee-frontend/src/components/BlockRenderer.astro`.
+2. Astro maps data in `ercee-frontend/src/features/content/api/pages.ts`.
+3. Blocks render via `ercee-frontend/src/components/BlockRenderer.astro` and `ercee-frontend/src/shared/blocks/registry.ts`.
 
 ### Admin Preview (Blade)
 
@@ -139,8 +139,8 @@ Block preview uses Blade components in:
 
 1. Add constant to `App\Domain\Content\Page` (e.g., `BLOCK_TYPE_GALLERY = 'gallery'`).
 2. Create a block class in `app/Filament/Blocks/` and clear cache: `php artisan blocks:clear`.
-3. Add Astro types and mapping in `ercee-frontend/src/lib/api/types.ts` and `ercee-frontend/src/lib/api/endpoints/pages.ts`.
-4. Add Astro component in `ercee-frontend/src/components/blocks/` and wire it in `BlockRenderer.astro`.
+3. Add Astro types and mapping in `ercee-frontend/src/shared/api/types.ts` and `ercee-frontend/src/features/content/api/pages.ts`.
+4. Add Astro component in `ercee-frontend/src/features/<domain>/blocks/` and register it in `ercee-frontend/src/shared/blocks/registry.ts`.
 5. Add a Blade preview component in `resources/views/components/blocks/`.
 
 ## Migration Notes

@@ -1,4 +1,4 @@
-# CMS Blocks (Builder)
+# CMS Block Integration Guide
 
 Tento dokument sjednocuje informace k CMS blokum, jejich datovemu kontraktu,
 renderingu a generovani pres Artisan prikaz.
@@ -27,8 +27,8 @@ API vraci bloky v teto podobe a frontend/preview si je rendruje podle typu.
 ### Public frontend (Astro)
 
 1. `Page::getBlocks()` vraci builder bloky pres API.
-2. Astro zpracuje bloky (pokud je potreba mapovani, resi se v `src/lib/api/endpoints/pages.ts`).
-3. Renderuje se pres `src/components/BlockRenderer.astro` a registry mapu.
+2. Astro zpracuje bloky (pokud je potreba mapovani, resi se v `src/features/content/api/pages.ts`).
+3. Renderuje se pres `src/components/BlockRenderer.astro` a registry mapu v `src/shared/blocks/registry.ts`.
 
 ### Admin preview (Blade)
 
@@ -136,6 +136,11 @@ MediaPicker::make('image_media_uuid')
     ->label(__('admin.page.fields.image_media_uuid'))
     ->columnSpanFull(),
 ```
+
+> Media handling note:
+> - Ukladat `*_media_uuid` v datech bloku.
+> - Export resit v `app/Domain/Media/BlockMediaResolver.php` (mapovat na `*_media` s `url`).
+> - Preview resit v `app/Http/Controllers/Admin/PagePreviewController.php` (mapovat na `*_image_url`).
 
 ### Podporovane typy poli (make:cms-block)
 
@@ -416,15 +421,65 @@ vygenerovanou block class rucne.
 
 ### Astro frontend
 
-- `../ercee-frontend/src/components/blocks/{Name}.astro`
-- `../ercee-frontend/src/lib/api/types.ts`
-- `../ercee-frontend/src/components/blocks/registry.ts`
+- `../ercee-frontend/src/features/<domain>/blocks/{Name}.astro`
+- `../ercee-frontend/src/shared/api/types.ts`
+- `../ercee-frontend/src/shared/blocks/registry.ts`
 
 ## Po vygenerovani
 
 ```bash
 php artisan blocks:clear
-cd ../ercee-frontend && pnpm lint
+npm run verify:blocks
+```
+
+## Preflight a jednotny verify pro bloky
+
+Pro stejnou konzistenci jako u field type workflow pouzivejte tyto prikazy:
+
+LLM/junior postup je popsany take v:
+- `docs/guides/testing-flow-llm.md`
+- `docs/guides/testing-flow-junior.md`
+
+### 1. Preflight (povinne pred kontrolou)
+
+```bash
+cd /usr/local/var/www/Ercee-cms
+npm run preflight:blocks
+```
+
+Co kontroluje:
+- dostupnost `php` a `artisan` v CMS
+- dostupnost frontend repozitare `../ercee-frontend`
+- frontend preflight (`npm --prefix ../ercee-frontend run preflight:blocks`)
+
+### 2. Verify (jediný kontrolni prikaz)
+
+```bash
+cd /usr/local/var/www/Ercee-cms
+npm run verify:blocks
+```
+
+`verify:blocks` provadi:
+1. `preflight:blocks`
+2. kontrolu artisan commandu (`make:cms-block`, `blocks:clear`)
+3. frontend verify (`npm --prefix ../ercee-frontend run verify:blocks`) vcetne lint/typecheck/unit testu
+
+### 3. E2E smoke (volitelny C-level gate)
+
+```bash
+cd /usr/local/var/www/Ercee-cms
+npm run verify:blocks:e2e
+```
+
+`verify:blocks:e2e` provadi:
+1. `verify:blocks`
+2. frontend Playwright smoke (`npm --prefix ../ercee-frontend run verify:blocks:e2e`)
+
+Pokud preflight selze kvuli FE zavislostem, nejdriv opravte FE prostredi:
+
+```bash
+cd /usr/local/var/www/ercee-frontend
+npm ci
 ```
 
 ## Customizace sablon

@@ -4,7 +4,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "preflight:blocks": "bash ./scripts/preflight-blocks.sh",
+        "verify:blocks": "bash ./scripts/verify-blocks.sh",
+        "verify:blocks:e2e": "bash ./scripts/verify-blocks-e2e.sh"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

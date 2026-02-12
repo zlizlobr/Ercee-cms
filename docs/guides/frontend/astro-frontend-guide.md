@@ -74,7 +74,7 @@ ercee-frontend/
 ## CMS block mapping
 
 CMS returns raw builder blocks from `Page::getBlocks()`. The frontend maps the data in:
-`src/lib/api/endpoints/pages.ts`.
+`src/features/content/api/pages.ts`.
 
 - **Mapped blocks**: `text`, `image`
 - **Pass-through blocks**: any other type (e.g. `hero`, `stats`, `testimonials`, `feature_grid`)
@@ -83,7 +83,7 @@ If you add a new CMS block, update the mapping and types so Astro gets the shape
 
 ## Block components
 
-Block renderer: `src/components/BlockRenderer.astro`
+Block renderer: `src/components/BlockRenderer.astro` + `src/shared/blocks/registry.ts`
 
 Supported components today:
 
@@ -94,15 +94,15 @@ Supported components today:
 - `Testimonials.astro`
 - `FeatureGrid.astro`
 
-Block types and data contracts are defined in `src/lib/api/types.ts`.
+Block types and data contracts are defined in `src/shared/api/types.ts`.
 
 ## API client
 
-The API client lives in `src/lib/api/`:
+The API client lives in `src/shared/api/`:
 
 - `client.ts` - fetch wrapper with base URL
-- `endpoints/*` - mapping per endpoint
-- `types.ts` - shared types
+  - `client.ts` - API client setup
+  - `types.ts` - shared types
 
 ### Available functions
 
@@ -172,14 +172,14 @@ Forms and checkout use client-side JavaScript for API calls.
    - Clear the block cache: `php artisan blocks:clear`.
 
 2. **Astro types:**
-   - Add the data shape in `src/lib/api/types.ts`.
+   - Add the data shape in `src/shared/api/types.ts`.
 
 3. **API mapping:**
-   - Map raw CMS data in `src/lib/api/endpoints/pages.ts`.
+   - Map raw CMS data in `src/features/content/api/pages.ts`.
 
 4. **Rendering:**
-   - Create component in `src/components/blocks/`.
-   - Register it in `src/components/BlockRenderer.astro`.
+   - Create component in `src/features/<domain>/blocks/`.
+   - Register it in `src/shared/blocks/registry.ts`.
 
 ### Adding a New Page
 
