@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Modules\Forms\Database\Seeders\FormsSeeder;
 
 /**
  * Seeds the core application data.
@@ -18,10 +17,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             RolesAndPermissionsSeeder::class,
             AdminUserSeeder::class,
-            FormsSeeder::class,
-        ]);
+            NavigationSeeder::class,
+            ProductsSeeder::class,
+            TemplatePagesSeeder::class,
+            HomePageSeeder::class,
+        ];
+
+        $formsSeeder = 'Modules\\Forms\\Database\\Seeders\\FormsSeeder';
+
+        if (class_exists($formsSeeder)) {
+            $seeders[] = $formsSeeder;
+        }
+
+        $this->call($seeders);
     }
 }

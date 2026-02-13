@@ -11,31 +11,36 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Add idempotency_key to contracts table
-        Schema::table('contracts', function (Blueprint $table) {
-            $table->string('idempotency_key')->nullable()->unique()->after('status');
-        });
+        if (Schema::hasTable('contracts') && ! Schema::hasColumn('contracts', 'idempotency_key')) {
+            Schema::table('contracts', function (Blueprint $table) {
+                $table->string('idempotency_key')->nullable()->unique()->after('status');
+            });
+        }
 
-        // Add idempotency_key to orders table
-        Schema::table('orders', function (Blueprint $table) {
-            $table->string('idempotency_key')->nullable()->unique()->after('status');
-        });
+        if (Schema::hasTable('orders') && ! Schema::hasColumn('orders', 'idempotency_key')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->string('idempotency_key')->nullable()->unique()->after('status');
+            });
+        }
 
-        // Add unique index to payments.transaction_id
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropIndex(['transaction_id']);
-            $table->unique('transaction_id');
-        });
+        if (Schema::hasTable('payments')) {
+            Schema::table('payments', function (Blueprint $table) {
+                $table->dropIndex(['transaction_id']);
+                $table->unique('transaction_id');
+            });
+        }
 
-        // Add unique index on funnel_run_steps (funnel_run_id, funnel_step_id)
-        Schema::table('funnel_run_steps', function (Blueprint $table) {
-            $table->unique(['funnel_run_id', 'funnel_step_id'], 'funnel_run_steps_unique');
-        });
+        if (Schema::hasTable('funnel_run_steps')) {
+            Schema::table('funnel_run_steps', function (Blueprint $table) {
+                $table->unique(['funnel_run_id', 'funnel_step_id'], 'funnel_run_steps_unique');
+            });
+        }
 
-        // Add unique index on funnel_runs for running status (subscriber + funnel)
-        Schema::table('funnel_runs', function (Blueprint $table) {
-            $table->index(['subscriber_id', 'funnel_id', 'status'], 'funnel_runs_active_check');
-        });
+        if (Schema::hasTable('funnel_runs')) {
+            Schema::table('funnel_runs', function (Blueprint $table) {
+                $table->index(['subscriber_id', 'funnel_id', 'status'], 'funnel_runs_active_check');
+            });
+        }
     }
 
     /**
@@ -43,27 +48,37 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('contracts', function (Blueprint $table) {
-            $table->dropUnique(['idempotency_key']);
-            $table->dropColumn('idempotency_key');
-        });
+        if (Schema::hasTable('contracts') && Schema::hasColumn('contracts', 'idempotency_key')) {
+            Schema::table('contracts', function (Blueprint $table) {
+                $table->dropUnique(['idempotency_key']);
+                $table->dropColumn('idempotency_key');
+            });
+        }
 
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropUnique(['idempotency_key']);
-            $table->dropColumn('idempotency_key');
-        });
+        if (Schema::hasTable('orders') && Schema::hasColumn('orders', 'idempotency_key')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->dropUnique(['idempotency_key']);
+                $table->dropColumn('idempotency_key');
+            });
+        }
 
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropUnique(['transaction_id']);
-            $table->index('transaction_id');
-        });
+        if (Schema::hasTable('payments')) {
+            Schema::table('payments', function (Blueprint $table) {
+                $table->dropUnique(['transaction_id']);
+                $table->index('transaction_id');
+            });
+        }
 
-        Schema::table('funnel_run_steps', function (Blueprint $table) {
-            $table->dropUnique('funnel_run_steps_unique');
-        });
+        if (Schema::hasTable('funnel_run_steps')) {
+            Schema::table('funnel_run_steps', function (Blueprint $table) {
+                $table->dropUnique('funnel_run_steps_unique');
+            });
+        }
 
-        Schema::table('funnel_runs', function (Blueprint $table) {
-            $table->dropIndex('funnel_runs_active_check');
-        });
+        if (Schema::hasTable('funnel_runs')) {
+            Schema::table('funnel_runs', function (Blueprint $table) {
+                $table->dropIndex('funnel_runs_active_check');
+            });
+        }
     }
 };

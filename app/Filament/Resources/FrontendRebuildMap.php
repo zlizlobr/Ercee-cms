@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Domain\Content\CookieSetting;
 use App\Domain\Content\Menu;
 use App\Domain\Content\Navigation;
 use App\Domain\Content\Page;
@@ -55,6 +56,13 @@ class FrontendRebuildMap
                 'events' => [
                     'saved' => ['reason' => 'media_updated:{id}'],
                     'deleted' => ['reason' => 'media_deleted:{id}'],
+                ],
+            ],
+            'cookie_settings' => [
+                'model' => CookieSetting::class,
+                'events' => [
+                    'saved' => ['reason' => 'cookie_settings_updated'],
+                    'deleted' => ['reason' => 'cookie_settings_deleted'],
                 ],
             ],
         ];
