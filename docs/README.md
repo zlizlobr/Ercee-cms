@@ -12,6 +12,7 @@ This folder follows a structured information model:
 ## Start here
 
 - Backend setup: `docs/guides/setup/local-backend-setup.md`
+- JSON seeders: `docs/guides/setup/json-seeders-guide.md`
 - Frontend setup: `docs/guides/setup/local-frontend-setup.md`
 - Astro frontend guide: `docs/guides/frontend/astro-frontend-guide.md`
 - CMS block creation: `docs/cms-block-integration-guide.md`
@@ -23,6 +24,7 @@ This folder follows a structured information model:
 - Setup
   - `docs/guides/setup/local-backend-setup.md`
   - `docs/guides/setup/local-frontend-setup.md`
+  - `docs/guides/setup/json-seeders-guide.md`
 - Frontend
   - `docs/guides/frontend/astro-frontend-guide.md`
   - `docs/guides/frontend/preview-frontend-guide.md`
