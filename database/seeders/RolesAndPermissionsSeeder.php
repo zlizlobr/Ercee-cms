@@ -1,54 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Support\Module\ModuleManager;
+use Database\Seeders\Concerns\ReadsJsonSeedData;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
+    use ReadsJsonSeedData;
+
     public function run(): void
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Core roles
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-        Role::firstOrCreate(['name' => 'operator']);
-        Role::firstOrCreate(['name' => 'marketing']);
+        $payload = $this->readSeedJson('roles-permissions.json');
+        if (! is_array($payload)) {
+            $this->warn('Skipping RolesAndPermissionsSeeder: invalid payload.');
 
-        // Core permissions
-        $corePermissions = [
-            'view_content',
-            'create_content',
-            'update_content',
-            'delete_content',
-            'view_media',
-            'upload_media',
-            'delete_media',
-            'view_subscribers',
-            'create_subscribers',
-            'update_subscribers',
-            'delete_subscribers',
-            'manage_settings',
-        ];
-
-        foreach ($corePermissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            return;
         }
 
-        // Module permissions (prefixed with module.<name>.)
-        $moduleManager = app(ModuleManager::class);
-        $modulePermissions = $moduleManager->getAllPermissions();
+        $roles = is_array($payload['roles'] ?? null) ? $payload['roles'] : [];
+        $corePermissions = is_array($payload['core_permissions'] ?? null) ? $payload['core_permissions'] : [];
+        $adminRoleName = (string) ($payload['admin_role'] ?? 'admin');
 
-        foreach ($modulePermissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+        foreach ($roles as $roleName) {
+            if (is_string($roleName) && $roleName !== '') {
+                Role::firstOrCreate(['name' => $roleName]);
+            }
         }
 
-        // Admin gets all permissions
-        $admin->syncPermissions(
-            Permission::all()
-        );
+        foreach ($corePermissions as $permissionName) {
+            if (is_string($permissionName) && $permissionName !== '') {
+                Permission::firstOrCreate(['name' => $permissionName]);
+            }
+        }
+
+        $modulePermissions = app(ModuleManager::class)->getAllPermissions();
+        foreach ($modulePermissions as $permissionName) {
+            Permission::firstOrCreate(['name' => $permissionName]);
+        }
+
+        $admin = Role::firstOrCreate(['name' => $adminRoleName]);
+        $admin->syncPermissions(Permission::all());
     }
 }

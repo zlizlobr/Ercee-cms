@@ -1,0 +1,77 @@
+name: Sync API Docs To Frontend
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - docs/api/**
+      - .github/workflows/sync-api-docs-to-frontend.yml
+  workflow_dispatch:
+
+concurrency:
+  group: sync-api-docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Sync docs/api -> frontend/docs/api
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate configuration
+        env:
+          FRONTEND_REPO: ${{ vars.FRONTEND_REPO }}
+          FRONTEND_SYNC_TOKEN: ${{ secrets.FRONTEND_SYNC_TOKEN }}
+        run: |
+          if [ -z "$FRONTEND_REPO" ]; then
+            echo "Missing repo variable FRONTEND_REPO (example: zlizlobr/ercee-frontend)."
+            exit 1
+          fi
+
+          if [ -z "$FRONTEND_SYNC_TOKEN" ]; then
+            echo "Missing repository secret FRONTEND_SYNC_TOKEN."
+            echo "Use a PAT with Contents: Read and write access to the frontend repo."
+            exit 1
+          fi
+
+      - name: Checkout CMS repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Checkout Frontend repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.FRONTEND_REPO }}
+          token: ${{ secrets.FRONTEND_SYNC_TOKEN }}
+          ref: ${{ vars.FRONTEND_REPO_BRANCH || 'main' }}
+          path: frontend
+          fetch-depth: 0
+
+      - name: Sync API docs
+        run: |
+          mkdir -p frontend/docs/api
+          rsync -a --delete docs/api/ frontend/docs/api/
+
+      - name: Commit and push changes
+        working-directory: frontend
+        env:
+          SOURCE_REPO: ${{ github.repository }}
+          SOURCE_BRANCH: ${{ github.ref_name }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          if git diff --quiet -- docs/api; then
+            echo "No API docs changes to sync."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add docs/api
+          git commit -m "docs(api): sync from ${SOURCE_REPO}@${SOURCE_SHA}"
+          git push origin HEAD
+
+          echo "Synced API docs from branch ${SOURCE_BRANCH}."
