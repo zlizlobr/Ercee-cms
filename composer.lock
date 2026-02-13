@@ -1217,9 +1217,10 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-commerce",
-                "reference": "c3f414d68804b911de822013e5ed50919568f220"
+                "reference": "9fdd2b85b86af112cdf77f367297287368f41e30"
             },
             "require": {
+                "ercee/module-forms": "^1.0",
                 "filament/filament": "^3.2",
                 "laravel/framework": "^12.0",
                 "php": "^8.2",
@@ -1261,7 +1262,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-forms",
-                "reference": "e7444a69a1bc188352ffe95d8b33bc1944184572"
+                "reference": "173ecfb3d5730012fa37360d0513d6db4ffb7cac"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1284,7 +1285,9 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Modules\\Forms\\": "src/"
+                    "Modules\\Forms\\": "src/",
+                    "Modules\\Forms\\Database\\Factories\\": "database/factories/",
+                    "Modules\\Forms\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "autoload-dev": {
@@ -1398,7 +1401,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-theme-builds",
-                "reference": "f5c388952d2cdb35a372b6355553737929dc1b1f"
+                "reference": "cea75932532bdcb752f9dd7e671d81fb9a4e62ea"
             },
             "require": {
                 "laravel/framework": "^12.0",

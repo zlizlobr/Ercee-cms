@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CookieConfigController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\NavigationController;
 use App\Http\Controllers\Api\PageController;
@@ -16,6 +17,7 @@ Route::prefix('v1')->middleware('api.public')->group(function () {
     Route::get('/navigation/{menuSlug}', [NavigationController::class, 'index'])->middleware('throttle:api-read');
     Route::get('/menus/{menuSlug}', [NavigationController::class, 'show'])->middleware('throttle:api-read');
     Route::get('/theme', [ThemeController::class, 'index'])->middleware('throttle:api-read');
+    Route::get('/cookies/config', [CookieConfigController::class, 'index'])->middleware('throttle:api-read');
     Route::get('/media', [MediaController::class, 'index'])->middleware('throttle:api-read');
     Route::get('/media/{uuid}', [MediaController::class, 'show'])->middleware('throttle:api-read');
 

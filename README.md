@@ -52,6 +52,18 @@ Laravel-based headless CMS platform with Filament admin panel and decoupled Astr
 - Backend setup: `docs/guides/setup/local-backend-setup.md`
 - Astro frontend setup: `docs/guides/setup/local-frontend-setup.md`
 
+## API Docs Sync To Frontend
+
+`docs/api` in this repository is the single source of truth.
+GitHub Actions workflow `.github/workflows/sync-api-docs-to-frontend.yml` automatically mirrors it to `docs/api` in the frontend repository when files in `docs/api/**` change on `main` or `develop`.
+
+Required repository configuration in this CMS repo:
+- Variable `FRONTEND_REPO` (example: `zlizlobr/ercee-frontend`)
+- Optional variable `FRONTEND_REPO_BRANCH` (default: `main`)
+- Secret `FRONTEND_SYNC_TOKEN` (GitHub token with `Contents: Read and write` access to the frontend repository)
+
+You can also run the workflow manually via `workflow_dispatch` in GitHub Actions.
+
 ## Available Commands
 
 ```bash

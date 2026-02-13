@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ThemeSettingResource\Pages;
 
+use App\Domain\Content\CookieSetting;
 use App\Domain\Content\Menu;
 use App\Domain\Content\ThemeSetting;
 use App\Filament\Components\LinkPicker;
@@ -27,11 +28,22 @@ class ManageThemeSettings extends Page
     public function mount(): void
     {
         $settings = ThemeSetting::first();
+        $cookieSettings = CookieSetting::first();
 
         $this->form->fill([
             'global' => $settings?->global ?? ThemeSetting::defaultGlobal(),
             'header' => $settings?->header ?? ThemeSetting::defaultHeader(),
             'footer' => $settings?->footer ?? ThemeSetting::defaultFooter(),
+            'cookies' => [
+                'banner' => $cookieSettings?->banner ?? CookieSetting::defaultBanner(),
+                'categories' => $this->categoriesToRepeater(
+                    $cookieSettings?->categories ?? CookieSetting::defaultCategories()
+                ),
+                'services' => $this->servicesToRepeater(
+                    $cookieSettings?->services ?? CookieSetting::defaultServices()
+                ),
+                'policy_links' => $cookieSettings?->policy_links ?? CookieSetting::defaultPolicyLinks(),
+            ],
         ]);
     }
 
@@ -44,6 +56,7 @@ class ManageThemeSettings extends Page
                         $this->globalTab(),
                         $this->headerTab(),
                         $this->footerTab(),
+                        $this->cookiesTab(),
                     ])
                     ->columnSpanFull(),
             ])
@@ -225,6 +238,120 @@ class ManageThemeSettings extends Page
             ]);
     }
 
+    protected function cookiesTab(): Forms\Components\Tabs\Tab
+    {
+        return Forms\Components\Tabs\Tab::make('Cookies')
+            ->icon('heroicon-o-shield-check')
+            ->schema([
+                Forms\Components\Section::make('Cookie Banner')
+                    ->description('Nastavení consent banneru pro návštěvníky')
+                    ->schema([
+                        Forms\Components\Toggle::make('cookies.banner.enabled')
+                            ->label('Enable Cookie Banner')
+                            ->default(true),
+                        Forms\Components\TextInput::make('cookies.banner.title')
+                            ->label('Banner Title')
+                            ->default('Tato stránka používá cookies'),
+                        Forms\Components\Textarea::make('cookies.banner.description')
+                            ->label('Banner Description')
+                            ->rows(3)
+                            ->default('Používáme cookies pro zlepšení vašeho zážitku na stránce, analýzu návštěvnosti a personalizaci obsahu.'),
+                        Forms\Components\TextInput::make('cookies.banner.accept_all_label')
+                            ->label('Accept All Button')
+                            ->default('Přijmout vše'),
+                        Forms\Components\TextInput::make('cookies.banner.reject_all_label')
+                            ->label('Reject All Button')
+                            ->default('Odmítnout vše'),
+                        Forms\Components\TextInput::make('cookies.banner.customize_label')
+                            ->label('Customize Button')
+                            ->default('Nastavení'),
+                        Forms\Components\TextInput::make('cookies.banner.save_label')
+                            ->label('Save Button')
+                            ->default('Uložit nastavení'),
+                        Forms\Components\Select::make('cookies.banner.position')
+                            ->label('Banner Position')
+                            ->options([
+                                'bottom' => 'Bottom',
+                                'top' => 'Top',
+                                'center' => 'Center (Modal)',
+                            ])
+                            ->default('bottom'),
+                        Forms\Components\Select::make('cookies.banner.theme')
+                            ->label('Banner Theme')
+                            ->options([
+                                'light' => 'Light',
+                                'dark' => 'Dark',
+                            ])
+                            ->default('light'),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Cookie Categories')
+                    ->description('Definice kategorií cookies a jejich výchozího chování')
+                    ->schema([
+                        Forms\Components\Repeater::make('cookies.categories')
+                            ->schema([
+                                Forms\Components\TextInput::make('key')
+                                    ->label('Category Key')
+                                    ->required()
+                                    ->helperText('e.g. necessary, analytics, marketing'),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Display Name')
+                                    ->required(),
+                                Forms\Components\Textarea::make('description')
+                                    ->label('Description')
+                                    ->rows(2),
+                                Forms\Components\Toggle::make('required')
+                                    ->label('Required (cannot be disabled)')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('default_enabled')
+                                    ->label('Enabled by Default')
+                                    ->default(false),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
+                    ]),
+
+                Forms\Components\Section::make('Third-Party Services')
+                    ->description('Služby třetích stran přiřazené k jednotlivým kategoriím')
+                    ->schema([
+                        Forms\Components\Repeater::make('cookies.services')
+                            ->schema([
+                                Forms\Components\TextInput::make('category_key')
+                                    ->label('Category')
+                                    ->required()
+                                    ->helperText('Must match a category key above'),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Service Name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('description')
+                                    ->label('Description'),
+                                Forms\Components\TextInput::make('cookie_pattern')
+                                    ->label('Cookie Pattern')
+                                    ->helperText('e.g. _ga*, laravel_session'),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
+                    ]),
+
+                Forms\Components\Section::make('Policy Links')
+                    ->description('Odkazy na zásady ochrany osobních údajů a cookies')
+                    ->schema([
+                        Forms\Components\TextInput::make('cookies.policy_links.privacy_policy.label')
+                            ->label('Privacy Policy Label')
+                            ->default('Zásady ochrany osobních údajů'),
+                        ...$this->linkFields('cookies.policy_links.privacy_policy', 'Privacy Policy', '/privacy-policy'),
+                        Forms\Components\TextInput::make('cookies.policy_links.cookie_policy.label')
+                            ->label('Cookie Policy Label')
+                            ->default('Zásady cookies'),
+                        ...$this->linkFields('cookies.policy_links.cookie_policy', 'Cookie Policy', '/cookie-policy'),
+                    ])
+                    ->columns(2),
+            ]);
+    }
+
     public function save(): void
     {
         $data = $this->form->getState();
@@ -235,10 +362,71 @@ class ManageThemeSettings extends Page
         $settings->footer = $data['footer'] ?? [];
         $settings->save();
 
+        $cookieData = $data['cookies'] ?? [];
+        $cookieSettings = CookieSetting::first() ?? new CookieSetting;
+        $cookieSettings->banner = $cookieData['banner'] ?? [];
+        $cookieSettings->categories = $this->repeaterToCategories($cookieData['categories'] ?? []);
+        $cookieSettings->services = $this->repeaterToServices($cookieData['services'] ?? []);
+        $cookieSettings->policy_links = $cookieData['policy_links'] ?? [];
+        $cookieSettings->save();
+
         Notification::make()
             ->title('Settings saved')
             ->success()
             ->send();
+    }
+
+    protected function categoriesToRepeater(array $categories): array
+    {
+        $items = [];
+
+        foreach ($categories as $key => $category) {
+            $items[] = array_merge(['key' => $key], $category);
+        }
+
+        return $items;
+    }
+
+    protected function repeaterToCategories(array $items): array
+    {
+        $categories = [];
+
+        foreach ($items as $item) {
+            $key = $item['key'] ?? null;
+            if (! $key) {
+                continue;
+            }
+            unset($item['key']);
+            $categories[$key] = $item;
+        }
+
+        return $categories;
+    }
+
+    protected function servicesToRepeater(array $services): array
+    {
+        $items = [];
+
+        foreach ($services as $categoryKey => $serviceList) {
+            foreach ($serviceList as $service) {
+                $items[] = array_merge(['category_key' => $categoryKey], $service);
+            }
+        }
+
+        return $items;
+    }
+
+    protected function repeaterToServices(array $items): array
+    {
+        $services = [];
+
+        foreach ($items as $item) {
+            $categoryKey = $item['category_key'] ?? 'uncategorized';
+            unset($item['category_key']);
+            $services[$categoryKey][] = $item;
+        }
+
+        return $services;
     }
 
     protected function getFormActions(): array
