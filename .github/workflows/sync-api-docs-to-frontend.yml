@@ -7,6 +7,7 @@ on:
       - develop
     paths:
       - docs/api/**
+      - docs/guides/docs-authoring-guide.md
       - .github/workflows/sync-api-docs-to-frontend.yml
   workflow_dispatch:
 
@@ -50,10 +51,12 @@ jobs:
           path: frontend
           fetch-depth: 0
 
-      - name: Sync API docs
+      - name: Sync docs
         run: |
           mkdir -p frontend/docs/api
+          mkdir -p frontend/docs/guides
           rsync -a --delete docs/api/ frontend/docs/api/
+          rsync -a docs/guides/docs-authoring-guide.md frontend/docs/guides/docs-authoring-guide.md
 
       - name: Commit and push changes
         working-directory: frontend
@@ -62,16 +65,16 @@ jobs:
           SOURCE_BRANCH: ${{ github.ref_name }}
           SOURCE_SHA: ${{ github.sha }}
         run: |
-          if git diff --quiet -- docs/api; then
-            echo "No API docs changes to sync."
+          if git diff --quiet -- docs/api docs/guides/docs-authoring-guide.md; then
+            echo "No docs changes to sync."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/api
-          git commit -m "docs(api): sync from ${SOURCE_REPO}@${SOURCE_SHA}"
+          git add docs/api docs/guides/docs-authoring-guide.md
+          git commit -m "docs(sync): sync API docs and authoring guide from ${SOURCE_REPO}@${SOURCE_SHA}"
           git push origin HEAD
 
-          echo "Synced API docs from branch ${SOURCE_BRANCH}."
+          echo "Synced docs from branch ${SOURCE_BRANCH}."
