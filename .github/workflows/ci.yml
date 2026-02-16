@@ -23,12 +23,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout shared modules
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
         uses: actions/checkout@v4
         with:
-          repository: zlizlobr/ercee-modules
-          token: ${{ secrets.MODULES_REPO_TOKEN }}
-          path: ercee-modules
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
@@ -65,12 +96,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout shared modules
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
         uses: actions/checkout@v4
         with:
-          repository: zlizlobr/ercee-modules
-          token: ${{ secrets.MODULES_REPO_TOKEN }}
-          path: ercee-modules
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
@@ -121,12 +183,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout shared modules
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
         uses: actions/checkout@v4
         with:
-          repository: zlizlobr/ercee-modules
-          token: ${{ secrets.MODULES_REPO_TOKEN }}
-          path: ercee-modules
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
