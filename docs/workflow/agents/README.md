@@ -1,18 +1,14 @@
 # Workflow Agents (Centralized)
 
-Agent runtime skills are managed centrally in:
+Canonical agent skills are managed centrally in:
 
-- `/usr/local/var/www/agents/module-builder-agent/SKILL.md`
-- `/usr/local/var/www/agents/block-builder-agent/SKILL.md`
-- `/usr/local/var/www/agents/field-type-agent/SKILL.md`
-- `/usr/local/var/www/agents/test-runner-agent/SKILL.md`
-- `/usr/local/var/www/agents/review-agent/SKILL.md`
-- `/usr/local/var/www/agents/docs-editor-agent/SKILL.md`
+- <https://github.com/zlizlobr/ercee-agents>
 
-The files in `docs/workflow/agents/*/SKILL.md` are symlink references for this repository.
+Repository-local files in `docs/workflow/agents/*/SKILL.md` are CI-safe reference pages
+that point to canonical skills and local runbooks.
 
 ## Why this model
 
 - One shared agent definition works across multiple repositories.
 - Project repositories keep process docs, schemas, CI rules, and artifact evidence.
-- You can attach or remove symlink references per repository without duplicating skill logic.
+- CI is stable because docs checks do not depend on external absolute-path symlinks.

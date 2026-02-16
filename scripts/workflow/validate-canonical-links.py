@@ -21,9 +21,17 @@ CANONICAL_BLOCKLIST = {
 
 def main() -> int:
     violations: list[str] = []
+    skipped: list[str] = []
 
     for md in DOCS.rglob("*.md"):
-        text = md.read_text(encoding="utf-8")
+        try:
+            text = md.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            # External skill symlinks can be unresolved in CI where centralized
+            # agent repo is not mounted.
+            skipped.append(str(md.relative_to(ROOT)))
+            continue
+
         for target in LINK_RE.findall(text):
             clean = target.split("#", 1)[0].strip()
             if clean in CANONICAL_BLOCKLIST:
@@ -36,6 +44,12 @@ def main() -> int:
         for violation in violations:
             print(f"- {violation}")
         return 1
+
+    if skipped:
+        print("Skipped unresolved markdown symlinks:")
+        for item in skipped:
+            print(f"- {item}")
+        print()
 
     print("Canonical link validation passed.")
     return 0
