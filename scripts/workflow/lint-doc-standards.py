@@ -12,9 +12,17 @@ DOCS = ROOT / "docs"
 
 def main() -> int:
     errors: list[str] = []
+    skipped: list[str] = []
 
     for path in DOCS.rglob("*.md"):
-        text = path.read_text(encoding="utf-8").splitlines()
+        try:
+            text = path.read_text(encoding="utf-8").splitlines()
+        except FileNotFoundError:
+            # Some markdown files are symlinks to centralized external skills
+            # and may be unresolved on CI runners. Skip these files.
+            skipped.append(str(path.relative_to(ROOT)))
+            continue
+
         if not text:
             errors.append(f"{path.relative_to(ROOT)}: empty file")
             continue
@@ -31,6 +39,12 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
+
+    if skipped:
+        print("Skipped unresolved markdown symlinks:")
+        for item in skipped:
+            print(f"- {item}")
+        print()
 
     print("All docs files passed lightweight standards checks.")
     return 0
