@@ -1,0 +1,1 @@
+/usr/local/var/www/agents/block-builder-agent/SKILL.md

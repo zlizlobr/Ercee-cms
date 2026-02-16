@@ -28,3 +28,9 @@
 
 - Move outdated docs to `docs/archive/`.
 - Add a short note at the top with a deprecation date and replacement link.
+
+## Changelog process
+
+- For release-relevant behavior changes, update `CHANGELOG.md` in the same pull request.
+- Changelog entries should include scope, user impact, and mitigation notes for breaking/risky changes.
+- If docs are deferred by policy exception, changelog update is still required in Gate 6 evidence.

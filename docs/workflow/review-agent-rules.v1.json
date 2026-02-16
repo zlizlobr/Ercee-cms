@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "description": "Core review-agent rules for Ralph Review Gate",
+  "rules": [
+    {
+      "rule_id": "ARCH-001",
+      "title": "Cross-module boundaries are explicit",
+      "severity": "blocker",
+      "check": "No undocumented direct coupling between unrelated modules"
+    },
+    {
+      "rule_id": "CONTRACT-001",
+      "title": "Public contract changes are documented",
+      "severity": "major",
+      "check": "Any API/block/schema contract change has matching docs update"
+    },
+    {
+      "rule_id": "TEST-001",
+      "title": "Critical paths are covered",
+      "severity": "major",
+      "check": "Gate 3 evidence exists for required test flow"
+    },
+    {
+      "rule_id": "SEC-001",
+      "title": "Security-sensitive changes include explicit validation",
+      "severity": "blocker",
+      "check": "Auth/permission/webhook/payment changes include verification evidence"
+    },
+    {
+      "rule_id": "DOCS-001",
+      "title": "Canonical documentation links are used",
+      "severity": "minor",
+      "check": "Docs do not point to deprecated/non-canonical internal locations"
+    }
+  ]
+}

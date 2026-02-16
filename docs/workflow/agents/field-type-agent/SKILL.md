@@ -1,0 +1,1 @@
+/usr/local/var/www/agents/field-type-agent/SKILL.md

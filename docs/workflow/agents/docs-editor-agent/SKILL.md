@@ -1,0 +1,1 @@
+/usr/local/var/www/agents/docs-editor-agent/SKILL.md
