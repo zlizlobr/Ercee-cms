@@ -34,5 +34,9 @@
         <env name="OPENAI_API_KEY" value="test-key"/>
         <env name="ANTHROPIC_API_KEY" value="test-key"/>
         <env name="GEMINI_API_KEY" value="test-key"/>
+        <env name="FRONTEND_REBUILD_ENABLED" value="false"/>
+        <env name="FRONTEND_REBUILD_MODE" value="log"/>
+        <env name="GITHUB_TOKEN" value="test-token"/>
+        <env name="GITHUB_FRONTEND_REPOSITORY" value="test-org/test-frontend"/>
     </php>
 </phpunit>
