@@ -44,6 +44,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: zlizlobr/ercee-module-funnel
+          ref: chore/init
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-funnel
 
@@ -63,6 +64,15 @@ jobs:
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          for module in ercee-module-forms ercee-module-commerce ercee-module-funnel ercee-module-llm ercee-module-theme-builds; do
+            if [ ! -f "$GITHUB_WORKSPACE/ercee-modules/$module/composer.json" ]; then
+              echo "::error::Missing composer.json in $module checkout. Verify repository name, token access, and selected ref."
+              exit 1
+            fi
+          done
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -117,6 +127,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: zlizlobr/ercee-module-funnel
+          ref: chore/init
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-funnel
 
@@ -136,6 +147,15 @@ jobs:
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          for module in ercee-module-forms ercee-module-commerce ercee-module-funnel ercee-module-llm ercee-module-theme-builds; do
+            if [ ! -f "$GITHUB_WORKSPACE/ercee-modules/$module/composer.json" ]; then
+              echo "::error::Missing composer.json in $module checkout. Verify repository name, token access, and selected ref."
+              exit 1
+            fi
+          done
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -204,6 +224,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: zlizlobr/ercee-module-funnel
+          ref: chore/init
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-funnel
 
@@ -223,6 +244,15 @@ jobs:
 
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          for module in ercee-module-forms ercee-module-commerce ercee-module-funnel ercee-module-llm ercee-module-theme-builds; do
+            if [ ! -f "$GITHUB_WORKSPACE/ercee-modules/$module/composer.json" ]; then
+              echo "::error::Missing composer.json in $module checkout. Verify repository name, token access, and selected ref."
+              exit 1
+            fi
+          done
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
