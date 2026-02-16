@@ -234,6 +234,10 @@ class ModuleManager
 
     protected function registerMigrations(HasMigrationsInterface $provider): void
     {
+        if (! config('modules.load_module_migrations', true)) {
+            return;
+        }
+
         if ($path = $provider->getMigrationsPath()) {
             $this->app->afterResolving('migrator', function ($migrator) use ($path) {
                 $migrator->path($path);

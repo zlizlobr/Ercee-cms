@@ -14,6 +14,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Module Migrations Loading
+    |--------------------------------------------------------------------------
+    |
+    | Controls whether module migration paths should be registered dynamically.
+    | Disable in test environment to avoid duplicate table creation when core
+    | migrations already own shared tables.
+    |
+    */
+    'load_module_migrations' => env('MODULE_LOAD_MIGRATIONS', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Registered Modules
     |--------------------------------------------------------------------------
     |
