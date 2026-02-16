@@ -23,6 +23,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Checkout shared modules
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-modules
+          token: ${{ secrets.MODULES_REPO_TOKEN }}
+          path: ercee-modules
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -54,6 +64,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Checkout shared modules
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-modules
+          token: ${{ secrets.MODULES_REPO_TOKEN }}
+          path: ercee-modules
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -100,6 +120,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Checkout shared modules
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-modules
+          token: ${{ secrets.MODULES_REPO_TOKEN }}
+          path: ercee-modules
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
