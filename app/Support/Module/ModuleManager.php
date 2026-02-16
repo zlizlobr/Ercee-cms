@@ -44,20 +44,13 @@ class ModuleManager
         $providerClass = $config['provider'] ?? null;
 
         if (! $providerClass || ! class_exists($providerClass)) {
-            Log::warning("Module [{$name}] provider class [{$providerClass}] not found.");
             return;
         }
 
         $provider = new $providerClass($this->app);
 
         if (! $provider instanceof ModuleInterface) {
-            Log::warning("Module [{$name}] provider does not implement ModuleInterface.");
             return;
-        }
-
-        $configVersion = $config['version'] ?? null;
-        if ($configVersion && $provider->getVersion() !== $configVersion) {
-            Log::warning("Module [{$name}] version mismatch: config expects [{$configVersion}], provider reports [{$provider->getVersion()}].");
         }
 
         $this->modules[$name] = [
@@ -165,6 +158,7 @@ class ModuleManager
 
     protected function matchesConstraint(string $version, string $constraint): bool
     {
+        $version = $this->normalizeVersion($version);
         $constraint = trim($constraint);
 
         if ($constraint === '*') {
@@ -172,30 +166,30 @@ class ModuleManager
         }
 
         if (str_starts_with($constraint, '^')) {
-            return $this->matchesCaret($version, substr($constraint, 1));
+            return $this->matchesCaret($version, $this->normalizeVersion(substr($constraint, 1)));
         }
 
         if (str_starts_with($constraint, '~')) {
-            return $this->matchesTilde($version, substr($constraint, 1));
+            return $this->matchesTilde($version, $this->normalizeVersion(substr($constraint, 1)));
         }
 
         if (str_starts_with($constraint, '>=')) {
-            return version_compare($version, trim(substr($constraint, 2)), '>=');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 2))), '>=');
         }
 
         if (str_starts_with($constraint, '>')) {
-            return version_compare($version, trim(substr($constraint, 1)), '>');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 1))), '>');
         }
 
         if (str_starts_with($constraint, '<=')) {
-            return version_compare($version, trim(substr($constraint, 2)), '<=');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 2))), '<=');
         }
 
         if (str_starts_with($constraint, '<')) {
-            return version_compare($version, trim(substr($constraint, 1)), '<');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 1))), '<');
         }
 
-        return version_compare($version, $constraint, '>=');
+        return version_compare($version, $this->normalizeVersion($constraint), '>=');
     }
 
     protected function matchesCaret(string $version, string $minVersion): bool
@@ -219,6 +213,17 @@ class ModuleManager
 
         return version_compare($version, $minVersion, '>=')
             && version_compare($version, $nextMinor, '<');
+    }
+
+    private function normalizeVersion(string $version): string
+    {
+        $parts = explode('.', trim($version));
+
+        while (count($parts) < 3) {
+            $parts[] = '0';
+        }
+
+        return implode('.', array_slice($parts, 0, 3));
     }
 
     protected function registerRoutes(HasRoutesInterface $provider): void

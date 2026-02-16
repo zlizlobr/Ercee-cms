@@ -28,6 +28,13 @@ return [
     |
     */
     'modules' => [
+        'analytics' => [
+            'enabled' => true,
+            'provider' => \Modules\Analytics\AnalyticsModuleServiceProvider::class,
+            'version' => '1.0.0',
+            'dependencies' => [],
+        ],
+
         'forms' => [
             'enabled' => true,
             'provider' => \Modules\Forms\FormsModuleServiceProvider::class,
