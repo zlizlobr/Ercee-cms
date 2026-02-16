@@ -63,8 +63,8 @@
 - [x] Publish operator-ready Pilot #1 execution checklist with command-level gate flow and expected outputs in `docs/workflow/pilots/pilot-1-execution-run-checklist.md`.
 - [x] Prepare pilot #2 block-change execution package (playbook and evidence skeleton under `artifacts/gates/pilot-2-block-change/`).
 - [x] Prepare rollout operation templates for branch protection verification, retro capture, v1.1 adjustments, and weekly compliance tracking in `docs/workflow/rollout/`.
-- [ ] Run pilot #1 on a real module change with full gate evidence captured.
-- [ ] Run pilot #2 on a real block change with full gate evidence captured.
-- [ ] Collect pilot metrics and friction points in a retro document.
-- [ ] Apply v1.1 adjustments to gate thresholds/rules based on pilot data.
-- [ ] Roll out workflow as default for new initiatives and monitor weekly compliance.
+- [x] Run pilot #1 on a real module change with full gate evidence captured.
+- [x] Run pilot #2 on a real block change with full gate evidence captured.
+- [x] Collect pilot metrics and friction points in a retro document.
+- [x] Apply v1.1 adjustments to gate thresholds/rules based on pilot data.
+- [x] Roll out workflow as default for new initiatives and monitor weekly compliance.
