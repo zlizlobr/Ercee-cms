@@ -310,7 +310,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate --ansi
           touch database/database.sqlite
-          php artisan migrate --force
+          php artisan migrate --force --path=database/migrations --ansi
 
       - name: Run Core Tests
         run: php artisan test --ansi --exclude-group=module
@@ -453,7 +453,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate --ansi
           touch database/database.sqlite
-          php artisan migrate --force
+          php artisan migrate --force --path=database/migrations --ansi
 
       - name: Run Core Tests
         run: php artisan test --ansi --exclude-group=module
