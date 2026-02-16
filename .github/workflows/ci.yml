@@ -138,11 +138,49 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Check code style with Pint
-        run: ./vendor/bin/pint --test --ansi
+      - name: Resolve changed PHP files for quality checks
+        id: changed-php
+        run: |
+          set -euo pipefail
 
-      - name: Run PHPStan static analysis
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.base_ref }}"
+            git fetch --no-tags --depth=1 origin "${BASE_REF}:${BASE_REF}"
+            RANGE="${BASE_REF}...HEAD"
+          else
+            BEFORE="${{ github.event.before }}"
+            if [ -n "${BEFORE}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+              RANGE="${BEFORE}...HEAD"
+            else
+              RANGE="HEAD"
+            fi
+          fi
+
+          if [ "${RANGE}" = "HEAD" ]; then
+            git show --name-only --pretty=format: HEAD | grep -E '\.php$' > .changed-php-files || true
+          else
+            git diff --name-only "${RANGE}" | grep -E '\.php$' > .changed-php-files || true
+          fi
+
+          COUNT="$(wc -l < .changed-php-files | tr -d ' ')"
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+          echo "Detected ${COUNT} changed PHP files."
+
+      - name: Check code style with Pint (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/pint --test --ansi < .changed-php-files
+
+      - name: Skip Pint (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping Pint."
+
+      - name: Run PHPStan static analysis (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
+
+      - name: Skip PHPStan (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping PHPStan."
 
   tests-php83:
     name: PHP 8.3 - Laravel 12.*
