@@ -219,6 +219,17 @@ class ModuleManager
             && version_compare($version, $nextMinor, '<');
     }
 
+    private function normalizeVersion(string $version): string
+    {
+        $parts = explode('.', trim($version));
+
+        while (count($parts) < 3) {
+            $parts[] = '0';
+        }
+
+        return implode('.', array_slice($parts, 0, 3));
+    }
+
     protected function registerRoutes(HasRoutesInterface $provider): void
     {
         if ($webRoutes = $provider->getWebRoutes()) {
