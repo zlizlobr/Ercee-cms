@@ -49,11 +49,14 @@ Activate the stage-gate agent workflow as the default delivery path for all new 
 - Pilot #2: completed
 - Retro and v1.1 adjustments: completed
 - Weekly compliance reporting: active
-- Branch protection hard enforcement: pending manual GitHub settings verification
+- Branch protection automation: implemented (`scripts/workflow/apply-branch-protection.sh`)
+- Branch protection hard enforcement: completed on `main` (2026-02-16); `develop` skipped because branch does not exist in target repository
 
 ## Immediate Follow-up
 
 1. Complete branch protection checklist:
    - `docs/workflow/rollout/branch-protection-checklist.md`
-2. Keep weekly compliance cadence with archived reports in:
+2. Apply automation script:
+   - `docs/workflow/rollout/branch-protection-automation.md`
+3. Keep weekly compliance cadence with archived reports in:
    - `docs/workflow/rollout/`

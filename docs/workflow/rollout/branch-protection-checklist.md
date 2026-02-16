@@ -5,7 +5,7 @@ Use this checklist to complete the remaining branch-protection task outside repo
 ## Target Branches
 
 - `main`
-- `develop`
+- `develop` (if branch exists in repository)
 
 ## Required Settings
 
