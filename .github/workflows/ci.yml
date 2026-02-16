@@ -78,20 +78,34 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          specs = [
+          required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+          ]
+          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          for slug, package, namespace, provider in specs:
+          missing_required = []
+          for slug, package, namespace, provider in required:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
                   continue
+              missing_required.append(slug)
 
+          if missing_required:
+              for slug in missing_required:
+                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
+              raise SystemExit(1)
+
+          for slug, package, namespace, provider in optional:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
               print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
               (module_dir / "src").mkdir(parents=True, exist_ok=True)
 
@@ -245,20 +259,34 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          specs = [
+          required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+          ]
+          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          for slug, package, namespace, provider in specs:
+          missing_required = []
+          for slug, package, namespace, provider in required:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
                   continue
+              missing_required.append(slug)
 
+          if missing_required:
+              for slug in missing_required:
+                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
+              raise SystemExit(1)
+
+          for slug, package, namespace, provider in optional:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
               print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
               (module_dir / "src").mkdir(parents=True, exist_ok=True)
 
@@ -313,7 +341,8 @@ jobs:
             echo "FRONTEND_REBUILD_MODE=log"
             echo "GITHUB_TOKEN=test-token"
             echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
-            echo "MODULE_LOAD_MIGRATIONS=false"
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST=forms"
           } >> .env
           php artisan config:clear --ansi
           php artisan key:generate --ansi
@@ -387,20 +416,34 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          specs = [
+          required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+          ]
+          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          for slug, package, namespace, provider in specs:
+          missing_required = []
+          for slug, package, namespace, provider in required:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
                   continue
+              missing_required.append(slug)
 
+          if missing_required:
+              for slug in missing_required:
+                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
+              raise SystemExit(1)
+
+          for slug, package, namespace, provider in optional:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
               print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
               (module_dir / "src").mkdir(parents=True, exist_ok=True)
 
@@ -455,7 +498,8 @@ jobs:
             echo "FRONTEND_REBUILD_MODE=log"
             echo "GITHUB_TOKEN=test-token"
             echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
-            echo "MODULE_LOAD_MIGRATIONS=false"
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST=forms"
           } >> .env
           php artisan config:clear --ansi
           php artisan key:generate --ansi

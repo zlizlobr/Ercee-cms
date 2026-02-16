@@ -93,7 +93,7 @@ class ModuleManager
         }
 
         if ($provider instanceof HasMigrationsInterface) {
-            $this->registerMigrations($provider);
+            $this->registerMigrations($name, $provider);
         }
     }
 
@@ -165,6 +165,7 @@ class ModuleManager
 
     protected function matchesConstraint(string $version, string $constraint): bool
     {
+        $version = $this->normalizeVersion($version);
         $constraint = trim($constraint);
 
         if ($constraint === '*') {
@@ -180,26 +181,28 @@ class ModuleManager
         }
 
         if (str_starts_with($constraint, '>=')) {
-            return version_compare($version, trim(substr($constraint, 2)), '>=');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 2))), '>=');
         }
 
         if (str_starts_with($constraint, '>')) {
-            return version_compare($version, trim(substr($constraint, 1)), '>');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 1))), '>');
         }
 
         if (str_starts_with($constraint, '<=')) {
-            return version_compare($version, trim(substr($constraint, 2)), '<=');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 2))), '<=');
         }
 
         if (str_starts_with($constraint, '<')) {
-            return version_compare($version, trim(substr($constraint, 1)), '<');
+            return version_compare($version, $this->normalizeVersion(trim(substr($constraint, 1))), '<');
         }
 
-        return version_compare($version, $constraint, '>=');
+        return version_compare($version, $this->normalizeVersion($constraint), '>=');
     }
 
     protected function matchesCaret(string $version, string $minVersion): bool
     {
+        $version = $this->normalizeVersion($version);
+        $minVersion = $this->normalizeVersion($minVersion);
         $minParts = explode('.', $minVersion);
         $major = (int) ($minParts[0] ?? 0);
 
@@ -211,6 +214,8 @@ class ModuleManager
 
     protected function matchesTilde(string $version, string $minVersion): bool
     {
+        $version = $this->normalizeVersion($version);
+        $minVersion = $this->normalizeVersion($minVersion);
         $minParts = explode('.', $minVersion);
         $major = (int) ($minParts[0] ?? 0);
         $minor = (int) ($minParts[1] ?? 0);
@@ -232,9 +237,14 @@ class ModuleManager
         }
     }
 
-    protected function registerMigrations(HasMigrationsInterface $provider): void
+    protected function registerMigrations(string $moduleName, HasMigrationsInterface $provider): void
     {
         if (! config('modules.load_module_migrations', true)) {
+            return;
+        }
+
+        $allowlist = config('modules.module_migration_allowlist', []);
+        if ($allowlist !== [] && ! in_array($moduleName, $allowlist, true)) {
             return;
         }
 
@@ -278,6 +288,11 @@ class ModuleManager
     public function getModules(): array
     {
         return array_map(fn ($m) => $m['provider'], $this->modules);
+    }
+
+    public function getLoadedModules(): array
+    {
+        return $this->modules;
     }
 
     public function getAdminExtensions(): array
@@ -367,5 +382,17 @@ class ModuleManager
         }
 
         return $rules;
+    }
+
+    protected function normalizeVersion(string $version): string
+    {
+        $version = trim($version);
+        $parts = explode('.', $version);
+
+        while (count($parts) < 3) {
+            $parts[] = '0';
+        }
+
+        return implode('.', array_slice($parts, 0, 3));
     }
 }

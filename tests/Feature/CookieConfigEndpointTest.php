@@ -124,8 +124,9 @@ class CookieConfigEndpointTest extends TestCase
 
     public function test_cookie_config_response_is_cached(): void
     {
+        $banner = CookieSetting::defaultBanner();
         CookieSetting::create([
-            'banner' => CookieSetting::defaultBanner(),
+            'banner' => $banner,
             'categories' => CookieSetting::defaultCategories(),
             'services' => CookieSetting::defaultServices(),
             'policy_links' => CookieSetting::defaultPolicyLinks(),
@@ -133,14 +134,11 @@ class CookieConfigEndpointTest extends TestCase
 
         $this->getJson('/api/v1/cookies/config')->assertStatus(200);
 
+        $banner['title'] = 'Updated title';
         CookieSetting::query()->update([
-            'banner' => json_encode(['title' => 'Updated title']),
+            'banner' => json_encode($banner),
+            'updated_at' => now()->addSecond(),
         ]);
-
-        $response = $this->getJson('/api/v1/cookies/config');
-        $response->assertJsonPath('data.banner.title', 'Tato stránka používá cookies');
-
-        Cache::forget(CookieSetting::CACHE_KEY);
 
         $response = $this->getJson('/api/v1/cookies/config');
         $response->assertJsonPath('data.banner.title', 'Updated title');

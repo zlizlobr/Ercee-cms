@@ -18,11 +18,15 @@ return [
     |--------------------------------------------------------------------------
     |
     | Controls whether module migration paths should be registered dynamically.
-    | Disable in test environment to avoid duplicate table creation when core
-    | migrations already own shared tables.
+    | You can optionally restrict migration registration to selected modules
+    | via MODULE_MIGRATION_ALLOWLIST (comma-separated module names).
     |
     */
     'load_module_migrations' => env('MODULE_LOAD_MIGRATIONS', true),
+    'module_migration_allowlist' => array_values(array_filter(array_map(
+        static fn (string $value): string => trim($value),
+        explode(',', (string) env('MODULE_MIGRATION_ALLOWLIST', ''))
+    ))),
 
     /*
     |--------------------------------------------------------------------------
