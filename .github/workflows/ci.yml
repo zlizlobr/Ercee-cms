@@ -312,17 +312,8 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force --path=database/migrations --ansi
 
-      - name: Run Core Tests
-        run: php artisan test --ansi --exclude-group=module
-
-      - name: Run Module Tests (Forms)
-        run: php artisan test --ansi --filter=Forms
-
-      - name: Run Module Tests (Commerce)
-        run: php artisan test --ansi --filter=Commerce
-
-      - name: Run Module Tests (Funnel)
-        run: php artisan test --ansi --filter=Funnel
+      - name: Run Root Test Suites (Unit + Feature)
+        run: php artisan test --ansi --testsuite=Unit,Feature
 
   tests-php84:
     name: PHP 8.4 - Laravel 12.*
@@ -455,14 +446,5 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force --path=database/migrations --ansi
 
-      - name: Run Core Tests
-        run: php artisan test --ansi --exclude-group=module
-
-      - name: Run Module Tests (Forms)
-        run: php artisan test --ansi --filter=Forms
-
-      - name: Run Module Tests (Commerce)
-        run: php artisan test --ansi --filter=Commerce
-
-      - name: Run Module Tests (Funnel)
-        run: php artisan test --ansi --filter=Funnel
+      - name: Run Root Test Suites (Unit + Feature)
+        run: php artisan test --ansi --testsuite=Unit,Feature

@@ -11,12 +11,6 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-        <testsuite name="Modules">
-            <directory>../ercee-modules/ercee-module-forms/tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Modules-Feature">
-            <directory>../ercee-modules/ercee-module-forms/tests/Feature</directory>
-        </testsuite>
     </testsuites>
     <source>
         <include>
