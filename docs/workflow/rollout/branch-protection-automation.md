@@ -37,7 +37,13 @@ Use this script to apply branch protection for workflow gates via GitHub API.
    - `Gate 5/6 - Docs and Release Readiness Checks`
    - `Code Quality (Pint & PHPStan)`
    - `PHP 8.3 - Laravel 12.*`
-   - `PHP 8.4 - Laravel 12.*`
+
+## CI Speed Mode
+
+1. PR path (fast gate):
+   - runs `Code Quality (Pint & PHPStan)` + `PHP 8.3 - Laravel 12.*`
+2. Push path (`main`/`develop` hardening):
+   - also runs `PHP 8.4 - Laravel 12.*`
 
 ## Verification
 
