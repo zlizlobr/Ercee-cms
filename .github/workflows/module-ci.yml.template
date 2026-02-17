@@ -48,44 +48,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Resolve changed PHP files
-        id: changed-php
-        run: |
-          set -euo pipefail
+      - name: Pint
+        run: ./vendor/bin/pint --test --ansi
 
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE_REF="${{ github.base_ref }}"
-            git fetch --no-tags --depth=1 origin "${BASE_REF}:${BASE_REF}"
-            RANGE="${BASE_REF}...HEAD"
-          else
-            BEFORE="${{ github.event.before }}"
-            if [ -n "${BEFORE}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
-              RANGE="${BEFORE}...HEAD"
-            else
-              RANGE="HEAD"
-            fi
-          fi
-
-          if [ "${RANGE}" = "HEAD" ]; then
-            git show --name-only --pretty=format: HEAD | grep -E '\.php$' > .changed-php-files || true
-          else
-            git diff --name-only "${RANGE}" | grep -E '\.php$' > .changed-php-files || true
-          fi
-
-          COUNT="$(wc -l < .changed-php-files | tr -d ' ')"
-          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
-
-      - name: Pint (changed files only)
-        if: steps.changed-php.outputs.count != '0'
-        run: xargs ./vendor/bin/pint --test --ansi < .changed-php-files
-
-      - name: PHPStan (changed files only)
-        if: steps.changed-php.outputs.count != '0'
-        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
-
-      - name: Skip quality checks (no changed PHP files)
-        if: steps.changed-php.outputs.count == '0'
-        run: echo "No changed PHP files. Skipping Pint/PHPStan."
+      - name: PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
 
   module-only-tests:
     name: Module Only / Tests PHP ${{ matrix.php }} (required)
@@ -135,7 +102,7 @@ jobs:
     name: CMS Integration / {{MODULE_NAME}} (optional)
     runs-on: ubuntu-latest
     needs: module-only-tests
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '' }}
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_integration == true }}
 
     steps:
       - name: Checkout module
@@ -153,7 +120,7 @@ jobs:
         with:
           repository: your-org/ercee-cms
           path: cms
-          token: ${{ secrets.CMS_REPO_TOKEN }}
+          token: ${{ secrets.CMS_REPO_TOKEN || github.token }}
 
       - name: Setup module as path dependency
         run: |
@@ -179,13 +146,3 @@ jobs:
 
       - name: Run module integration tests in CMS context
         run: cd cms && php artisan test --ansi --filter={{MODULE_NAMESPACE}}
-
-  cms-integration-skipped:
-    name: CMS Integration / skipped notice
-    runs-on: ubuntu-latest
-    needs: module-only-tests
-    if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '') }}
-
-    steps:
-      - name: Explain skip reason
-        run: echo "::warning::CMS integration skipped because CMS_REPO_TOKEN is not configured. Required checks remain green via module-only jobs."
