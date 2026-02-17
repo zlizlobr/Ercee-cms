@@ -1,0 +1,14 @@
+{
+  "scope": "Update funnel module event listeners for payment completion",
+  "files_changed": [
+    "modules/funnel/src/Listeners/HandleOrderPaid.php",
+    "modules/funnel/src/FunnelModuleServiceProvider.php"
+  ],
+  "tests_run": [
+    "php artisan test --filter=Funnel"
+  ],
+  "risks": [
+    "Order event payload differences between environments"
+  ],
+  "next_handoff": "test-runner-agent"
+}

@@ -45,9 +45,17 @@ def normalize_target(md_path: Path, target: str) -> Path | None:
 
 def main() -> int:
     missing: list[str] = []
+    skipped: list[str] = []
 
     for md_path in DOCS_DIR.rglob("*.md"):
-        text = md_path.read_text(encoding="utf-8")
+        try:
+            text = md_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            # Some docs entries are symlinks to external skill repos and may not
+            # exist in CI runners. Skip these entries instead of crashing.
+            skipped.append(str(md_path.relative_to(ROOT)))
+            continue
+
         for _, target in LINK_RE.findall(text):
             target_path = normalize_target(md_path, target)
             if target_path is None:
@@ -61,6 +69,12 @@ def main() -> int:
         for item in missing:
             print(f"- {item}")
         return 1
+
+    if skipped:
+        print("Skipped unresolved markdown symlinks:")
+        for item in skipped:
+            print(f"- {item}")
+        print()
 
     print("All local doc links in docs/ are valid.")
     return 0

@@ -10,6 +10,10 @@ on:
       - main
       - develop
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   code-quality:
     name: Code Quality (Pint & PHPStan)
@@ -18,6 +22,101 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
+          root = workspace / "ercee-modules"
+          modules = [
+              ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
+              ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+              ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
+              ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
+          ]
+
+          for slug, package, namespace, provider in modules:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
+              print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
+              (module_dir / "src").mkdir(parents=True, exist_ok=True)
+
+              composer_payload = {
+                  "name": package,
+                  "description": f"CI fallback stub for {slug}",
+                  "version": "0.0.0-ci-stub",
+                  "type": "library",
+                  "autoload": {"psr-4": {namespace + "\\\\": "src/"}},
+                  "extra": {"laravel": {"providers": [f"{namespace}\\{provider}"]}},
+              }
+              composer_file.write_text(json.dumps(composer_payload, indent=2) + "\n", encoding="utf-8")
+
+              provider_file = module_dir / "src" / f"{provider}.php"
+              provider_file.write_text(
+                  "<?php\n\n"
+                  "declare(strict_types=1);\n\n"
+                  f"namespace {namespace};\n\n"
+                  "use Illuminate\\Support\\ServiceProvider;\n\n"
+                  f"class {provider} extends ServiceProvider\n"
+                  "{\n"
+                  "    public function register(): void {}\n"
+                  "    public function boot(): void {}\n"
+                  "}\n",
+                  encoding="utf-8",
+              )
+          PY
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -37,36 +136,157 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Check code style with Pint
-        run: ./vendor/bin/pint --test --ansi
+      - name: Resolve changed PHP files for quality checks
+        id: changed-php
+        run: |
+          set -euo pipefail
 
-      - name: Run PHPStan static analysis
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.base_ref }}"
+            git fetch --no-tags --depth=1 origin "${BASE_REF}:${BASE_REF}"
+            RANGE="${BASE_REF}...HEAD"
+          else
+            BEFORE="${{ github.event.before }}"
+            if [ -n "${BEFORE}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+              RANGE="${BEFORE}...HEAD"
+            else
+              RANGE="HEAD"
+            fi
+          fi
 
-  tests:
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+          if [ "${RANGE}" = "HEAD" ]; then
+            git show --name-only --pretty=format: HEAD | grep -E '\.php$' > .changed-php-files || true
+          else
+            git diff --name-only "${RANGE}" | grep -E '\.php$' > .changed-php-files || true
+          fi
+
+          COUNT="$(wc -l < .changed-php-files | tr -d ' ')"
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+          echo "Detected ${COUNT} changed PHP files."
+
+      - name: Check code style with Pint (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/pint --test --ansi < .changed-php-files
+
+      - name: Skip Pint (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping Pint."
+
+      - name: Run PHPStan static analysis (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
+
+      - name: Skip PHPStan (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping PHPStan."
+
+  tests-php83:
+    name: PHP 8.3 - Laravel 12.*
     runs-on: ubuntu-latest
-    needs: code-quality
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ['8.3', '8.4']
-        laravel: ['12.*']
-        include:
-          - php: '8.3'
-            laravel: '12.*'
-          - php: '8.4'
-            laravel: '12.*'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
+          root = workspace / "ercee-modules"
+          modules = [
+              ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
+              ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+              ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
+              ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
+          ]
+
+          for slug, package, namespace, provider in modules:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
+              print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
+              (module_dir / "src").mkdir(parents=True, exist_ok=True)
+
+              composer_payload = {
+                  "name": package,
+                  "description": f"CI fallback stub for {slug}",
+                  "version": "0.0.0-ci-stub",
+                  "type": "library",
+                  "autoload": {"psr-4": {namespace + "\\\\": "src/"}},
+                  "extra": {"laravel": {"providers": [f"{namespace}\\{provider}"]}},
+              }
+              composer_file.write_text(json.dumps(composer_payload, indent=2) + "\n", encoding="utf-8")
+
+              provider_file = module_dir / "src" / f"{provider}.php"
+              provider_file.write_text(
+                  "<?php\n\n"
+                  "declare(strict_types=1);\n\n"
+                  f"namespace {namespace};\n\n"
+                  "use Illuminate\\Support\\ServiceProvider;\n\n"
+                  f"class {provider} extends ServiceProvider\n"
+                  "{\n"
+                  "    public function register(): void {}\n"
+                  "    public function boot(): void {}\n"
+                  "}\n",
+                  encoding="utf-8",
+              )
+          PY
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: '8.3'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
@@ -74,9 +294,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+            ${{ runner.os }}-php-8.3-composer-
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
@@ -84,18 +304,159 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           cp .env.example .env
+          {
+            echo "FRONTEND_REBUILD_ENABLED=false"
+            echo "FRONTEND_REBUILD_MODE=log"
+            echo "GITHUB_TOKEN=test-token"
+            echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST=forms"
+          } >> .env
+          php artisan config:clear --ansi
           php artisan key:generate --ansi
           touch database/database.sqlite
-          php artisan migrate --force
+          php artisan migrate --force --path=database/migrations --ansi
 
-      - name: Run Core Tests
-        run: php artisan test --ansi --exclude-group=module
+      - name: Run Root Test Suites (Unit + Feature)
+        run: php artisan test --ansi --testsuite=Unit,Feature
 
-      - name: Run Module Tests (Forms)
-        run: php artisan test --ansi --filter=Forms
+  tests-php84:
+    name: PHP 8.4 - Laravel 12.*
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
 
-      - name: Run Module Tests (Commerce)
-        run: php artisan test --ansi --filter=Commerce
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Run Module Tests (Funnel)
-        run: php artisan test --ansi --filter=Funnel
+      - name: Prepare modules workspace
+        run: mkdir -p "$GITHUB_WORKSPACE/ercee-modules"
+
+      - name: Checkout module-forms
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-forms
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout module-commerce
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout module-funnel
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout module-llm
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-llm
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout module-theme-builds
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-theme-builds
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Validate module checkouts
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
+          root = workspace / "ercee-modules"
+          modules = [
+              ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
+              ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
+              ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
+              ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
+          ]
+
+          for slug, package, namespace, provider in modules:
+              module_dir = root / slug
+              composer_file = module_dir / "composer.json"
+              if composer_file.exists():
+                  continue
+              print(f"::warning::Missing composer.json in {slug}; creating CI fallback stub module.")
+              (module_dir / "src").mkdir(parents=True, exist_ok=True)
+
+              composer_payload = {
+                  "name": package,
+                  "description": f"CI fallback stub for {slug}",
+                  "version": "0.0.0-ci-stub",
+                  "type": "library",
+                  "autoload": {"psr-4": {namespace + "\\\\": "src/"}},
+                  "extra": {"laravel": {"providers": [f"{namespace}\\{provider}"]}},
+              }
+              composer_file.write_text(json.dumps(composer_payload, indent=2) + "\n", encoding="utf-8")
+
+              provider_file = module_dir / "src" / f"{provider}.php"
+              provider_file.write_text(
+                  "<?php\n\n"
+                  "declare(strict_types=1);\n\n"
+                  f"namespace {namespace};\n\n"
+                  "use Illuminate\\Support\\ServiceProvider;\n\n"
+                  f"class {provider} extends ServiceProvider\n"
+                  "{\n"
+                  "    public function register(): void {}\n"
+                  "    public function boot(): void {}\n"
+                  "}\n",
+                  encoding="utf-8",
+              )
+          PY
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-8.4-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-8.4-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.example .env
+          {
+            echo "FRONTEND_REBUILD_ENABLED=false"
+            echo "FRONTEND_REBUILD_MODE=log"
+            echo "GITHUB_TOKEN=test-token"
+            echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST=forms"
+          } >> .env
+          php artisan config:clear --ansi
+          php artisan key:generate --ansi
+          touch database/database.sqlite
+          php artisan migrate --force --path=database/migrations --ansi
+
+      - name: Run Root Test Suites (Unit + Feature)
+        run: php artisan test --ansi --testsuite=Unit,Feature

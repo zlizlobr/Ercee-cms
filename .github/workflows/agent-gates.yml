@@ -1,0 +1,119 @@
+name: Agent Workflow Gates
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  gate-spec-plan:
+    name: Gate 1 - Spec and Plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate governance and gate docs exist
+        run: |
+          test -f docs/workflow/agent-governance.md
+          test -f docs/workflow/gate-definition-v1.md
+          test -f docs/workflow/exception-hotfix-policy.md
+          test -f docs/templates/agent-output.md
+          test -f docs/templates/agent-human-review-output.md
+
+  gate-test-and-review:
+    name: Gate 3/4 - Test and Ralph Review Checks
+    runs-on: ubuntu-latest
+    needs: gate-spec-plan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate agent output example
+        run: python3 ./scripts/workflow/validate-agent-output.py --type agent-output --file docs/workflow/examples/agent-output.example.json
+
+      - name: Validate review findings example
+        run: python3 ./scripts/workflow/validate-agent-output.py --type review-findings --file docs/workflow/examples/review-findings.example.json
+
+      - name: Enforce test flow sequence
+        run: python3 ./scripts/workflow/enforce-test-flow.py --file docs/workflow/examples/test-gate-sequence.example.txt
+
+      - name: Validate review ruleset exists
+        run: test -f docs/workflow/review-agent-rules.v1.json
+
+      - name: Enforce review coding-standards rules exist
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("docs/workflow/review-agent-rules.v1.json")
+          payload = json.loads(path.read_text(encoding="utf-8"))
+          rules = payload.get("rules", [])
+          ids = {rule.get("rule_id", "") for rule in rules}
+
+          has_style = any(rule_id.startswith("STYLE-") for rule_id in ids)
+          has_struct = any(rule_id.startswith("STRUCT-") for rule_id in ids)
+
+          if not has_style or not has_struct:
+              missing = []
+              if not has_style:
+                  missing.append("STYLE-*")
+              if not has_struct:
+                  missing.append("STRUCT-*")
+              raise SystemExit(f"Missing required review rule families: {', '.join(missing)}")
+
+          print("OK: STYLE-* and STRUCT-* rule families are present.")
+          PY
+
+      - name: Enforce Gate 2 implementation criteria
+        run: python3 ./scripts/workflow/enforce-implementace-gate.py
+
+  gate-docs-and-release:
+    name: Gate 5/6 - Docs and Release Readiness Checks
+    runs-on: ubuntu-latest
+    needs: gate-test-and-review
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check docs links
+        run: python3 ./scripts/check-doc-links.py
+
+      - name: Lint docs standards
+        run: python3 ./scripts/workflow/lint-doc-standards.py
+
+      - name: Validate canonical links
+        run: python3 ./scripts/workflow/validate-canonical-links.py
+
+      - name: Validate artifact guidance exists
+        run: |
+          test -f artifacts/gates/README.md
+          test -f docs/templates/test-gate-report.md
+
+      - name: Enforce Gate 6 release-readiness evidence
+        run: python3 ./scripts/workflow/enforce-release-readiness.py --file artifacts/gates/workflow-v1/release-readiness/summary.md
+
+      - name: Collect basic workflow telemetry
+        run: python3 ./scripts/workflow/collect-workflow-metrics.py

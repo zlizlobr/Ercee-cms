@@ -86,7 +86,7 @@ class ModuleManager
         }
 
         if ($provider instanceof HasMigrationsInterface) {
-            $this->registerMigrations($provider);
+            $this->registerMigrations($name, $provider);
         }
     }
 
@@ -194,6 +194,8 @@ class ModuleManager
 
     protected function matchesCaret(string $version, string $minVersion): bool
     {
+        $version = $this->normalizeVersion($version);
+        $minVersion = $this->normalizeVersion($minVersion);
         $minParts = explode('.', $minVersion);
         $major = (int) ($minParts[0] ?? 0);
 
@@ -205,6 +207,8 @@ class ModuleManager
 
     protected function matchesTilde(string $version, string $minVersion): bool
     {
+        $version = $this->normalizeVersion($version);
+        $minVersion = $this->normalizeVersion($minVersion);
         $minParts = explode('.', $minVersion);
         $major = (int) ($minParts[0] ?? 0);
         $minor = (int) ($minParts[1] ?? 0);
@@ -237,8 +241,17 @@ class ModuleManager
         }
     }
 
-    protected function registerMigrations(HasMigrationsInterface $provider): void
+    protected function registerMigrations(string $moduleName, HasMigrationsInterface $provider): void
     {
+        if (! config('modules.load_module_migrations', true)) {
+            return;
+        }
+
+        $allowlist = config('modules.module_migration_allowlist', []);
+        if ($allowlist !== [] && ! in_array($moduleName, $allowlist, true)) {
+            return;
+        }
+
         if ($path = $provider->getMigrationsPath()) {
             $this->app->afterResolving('migrator', function ($migrator) use ($path) {
                 $migrator->path($path);
@@ -279,6 +292,11 @@ class ModuleManager
     public function getModules(): array
     {
         return array_map(fn ($m) => $m['provider'], $this->modules);
+    }
+
+    public function getLoadedModules(): array
+    {
+        return $this->modules;
     }
 
     public function getAdminExtensions(): array
@@ -368,5 +386,17 @@ class ModuleManager
         }
 
         return $rules;
+    }
+
+    protected function normalizeVersion(string $version): string
+    {
+        $version = trim($version);
+        $parts = explode('.', $version);
+
+        while (count($parts) < 3) {
+            $parts[] = '0';
+        }
+
+        return implode('.', array_slice($parts, 0, 3));
     }
 }

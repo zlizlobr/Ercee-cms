@@ -2,47 +2,30 @@
 
 namespace Tests\Unit\Support\Module;
 
-use App\Contracts\Module\HasEventsInterface;
-use App\Contracts\Module\HasMigrationsInterface;
-use App\Contracts\Module\HasRoutesInterface;
-use App\Contracts\Module\ModuleInterface;
 use App\Support\Module\ModuleManager;
-use Illuminate\Foundation\Application;
-use Mockery;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ModuleManagerTest extends TestCase
 {
     private ModuleManager $manager;
 
-    private Application $app;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app = Mockery::mock(Application::class);
         $this->manager = new ModuleManager($this->app);
-    }
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
     }
 
     public function test_loads_enabled_module_from_config(): void
     {
-        $provider = $this->createMockProvider('test', '1.0.0');
-
-        $this->manager->loadModule('test', [
+        $this->manager->loadModule('forms', [
             'enabled' => true,
-            'provider' => get_class($provider),
+            'provider' => \Modules\Forms\FormsModuleServiceProvider::class,
             'version' => '1.0.0',
         ]);
 
-        $this->assertTrue($this->manager->isModuleEnabled('test'));
-        $this->assertNotNull($this->manager->getModule('test'));
+        $this->assertTrue($this->manager->isModuleEnabled('forms'));
+        $this->assertNotNull($this->manager->getModule('forms'));
     }
 
     public function test_skips_module_with_missing_provider_class(): void
@@ -64,22 +47,23 @@ class ModuleManagerTest extends TestCase
 
     public function test_get_modules_returns_all_loaded(): void
     {
-        $provider1 = $this->createMockProvider('mod1', '1.0.0');
-        $provider2 = $this->createMockProvider('mod2', '2.0.0');
-
-        $this->manager->loadModule('mod1', [
+        $this->manager->loadModule('forms', [
             'enabled' => true,
-            'provider' => get_class($provider1),
+            'provider' => \Modules\Forms\FormsModuleServiceProvider::class,
             'version' => '1.0.0',
         ]);
-        $this->manager->loadModule('mod2', [
+
+        $this->manager->loadModule('commerce', [
             'enabled' => true,
-            'provider' => get_class($provider2),
-            'version' => '2.0.0',
+            'provider' => \Modules\Commerce\CommerceModuleServiceProvider::class,
+            'version' => '1.0.0',
         ]);
 
         $modules = $this->manager->getModules();
+
         $this->assertCount(2, $modules);
+        $this->assertArrayHasKey('forms', $modules);
+        $this->assertArrayHasKey('commerce', $modules);
     }
 
     public function test_caret_constraint_matches_compatible_versions(): void
@@ -144,16 +128,5 @@ class ModuleManagerTest extends TestCase
         $reflection->setAccessible(true);
 
         return $reflection->invoke($this->manager, $version, $constraint);
-    }
-
-    private function createMockProvider(string $name, string $version): ModuleInterface
-    {
-        $mock = Mockery::mock(ModuleInterface::class);
-        $mock->shouldReceive('getName')->andReturn($name);
-        $mock->shouldReceive('getVersion')->andReturn($version);
-        $mock->shouldReceive('getDependencies')->andReturn([]);
-        $mock->shouldReceive('getPermissions')->andReturn([]);
-
-        return $mock;
     }
 }

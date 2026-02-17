@@ -1,0 +1,10 @@
+{
+  "findings": [
+    {
+      "severity": "major",
+      "rule_id": "TEST-001",
+      "required_fix": "Add missing contract assertions for order webhook payload",
+      "auto_fixable": false
+    }
+  ]
+}
