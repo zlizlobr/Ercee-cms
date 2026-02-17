@@ -1,0 +1,32 @@
+[
+  {
+    "name": "spec-ready",
+    "color": "0052cc",
+    "description": "Spec and Plan gate approved"
+  },
+  {
+    "name": "impl-ready",
+    "color": "1d76db",
+    "description": "Implementation gate approved"
+  },
+  {
+    "name": "test-passed",
+    "color": "0e8a16",
+    "description": "Test Gate approved"
+  },
+  {
+    "name": "review-passed",
+    "color": "5319e7",
+    "description": "Ralph Review Gate approved"
+  },
+  {
+    "name": "docs-passed",
+    "color": "006b75",
+    "description": "Docs Gate approved"
+  },
+  {
+    "name": "release-ready",
+    "color": "fbca04",
+    "description": "Release Readiness approved"
+  }
+]

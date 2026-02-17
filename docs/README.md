@@ -5,6 +5,7 @@ This folder follows a structured information model:
 - `docs/guides/` - How-to guides and workflows
 - `docs/reference/` - Reference material and contracts
 - `docs/api/` - API overview + endpoint reference
+- `docs/workflow/` - Agent workflow governance, gates, and runbooks
 - `docs/standards/` - Documentation and naming standards
 - `docs/templates/` - Templates for new docs
 - `docs/archive/` - Deprecated or historical docs
@@ -48,9 +49,18 @@ This folder follows a structured information model:
 
 - Content contracts: `docs/reference/content/block-contract.md`
 - API reference
-  - `docs/reference/api/authentication.md`
-  - `docs/reference/api/conventions.md`
-  - `docs/reference/api/errors.md`
+  - `docs/api/authentication.md`
+  - `docs/api/conventions.md`
+  - `docs/api/errors.md`
+
+## Workflow
+
+- Governance: `docs/workflow/agent-governance.md`
+- Gate definitions: `docs/workflow/gate-definition-v1.md`
+- Exceptions/hotfixes: `docs/workflow/exception-hotfix-policy.md`
+- Agent-Human review policy: `docs/workflow/agent-human-review-policy.md`
+- Agent skills (symlink refs + central model): `docs/workflow/agents/`
+- Agent runbooks: `docs/workflow/runbooks/`
 
 ## Standards and templates
 

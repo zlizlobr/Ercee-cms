@@ -1,0 +1,8 @@
+# Agent workflow governance
+/docs/workflow/ @zlizlobr
+/docs/templates/agent-*.md @zlizlobr
+/docs/schemas/agent-output.schema.json @zlizlobr
+/docs/schemas/review-findings.schema.json @zlizlobr
+/scripts/workflow/ @zlizlobr
+/.github/workflows/agent-gates.yml @zlizlobr
+/.github/labels/workflow-labels.json @zlizlobr

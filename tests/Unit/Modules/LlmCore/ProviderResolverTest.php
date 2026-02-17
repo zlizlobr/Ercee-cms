@@ -6,11 +6,11 @@ namespace Tests\Unit\Modules\LlmCore;
 
 use Mockery;
 use Tests\TestCase;
-use Modules\LlmCore\Services\ProviderResolver;
-use Modules\LlmCore\Domain\Contracts\LlmClientInterface;
-use Modules\LlmCore\Domain\Contracts\LlmPromptInterface;
-use Modules\LlmCore\Domain\Exceptions\ProviderNotFoundException;
-use Modules\LlmCore\Domain\Exceptions\ModelNotSupportedException;
+use Modules\Llm\Services\ProviderResolver;
+use Modules\Llm\Domain\Contracts\LlmClientInterface;
+use Modules\Llm\Domain\Contracts\LlmPromptInterface;
+use Modules\Llm\Domain\Exceptions\ProviderNotFoundException;
+use Modules\Llm\Domain\Exceptions\ModelNotSupportedException;
 
 class ProviderResolverTest extends TestCase
 {

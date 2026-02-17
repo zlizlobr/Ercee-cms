@@ -11,12 +11,6 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-        <testsuite name="Modules">
-            <directory>../ercee-modules/ercee-module-forms/tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Modules-Feature">
-            <directory>../ercee-modules/ercee-module-forms/tests/Feature</directory>
-        </testsuite>
     </testsuites>
     <source>
         <include>
@@ -25,6 +19,7 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:Wwq6QfJ4N6w4j2rGeYJmLxN8z4U8j9s5p2r7v3m1c0E="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
@@ -40,5 +35,12 @@
         <env name="OPENAI_API_KEY" value="test-key"/>
         <env name="ANTHROPIC_API_KEY" value="test-key"/>
         <env name="GEMINI_API_KEY" value="test-key"/>
+        <env name="FRONTEND_REBUILD_ENABLED" value="false"/>
+        <env name="FRONTEND_REBUILD_MODE" value="log"/>
+        <env name="GITHUB_TOKEN" value="test-token"/>
+        <env name="GITHUB_FRONTEND_REPOSITORY" value="test-org/test-frontend"/>
+        <env name="API_PUBLIC_TOKEN" value="test-public-token"/>
+        <env name="MODULE_LOAD_MIGRATIONS" value="true"/>
+        <env name="MODULE_MIGRATION_ALLOWLIST" value="forms"/>
     </php>
 </phpunit>

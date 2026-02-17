@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ercee.local/schemas/review-findings.schema.json",
+  "title": "Review Findings",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "findings"
+  ],
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "rule_id",
+          "required_fix",
+          "auto_fixable"
+        ],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": [
+              "blocker",
+              "major",
+              "minor"
+            ]
+          },
+          "rule_id": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]{3}$"
+          },
+          "required_fix": {
+            "type": "string",
+            "minLength": 1
+          },
+          "auto_fixable": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

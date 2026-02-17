@@ -7,7 +7,15 @@
         "dev": "vite",
         "preflight:blocks": "bash ./scripts/preflight-blocks.sh",
         "verify:blocks": "bash ./scripts/verify-blocks.sh",
-        "verify:blocks:e2e": "bash ./scripts/verify-blocks-e2e.sh"
+        "verify:blocks:e2e": "bash ./scripts/verify-blocks-e2e.sh",
+        "workflow:lint-docs": "python3 ./scripts/workflow/lint-doc-standards.py",
+        "workflow:check-canonical": "python3 ./scripts/workflow/validate-canonical-links.py",
+        "workflow:validate-agent-output": "python3 ./scripts/workflow/validate-agent-output.py --type agent-output --file docs/workflow/examples/agent-output.example.json",
+        "workflow:validate-review-findings": "python3 ./scripts/workflow/validate-agent-output.py --type review-findings --file docs/workflow/examples/review-findings.example.json",
+        "workflow:enforce-test-flow": "python3 ./scripts/workflow/enforce-test-flow.py --file docs/workflow/examples/test-gate-sequence.example.txt",
+        "workflow:enforce-implementace": "python3 ./scripts/workflow/enforce-implementace-gate.py",
+        "workflow:enforce-release-readiness": "python3 ./scripts/workflow/enforce-release-readiness.py --file artifacts/gates/workflow-v1/release-readiness/summary.md",
+        "workflow:metrics": "python3 ./scripts/workflow/collect-workflow-metrics.py"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

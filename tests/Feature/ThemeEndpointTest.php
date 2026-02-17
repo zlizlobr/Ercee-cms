@@ -168,23 +168,17 @@ class ThemeEndpointTest extends TestCase
             'footer' => [],
         ]);
 
-        // First request - cache miss
-        $this->getJson('/api/v1/theme')->assertStatus(200);
+        // First request
+        $this->getJson('/api/v1/theme')
+            ->assertStatus(200)
+            ->assertJsonPath('data.global.logo.text', 'Ercee');
 
-        // Verify cache was set
-        $this->assertTrue(Cache::has(ThemeSetting::CACHE_KEY));
-
-        // Update settings directly in DB without triggering model events
+        // Update settings and verify the next response reflects the new versioned cache key.
         ThemeSetting::query()->update([
-            'global' => json_encode(['logo_text' => 'Updated']),
+            'global' => json_encode(array_merge(ThemeSetting::defaultGlobal(), ['logo_text' => 'Updated'])),
+            'updated_at' => now()->addSecond(),
         ]);
 
-        // Second request should return cached value
-        $response = $this->getJson('/api/v1/theme');
-        $response->assertJsonPath('data.global.logo.text', 'Ercee');
-
-        // Clear cache and verify new value
-        Cache::forget(ThemeSetting::CACHE_KEY);
         $response = $this->getJson('/api/v1/theme');
         $response->assertJsonPath('data.global.logo.text', 'Updated');
     }
