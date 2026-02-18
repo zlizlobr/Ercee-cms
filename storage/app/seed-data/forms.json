@@ -1,0 +1,424 @@
+[
+  {
+    "name": "Formulář 1: Generátor webu pro řemeslníky (Varianta A - Balanced) [RECOMMENDED]",
+    "active": true,
+    "schema": [
+      {
+        "type": "section",
+        "label": "1) Velikost webu",
+        "helper_text": "Zvolte cílovou velikost webu."
+      },
+      {
+        "name": "website_size",
+        "label": "Jak velký web chcete?",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "One page",
+            "value": "one_page"
+          },
+          {
+            "label": "Five pages",
+            "value": "five_pages"
+          },
+          {
+            "label": "Doporučit",
+            "value": "recommend"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "label": "2) Obor a popis podnikání",
+        "helper_text": "Pomůže nám to připravit lepší návrh."
+      },
+      {
+        "name": "trade_category",
+        "label": "Obor",
+        "type": "select",
+        "required": true,
+        "options": [
+          {
+            "label": "Truhlář",
+            "value": "truhlar"
+          },
+          {
+            "label": "Elektrikář",
+            "value": "elektrikar"
+          },
+          {
+            "label": "Instalatér",
+            "value": "instalater"
+          },
+          {
+            "label": "Pokrývač",
+            "value": "pokryvac"
+          },
+          {
+            "label": "Malíř / lakýrník",
+            "value": "malir_lakyrnik"
+          },
+          {
+            "label": "Jiné",
+            "value": "jine"
+          }
+        ]
+      },
+      {
+        "name": "business_description",
+        "label": "Stručný popis podnikání",
+        "type": "textarea",
+        "required": true,
+        "placeholder": "Čemu se věnujete a co je vaše hlavní služba?"
+      },
+      {
+        "type": "section",
+        "label": "3) Lokalita a e-mail gate",
+        "helper_text": "Náhled připravíme na základě lokality a pošleme po ověření e-mailu."
+      },
+      {
+        "name": "city_region",
+        "label": "Město / region",
+        "type": "text",
+        "required": true,
+        "placeholder": "Např. Brno a okolí"
+      },
+      {
+        "name": "email",
+        "label": "E-mail pro náhled",
+        "type": "email",
+        "required": true,
+        "placeholder": "vas@email.cz"
+      },
+      {
+        "type": "section",
+        "label": "4) Layout a struktura webu",
+        "helper_text": "Vyberte layout a navrhněte základní sekce/stránky."
+      },
+      {
+        "name": "layout_preference",
+        "label": "Preferovaný layout",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "Moderní čistý",
+            "value": "modern_clean"
+          },
+          {
+            "label": "Důvěryhodný lokální",
+            "value": "trusted_local"
+          },
+          {
+            "label": "Výkonnostní pro leady",
+            "value": "performance_leads"
+          }
+        ]
+      },
+      {
+        "name": "site_structure",
+        "label": "Návrh sekcí / stránek",
+        "type": "textarea",
+        "required": true,
+        "placeholder": "Např. Úvod, Služby, Ceník, Realizace, Kontakt"
+      },
+      {
+        "type": "section",
+        "label": "5) Uzamčený náhled a publikace",
+        "helper_text": "Potvrďte odemčení náhledu a zájem o publikaci."
+      },
+      {
+        "name": "email_verification_ack",
+        "label": "Potvrzuji, že dokončím e-mail verifikaci pro odemčení náhledu.",
+        "type": "checkbox",
+        "required": true
+      },
+      {
+        "name": "publish_intent",
+        "label": "Chci po odemčení pokračovat na publikaci",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "Ano, chci publikovat",
+            "value": "publish_yes"
+          },
+          {
+            "label": "Nejdřív jen náhled",
+            "value": "preview_only"
+          }
+        ]
+      }
+    ],
+    "data_options": {
+      "submit_button_text": "Vygenerovat náhled zdarma",
+      "success_title": "Náhled připraven",
+      "success_message": "Po e-mail verifikaci odemkneme náhled a můžete pokračovat na publikaci.",
+      "multi_step": true,
+      "show_sidebar": true,
+      "flow_variant": "A",
+      "recommended_variant": true,
+      "funnel_step_labels": [
+        "Velikost",
+        "Obor",
+        "Lokalita",
+        "Layout",
+        "Publikace"
+      ]
+    }
+  },
+  {
+    "name": "Formulář 1: Generátor webu pro řemeslníky (Varianta B - Fast Lead)",
+    "active": false,
+    "schema": [
+      {
+        "type": "section",
+        "label": "1) Rychlá volba",
+        "helper_text": "Vyberte velikost a obor během pár kliknutí."
+      },
+      {
+        "name": "website_size",
+        "label": "Velikost webu",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "One page",
+            "value": "one_page"
+          },
+          {
+            "label": "Five pages",
+            "value": "five_pages"
+          },
+          {
+            "label": "Doporučit",
+            "value": "recommend"
+          }
+        ]
+      },
+      {
+        "name": "trade_chips",
+        "label": "Obor podnikání",
+        "type": "checkbox_cards",
+        "required": true,
+        "options": [
+          {
+            "label": "Truhlář",
+            "value": "truhlar"
+          },
+          {
+            "label": "Elektrikář",
+            "value": "elektrikar"
+          },
+          {
+            "label": "Instalatér",
+            "value": "instalater"
+          },
+          {
+            "label": "Jiné",
+            "value": "jine"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "label": "2) Lokalita + e-mail gate",
+        "helper_text": "Bez e-mailu náhled neodemkneme."
+      },
+      {
+        "name": "city_region",
+        "label": "Město / region",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "email",
+        "label": "E-mail",
+        "type": "email",
+        "required": true
+      },
+      {
+        "type": "section",
+        "label": "3) Náhled a publikace",
+        "helper_text": "Vyberte layout a potvrďte publikaci."
+      },
+      {
+        "name": "layout_preference",
+        "label": "Layout",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "Moderní čistý",
+            "value": "modern_clean"
+          },
+          {
+            "label": "Důvěryhodný lokální",
+            "value": "trusted_local"
+          }
+        ]
+      },
+      {
+        "name": "site_structure",
+        "label": "Sekce / stránky",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "name": "email_verification_ack",
+        "label": "Potvrzuji verifikaci e-mailu",
+        "type": "checkbox",
+        "required": true
+      }
+    ],
+    "data_options": {
+      "submit_button_text": "Pokračovat na náhled",
+      "success_title": "Náhled je téměř hotový",
+      "success_message": "Dokončete verifikaci e-mailu a odemkněte návrh webu.",
+      "multi_step": true,
+      "show_sidebar": false,
+      "flow_variant": "B",
+      "recommended_variant": false
+    }
+  },
+  {
+    "name": "Formulář 1: Generátor webu pro řemeslníky (Varianta C - Guided Planner)",
+    "active": false,
+    "schema": [
+      {
+        "type": "section",
+        "label": "1) Velikost a styl webu"
+      },
+      {
+        "name": "website_size",
+        "label": "Velikost webu",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "One page",
+            "value": "one_page"
+          },
+          {
+            "label": "Five pages",
+            "value": "five_pages"
+          },
+          {
+            "label": "Doporučit",
+            "value": "recommend"
+          }
+        ]
+      },
+      {
+        "name": "layout_cards",
+        "label": "Preferovaný styl layoutu",
+        "type": "event_cards",
+        "required": true,
+        "max_selected": 1,
+        "columns_per_row": 3,
+        "options": [
+          {
+            "label": "Tradiční",
+            "value": "traditional"
+          },
+          {
+            "label": "Moderní",
+            "value": "modern"
+          },
+          {
+            "label": "Prémiový",
+            "value": "premium"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "label": "2) Obor a lokalita"
+      },
+      {
+        "name": "trade_category",
+        "label": "Obor",
+        "type": "select",
+        "required": true,
+        "options": [
+          {
+            "label": "Truhlář",
+            "value": "truhlar"
+          },
+          {
+            "label": "Elektrikář",
+            "value": "elektrikar"
+          },
+          {
+            "label": "Instalatér",
+            "value": "instalater"
+          },
+          {
+            "label": "Jiné",
+            "value": "jine"
+          }
+        ]
+      },
+      {
+        "name": "business_description",
+        "label": "Popis podnikání",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "name": "city_region",
+        "label": "Město / region",
+        "type": "text",
+        "required": true
+      },
+      {
+        "type": "section",
+        "label": "3) Kontakt, verifikace, publikace"
+      },
+      {
+        "name": "email",
+        "label": "E-mail",
+        "type": "email",
+        "required": true
+      },
+      {
+        "name": "site_structure",
+        "label": "Návrh sekcí / stránek",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "name": "email_verification_ack",
+        "label": "Souhlasím s verifikací e-mailu",
+        "type": "checkbox",
+        "required": true
+      },
+      {
+        "name": "publish_intent",
+        "label": "Publikace po odemčení",
+        "type": "radio",
+        "required": true,
+        "options": [
+          {
+            "label": "Ano",
+            "value": "publish_yes"
+          },
+          {
+            "label": "Později",
+            "value": "publish_later"
+          }
+        ]
+      }
+    ],
+    "data_options": {
+      "submit_button_text": "Uzamknout a vygenerovat preview",
+      "success_title": "Preview vygenerováno",
+      "success_message": "Po verifikaci e-mailu získáte odemčený náhled a CTA na publikaci.",
+      "multi_step": true,
+      "show_sidebar": true,
+      "flow_variant": "C",
+      "recommended_variant": false
+    }
+  }
+]

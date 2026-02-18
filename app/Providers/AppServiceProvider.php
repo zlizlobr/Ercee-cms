@@ -17,7 +17,9 @@ use App\Observers\NavigationObserver;
 use App\Observers\PageObserver;
 use App\Observers\ThemeSettingObserver;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->registerFilesystemCompatibilityMacros();
+
         Page::observe(PageObserver::class);
         Navigation::observe(NavigationObserver::class);
         ThemeSetting::observe(ThemeSettingObserver::class);
@@ -39,6 +43,18 @@ class AppServiceProvider extends ServiceProvider
         MediaLibrary::observe(MediaLibraryObserver::class);
 
         $this->configureRateLimiting();
+    }
+
+    protected function registerFilesystemCompatibilityMacros(): void
+    {
+        if (method_exists(Filesystem::class, 'isAbsolutePath') || File::hasMacro('isAbsolutePath')) {
+            return;
+        }
+
+        File::macro('isAbsolutePath', function (string $path): bool {
+            return str_starts_with($path, DIRECTORY_SEPARATOR)
+                || preg_match('/^[A-Za-z]:[\\\\\\/]/', $path) === 1;
+        });
     }
 
     protected function configureRateLimiting(): void
