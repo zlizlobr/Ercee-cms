@@ -5,7 +5,7 @@ Use this checklist to complete the remaining branch-protection task outside repo
 ## Target Branches
 
 - `main`
-- `develop` (if branch exists in repository)
+- `develop`
 
 ## Required Settings
 
@@ -21,12 +21,7 @@ Enable at minimum:
 - `Gate 1 - Spec and Plan`
 - `Gate 3/4 - Test and Ralph Review Checks`
 - `Gate 5/6 - Docs and Release Readiness Checks`
-- `Code Quality (Pint & PHPStan)`
-- `PHP 8.3 - Laravel 12.*`
-
-Recommended (non-blocking for PR, hardening on push):
-
-- `PHP 8.4 - Laravel 12.*`
+- Existing core CI checks (`CI Tests` jobs) as applicable.
 
 ## Verification
 

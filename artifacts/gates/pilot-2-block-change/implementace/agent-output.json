@@ -1,21 +1,9 @@
 {
-  "scope": "Pilot #2 block change: implement end-to-end parity for commerce_product_tips_carousel across commerce module schema, CMS preview, and frontend registry renderer.",
+  "scope": "",
   "files_changed": [
-    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Filament/Blocks/ProductTipsCarouselBlock.php",
-    "/usr/local/var/www/Ercee-cms/resources/views/components/blocks/commerce-product-tips-carousel.blade.php",
-    "/usr/local/var/www/ercee-frontend/src/features/content/blocks/ProductTipsCarousel.astro",
-    "/usr/local/var/www/ercee-frontend/src/features/content/blocks/index.ts",
-    "/usr/local/var/www/ercee-frontend/src/shared/blocks/registry.ts",
-    "/usr/local/var/www/ercee-frontend/src/shared/blocks/registry.test.ts",
-    "/usr/local/var/www/ercee-frontend/src/shared/api/types.ts"
+    ""
   ],
-  "tests_run": [
-    "npm --prefix ../ercee-frontend run verify:blocks (pass)",
-    "npm run verify:blocks (pass)"
-  ],
-  "risks": [
-    "Renderer currently visualizes selected product IDs; full catalog card enrichment is a follow-up enhancement.",
-    "Contract field changes require synchronized CMS + frontend updates."
-  ],
+  "tests_run": [],
+  "risks": [],
   "next_handoff": "test-runner-agent"
 }
