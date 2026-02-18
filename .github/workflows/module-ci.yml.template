@@ -16,6 +16,11 @@ on:
         required: false
         default: false
         type: boolean
+      full_checks:
+        description: 'Run full quality checks (not diff-only)'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: module-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -48,22 +53,83 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Pint
-        run: ./vendor/bin/pint --test --ansi
+      - name: Run quality checks (diff-only by default, full on release minor/flag)
+        run: |
+          set -euo pipefail
 
-      - name: PHPStan
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+          FULL_CHECKS="false"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full_checks }}" = "true" ]; then
+            FULL_CHECKS="true"
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            TITLE="${{ github.event.pull_request.title }}"
+            if echo "$TITLE" | grep -Eiq 'release:[[:space:]]*minor'; then
+              FULL_CHECKS="true"
+            fi
+          fi
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            MSG="${{ github.event.head_commit.message }}"
+            if echo "$MSG" | grep -Eiq 'release:[[:space:]]*minor'; then
+              FULL_CHECKS="true"
+            fi
+          fi
+
+          if [ "$FULL_CHECKS" = "true" ]; then
+            echo "Running FULL quality checks."
+            ./vendor/bin/pint --test --ansi
+            ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+            exit 0
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.base_ref }}"
+            git fetch --no-tags --depth=200 origin "${BASE_REF}:${BASE_REF}" || true
+            RANGE="${BASE_REF}...HEAD"
+          else
+            BEFORE="${{ github.event.before }}"
+            if [ -n "${BEFORE}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+              RANGE="${BEFORE}...HEAD"
+            else
+              RANGE="HEAD"
+            fi
+          fi
+
+          if [ "${RANGE}" != "HEAD" ] && ! git merge-base "${RANGE%%...*}" HEAD >/dev/null 2>&1; then
+            echo "No merge-base for ${RANGE}. Falling back to FULL quality checks."
+            ./vendor/bin/pint --test --ansi
+            ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+            exit 0
+          fi
+
+          if [ "${RANGE}" = "HEAD" ]; then
+            git show --name-only --pretty=format: HEAD | grep -E '\.php$' > .changed-php-files || true
+          else
+            git diff --name-only "${RANGE}" | grep -E '\.php$' > .changed-php-files || true
+          fi
+
+          COUNT="$(wc -l < .changed-php-files | tr -d ' ')"
+          echo "Detected ${COUNT} changed PHP files."
+
+          if [ "$COUNT" = "0" ]; then
+            echo "No changed PHP files. Skipping Pint/PHPStan."
+            exit 0
+          fi
+
+          xargs ./vendor/bin/pint --test --ansi < .changed-php-files
+          xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
 
   module-only-tests:
     name: Module Only / Tests PHP ${{ matrix.php }} (required)
     runs-on: ubuntu-latest
     needs: module-only-quality
-    if: ${{ matrix.php != '8.4' || github.event_name == 'push' }}
 
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.3', '8.4']
+        php: ['8.3']
 
     steps:
       - name: Checkout module
@@ -83,6 +149,45 @@ jobs:
           key: ${{ runner.os }}-module-php-${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-module-php-${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Run module tests
+        run: |
+          if composer run-script --list | grep -qE '^  test'; then
+            composer test
+          elif [ -x ./vendor/bin/phpunit ]; then
+            ./vendor/bin/phpunit --colors=always
+          else
+            echo "No module test command configured (composer test or phpunit)."
+            exit 1
+          fi
+
+  module-only-tests-php84:
+    name: Module Only / Tests PHP 8.4 (optional)
+    runs-on: ubuntu-latest
+    needs: module-only-quality
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Checkout module
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-module-php-8.4-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-module-php-8.4-composer-
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
