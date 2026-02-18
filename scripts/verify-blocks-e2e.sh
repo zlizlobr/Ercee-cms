@@ -8,6 +8,9 @@ FRONTEND_DIR="../ercee-frontend"
 
 bash ./scripts/verify-blocks.sh
 
+echo "[verify:blocks:e2e] running backend admin login E2E (P1)..."
+npm run verify:backend-admin:e2e
+
 echo "[verify:blocks:e2e] running frontend E2E smoke..."
 npm --prefix "$FRONTEND_DIR" run verify:blocks:e2e
 
