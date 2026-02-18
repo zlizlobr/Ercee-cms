@@ -22,3 +22,15 @@
   - `/usr/local/var/www/ercee-frontend/src/shared/blocks/registry.ts`
   - `/usr/local/var/www/ercee-frontend/src/shared/api/types.ts`
 - If rollback is partial, keep block type unregistered in frontend registry to avoid rendering mismatch.
+
+# Pilot #2 Release Readiness Summary
+
+## Change Impact
+
+
+## Risks
+
+
+## Rollback or Mitigation
+
+
