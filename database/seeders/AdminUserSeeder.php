@@ -31,7 +31,7 @@ class AdminUserSeeder extends Seeder
 
         $password = (string) ($payload['password'] ?? 'password');
 
-        $admin = User::firstOrCreate(
+        $admin = User::updateOrCreate(
             ['email' => (string) $payload['email']],
             [
                 'name' => (string) ($payload['name'] ?? 'Admin'),
