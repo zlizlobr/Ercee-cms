@@ -18,9 +18,7 @@ use App\Observers\PageObserver;
 use App\Observers\ThemeSettingObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -34,8 +32,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->registerFilesystemCompatibilityMacros();
-
         $this->registerFilesystemCompatibilityMacros();
 
         Page::observe(PageObserver::class);
