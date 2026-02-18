@@ -201,7 +201,9 @@ jobs:
             echo "FRONTEND_REBUILD_MODE=log"
             echo "GITHUB_TOKEN=test-token"
             echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
+            echo "MODULE_LOAD_MIGRATIONS=false"
           } >> .env
+          php artisan config:clear --ansi
           php artisan key:generate --ansi
           touch database/database.sqlite
           php artisan migrate --force --path=database/migrations --ansi
@@ -285,7 +287,9 @@ jobs:
             echo "FRONTEND_REBUILD_MODE=log"
             echo "GITHUB_TOKEN=test-token"
             echo "GITHUB_FRONTEND_REPOSITORY=test-org/test-frontend"
+            echo "MODULE_LOAD_MIGRATIONS=false"
           } >> .env
+          php artisan config:clear --ansi
           php artisan key:generate --ansi
           touch database/database.sqlite
           php artisan migrate --force --path=database/migrations --ansi

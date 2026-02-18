@@ -39,5 +39,6 @@
         <env name="FRONTEND_REBUILD_MODE" value="log"/>
         <env name="GITHUB_TOKEN" value="test-token"/>
         <env name="GITHUB_FRONTEND_REPOSITORY" value="test-org/test-frontend"/>
+        <env name="MODULE_LOAD_MIGRATIONS" value="false"/>
     </php>
 </phpunit>
