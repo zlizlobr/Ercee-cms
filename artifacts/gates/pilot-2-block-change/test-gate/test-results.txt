@@ -1,3 +1,7 @@
-A:pending
-B:pending
-C:pending
+A:pass
+A_CMD: npm --prefix ../ercee-frontend run verify:blocks (includes preflight)
+B:pass
+B_CMD: npm --prefix ../ercee-frontend run verify:blocks (lint + unit tests passed)
+C:pass
+C_CMD: npm run verify:blocks
+C_RESULT: block checks passed end-to-end from CMS orchestration
