@@ -1,4 +1,6 @@
 *
 !private/
 !public/
+!seed-data/
+!seed-data/forms.json
 !.gitignore

@@ -37,11 +37,15 @@ npm run test
 CMS/module minimum:
 ```bash
 cd /usr/local/var/www/Ercee-cms
-php artisan test
+./scripts/test-safe.sh
 
 cd /usr/local/var/www/ercee-modules/<module>
 ./vendor/bin/phpunit
 ```
+
+Safety rule (mandatory):
+- Never run `php artisan test` directly in `/usr/local/var/www/Ercee-cms` when local sqlite is used.
+- Always use `./scripts/test-safe.sh` so tests run on a cloned DB (`storage/testing/database.sqlite`).
 
 Notes:
 - Every bugfix must include a regression test.
@@ -53,6 +57,12 @@ Blocks orchestrated from CMS:
 ```bash
 cd /usr/local/var/www/Ercee-cms
 npm run verify:blocks:e2e
+```
+
+Module/backend high-priority admin auth check:
+```bash
+cd /usr/local/var/www/Ercee-cms
+npm run verify:backend-admin:e2e
 ```
 
 Field/public only:

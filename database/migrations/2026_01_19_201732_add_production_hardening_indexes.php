@@ -30,17 +30,6 @@ return new class extends Migration
             });
         }
 
-        if (Schema::hasTable('funnel_run_steps')) {
-            Schema::table('funnel_run_steps', function (Blueprint $table) {
-                $table->unique(['funnel_run_id', 'funnel_step_id'], 'funnel_run_steps_unique');
-            });
-        }
-
-        if (Schema::hasTable('funnel_runs')) {
-            Schema::table('funnel_runs', function (Blueprint $table) {
-                $table->index(['subscriber_id', 'funnel_id', 'status'], 'funnel_runs_active_check');
-            });
-        }
     }
 
     /**
@@ -69,16 +58,5 @@ return new class extends Migration
             });
         }
 
-        if (Schema::hasTable('funnel_run_steps')) {
-            Schema::table('funnel_run_steps', function (Blueprint $table) {
-                $table->dropUnique('funnel_run_steps_unique');
-            });
-        }
-
-        if (Schema::hasTable('funnel_runs')) {
-            Schema::table('funnel_runs', function (Blueprint $table) {
-                $table->dropIndex('funnel_runs_active_check');
-            });
-        }
     }
 };
