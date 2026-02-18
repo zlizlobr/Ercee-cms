@@ -1,6 +1,7 @@
 # CI template for standalone module repositories
 # Copy this file to .github/workflows/ci.yml in each module repo
 # Replace {{MODULE_NAME}}, {{MODULE_NAMESPACE}}, and your-org/ercee-cms with real values.
+# Replace {{MODULE_NAME}}, {{MODULE_NAMESPACE}}, and your-org/ercee-cms with real values.
 
 name: Module CI
 
@@ -29,6 +30,8 @@ concurrency:
 jobs:
   module-only-quality:
     name: Module Only / Code Quality (required)
+  module-only-quality:
+    name: Module Only / Code Quality (required)
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +47,13 @@ jobs:
 
       - name: Cache Composer dependencies
         uses: actions/cache@v4
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
         with:
+          path: vendor
+          key: ${{ runner.os }}-module-php-8.3-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-module-php-8.3-composer-
           path: vendor
           key: ${{ runner.os }}-module-php-8.3-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
@@ -121,6 +130,8 @@ jobs:
           xargs ./vendor/bin/pint --test --ansi < .changed-php-files
           xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
 
+  module-only-tests:
+    name: Module Only / Tests PHP ${{ matrix.php }} (required)
   module-only-tests:
     name: Module Only / Tests PHP ${{ matrix.php }} (required)
     runs-on: ubuntu-latest
@@ -233,7 +244,10 @@ jobs:
           composer config repositories.module path ../
           composer require ercee/module-{{MODULE_NAME}}:@dev --no-interaction --no-progress
           composer install --prefer-dist --no-interaction --no-progress --ansi
+          composer require ercee/module-{{MODULE_NAME}}:@dev --no-interaction --no-progress
+          composer install --prefer-dist --no-interaction --no-progress --ansi
 
+      - name: Prepare CMS app
       - name: Prepare CMS app
         run: |
           cd cms
@@ -246,7 +260,16 @@ jobs:
           } >> .env
           php artisan config:clear --ansi
           php artisan key:generate --ansi
+          {
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST={{MODULE_NAME}}"
+            echo "FRONTEND_REBUILD_ENABLED=false"
+            echo "FRONTEND_REBUILD_MODE=log"
+          } >> .env
+          php artisan config:clear --ansi
+          php artisan key:generate --ansi
           touch database/database.sqlite
+          php artisan migrate --force --path=database/migrations --ansi
           php artisan migrate --force --path=database/migrations --ansi
 
       - name: Run module integration tests in CMS context
