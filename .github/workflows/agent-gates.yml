@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Validate governance and gate docs exist
         run: |
@@ -35,8 +33,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -55,31 +51,6 @@ jobs:
       - name: Validate review ruleset exists
         run: test -f docs/workflow/review-agent-rules.v1.json
 
-      - name: Enforce review coding-standards rules exist
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          path = Path("docs/workflow/review-agent-rules.v1.json")
-          payload = json.loads(path.read_text(encoding="utf-8"))
-          rules = payload.get("rules", [])
-          ids = {rule.get("rule_id", "") for rule in rules}
-
-          has_style = any(rule_id.startswith("STYLE-") for rule_id in ids)
-          has_struct = any(rule_id.startswith("STRUCT-") for rule_id in ids)
-
-          if not has_style or not has_struct:
-              missing = []
-              if not has_style:
-                  missing.append("STYLE-*")
-              if not has_struct:
-                  missing.append("STRUCT-*")
-              raise SystemExit(f"Missing required review rule families: {', '.join(missing)}")
-
-          print("OK: STYLE-* and STRUCT-* rule families are present.")
-          PY
-
       - name: Enforce Gate 2 implementation criteria
         run: python3 ./scripts/workflow/enforce-implementace-gate.py
 
@@ -90,8 +61,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5

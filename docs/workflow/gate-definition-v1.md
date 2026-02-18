@@ -39,7 +39,6 @@ This document defines mandatory entry and exit criteria for each workflow gate.
 - A) preflight + verify executed.
 - B) unit + contract checks executed.
 - C) runtime smoke/e2e executed when release/UI critical.
-- If module-local test harness cannot run (e.g. unresolved private dependency), a workspace bootstrap fallback is allowed only when explicitly documented in test-gate evidence with a follow-up remediation item.
 - Test evidence stored in gate artifacts.
 
 ## Gate 4: Ralph Review Gate (agent-only)

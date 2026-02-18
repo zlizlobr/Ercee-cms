@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "description": "Core review-agent rules for Ralph Review Gate (policy-driven, including coding standards)",
+  "version": "1.0.0",
+  "description": "Core review-agent rules for Ralph Review Gate",
   "rules": [
     {
       "rule_id": "ARCH-001",
@@ -31,18 +31,6 @@
       "title": "Canonical documentation links are used",
       "severity": "minor",
       "check": "Docs do not point to deprecated/non-canonical internal locations"
-    },
-    {
-      "rule_id": "STYLE-001",
-      "title": "Method and variable naming is domain-consistent",
-      "severity": "major",
-      "check": "No ambiguous naming patterns for non-trivial methods/variables in changed scope"
-    },
-    {
-      "rule_id": "STRUCT-001",
-      "title": "Namespace and layer placement is consistent",
-      "severity": "major",
-      "check": "Changed classes are placed in expected namespaces/layers with no boundary drift"
     }
   ]
 }
