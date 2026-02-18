@@ -33,6 +33,14 @@ jobs:
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-forms
 
+      - name: Checkout module-analytics
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-analytics
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-analytics
+
       - name: Checkout module-commerce
         uses: actions/checkout@v4
         with:
@@ -74,6 +82,7 @@ jobs:
           root = workspace / "ercee-modules"
           required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
           ]
@@ -208,6 +217,14 @@ jobs:
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-forms
 
+      - name: Checkout module-analytics
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-analytics
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-analytics
+
       - name: Checkout module-commerce
         uses: actions/checkout@v4
         with:
@@ -249,6 +266,7 @@ jobs:
           root = workspace / "ercee-modules"
           required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
           ]
@@ -359,6 +377,14 @@ jobs:
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
           path: ercee-modules/ercee-module-forms
 
+      - name: Checkout module-analytics
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: zlizlobr/ercee-module-analytics
+          token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
+          path: ercee-modules/ercee-module-analytics
+
       - name: Checkout module-commerce
         uses: actions/checkout@v4
         with:
@@ -400,6 +426,7 @@ jobs:
           root = workspace / "ercee-modules"
           required = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
+              ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
           ]
