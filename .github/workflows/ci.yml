@@ -118,8 +118,13 @@ jobs:
         if: steps.changed-php.outputs.count == '0'
         run: echo "No changed PHP files. Skipping Pint."
 
-      - name: Run PHPStan static analysis
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
+      - name: Run PHPStan static analysis (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
+
+      - name: Skip PHPStan (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping PHPStan."
 
   tests-php83:
     name: PHP 8.3 - Laravel 12.*
