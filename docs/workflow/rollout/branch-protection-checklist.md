@@ -21,7 +21,12 @@ Enable at minimum:
 - `Gate 1 - Spec and Plan`
 - `Gate 3/4 - Test and Ralph Review Checks`
 - `Gate 5/6 - Docs and Release Readiness Checks`
-- Existing core CI checks (`CI Tests` jobs) as applicable.
+- `Code Quality (Pint & PHPStan)`
+- `PHP 8.3 - Laravel 12.*`
+
+Recommended (non-blocking for PR, hardening on push):
+
+- `PHP 8.4 - Laravel 12.*`
 
 ## Verification
 

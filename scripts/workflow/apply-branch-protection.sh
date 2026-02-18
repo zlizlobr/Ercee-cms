@@ -78,8 +78,7 @@ build_payload() {
       "Gate 3/4 - Test and Ralph Review Checks",
       "Gate 5/6 - Docs and Release Readiness Checks",
       "Code Quality (Pint & PHPStan)",
-      "PHP 8.3 - Laravel 12.*",
-      "PHP 8.4 - Laravel 12.*"
+      "PHP 8.3 - Laravel 12.*"
     ]
   },
   "enforce_admins": true,

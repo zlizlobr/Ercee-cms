@@ -181,17 +181,58 @@ jobs:
         if: steps.changed-php.outputs.count == '0'
         run: echo "No changed PHP files. Skipping Pint."
 
-      - name: Run PHPStan static analysis (changed files only)
-        if: steps.changed-php.outputs.count != '0'
-        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
-
-      - name: Skip PHPStan (no changed PHP files)
-        if: steps.changed-php.outputs.count == '0'
-        run: echo "No changed PHP files. Skipping PHPStan."
+      - name: Run PHPStan static analysis
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
 
   tests-php83:
     name: PHP 8.3 - Laravel 12.*
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-8.3-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Run Core Tests
+        run: php artisan test --ansi --exclude-group=module
+
+      - name: Run Module Tests (Forms)
+        run: php artisan test --ansi --filter=Forms
+
+      - name: Run Module Tests (Commerce)
+        run: php artisan test --ansi --filter=Commerce
+
+      - name: Run Module Tests (Funnel)
+        run: php artisan test --ansi --filter=Funnel
+
+  tests-php84:
+    name: PHP 8.4 - Laravel 12.*
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -304,7 +345,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
@@ -312,9 +353,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor
-          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-8.4-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-8.3-composer-
+            ${{ runner.os }}-php-8.4-composer-
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
