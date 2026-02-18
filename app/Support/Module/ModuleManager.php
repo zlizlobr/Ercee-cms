@@ -44,20 +44,13 @@ class ModuleManager
         $providerClass = $config['provider'] ?? null;
 
         if (! $providerClass || ! class_exists($providerClass)) {
-            Log::warning("Module [{$name}] provider class [{$providerClass}] not found.");
             return;
         }
 
         $provider = new $providerClass($this->app);
 
         if (! $provider instanceof ModuleInterface) {
-            Log::warning("Module [{$name}] provider does not implement ModuleInterface.");
             return;
-        }
-
-        $configVersion = $config['version'] ?? null;
-        if ($configVersion && $provider->getVersion() !== $configVersion) {
-            Log::warning("Module [{$name}] version mismatch: config expects [{$configVersion}], provider reports [{$provider->getVersion()}].");
         }
 
         $this->modules[$name] = [
@@ -173,11 +166,11 @@ class ModuleManager
         }
 
         if (str_starts_with($constraint, '^')) {
-            return $this->matchesCaret($version, substr($constraint, 1));
+            return $this->matchesCaret($version, $this->normalizeVersion(substr($constraint, 1)));
         }
 
         if (str_starts_with($constraint, '~')) {
-            return $this->matchesTilde($version, substr($constraint, 1));
+            return $this->matchesTilde($version, $this->normalizeVersion(substr($constraint, 1)));
         }
 
         if (str_starts_with($constraint, '>=')) {

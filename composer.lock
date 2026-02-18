@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "170df8428ced2dfebc0f04aae093d289",
+    "content-hash": "437659db467e48f732b708f6c3a7b817",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1212,6 +1212,54 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
+            "name": "ercee/module-analytics",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../ercee-modules/ercee-module-analytics",
+                "reference": "b431b68b86183e8515583b7699b9f216001ea1f1"
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.5"
+            },
+            "type": "ercee-module",
+            "extra": {
+                "ercee": {
+                    "provider": "Modules\\Analytics\\AnalyticsModuleServiceProvider"
+                },
+                "laravel": {
+                    "providers": [
+                        "Modules\\Analytics\\AnalyticsModuleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Analytics\\": "src/",
+                    "Modules\\Analytics\\Database\\Factories\\": "database/factories/",
+                    "Modules\\Analytics\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Modules\\Analytics\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Analytics provider registry module for Ercee CMS",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "ercee/module-commerce",
             "version": "1.0.0",
             "dist": {
@@ -1262,7 +1310,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-forms",
-                "reference": "173ecfb3d5730012fa37360d0513d6db4ffb7cac"
+                "reference": "4c23ea2c26c05c796f46613c4ea7dfc59d57d90a"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -12216,6 +12264,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ercee/module-analytics": 20,
         "ercee/module-commerce": 20,
         "ercee/module-forms": 20,
         "ercee/module-funnel": 20,
