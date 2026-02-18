@@ -1,9 +1,26 @@
 {
-  "scope": "",
+  "scope": "Commerce module Gate 2 implementation: product name sorting, stock evidence model + API output, settings page with XML Feeds and tab priority, and product tips carousel block registration.",
   "files_changed": [
-    ""
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Filament/Resources/ProductResource.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Domain/Product.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Domain/Services/ProductAvailabilityService.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Http/Controllers/ProductController.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/CommerceModuleServiceProvider.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Filament/Pages/CommerceSettingsPage.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Domain/CommerceSetting.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Services/CommerceSettingsService.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/src/Filament/Blocks/ProductTipsCarouselBlock.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/database/migrations/2026_02_16_000010_add_stock_fields_to_products_table.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/database/migrations/2026_02_16_000011_create_commerce_settings_table.php",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/docs/guides/commerce-settings-stock-and-blocks.md",
+    "/usr/local/var/www/ercee-modules/ercee-module-commerce/tests/Unit/Domain/ProductStockTest.php"
   ],
-  "tests_run": [],
-  "risks": [],
+  "tests_run": [
+    "php -l on all changed commerce module PHP files (pass)"
+  ],
+  "risks": [
+    "Migrations must be applied before enabling new stock/settings functionality.",
+    "Frontend rendering for the new carousel block type may require mapping if custom component behavior is expected."
+  ],
   "next_handoff": "test-runner-agent"
 }

@@ -15,7 +15,9 @@
         "workflow:enforce-test-flow": "python3 ./scripts/workflow/enforce-test-flow.py --file docs/workflow/examples/test-gate-sequence.example.txt",
         "workflow:enforce-implementace": "python3 ./scripts/workflow/enforce-implementace-gate.py",
         "workflow:enforce-release-readiness": "python3 ./scripts/workflow/enforce-release-readiness.py --file artifacts/gates/workflow-v1/release-readiness/summary.md",
-        "workflow:metrics": "python3 ./scripts/workflow/collect-workflow-metrics.py"
+        "workflow:metrics": "python3 ./scripts/workflow/collect-workflow-metrics.py",
+        "verify:backend-admin:e2e": "bash ./scripts/verify-backend-admin-e2e.sh",
+        "test:e2e:admin": "playwright test --config=playwright.admin.config.ts tests/e2e/admin-login.spec.ts"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

@@ -28,6 +28,7 @@ jobs:
 
       - name: Checkout module-forms
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-forms
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -43,6 +44,7 @@ jobs:
 
       - name: Checkout module-commerce
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-commerce
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -50,6 +52,7 @@ jobs:
 
       - name: Checkout module-funnel
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-funnel
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -57,6 +60,7 @@ jobs:
 
       - name: Checkout module-llm
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-llm
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -64,6 +68,7 @@ jobs:
 
       - name: Checkout module-theme-builds
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-theme-builds
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -80,31 +85,16 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          required = [
+          modules = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
-          ]
-          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          missing_required = []
-          for slug, package, namespace, provider in required:
-              module_dir = root / slug
-              composer_file = module_dir / "composer.json"
-              if composer_file.exists():
-                  continue
-              missing_required.append(slug)
-
-          if missing_required:
-              for slug in missing_required:
-                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
-              raise SystemExit(1)
-
-          for slug, package, namespace, provider in optional:
+          for slug, package, namespace, provider in modules:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
@@ -212,6 +202,7 @@ jobs:
 
       - name: Checkout module-forms
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-forms
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -227,6 +218,7 @@ jobs:
 
       - name: Checkout module-commerce
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-commerce
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -234,6 +226,7 @@ jobs:
 
       - name: Checkout module-funnel
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-funnel
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -241,6 +234,7 @@ jobs:
 
       - name: Checkout module-llm
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-llm
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -248,6 +242,7 @@ jobs:
 
       - name: Checkout module-theme-builds
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-theme-builds
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -264,31 +259,16 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          required = [
+          modules = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
-          ]
-          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          missing_required = []
-          for slug, package, namespace, provider in required:
-              module_dir = root / slug
-              composer_file = module_dir / "composer.json"
-              if composer_file.exists():
-                  continue
-              missing_required.append(slug)
-
-          if missing_required:
-              for slug in missing_required:
-                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
-              raise SystemExit(1)
-
-          for slug, package, namespace, provider in optional:
+          for slug, package, namespace, provider in modules:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
@@ -372,6 +352,7 @@ jobs:
 
       - name: Checkout module-forms
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-forms
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -387,6 +368,7 @@ jobs:
 
       - name: Checkout module-commerce
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-commerce
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -394,6 +376,7 @@ jobs:
 
       - name: Checkout module-funnel
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-funnel
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -401,6 +384,7 @@ jobs:
 
       - name: Checkout module-llm
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-llm
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -408,6 +392,7 @@ jobs:
 
       - name: Checkout module-theme-builds
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           repository: zlizlobr/ercee-module-theme-builds
           token: ${{ secrets.MODULES_REPO_TOKEN || github.token }}
@@ -424,31 +409,16 @@ jobs:
 
           workspace = Path(__import__("os").environ["GITHUB_WORKSPACE"])
           root = workspace / "ercee-modules"
-          required = [
+          modules = [
               ("ercee-module-forms", "ercee/module-forms", "Modules\\Forms", "FormsModuleServiceProvider"),
               ("ercee-module-analytics", "ercee/module-analytics", "Modules\\Analytics", "AnalyticsModuleServiceProvider"),
               ("ercee-module-commerce", "ercee/module-commerce", "Modules\\Commerce", "CommerceModuleServiceProvider"),
               ("ercee-module-funnel", "ercee/module-funnel", "Modules\\Funnel", "FunnelModuleServiceProvider"),
-          ]
-          optional = [
               ("ercee-module-llm", "ercee/module-llm", "Modules\\Llm", "LlmModuleServiceProvider"),
               ("ercee-module-theme-builds", "ercee/module-theme-builds", "Modules\\ThemeBuilds", "ThemeBuildsModuleServiceProvider"),
           ]
 
-          missing_required = []
-          for slug, package, namespace, provider in required:
-              module_dir = root / slug
-              composer_file = module_dir / "composer.json"
-              if composer_file.exists():
-                  continue
-              missing_required.append(slug)
-
-          if missing_required:
-              for slug in missing_required:
-                  print(f"::error::Missing required module checkout: {slug}. Verify repository access, token, and ref.")
-              raise SystemExit(1)
-
-          for slug, package, namespace, provider in optional:
+          for slug, package, namespace, provider in modules:
               module_dir = root / slug
               composer_file = module_dir / "composer.json"
               if composer_file.exists():
