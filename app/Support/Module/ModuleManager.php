@@ -236,6 +236,11 @@ class ModuleManager
             return;
         }
 
+        $allowlist = config('modules.module_migration_allowlist', []);
+        if ($allowlist !== [] && ! in_array($moduleName, $allowlist, true)) {
+            return;
+        }
+
         if ($path = $provider->getMigrationsPath()) {
             $this->app->afterResolving('migrator', function ($migrator) use ($path) {
                 $migrator->path($path);
