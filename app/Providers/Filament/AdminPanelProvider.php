@@ -93,6 +93,13 @@ class AdminPanelProvider extends PanelProvider
                     <style>
                         .fi-fo-builder-block-picker .fi-dropdown-list-item-icon { width: 1.25rem; height: 1.25rem; }
                         .fi-fo-builder-block-picker .fi-dropdown-list-item { padding-block: 0.5rem; }
+                        .fi-fo-builder-block-picker-modal { z-index: 210; }
+                        @media (max-width: 768px) {
+                            .fi-fo-builder-block-picker-modal {
+                                width: 96vw !important;
+                                max-height: 72vh !important;
+                            }
+                        }
                         .fi-fo-builder-block-picker .fi-dropdown-header {
                             font-weight: 600; font-size: 0.7rem; text-transform: uppercase;
                             letter-spacing: 0.05em; border-bottom: 1px solid rgb(229 231 235);

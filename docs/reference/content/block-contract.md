@@ -109,6 +109,35 @@ Single image with caption support.
 }
 ```
 
+
+### Commerce Product Tips Carousel (`commerce_product_tips_carousel`)
+
+Carousel block for curated commerce product recommendations.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `heading` | string | No | Block heading (default: `Tipy produktu`) |
+| `description` | string | No | Supporting description |
+| `product_ids` | array<number\|string> | No | Selected product identifiers |
+| `max_items` | number | No | Maximum rendered items (default: `8`) |
+| `autoplay` | boolean | No | Enable automatic slide behavior (default: `true`) |
+| `autoplay_ms` | number | No | Autoplay interval in ms (default: `5000`) |
+
+**Example:**
+```json
+{
+  "type": "commerce_product_tips_carousel",
+  "data": {
+    "heading": "Doporucene produkty",
+    "description": "Vybrane tipy z katalogu",
+    "product_ids": [101, 205, 309],
+    "max_items": 8,
+    "autoplay": true,
+    "autoplay_ms": 5000
+  }
+}
+```
+
 ## Astro Mapping
 
 The Astro frontend maps CMS data in `ercee-frontend/src/features/content/api/pages.ts`.
