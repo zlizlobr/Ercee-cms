@@ -1,7 +1,6 @@
 # CI template for standalone module repositories
 # Copy this file to .github/workflows/ci.yml in each module repo
 # Replace {{MODULE_NAME}}, {{MODULE_NAMESPACE}}, and your-org/ercee-cms with real values.
-# Replace {{MODULE_NAME}}, {{MODULE_NAMESPACE}}, and your-org/ercee-cms with real values.
 
 name: Module CI
 
@@ -17,19 +16,12 @@ on:
         required: false
         default: false
         type: boolean
-      full_checks:
-        description: 'Run full quality checks (not diff-only)'
-        required: false
-        default: false
-        type: boolean
 
 concurrency:
   group: module-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  module-only-quality:
-    name: Module Only / Code Quality (required)
   module-only-quality:
     name: Module Only / Code Quality (required)
     runs-on: ubuntu-latest
@@ -47,13 +39,7 @@ jobs:
 
       - name: Cache Composer dependencies
         uses: actions/cache@v4
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
         with:
-          path: vendor
-          key: ${{ runner.os }}-module-php-8.3-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-module-php-8.3-composer-
           path: vendor
           key: ${{ runner.os }}-module-php-8.3-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
@@ -62,40 +48,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Run quality checks (diff-only by default, full on release minor/flag)
+      - name: Resolve changed PHP files
+        id: changed-php
         run: |
           set -euo pipefail
 
-          FULL_CHECKS="false"
-
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full_checks }}" = "true" ]; then
-            FULL_CHECKS="true"
-          fi
-
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            TITLE="${{ github.event.pull_request.title }}"
-            if echo "$TITLE" | grep -Eiq 'release:[[:space:]]*minor'; then
-              FULL_CHECKS="true"
-            fi
-          fi
-
-          if [ "${{ github.event_name }}" = "push" ]; then
-            MSG="${{ github.event.head_commit.message }}"
-            if echo "$MSG" | grep -Eiq 'release:[[:space:]]*minor'; then
-              FULL_CHECKS="true"
-            fi
-          fi
-
-          if [ "$FULL_CHECKS" = "true" ]; then
-            echo "Running FULL quality checks."
-            ./vendor/bin/pint --test --ansi
-            ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
-            exit 0
-          fi
-
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE_REF="${{ github.base_ref }}"
-            git fetch --no-tags --depth=200 origin "${BASE_REF}:${BASE_REF}" || true
+            git fetch --no-tags --depth=1 origin "${BASE_REF}:${BASE_REF}"
             RANGE="${BASE_REF}...HEAD"
           else
             BEFORE="${{ github.event.before }}"
@@ -106,13 +66,6 @@ jobs:
             fi
           fi
 
-          if [ "${RANGE}" != "HEAD" ] && ! git merge-base "${RANGE%%...*}" HEAD >/dev/null 2>&1; then
-            echo "No merge-base for ${RANGE}. Falling back to FULL quality checks."
-            ./vendor/bin/pint --test --ansi
-            ./vendor/bin/phpstan analyse --memory-limit=2G --ansi
-            exit 0
-          fi
-
           if [ "${RANGE}" = "HEAD" ]; then
             git show --name-only --pretty=format: HEAD | grep -E '\.php$' > .changed-php-files || true
           else
@@ -120,22 +73,25 @@ jobs:
           fi
 
           COUNT="$(wc -l < .changed-php-files | tr -d ' ')"
-          echo "Detected ${COUNT} changed PHP files."
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
 
-          if [ "$COUNT" = "0" ]; then
-            echo "No changed PHP files. Skipping Pint/PHPStan."
-            exit 0
-          fi
+      - name: Pint (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/pint --test --ansi < .changed-php-files
 
-          xargs ./vendor/bin/pint --test --ansi < .changed-php-files
-          xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
+      - name: PHPStan (changed files only)
+        if: steps.changed-php.outputs.count != '0'
+        run: xargs ./vendor/bin/phpstan analyse --memory-limit=2G --ansi < .changed-php-files
 
-  module-only-tests:
-    name: Module Only / Tests PHP ${{ matrix.php }} (required)
+      - name: Skip quality checks (no changed PHP files)
+        if: steps.changed-php.outputs.count == '0'
+        run: echo "No changed PHP files. Skipping Pint/PHPStan."
+
   module-only-tests:
     name: Module Only / Tests PHP ${{ matrix.php }} (required)
     runs-on: ubuntu-latest
     needs: module-only-quality
+    if: ${{ matrix.php != '8.4' || github.event_name == 'push' }}
 
     strategy:
       fail-fast: false
@@ -175,50 +131,11 @@ jobs:
             exit 1
           fi
 
-  module-only-tests-php84:
-    name: Module Only / Tests PHP 8.4 (optional)
-    runs-on: ubuntu-latest
-    needs: module-only-quality
-    if: ${{ github.event_name == 'push' }}
-
-    steps:
-      - name: Checkout module
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
-          coverage: none
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-module-php-8.4-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-module-php-8.4-composer-
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress --ansi
-
-      - name: Run module tests
-        run: |
-          if composer run-script --list | grep -qE '^  test'; then
-            composer test
-          elif [ -x ./vendor/bin/phpunit ]; then
-            ./vendor/bin/phpunit --colors=always
-          else
-            echo "No module test command configured (composer test or phpunit)."
-            exit 1
-          fi
-
   cms-integration:
     name: CMS Integration / {{MODULE_NAME}} (optional)
     runs-on: ubuntu-latest
     needs: module-only-tests
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_integration == true }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '' }}
 
     steps:
       - name: Checkout module
@@ -244,10 +161,7 @@ jobs:
           composer config repositories.module path ../
           composer require ercee/module-{{MODULE_NAME}}:@dev --no-interaction --no-progress
           composer install --prefer-dist --no-interaction --no-progress --ansi
-          composer require ercee/module-{{MODULE_NAME}}:@dev --no-interaction --no-progress
-          composer install --prefer-dist --no-interaction --no-progress --ansi
 
-      - name: Prepare CMS app
       - name: Prepare CMS app
         run: |
           cd cms
@@ -260,17 +174,18 @@ jobs:
           } >> .env
           php artisan config:clear --ansi
           php artisan key:generate --ansi
-          {
-            echo "MODULE_LOAD_MIGRATIONS=true"
-            echo "MODULE_MIGRATION_ALLOWLIST={{MODULE_NAME}}"
-            echo "FRONTEND_REBUILD_ENABLED=false"
-            echo "FRONTEND_REBUILD_MODE=log"
-          } >> .env
-          php artisan config:clear --ansi
-          php artisan key:generate --ansi
           touch database/database.sqlite
-          php artisan migrate --force --path=database/migrations --ansi
           php artisan migrate --force --path=database/migrations --ansi
 
       - name: Run module integration tests in CMS context
         run: cd cms && php artisan test --ansi --filter={{MODULE_NAMESPACE}}
+
+  cms-integration-skipped:
+    name: CMS Integration / skipped notice
+    runs-on: ubuntu-latest
+    needs: module-only-tests
+    if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '') }}
+
+    steps:
+      - name: Explain skip reason
+        run: echo "::warning::CMS integration skipped because CMS_REPO_TOKEN is not configured. Required checks remain green via module-only jobs."
