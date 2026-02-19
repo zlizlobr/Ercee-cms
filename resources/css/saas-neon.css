@@ -1,0 +1,121 @@
+:root {
+    --sn-bg: #ffffff;
+    --sn-surface: rgba(255, 255, 255, 0.86);
+    --sn-surface-strong: rgba(248, 250, 252, 0.98);
+    --sn-text: #0f172a;
+    --sn-muted: #475569;
+    --sn-line: rgba(15, 23, 42, 0.14);
+    --sn-primary: #ea580c;
+    --sn-primary-strong: #c2410c;
+    --sn-glow: rgba(249, 115, 22, 0.35);
+    --sn-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+html.theme-dark {
+    --sn-bg: #05070f;
+    --sn-surface: rgba(10, 16, 30, 0.78);
+    --sn-surface-strong: rgba(15, 23, 42, 0.95);
+    --sn-text: #e2e8f0;
+    --sn-muted: #94a3b8;
+    --sn-line: rgba(148, 163, 184, 0.24);
+    --sn-primary: #fb923c;
+    --sn-primary-strong: #f97316;
+    --sn-glow: rgba(251, 146, 60, 0.55);
+    --sn-shadow: 0 26px 60px rgba(2, 6, 23, 0.6);
+}
+
+body.saas-neon {
+    background: radial-gradient(circle at 18% 0%, rgba(249, 115, 22, 0.18), transparent 34%),
+        radial-gradient(circle at 84% 12%, rgba(37, 99, 235, 0.16), transparent 42%),
+        var(--sn-bg);
+    color: var(--sn-text);
+}
+
+.saas-shell {
+    border: 1px solid var(--sn-line);
+    background: var(--sn-surface);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--sn-shadow);
+}
+
+.saas-nav-link {
+    color: var(--sn-muted);
+    transition: color 0.2s ease;
+}
+
+.saas-nav-link:hover {
+    color: var(--sn-text);
+}
+
+.saas-btn-primary {
+    border: 1px solid color-mix(in srgb, var(--sn-primary) 72%, transparent);
+    background: linear-gradient(120deg, var(--sn-primary), var(--sn-primary-strong));
+    color: #fff;
+    box-shadow: 0 10px 28px var(--sn-glow);
+}
+
+.saas-btn-primary:hover {
+    filter: brightness(1.05);
+}
+
+.saas-btn-secondary {
+    border: 1px solid var(--sn-line);
+    background: color-mix(in srgb, var(--sn-surface-strong) 86%, transparent);
+    color: var(--sn-text);
+}
+
+.saas-btn-secondary:hover {
+    border-color: color-mix(in srgb, var(--sn-primary) 55%, var(--sn-line));
+}
+
+.saas-mobile-menu {
+    border-top: 1px solid var(--sn-line);
+    background: color-mix(in srgb, var(--sn-surface-strong) 94%, transparent);
+}
+
+.saas-hero {
+    background: linear-gradient(140deg, color-mix(in srgb, var(--sn-primary) 16%, transparent), transparent 45%),
+        var(--sn-surface-strong);
+}
+
+.saas-glow-dot {
+    box-shadow: 0 0 0 1px var(--sn-line), 0 0 22px var(--sn-glow);
+}
+
+.saas-block {
+    border: 1px solid var(--sn-line);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--sn-surface-strong) 86%, transparent);
+    padding: 1.25rem;
+}
+
+.saas-prose,
+.saas-prose .prose,
+.saas-prose h1,
+.saas-prose h2,
+.saas-prose h3,
+.saas-prose h4,
+.saas-prose h5,
+.saas-prose h6 {
+    color: var(--sn-text);
+}
+
+.saas-prose p,
+.saas-prose li,
+.saas-prose span,
+.saas-prose .text-gray-700,
+.saas-prose .text-gray-600,
+.saas-prose .text-gray-500 {
+    color: var(--sn-muted) !important;
+}
+
+.saas-footer {
+    border-top: 1px solid var(--sn-line);
+    background: color-mix(in srgb, var(--sn-surface-strong) 88%, transparent);
+}
+
+@media (max-width: 768px) {
+    .saas-block {
+        padding: 1rem;
+    }
+}
