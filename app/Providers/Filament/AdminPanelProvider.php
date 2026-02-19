@@ -149,6 +149,67 @@ class AdminPanelProvider extends PanelProvider
                             letter-spacing: 0.05em; border-bottom: 1px solid rgb(229 231 235);
                             margin-bottom: 0.25rem; padding-block: 0.25rem;
                         }
+
+                        /* Modal glass */
+                        .fi-modal-window,
+                        .fi-simple-modal,
+                        .fi-dropdown-panel {
+                            backdrop-filter: blur(16px);
+                            border-color: rgba(148, 163, 184, 0.28) !important;
+                            background-color: rgba(248, 250, 252, 0.96) !important;
+                        }
+                        .dark .fi-modal-window,
+                        .dark .fi-simple-modal,
+                        .dark .fi-dropdown-panel {
+                            border-color: rgba(71, 85, 105, 0.5) !important;
+                            background-color: rgba(10, 16, 30, 0.95) !important;
+                        }
+
+                        /* Widget cards glass */
+                        .fi-wi-stats-overview-stat,
+                        .fi-wi {
+                            backdrop-filter: blur(10px);
+                            border-color: rgba(148, 163, 184, 0.28) !important;
+                            background-color: rgba(255, 255, 255, 0.86) !important;
+                        }
+                        .dark .fi-wi-stats-overview-stat,
+                        .dark .fi-wi {
+                            border-color: rgba(71, 85, 105, 0.5) !important;
+                            background-color: rgba(15, 23, 42, 0.82) !important;
+                        }
+
+                        /* Page header */
+                        .fi-header {
+                            backdrop-filter: blur(8px);
+                        }
+
+                        /* Nav group labels */
+                        .fi-sidebar-group-label {
+                            font-size: 0.65rem;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            letter-spacing: 0.08em;
+                            opacity: 0.55;
+                        }
+
+                        /* Input / select fields */
+                        .fi-input,
+                        .fi-select-input,
+                        .fi-fo-rich-editor {
+                            border-color: rgba(148, 163, 184, 0.38) !important;
+                        }
+                        .dark .fi-input,
+                        .dark .fi-select-input,
+                        .dark .fi-fo-rich-editor {
+                            border-color: rgba(71, 85, 105, 0.6) !important;
+                            background-color: rgba(15, 23, 42, 0.6) !important;
+                        }
+
+                        /* Breadcrumbs */
+                        .fi-breadcrumbs {
+                            opacity: 0.7;
+                            font-size: 0.8rem;
+                        }
                     </style>
                 '),
             );
