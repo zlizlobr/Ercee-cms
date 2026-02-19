@@ -165,17 +165,70 @@ class AdminPanelProvider extends PanelProvider
                             background-color: rgba(10, 16, 30, 0.95) !important;
                         }
 
-                        /* Widget cards glass */
-                        .fi-wi-stats-overview-stat,
-                        .fi-wi {
-                            backdrop-filter: blur(10px);
-                            border-color: rgba(148, 163, 184, 0.28) !important;
-                            background-color: rgba(255, 255, 255, 0.86) !important;
+                        /* ── Stats overview: individual cards ── */
+                        /* Correct Filament v3 class: fi-wi-stats-overview-stat */
+                        .fi-wi-stats-overview-stat {
+                            backdrop-filter: blur(14px) !important;
+                            -webkit-backdrop-filter: blur(14px) !important;
+                            background-color: rgba(248, 250, 252, 0.88) !important;
+                            border: 1px solid rgba(148, 163, 184, 0.3) !important;
+                            border-radius: 0.875rem !important;
+                            box-shadow: 0 2px 16px rgba(15, 23, 42, 0.07) !important;
+                            transition: border-color 0.2s, box-shadow 0.2s;
                         }
-                        .dark .fi-wi-stats-overview-stat,
+                        .fi-wi-stats-overview-stat:hover {
+                            border-color: rgba(234, 88, 12, 0.35) !important;
+                            box-shadow: 0 4px 24px rgba(234, 88, 12, 0.14) !important;
+                        }
+                        .dark .fi-wi-stats-overview-stat {
+                            background-color: rgba(15, 23, 42, 0.62) !important;
+                            border: 1px solid rgba(251, 146, 60, 0.22) !important;
+                            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(251, 146, 60, 0.07) inset !important;
+                        }
+                        .dark .fi-wi-stats-overview-stat:hover {
+                            border-color: rgba(251, 146, 60, 0.42) !important;
+                            box-shadow: 0 4px 32px rgba(251, 146, 60, 0.18) !important;
+                        }
+
+                        /* Stat value – orange, neon glow in dark */
+                        .fi-wi-stats-overview-stat-value {
+                            color: #ea580c !important;
+                            font-weight: 700 !important;
+                        }
+                        .dark .fi-wi-stats-overview-stat-value {
+                            color: #fb923c !important;
+                            text-shadow: 0 0 22px rgba(251, 146, 60, 0.55) !important;
+                        }
+
+                        /* Stat label – muted */
+                        .fi-wi-stats-overview-stat-label {
+                            font-size: 0.75rem !important;
+                            font-weight: 500 !important;
+                            letter-spacing: 0.03em !important;
+                            opacity: 0.6 !important;
+                        }
+
+                        /* ── Widget wrapper (account widget etc.) ── */
+                        .fi-wi {
+                            backdrop-filter: blur(12px) !important;
+                            -webkit-backdrop-filter: blur(12px) !important;
+                            border-radius: 1rem !important;
+                        }
                         .dark .fi-wi {
-                            border-color: rgba(71, 85, 105, 0.5) !important;
-                            background-color: rgba(15, 23, 42, 0.82) !important;
+                            background-color: rgba(15, 23, 42, 0.62) !important;
+                            border-color: rgba(251, 146, 60, 0.16) !important;
+                        }
+
+                        /* Account widget specific */
+                        .fi-account-widget {
+                            backdrop-filter: blur(14px) !important;
+                            -webkit-backdrop-filter: blur(14px) !important;
+                            border-radius: 1rem !important;
+                        }
+                        .dark .fi-account-widget {
+                            background-color: rgba(15, 23, 42, 0.62) !important;
+                            border-color: rgba(251, 146, 60, 0.16) !important;
+                            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
                         }
 
                         /* Page header */
