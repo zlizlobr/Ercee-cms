@@ -1,0 +1,16 @@
+# Page Builder JSON Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/page-builder-json-agent/SKILL.md>
+
+Repository-local context:
+
+- `docs/reference/content/block-contract.md`
+- `docs/cms-block-integration-guide.md`
+- `docs/schemas/`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

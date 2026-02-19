@@ -1,0 +1,16 @@
+# Linear Task Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/linear-task-agent/SKILL.md>
+
+Repository-local context:
+
+- `.linear/config/AGENT.md`
+- `.linear/config/schema.json`
+- `.linear/data/tasks.json`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.
