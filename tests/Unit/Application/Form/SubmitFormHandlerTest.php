@@ -5,13 +5,13 @@ namespace Tests\Unit\Application\Form;
 use Modules\Forms\Application\Commands\SubmitFormCommand;
 use Modules\Forms\Application\SubmitFormHandler;
 use Modules\Forms\Domain\Contract;
-use App\Events\ContractCreated;
 use Modules\Forms\Domain\Form;
 use App\Contracts\Services\SubscriberServiceInterface;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class SubmitFormHandlerTest extends TestCase
@@ -20,13 +20,23 @@ class SubmitFormHandlerTest extends TestCase
 
     private SubmitFormHandler $handler;
 
-    private SubscriberServiceInterface $subscriberService;
+    private MockInterface $subscriberService;
+
+    private string $contractCreatedEventClass;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->subscriberService = Mockery::mock(SubscriberServiceInterface::class);
+        $this->contractCreatedEventClass = class_exists(\Modules\Forms\Domain\Events\ContractCreated::class, false)
+            ? \Modules\Forms\Domain\Events\ContractCreated::class
+            : \App\Events\ContractCreated::class;
+
+        $subscriberServiceType = class_exists(\Modules\Forms\Domain\Subscriber\SubscriberService::class, false)
+            ? \Modules\Forms\Domain\Subscriber\SubscriberService::class
+            : SubscriberServiceInterface::class;
+
+        $this->subscriberService = Mockery::mock($subscriberServiceType);
         $this->handler = new SubmitFormHandler($this->subscriberService);
     }
 
@@ -89,7 +99,7 @@ class SubmitFormHandlerTest extends TestCase
 
     public function test_creates_contract_and_dispatches_event_on_success(): void
     {
-        Event::fake([ContractCreated::class]);
+        Event::fake([$this->contractCreatedEventClass]);
 
         $form = Form::factory()->create([
             'active' => true,
@@ -125,6 +135,6 @@ class SubmitFormHandlerTest extends TestCase
         $this->assertEquals('test@example.com', $contract->email);
         $this->assertEquals(['name' => 'John Doe'], $contract->data);
 
-        Event::assertDispatched(ContractCreated::class);
+        Event::assertDispatched($this->contractCreatedEventClass);
     }
 }

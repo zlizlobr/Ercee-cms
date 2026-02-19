@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Modules\Forms\Domain\Contract;
-use App\Events\ContractCreated;
 use Modules\Forms\Domain\Form;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,9 +13,20 @@ class FormSubmissionTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $contractCreatedEventClass;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->contractCreatedEventClass = class_exists(\Modules\Forms\Domain\Events\ContractCreated::class, false)
+            ? \Modules\Forms\Domain\Events\ContractCreated::class
+            : \App\Events\ContractCreated::class;
+    }
+
     public function test_can_submit_form_successfully(): void
     {
-        Event::fake([ContractCreated::class]);
+        Event::fake([$this->contractCreatedEventClass]);
 
         $form = Form::factory()->create([
             'active' => true,
@@ -47,7 +57,7 @@ class FormSubmissionTest extends TestCase
             'status' => Contract::STATUS_NEW,
         ]);
 
-        Event::assertDispatched(ContractCreated::class);
+        Event::assertDispatched($this->contractCreatedEventClass);
     }
 
     public function test_returns_404_for_inactive_form(): void
@@ -101,7 +111,7 @@ class FormSubmissionTest extends TestCase
 
     public function test_uses_existing_subscriber_if_email_exists(): void
     {
-        Event::fake([ContractCreated::class]);
+        Event::fake([$this->contractCreatedEventClass]);
 
         $existingSubscriber = Subscriber::factory()->create([
             'email' => 'existing@example.com',
