@@ -24,4 +24,5 @@ trap cleanup EXIT
 DB_CONNECTION=sqlite \
 DB_DATABASE="$TEST_DB" \
 APP_CONFIG_CACHE="$TEST_CONFIG_CACHE" \
+ERCEE_TEST_SAFE=1 \
 php artisan test "$@"

@@ -34,7 +34,7 @@ npm run test
 CMS nebo modul testy:
 ```bash
 cd /usr/local/var/www/Ercee-cms
-php artisan test
+./scripts/test-safe.sh
 ```
 
 nebo pro modul:
@@ -62,13 +62,33 @@ npm run verify:forms-field:e2e
 - `lint fail` -> oprav format/styl
 - `unit test fail` -> oprav chovani nebo test fixture
 - `e2e fail` -> over data seed, endpointy a runtime render
+- `DB-SAFETY Blocked` -> pokud opravdu potrebujes mutacni prikaz (`migrate`, `db:seed`), spust ho explicitne s `ERCEE_ALLOW_DB_MUTATION=1`.
 
 ## 6. Done criteria
 - Bez merge, pokud neprojde A + B.
 - U public zmen preferuj i C.
 - Bugfix bez regresniho testu se nepovazuje za hotovy.
 
+## 7. Povinne endpoint assertions (anti-shape-only pravidlo)
+- Samotne `assertJsonStructure` nestaci.
+- Pro kazdy meneny endpoint pridej minimalne:
+  - 1x happy path s business pravidlem (ne jen shape),
+  - 1x negativni branch (404/422/401/403 podle typu endpointu),
+  - 1x side-effect/invariant assertion (DB count, event dispatch, ordering, fallback precedence),
+  - idempotence/retry test vsude, kde endpoint vytvari nebo meni data.
+
+Prakticky checklist pred PR:
+- "Overil jsem business pravidlo?"
+- "Overil jsem negativni branch?"
+- "Overil jsem side effect nebo invariant?"
+- "Pokud endpoint zapisuje data: overil jsem idempotenci?"
+
+Referencni matrix pro vsechny endpointy:
+- `docs/guides/test-strategy-recommendations-ecosystem.md` (sekce 7)
+- `docs/guides/endpoint-test-backlog-ecosystem.md` (konkretni TODO po endpointu)
+
 ## Related docs
+- `docs/guides/test-writing-guide.md`
 - `docs/cms-block-integration-guide.md`
 - `dev/todo/testing-unification-ercee-ecosystem.md`
 - `docs/guides/setup/local-frontend-setup.md`

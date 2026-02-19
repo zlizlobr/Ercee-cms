@@ -158,9 +158,9 @@ protected array $dependencies = [
 composer test
 
 # Modulove testy
-php artisan test --filter=Forms
-php artisan test --filter=Commerce
-php artisan test --filter=Funnel
+./scripts/test-safe.sh --filter=Forms
+./scripts/test-safe.sh --filter=Commerce
+./scripts/test-safe.sh --filter=Funnel
 ```
 
 ## Cache
