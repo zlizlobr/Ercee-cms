@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->darkMode(true, true)
             ->defaultThemeMode(ThemeMode::Dark)
             ->colors([
                 'primary' => Color::Orange,
