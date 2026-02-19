@@ -42,6 +42,6 @@
         <env name="GITHUB_FRONTEND_REPOSITORY" value="test-org/test-frontend"/>
         <env name="API_PUBLIC_TOKEN" value="test-public-token"/>
         <env name="MODULE_LOAD_MIGRATIONS" value="true"/>
-        <env name="MODULE_MIGRATION_ALLOWLIST" value="forms"/>
+        <env name="MODULE_MIGRATION_ALLOWLIST" value="forms,funnel"/>
     </php>
 </phpunit>
