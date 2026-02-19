@@ -16,6 +16,8 @@ use App\Observers\MenuObserver;
 use App\Observers\NavigationObserver;
 use App\Observers\PageObserver;
 use App\Observers\ThemeSettingObserver;
+use App\Contracts\Services\SubscriberServiceInterface;
+use App\Domain\Subscriber\SubscriberService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->bind(SubscriberServiceInterface::class, SubscriberService::class);
     }
 
     public function boot(): void

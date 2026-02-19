@@ -7,8 +7,8 @@ use Modules\Commerce\Application\CreateOrderHandler;
 use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
 use Modules\Commerce\Domain\Order;
 use Modules\Commerce\Domain\Product;
-use Modules\Forms\Domain\Subscriber\Subscriber;
-use Modules\Forms\Domain\Subscriber\SubscriberService;
+use App\Contracts\Services\SubscriberServiceInterface;
+use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ class CreateOrderHandlerTest extends TestCase
 
     private CreateOrderHandler $handler;
 
-    private SubscriberService $subscriberService;
+    private SubscriberServiceInterface $subscriberService;
 
     private PaymentGatewayInterface $paymentGateway;
 
@@ -27,7 +27,7 @@ class CreateOrderHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->subscriberService = Mockery::mock(SubscriberService::class);
+        $this->subscriberService = Mockery::mock(SubscriberServiceInterface::class);
         $this->paymentGateway = Mockery::mock(PaymentGatewayInterface::class);
         $this->handler = new CreateOrderHandler($this->subscriberService, $this->paymentGateway);
     }
@@ -70,8 +70,8 @@ class CreateOrderHandlerTest extends TestCase
         $subscriber = Subscriber::factory()->create();
 
         $this->subscriberService
-            ->shouldReceive('findOrCreateByEmail')
-            ->with('test@example.com', 'checkout:'.$product->id)
+            ->shouldReceive('findOrCreate')
+            ->with('test@example.com', ['source' => 'checkout:'.$product->id])
             ->once()
             ->andReturn($subscriber);
 

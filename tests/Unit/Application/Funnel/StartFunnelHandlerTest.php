@@ -6,7 +6,7 @@ use Modules\Funnel\Application\Commands\StartFunnelCommand;
 use Modules\Funnel\Application\StartFunnelHandler;
 use Modules\Funnel\Domain\Funnel;
 use Modules\Funnel\Domain\Services\FunnelStarter;
-use Modules\Forms\Domain\Subscriber\Subscriber;
+use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;

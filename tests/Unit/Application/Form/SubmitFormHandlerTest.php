@@ -5,10 +5,10 @@ namespace Tests\Unit\Application\Form;
 use Modules\Forms\Application\Commands\SubmitFormCommand;
 use Modules\Forms\Application\SubmitFormHandler;
 use Modules\Forms\Domain\Contract;
-use Modules\Forms\Domain\Events\ContractCreated;
+use App\Events\ContractCreated;
 use Modules\Forms\Domain\Form;
-use Modules\Forms\Domain\Subscriber\Subscriber;
-use Modules\Forms\Domain\Subscriber\SubscriberService;
+use App\Contracts\Services\SubscriberServiceInterface;
+use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -20,13 +20,13 @@ class SubmitFormHandlerTest extends TestCase
 
     private SubmitFormHandler $handler;
 
-    private SubscriberService $subscriberService;
+    private SubscriberServiceInterface $subscriberService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->subscriberService = Mockery::mock(SubscriberService::class);
+        $this->subscriberService = Mockery::mock(SubscriberServiceInterface::class);
         $this->handler = new SubmitFormHandler($this->subscriberService);
     }
 
@@ -101,8 +101,8 @@ class SubmitFormHandlerTest extends TestCase
         $subscriber = Subscriber::factory()->create();
 
         $this->subscriberService
-            ->shouldReceive('findOrCreateByEmail')
-            ->with('test@example.com', 'test-source')
+            ->shouldReceive('findOrCreate')
+            ->with('test@example.com', ['source' => 'test-source'])
             ->once()
             ->andReturn($subscriber);
 
