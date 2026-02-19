@@ -14,6 +14,8 @@ if [[ "${1:-}" == "--fresh" ]]; then
     FRESH=true
 fi
 
+./scripts/assert-db-mutation-allowed.sh "deploy migrate/seed"
+
 echo "==> Installing Composer dependencies (production)"
 composer install --no-dev --optimize-autoloader --no-interaction
 
