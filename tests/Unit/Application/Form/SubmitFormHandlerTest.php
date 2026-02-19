@@ -22,14 +22,14 @@ class SubmitFormHandlerTest extends TestCase
     private SubmitFormHandler $handler;
 
     private MockInterface $subscriberService;
+    private string $subscriberServiceType;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $subscriberServiceType = $this->resolveConstructorDependencyType(SubmitFormHandler::class, 0);
-
-        $this->subscriberService = Mockery::mock($subscriberServiceType);
+        $this->subscriberServiceType = $this->resolveConstructorDependencyType(SubmitFormHandler::class, 0);
+        $this->subscriberService = Mockery::mock($this->subscriberServiceType);
         $this->handler = new SubmitFormHandler($this->subscriberService);
     }
 
@@ -103,11 +103,11 @@ class SubmitFormHandlerTest extends TestCase
 
         $subscriber = Subscriber::factory()->create();
 
-        $this->subscriberService
-            ->shouldReceive('findOrCreate')
-            ->with('test@example.com', ['source' => 'test-source'])
-            ->once()
-            ->andReturn($subscriber);
+        $this->expectSubscriberFindOrCreate(
+            email: 'test@example.com',
+            source: 'test-source',
+            subscriber: $subscriber
+        );
 
         $command = new SubmitFormCommand(
             formId: $form->id,
@@ -132,6 +132,25 @@ class SubmitFormHandlerTest extends TestCase
         $appEventDispatched = Event::dispatched(\App\Events\ContractCreated::class)->isNotEmpty();
 
         $this->assertTrue($moduleEventDispatched || $appEventDispatched, 'ContractCreated event was not dispatched.');
+    }
+
+    private function expectSubscriberFindOrCreate(string $email, string $source, Subscriber $subscriber): void
+    {
+        if (method_exists($this->subscriberServiceType, 'findOrCreateByEmail')) {
+            $this->subscriberService
+                ->shouldReceive('findOrCreateByEmail')
+                ->with($email, $source)
+                ->once()
+                ->andReturn($subscriber);
+
+            return;
+        }
+
+        $this->subscriberService
+            ->shouldReceive('findOrCreate')
+            ->with($email, ['source' => $source])
+            ->once()
+            ->andReturn($subscriber);
     }
 
     private function resolveConstructorDependencyType(string $className, int $index): string

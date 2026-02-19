@@ -24,14 +24,14 @@ class CreateOrderHandlerTest extends TestCase
     private MockInterface $subscriberService;
 
     private PaymentGatewayInterface $paymentGateway;
+    private string $subscriberServiceType;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $subscriberServiceType = $this->resolveConstructorDependencyType(CreateOrderHandler::class, 0);
-
-        $this->subscriberService = Mockery::mock($subscriberServiceType);
+        $this->subscriberServiceType = $this->resolveConstructorDependencyType(CreateOrderHandler::class, 0);
+        $this->subscriberService = Mockery::mock($this->subscriberServiceType);
         $this->paymentGateway = Mockery::mock(PaymentGatewayInterface::class);
         $this->handler = new CreateOrderHandler($this->subscriberService, $this->paymentGateway);
     }
@@ -90,11 +90,11 @@ class CreateOrderHandlerTest extends TestCase
 
         $subscriber = Subscriber::factory()->create();
 
-        $this->subscriberService
-            ->shouldReceive('findOrCreate')
-            ->with('test@example.com', ['source' => 'checkout:'.$product->id])
-            ->once()
-            ->andReturn($subscriber);
+        $this->expectSubscriberFindOrCreate(
+            email: 'test@example.com',
+            source: 'checkout:'.$product->id,
+            subscriber: $subscriber
+        );
 
         $this->paymentGateway
             ->shouldReceive('createPayment')
@@ -119,5 +119,24 @@ class CreateOrderHandlerTest extends TestCase
         $this->assertEquals('test@example.com', $order->email);
         $this->assertEquals(10000, $order->price);
         $this->assertEquals(Order::STATUS_PENDING, $order->status);
+    }
+
+    private function expectSubscriberFindOrCreate(string $email, string $source, Subscriber $subscriber): void
+    {
+        if (method_exists($this->subscriberServiceType, 'findOrCreateByEmail')) {
+            $this->subscriberService
+                ->shouldReceive('findOrCreateByEmail')
+                ->with($email, $source)
+                ->once()
+                ->andReturn($subscriber);
+
+            return;
+        }
+
+        $this->subscriberService
+            ->shouldReceive('findOrCreate')
+            ->with($email, ['source' => $source])
+            ->once()
+            ->andReturn($subscriber);
     }
 }
