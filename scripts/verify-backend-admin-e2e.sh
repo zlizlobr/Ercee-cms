@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+./scripts/assert-db-mutation-allowed.sh "verify-backend-admin:e2e migrations+seed"
+
 echo "[verify:backend-admin:e2e] ensuring forms schema needed by admin dashboard..."
 php artisan migrate --path=modules/forms/database/migrations/2026_02_06_000002_create_contracts_table.php --force
 php artisan migrate --path=modules/forms/database/migrations/2026_02_10_000001_add_draft_token_to_contracts_table.php --force

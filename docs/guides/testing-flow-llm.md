@@ -46,6 +46,8 @@ cd /usr/local/var/www/ercee-modules/<module>
 Safety rule (mandatory):
 - Never run `php artisan test` directly in `/usr/local/var/www/Ercee-cms` when local sqlite is used.
 - Always use `./scripts/test-safe.sh` so tests run on a cloned DB (`storage/testing/database.sqlite`).
+- DB-mutating scripts (`migrate`, `db:seed`, deploy/e2e migrate helpers) require explicit opt-in outside CI/production:
+  - `ERCEE_ALLOW_DB_MUTATION=1 <command>`
 
 Notes:
 - Every bugfix must include a regression test.
@@ -77,6 +79,7 @@ npm run verify:forms-field:e2e
 - If C cannot run locally, record the blocker and run C in CI/nightly.
 
 ## Required links
+- Test writing baseline: `docs/guides/test-writing-guide.md`
 - Unified strategy: `dev/todo/testing-unification-ercee-ecosystem.md`
 - Blocks flow: `docs/cms-block-integration-guide.md`
 - Field-type flow: `../ercee-modules/ercee-module-forms/docs/form-field-type-integration-guide.md`
