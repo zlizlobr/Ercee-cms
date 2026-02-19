@@ -153,6 +153,26 @@ composer install
 
 Pokud potřebuješ testovat modul přes Laravel `php artisan test`, spouštěj testy z hlavního CMS projektu, ne z repo modulu.
 
+## Seeder pattern (JSON only)
+
+Pro konzistenci mezi CMS a moduly musí seedery načítat data z JSON souborů, ne z hardcoded PHP polí.
+
+Požadovaný pattern:
+
+- JSON data ukládej do `storage/app/seed-data/*.json` (v kontextu CMS projektu)
+- seeder musí bezpečně řešit:
+  - neexistující soubor (warning + return)
+  - nevalidní JSON (warning + return)
+  - nevalidní záznam v poli (skip + pokračovat)
+- preferuj `updateOrCreate()` pro idempotentní seed běh
+- volitelně podporuj env override typu `*_SEED_PATH`
+
+Příklad spuštění:
+
+```bash
+php artisan db:seed --class='Modules\\Analytics\\Database\\Seeders\\AnalyticsProvidersSeeder'
+```
+
 ## Adresářová struktura modulu
 
 | Adresář | Účel |
