@@ -7,10 +7,12 @@ use Modules\Commerce\Application\CreateOrderHandler;
 use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
 use Modules\Commerce\Domain\Order;
 use Modules\Commerce\Domain\Product;
-use App\Contracts\Services\SubscriberServiceInterface;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
+use Mockery\MockInterface;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Tests\TestCase;
 
 class CreateOrderHandlerTest extends TestCase
@@ -19,7 +21,7 @@ class CreateOrderHandlerTest extends TestCase
 
     private CreateOrderHandler $handler;
 
-    private SubscriberServiceInterface $subscriberService;
+    private MockInterface $subscriberService;
 
     private PaymentGatewayInterface $paymentGateway;
 
@@ -27,9 +29,28 @@ class CreateOrderHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->subscriberService = Mockery::mock(SubscriberServiceInterface::class);
+        $subscriberServiceType = $this->resolveConstructorDependencyType(CreateOrderHandler::class, 0);
+
+        $this->subscriberService = Mockery::mock($subscriberServiceType);
         $this->paymentGateway = Mockery::mock(PaymentGatewayInterface::class);
         $this->handler = new CreateOrderHandler($this->subscriberService, $this->paymentGateway);
+    }
+
+    private function resolveConstructorDependencyType(string $className, int $index): string
+    {
+        $constructor = new ReflectionMethod($className, '__construct');
+        $parameter = $constructor->getParameters()[$index] ?? null;
+        $type = $parameter?->getType();
+
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+
+        $this->fail(sprintf(
+            'Unable to resolve constructor dependency type for %s parameter #%d.',
+            $className,
+            $index
+        ));
     }
 
     public function test_returns_product_not_found_when_product_does_not_exist(): void

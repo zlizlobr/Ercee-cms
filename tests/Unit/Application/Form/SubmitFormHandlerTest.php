@@ -6,12 +6,13 @@ use Modules\Forms\Application\Commands\SubmitFormCommand;
 use Modules\Forms\Application\SubmitFormHandler;
 use Modules\Forms\Domain\Contract;
 use Modules\Forms\Domain\Form;
-use App\Contracts\Services\SubscriberServiceInterface;
 use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 use Mockery\MockInterface;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Tests\TestCase;
 
 class SubmitFormHandlerTest extends TestCase
@@ -22,19 +23,11 @@ class SubmitFormHandlerTest extends TestCase
 
     private MockInterface $subscriberService;
 
-    private string $contractCreatedEventClass;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->contractCreatedEventClass = class_exists(\Modules\Forms\Domain\Events\ContractCreated::class, false)
-            ? \Modules\Forms\Domain\Events\ContractCreated::class
-            : \App\Events\ContractCreated::class;
-
-        $subscriberServiceType = class_exists(\Modules\Forms\Domain\Subscriber\SubscriberService::class, false)
-            ? \Modules\Forms\Domain\Subscriber\SubscriberService::class
-            : SubscriberServiceInterface::class;
+        $subscriberServiceType = $this->resolveConstructorDependencyType(SubmitFormHandler::class, 0);
 
         $this->subscriberService = Mockery::mock($subscriberServiceType);
         $this->handler = new SubmitFormHandler($this->subscriberService);
@@ -99,7 +92,7 @@ class SubmitFormHandlerTest extends TestCase
 
     public function test_creates_contract_and_dispatches_event_on_success(): void
     {
-        Event::fake([$this->contractCreatedEventClass]);
+        Event::fake();
 
         $form = Form::factory()->create([
             'active' => true,
@@ -135,6 +128,26 @@ class SubmitFormHandlerTest extends TestCase
         $this->assertEquals('test@example.com', $contract->email);
         $this->assertEquals(['name' => 'John Doe'], $contract->data);
 
-        Event::assertDispatched($this->contractCreatedEventClass);
+        $moduleEventDispatched = Event::dispatched('Modules\\Forms\\Domain\\Events\\ContractCreated')->isNotEmpty();
+        $appEventDispatched = Event::dispatched(\App\Events\ContractCreated::class)->isNotEmpty();
+
+        $this->assertTrue($moduleEventDispatched || $appEventDispatched, 'ContractCreated event was not dispatched.');
+    }
+
+    private function resolveConstructorDependencyType(string $className, int $index): string
+    {
+        $constructor = new ReflectionMethod($className, '__construct');
+        $parameter = $constructor->getParameters()[$index] ?? null;
+        $type = $parameter?->getType();
+
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+
+        $this->fail(sprintf(
+            'Unable to resolve constructor dependency type for %s parameter #%d.',
+            $className,
+            $index
+        ));
     }
 }
