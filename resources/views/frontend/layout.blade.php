@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="theme-dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,91 +16,113 @@
 
     @vite(['resources/css/app.css'])
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
-    <header class="bg-white shadow-sm">
-        <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 items-center justify-between">
-                <div class="flex items-center">
-                    <a href="/" class="text-xl font-bold text-gray-900">
-                        {{ config('app.name', 'Ercee') }}
-                    </a>
-                </div>
+<body class="saas-neon min-h-screen antialiased transition-colors duration-300">
+    <header class="sticky top-0 z-50 border-b border-transparent px-4 pt-4 sm:px-6 lg:px-8">
+        <nav class="saas-shell mx-auto max-w-7xl rounded-2xl px-4 sm:px-6">
+            <div class="flex h-16 items-center justify-between gap-4">
+                <a href="/" class="text-lg font-semibold tracking-tight sm:text-xl">
+                    {{ config('app.name', 'Ercee') }}
+                </a>
 
                 @if(!empty($navigation))
                     <div class="hidden md:block">
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center gap-5">
                             @foreach($navigation as $item)
                                 @if(!empty($item['children']))
                                     <div class="relative group">
-                                        <button class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+                                        <button class="saas-nav-link inline-flex items-center gap-1 text-sm font-medium">
                                             {{ $item['title'] }}
-                                            <svg class="ml-1 inline h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                             </svg>
                                         </button>
-                                        <div class="absolute left-0 z-10 mt-2 hidden w-48 rounded-md bg-white py-1 shadow-lg group-hover:block">
+                                        <div class="saas-shell absolute left-0 z-10 mt-3 hidden min-w-48 rounded-xl p-2 group-hover:block">
                                             @foreach($item['children'] as $child)
-                                                <a href="{{ $child['url'] }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <a href="{{ $child['url'] }}" class="saas-nav-link block rounded-lg px-3 py-2 text-sm">
                                                     {{ $child['title'] }}
                                                 </a>
                                             @endforeach
                                         </div>
                                     </div>
                                 @else
-                                    <a href="{{ $item['url'] }}" class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
-                                        {{ $item['title'] }}
-                                    </a>
+                                    <a href="{{ $item['url'] }}" class="saas-nav-link text-sm font-medium">{{ $item['title'] }}</a>
                                 @endif
                             @endforeach
                         </div>
                     </div>
                 @endif
 
-                <div class="md:hidden">
-                    <button type="button" id="mobile-menu-button" class="text-gray-700 hover:text-gray-900">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center gap-2">
+                    <button type="button" id="theme-toggle" class="saas-btn-secondary rounded-lg px-3 py-2 text-sm font-medium">
+                        White mode
+                    </button>
+                    <button type="button" id="mobile-menu-button" class="saas-btn-secondary rounded-lg p-2 md:hidden" aria-label="Open menu">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                 </div>
             </div>
-        </nav>
 
-        @if(!empty($navigation))
-            <div id="mobile-menu" class="hidden md:hidden">
-                <div class="space-y-1 px-2 pb-3 pt-2">
-                    @foreach($navigation as $item)
-                        <a href="{{ $item['url'] }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
-                            {{ $item['title'] }}
-                        </a>
-                        @if(!empty($item['children']))
-                            @foreach($item['children'] as $child)
-                                <a href="{{ $child['url'] }}" class="block rounded-md px-6 py-2 text-sm text-gray-500 hover:bg-gray-100">
-                                    {{ $child['title'] }}
-                                </a>
-                            @endforeach
-                        @endif
-                    @endforeach
+            @if(!empty($navigation))
+                <div id="mobile-menu" class="saas-mobile-menu hidden pb-3 md:hidden">
+                    <div class="space-y-1 pt-3">
+                        @foreach($navigation as $item)
+                            <a href="{{ $item['url'] }}" class="saas-nav-link block rounded-md px-2 py-2 text-sm font-medium">
+                                {{ $item['title'] }}
+                            </a>
+                            @if(!empty($item['children']))
+                                @foreach($item['children'] as $child)
+                                    <a href="{{ $child['url'] }}" class="saas-nav-link block rounded-md px-5 py-2 text-xs">
+                                        {{ $child['title'] }}
+                                    </a>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </nav>
     </header>
 
-    <main>
+    <main class="px-4 pb-12 pt-8 sm:px-6 lg:px-8">
         @yield('content')
     </main>
 
-    <footer class="mt-auto bg-gray-800 py-8 text-white">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center text-sm text-gray-400">
-                &copy; {{ date('Y') }} {{ config('app.name', 'Ercee') }}. All rights reserved.
+    <footer class="saas-footer mt-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl text-sm" style="color: var(--sn-muted)">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p>&copy; {{ date('Y') }} {{ config('app.name', 'Ercee') }}. All rights reserved.</p>
+                <p>Neon SaaS template (dark + white mode)</p>
             </div>
         </div>
     </footer>
 
     <script>
-        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
-            document.getElementById('mobile-menu')?.classList.toggle('hidden');
+        const root = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        const setTheme = (theme) => {
+            root.classList.toggle('theme-dark', theme === 'dark');
+            root.classList.toggle('theme-light', theme === 'light');
+            localStorage.setItem('saas-theme', theme);
+            if (themeToggle) {
+                themeToggle.textContent = theme === 'dark' ? 'White mode' : 'Dark mode';
+            }
+        };
+
+        const savedTheme = localStorage.getItem('saas-theme') || 'dark';
+        setTheme(savedTheme);
+
+        themeToggle?.addEventListener('click', () => {
+            const next = root.classList.contains('theme-dark') ? 'light' : 'dark';
+            setTheme(next);
+        });
+
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu?.classList.toggle('hidden');
         });
     </script>
 

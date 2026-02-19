@@ -19,6 +19,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Enums\ThemeMode;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Support\HtmlString;
@@ -40,8 +41,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->defaultThemeMode(ThemeMode::Dark)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Orange,
             ])
             ->navigationItems([
                 NavigationItem::make('Homepage')
@@ -91,6 +93,48 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn () => new HtmlString('
                     <style>
+                        .fi-body {
+                            background: radial-gradient(circle at 0% 0%, rgba(251, 146, 60, 0.17), transparent 24%),
+                                radial-gradient(circle at 100% 12%, rgba(56, 189, 248, 0.14), transparent 32%),
+                                #f8fafc;
+                        }
+                        .dark .fi-body {
+                            background: radial-gradient(circle at 14% 0%, rgba(251, 146, 60, 0.2), transparent 34%),
+                                radial-gradient(circle at 84% 10%, rgba(59, 130, 246, 0.16), transparent 38%),
+                                #020617;
+                        }
+                        .fi-main,
+                        .fi-sidebar,
+                        .fi-topbar,
+                        .fi-ta,
+                        .fi-section,
+                        .fi-fo-field-wrp {
+                            backdrop-filter: blur(10px);
+                        }
+                        .fi-sidebar,
+                        .fi-topbar,
+                        .fi-section,
+                        .fi-ta,
+                        .fi-fo-field-wrp {
+                            border-color: rgba(148, 163, 184, 0.28) !important;
+                            background-color: rgba(255, 255, 255, 0.82) !important;
+                        }
+                        .dark .fi-sidebar,
+                        .dark .fi-topbar,
+                        .dark .fi-section,
+                        .dark .fi-ta,
+                        .dark .fi-fo-field-wrp {
+                            border-color: rgba(71, 85, 105, 0.5) !important;
+                            background-color: rgba(15, 23, 42, 0.86) !important;
+                        }
+                        .fi-sidebar-item-button,
+                        .fi-topbar-item-btn,
+                        .fi-btn {
+                            border-radius: 0.75rem;
+                        }
+                        .fi-sidebar-item-active .fi-sidebar-item-button {
+                            box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.35), 0 10px 25px rgba(249, 115, 22, 0.25);
+                        }
                         .fi-fo-builder-block-picker .fi-dropdown-list-item-icon { width: 1.25rem; height: 1.25rem; }
                         .fi-fo-builder-block-picker .fi-dropdown-list-item { padding-block: 0.5rem; }
                         .fi-fo-builder-block-picker-modal { z-index: 210; }

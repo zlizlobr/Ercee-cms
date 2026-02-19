@@ -30,6 +30,7 @@ This folder follows a structured information model:
   - `docs/guides/frontend/astro-frontend-guide.md`
   - `docs/guides/frontend/preview-frontend-guide.md`
   - `docs/guides/frontend/frontend-menu-integration.md`
+  - `docs/guides/frontend/saas-neon-template-rules.md`
 - Content
   - `docs/cms-block-integration-guide.md`
 - Commerce
