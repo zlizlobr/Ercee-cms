@@ -1,0 +1,72 @@
+{
+  "$schema": "../../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.login",
+  "version": 2,
+  "description": "Admin user can log in to the CMS admin panel",
+  "mode": ["pr", "nightly"],
+  "tags": ["auth", "p1", "smoke"],
+  "defaults": {
+    "timeout": 15000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "adminEmail": {
+      "source": "env",
+      "key": "E2E_ADMIN_EMAIL",
+      "default": "admin@example.com"
+    },
+    "adminPassword": {
+      "source": "env",
+      "key": "E2E_ADMIN_PASSWORD",
+      "default": "password"
+    }
+  },
+  "steps": [
+    {
+      "id": "open-login-page",
+      "action": "goto",
+      "url": "/admin/login",
+      "description": "Navigate to admin login page",
+      "assert": [
+        { "type": "visible", "selector": { "type": "css", "value": "input[id='data.email']" } }
+      ]
+    },
+    {
+      "id": "fill-email",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.email']" },
+      "value": "{{adminEmail}}",
+      "description": "Fill in admin email",
+      "dependsOn": ["open-login-page"]
+    },
+    {
+      "id": "fill-password",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.password']" },
+      "value": "{{adminPassword}}",
+      "description": "Fill in admin password",
+      "dependsOn": ["open-login-page"]
+    },
+    {
+      "id": "submit-login",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "description": "Click the sign-in button",
+      "dependsOn": ["fill-email", "fill-password"],
+      "wait": {
+        "type": "url",
+        "value": "/admin"
+      }
+    },
+    {
+      "id": "verify-dashboard",
+      "action": "assert",
+      "assertions": [
+        { "type": "url", "value": "/admin" }
+      ],
+      "description": "Verify redirect to admin dashboard",
+      "dependsOn": ["submit-login"]
+    }
+  ]
+}

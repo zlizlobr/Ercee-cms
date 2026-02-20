@@ -1,0 +1,17 @@
+# E2E JSON Scenario Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/e2e-json-scenario-agent/SKILL.md>
+
+Repository-local context:
+
+- `tests/e2e/schema/e2e-scenario.schema.v2.json`
+- `tests/e2e/runner/types.ts`
+- `tests/e2e/runner/executors.ts`
+- `tests/e2e/scenarios/`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

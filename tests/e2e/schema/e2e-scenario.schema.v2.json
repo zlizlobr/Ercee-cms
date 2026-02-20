@@ -1,0 +1,395 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ercee-cms/e2e-scenario.schema.v2.json",
+  "title": "E2E Scenario v2",
+  "type": "object",
+  "required": ["scenarioId", "version", "mode", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "scenarioId": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "const": 2 },
+    "description": { "type": "string" },
+    "mode": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "enum": ["pr", "nightly", "release", "ad-hoc"] }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "defaults": { "$ref": "#/$defs/stepDefaults" },
+    "runtime": { "$ref": "#/$defs/runtime" },
+    "variables": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/variable" }
+    },
+    "beforeAll": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/step" }
+    },
+    "afterAll": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/step" }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "$defs": {
+    "selector": {
+      "type": "object",
+      "required": ["type", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["css", "text", "role", "testId", "xpath"] },
+        "value": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "description": "Accessible name for role-based selectors" }
+      }
+    },
+    "assertion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "selector", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "text" },
+            "selector": { "$ref": "#/$defs/selector" },
+            "value": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "selector"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "visible" },
+            "selector": { "$ref": "#/$defs/selector" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "selector"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "hidden" },
+            "selector": { "$ref": "#/$defs/selector" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "selector", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "count" },
+            "selector": { "$ref": "#/$defs/selector" },
+            "value": { "type": "integer", "minimum": 0 }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "url" },
+            "value": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "selector", "name", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "attribute" },
+            "selector": { "$ref": "#/$defs/selector" },
+            "name": { "type": "string" },
+            "value": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "wait": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "selector"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "enum": ["visible", "hidden", "attached", "detached"] },
+            "selector": { "$ref": "#/$defs/selector" },
+            "timeout": { "type": "integer", "minimum": 0 }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "url" },
+            "value": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "loadstate" },
+            "value": { "enum": ["load", "domcontentloaded", "networkidle"] }
+          }
+        }
+      ]
+    },
+    "save": {
+      "type": "object",
+      "required": ["source", "targetVar"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "enum": ["text", "value", "attribute", "url"] },
+        "selector": { "$ref": "#/$defs/selector" },
+        "attribute": { "type": "string" },
+        "targetVar": { "type": "string", "minLength": 1 }
+      }
+    },
+    "stepDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timeout": { "type": "integer", "minimum": 0 },
+        "retry": { "type": "integer", "minimum": 0 },
+        "onFail": { "enum": ["stop", "continue", "skip_dependents"] }
+      }
+    },
+    "stepCommon": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "dependsOn": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "timeout": { "type": "integer", "minimum": 0 },
+        "retry": { "type": "integer", "minimum": 0 },
+        "onFail": { "enum": ["stop", "continue", "skip_dependents"] },
+        "wait": { "$ref": "#/$defs/wait" },
+        "assert": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/assertion" }
+        },
+        "save": { "$ref": "#/$defs/save" }
+      }
+    },
+    "step": {
+      "oneOf": [
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "url"],
+              "properties": {
+                "action": { "const": "goto" },
+                "url": { "type": "string", "minLength": 1 }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "selector", "value"],
+              "properties": {
+                "action": { "const": "fill" },
+                "selector": { "$ref": "#/$defs/selector" },
+                "value": { "type": "string" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "selector"],
+              "properties": {
+                "action": { "const": "click" },
+                "selector": { "$ref": "#/$defs/selector" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "selector", "value"],
+              "properties": {
+                "action": { "const": "select" },
+                "selector": { "$ref": "#/$defs/selector" },
+                "value": { "type": "string" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action"],
+              "properties": {
+                "action": { "const": "waitFor" },
+                "wait": { "$ref": "#/$defs/wait" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "assertions"],
+              "properties": {
+                "action": { "const": "assert" },
+                "assertions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "$ref": "#/$defs/assertion" }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "save"],
+              "properties": {
+                "action": { "const": "save" },
+                "save": { "$ref": "#/$defs/save" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action"],
+              "properties": {
+                "action": { "const": "loginAdmin" },
+                "email": { "type": "string" },
+                "password": { "type": "string" }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "resource"],
+              "properties": {
+                "action": { "const": "openResource" },
+                "resource": { "type": "string", "minLength": 1 },
+                "id": { "type": ["string", "integer"] }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/stepCommon" },
+            {
+              "type": "object",
+              "required": ["id", "action", "resource", "title"],
+              "properties": {
+                "action": { "const": "deleteRecordByTitle" },
+                "resource": { "type": "string", "minLength": 1 },
+                "title": { "type": "string", "minLength": 1 }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "variable": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["source", "key"],
+          "additionalProperties": false,
+          "properties": {
+            "source": { "const": "env" },
+            "key": { "type": "string", "minLength": 1 },
+            "default": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["source", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "source": { "const": "literal" },
+            "value": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["source", "type"],
+          "additionalProperties": false,
+          "properties": {
+            "source": { "const": "generated" },
+            "type": { "enum": ["uuid", "timestamp", "random_string"] },
+            "length": { "type": "integer", "minimum": 1 }
+          }
+        }
+      ]
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "viewport": {
+          "type": "object",
+          "required": ["width", "height"],
+          "additionalProperties": false,
+          "properties": {
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "device": { "type": "string" },
+        "storageState": { "type": "string" },
+        "locale": { "type": "string" },
+        "timezone": { "type": "string" },
+        "cookies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "value", "domain"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "value": { "type": "string" },
+              "domain": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

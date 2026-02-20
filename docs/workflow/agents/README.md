@@ -24,6 +24,7 @@ Available agents in this project docs:
 - `block-builder-agent`
 - `browser-playwright-agent`
 - `docs-editor-agent`
+- `e2e-json-scenario-agent`
 - `field-type-agent`
 - `forms-conversion-json-agent`
 - `linear-task-agent`
