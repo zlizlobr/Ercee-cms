@@ -1,0 +1,141 @@
+name: Module Integration Reusable
+
+on:
+  workflow_call:
+    inputs:
+      module_name:
+        description: "Short module slug (e.g. forms)"
+        required: true
+        type: string
+      module_repo:
+        description: "GitHub repository name (e.g. zlizlobr/ercee-module-forms)"
+        required: true
+        type: string
+      module_ref:
+        description: "Module git ref (branch, tag, or SHA)"
+        required: true
+        type: string
+      test_filter:
+        description: "PHP artisan test filter (e.g. Modules\\Forms)"
+        required: true
+        type: string
+      cms_ref:
+        description: "CMS git ref to test against"
+        required: false
+        default: "main"
+        type: string
+      php_version:
+        description: "PHP version"
+        required: false
+        default: "8.3"
+        type: string
+      run_migrations:
+        description: "Run CMS migrations before tests"
+        required: false
+        default: true
+        type: boolean
+    secrets:
+      MODULES_REPO_TOKEN:
+        required: false
+      CMS_MODULES_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: module-integration-${{ inputs.module_name }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  module-integration:
+    name: CMS Integration / ${{ inputs.module_name }} (required)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Validate secret contract
+        run: |
+          if [ -z "${{ secrets.MODULES_REPO_TOKEN }}" ] && [ -z "${{ secrets.CMS_MODULES_TOKEN }}" ]; then
+            echo "::error::Missing module access token. Configure MODULES_REPO_TOKEN (preferred) or CMS_MODULES_TOKEN in the module repository."
+            exit 1
+          fi
+
+      - name: Log input contract
+        run: |
+          echo "module_name=${{ inputs.module_name }}"
+          echo "module_repo=${{ inputs.module_repo }}"
+          echo "module_ref=${{ inputs.module_ref }}"
+          echo "cms_ref=${{ inputs.cms_ref }}"
+          echo "php_version=${{ inputs.php_version }}"
+          echo "run_migrations=${{ inputs.run_migrations }}"
+          echo "test_filter=${{ inputs.test_filter }}"
+
+      - name: Checkout CMS (public)
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/Ercee-cms
+          ref: ${{ inputs.cms_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php_version }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Checkout module (private)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.module_repo }}
+          ref: ${{ inputs.module_ref }}
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-${{ inputs.module_name }}
+
+      - name: Prepare path repository for Composer
+        run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
+
+      - name: Configure module dependency
+        run: |
+          composer config repositories.module path ../ercee-modules/ercee-module-${{ inputs.module_name }}
+          composer require ercee/module-${{ inputs.module_name }}:@dev --no-interaction --no-progress
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Prepare CMS application
+        run: |
+          cp .env.example .env
+          {
+            echo "MODULE_LOAD_MIGRATIONS=true"
+            echo "MODULE_MIGRATION_ALLOWLIST=${{ inputs.module_name }}"
+            echo "FRONTEND_REBUILD_ENABLED=false"
+            echo "FRONTEND_REBUILD_MODE=log"
+          } >> .env
+
+          php artisan config:clear --ansi
+          php artisan key:generate --ansi
+          touch database/database.sqlite
+
+      - name: Run CMS migrations
+        if: ${{ inputs.run_migrations }}
+        run: php artisan migrate --force --path=database/migrations --ansi
+
+      - name: Run module integration tests in CMS context
+        timeout-minutes: 15
+        run: |
+          mkdir -p storage/logs
+          php artisan test \
+            --ansi \
+            --filter="${{ inputs.test_filter }}" \
+            --log-junit storage/logs/module-integration.junit.xml
+
+      - name: Upload integration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: module-integration-${{ inputs.module_name }}-${{ github.run_id }}
+          if-no-files-found: ignore
+          path: |
+            storage/logs/*.log
+            storage/logs/module-integration.junit.xml

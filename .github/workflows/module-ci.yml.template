@@ -121,71 +121,19 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
       - name: Run module tests
-        run: |
-          if composer run-script --list | grep -qE '^  test'; then
-            composer test
-          elif [ -x ./vendor/bin/phpunit ]; then
-            ./vendor/bin/phpunit --colors=always
-          else
-            echo "No module test command configured (composer test or phpunit)."
-            exit 1
-          fi
+        run: composer test
 
   cms-integration:
-    name: CMS Integration / {{MODULE_NAME}} (optional)
-    runs-on: ubuntu-latest
+    name: CMS Integration / {{MODULE_NAME}} (required)
     needs: module-only-tests
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '' }}
-
-    steps:
-      - name: Checkout module
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
-          coverage: none
-
-      - name: Checkout CMS core
-        uses: actions/checkout@v4
-        with:
-          repository: your-org/ercee-cms
-          path: cms
-          token: ${{ secrets.CMS_REPO_TOKEN || github.token }}
-
-      - name: Setup module as path dependency
-        run: |
-          cd cms
-          composer config repositories.module path ../
-          composer require ercee/module-{{MODULE_NAME}}:@dev --no-interaction --no-progress
-          composer install --prefer-dist --no-interaction --no-progress --ansi
-
-      - name: Prepare CMS app
-        run: |
-          cd cms
-          cp .env.example .env
-          {
-            echo "MODULE_LOAD_MIGRATIONS=true"
-            echo "MODULE_MIGRATION_ALLOWLIST={{MODULE_NAME}}"
-            echo "FRONTEND_REBUILD_ENABLED=false"
-            echo "FRONTEND_REBUILD_MODE=log"
-          } >> .env
-          php artisan config:clear --ansi
-          php artisan key:generate --ansi
-          touch database/database.sqlite
-          php artisan migrate --force --path=database/migrations --ansi
-
-      - name: Run module integration tests in CMS context
-        run: cd cms && php artisan test --ansi --filter={{MODULE_NAMESPACE}}
-
-  cms-integration-skipped:
-    name: CMS Integration / skipped notice
-    runs-on: ubuntu-latest
-    needs: module-only-tests
-    if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.run_integration == true) || secrets.CMS_REPO_TOKEN != '') }}
-
-    steps:
-      - name: Explain skip reason
-        run: echo "::warning::CMS integration skipped because CMS_REPO_TOKEN is not configured. Required checks remain green via module-only jobs."
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_integration == true }}
+    uses: zlizlobr/Ercee-cms/.github/workflows/module-integration-reusable.yml@main
+    with:
+      module_name: '{{MODULE_NAME}}'
+      module_repo: 'your-org/ercee-module-{{MODULE_NAME}}'
+      module_ref: ${{ github.sha }}
+      cms_ref: 'main'
+      php_version: '8.3'
+      run_migrations: true
+      test_filter: '{{MODULE_NAMESPACE}}'
+    secrets: inherit
