@@ -1,0 +1,16 @@
+# Run Tasks Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/run-tasks-agent/SKILL.md>
+
+Repository-local context:
+
+- `.linear/data/tasks.json`
+- `docs/workflow/gate-definition-v1.md`
+- `docs/workflow/agent-governance.md`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

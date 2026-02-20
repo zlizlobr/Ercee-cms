@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Modules\Commerce\Domain\Contracts\PaymentGatewayInterface;
 use Modules\Commerce\Domain\Order;
 use Modules\Commerce\Domain\Product;
-use Modules\Forms\Domain\Subscriber\Subscriber;
+use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;

@@ -1,0 +1,15 @@
+# Forms Conversion JSON Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/forms-conversion-json-agent/SKILL.md>
+
+Repository-local context:
+
+- `docs/guides/setup/json-seeders-guide.md`
+- `/usr/local/var/www/ercee-modules/ercee-module-forms/docs/guides/forms-seeder-guide.md`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

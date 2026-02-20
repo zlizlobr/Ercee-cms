@@ -1,0 +1,15 @@
+# Browser Playwright Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/browser-playwright-agent/SKILL.md>
+
+Repository-local context:
+
+- `docs/guides/testing-flow-llm.md`
+- `docs/guides/hybrid-agent-browser-playwright-implementation-tasks.md`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

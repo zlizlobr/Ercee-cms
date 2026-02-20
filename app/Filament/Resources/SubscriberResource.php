@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use Modules\Forms\Domain\Subscriber\Subscriber;
+use App\Domain\Subscriber\Subscriber;
 use App\Filament\Resources\SubscriberResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;

@@ -8,7 +8,7 @@ use Modules\Commerce\Domain\Order;
 use Modules\Commerce\Domain\Payment;
 use Modules\Commerce\Domain\PaymentResult;
 use Modules\Commerce\Domain\Product;
-use Modules\Forms\Domain\Subscriber\Subscriber;
+use App\Domain\Subscriber\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
