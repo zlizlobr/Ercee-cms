@@ -17,7 +17,9 @@
         "workflow:enforce-release-readiness": "python3 ./scripts/workflow/enforce-release-readiness.py --file artifacts/gates/workflow-v1/release-readiness/summary.md",
         "workflow:metrics": "python3 ./scripts/workflow/collect-workflow-metrics.py",
         "verify:backend-admin:e2e": "bash ./scripts/verify-backend-admin-e2e.sh",
-        "test:e2e:admin": "playwright test --config=playwright.admin.config.ts tests/e2e/admin-login.spec.ts"
+        "test:e2e:admin": "playwright test --config=playwright.admin.config.ts tests/e2e/admin-login.spec.ts",
+        "test:e2e:admin:json": "playwright test --config=playwright.admin.config.ts tests/e2e/json-scenarios.spec.ts",
+        "test:e2e:admin:json:nightly": "E2E_MODE=nightly playwright test --config=playwright.admin.config.ts tests/e2e/json-scenarios.spec.ts"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

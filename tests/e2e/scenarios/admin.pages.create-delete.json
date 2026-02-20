@@ -1,0 +1,130 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.pages.create-delete",
+  "version": 2,
+  "description": "Admin can create a new page and then delete it (CRUD smoke for PageResource)",
+  "mode": ["pr", "nightly"],
+  "tags": ["pages", "crud", "p1"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "pageTitle": {
+      "source": "generated",
+      "type": "random_string",
+      "length": 8
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin",
+      "description": "Sign in as admin before test"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-pages-list",
+      "action": "openResource",
+      "resource": "pages",
+      "description": "Navigate to Pages list"
+    },
+    {
+      "id": "click-new-page",
+      "action": "click",
+      "selector": { "type": "role", "value": "link", "name": "New page" },
+      "description": "Click the New page button",
+      "dependsOn": ["open-pages-list"],
+      "wait": {
+        "type": "url",
+        "value": "/admin/pages/create"
+      }
+    },
+    {
+      "id": "fill-page-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.title']" },
+      "value": "E2E Test Page {{pageTitle}}",
+      "description": "Fill in page title",
+      "dependsOn": ["click-new-page"]
+    },
+    {
+      "id": "wait-slug-autofill",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": "input[id='data.slug']:not([value=''])" },
+        "timeout": 5000
+      },
+      "description": "Wait for slug to be auto-generated from title",
+      "dependsOn": ["fill-page-title"]
+    },
+    {
+      "id": "save-page",
+      "action": "click",
+      "selector": { "type": "role", "value": "button", "name": "Save" },
+      "description": "Click Save to create the page",
+      "dependsOn": ["wait-slug-autofill"],
+      "onFail": "stop",
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      }
+    },
+    {
+      "id": "verify-page-created",
+      "action": "assert",
+      "assertions": [
+        { "type": "visible", "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification']" } }
+      ],
+      "description": "Verify success notification after page creation",
+      "dependsOn": ["save-page"]
+    },
+    {
+      "id": "save-created-page-url",
+      "action": "save",
+      "save": {
+        "source": "url",
+        "targetVar": "createdPageUrl"
+      },
+      "description": "Save current URL (edit page URL contains the created record ID)",
+      "dependsOn": ["verify-page-created"]
+    },
+    {
+      "id": "go-back-to-list",
+      "action": "openResource",
+      "resource": "pages",
+      "description": "Navigate back to Pages list",
+      "dependsOn": ["save-created-page-url"]
+    },
+    {
+      "id": "verify-page-in-list",
+      "action": "assert",
+      "assertions": [
+        { "type": "visible", "selector": { "type": "text", "value": "E2E Test Page" } }
+      ],
+      "description": "Verify the new page appears in the list",
+      "dependsOn": ["go-back-to-list"]
+    },
+    {
+      "id": "delete-created-page",
+      "action": "deleteRecordByTitle",
+      "resource": "pages",
+      "title": "E2E Test Page",
+      "description": "Delete the created page",
+      "dependsOn": ["verify-page-in-list"],
+      "onFail": "continue"
+    },
+    {
+      "id": "verify-page-deleted",
+      "action": "assert",
+      "assertions": [
+        { "type": "hidden", "selector": { "type": "text", "value": "E2E Test Page {{pageTitle}}" } }
+      ],
+      "description": "Verify the page is no longer in the list",
+      "dependsOn": ["delete-created-page"]
+    }
+  ]
+}
