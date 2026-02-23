@@ -13,6 +13,9 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListNavigations extends ListRecords
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = NavigationResource::class;
 
     /**
@@ -27,3 +30,5 @@ class ListNavigations extends ListRecords
         ];
     }
 }
+
+

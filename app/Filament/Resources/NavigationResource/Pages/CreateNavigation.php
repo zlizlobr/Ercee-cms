@@ -12,5 +12,10 @@ use Filament\Resources\Pages\CreateRecord;
  */
 class CreateNavigation extends CreateRecord
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = NavigationResource::class;
 }
+
+

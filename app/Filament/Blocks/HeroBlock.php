@@ -13,8 +13,14 @@ use Filament\Forms\Components\Builder\Block;
  */
 class HeroBlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 10;
 
+    /**
+     * @var string Group key used to place the block into a picker section.
+     */
     public static string $group = 'hero';
 
     /**
@@ -68,3 +74,5 @@ class HeroBlock extends BaseBlock
             ]);
     }
 }
+
+

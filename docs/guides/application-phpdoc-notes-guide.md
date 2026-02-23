@@ -37,6 +37,8 @@ Platí pro `Contracts/`, `Content/`, `Commands/`, `Results/` a další use-case 
   - u `bool`/`int` pokud je potřeba vysvětlit význam (např. exit code, success flag).
 - `@var`:
   - u properties typu `array`, kde nativní typ nepopisuje obsah.
+  - **must have** i u properties s business významem (včetně scalar/object typů), kde samotný název nebo nativní typ nevysvětluje účel hodnoty.
+  - popis piš jednou větou: co hodnota reprezentuje v kontextu class (ne jen opakování typu).
 
 ### Doporučené typy
 - Preferuj:
@@ -69,4 +71,5 @@ Pro README/use-case poznámky používej jednotná pole v tomto pořadí:
 ## Definition Of Done
 - V `app/Application` nejsou chybějící PHPDocy u klíčových class/method.
 - `array` parametry/návraty mají generiky nebo shape.
+- Properties s business významem mají `@var` s jednovětým popisem významu hodnoty.
 - Docs používají stejné note pole (`Purpose`, `Inputs`, `Outputs`, `Rules`, `Dependencies`, `Risks`).

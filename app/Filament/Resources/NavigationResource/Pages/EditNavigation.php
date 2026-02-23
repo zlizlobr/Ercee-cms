@@ -13,6 +13,9 @@ use Filament\Resources\Pages\EditRecord;
  */
 class EditNavigation extends EditRecord
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = NavigationResource::class;
 
     /**
@@ -27,3 +30,5 @@ class EditNavigation extends EditRecord
         ];
     }
 }
+
+

@@ -13,6 +13,9 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListMenus extends ListRecords
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = MenuResource::class;
 
     /**
@@ -27,3 +30,5 @@ class ListMenus extends ListRecords
         ];
     }
 }
+
+

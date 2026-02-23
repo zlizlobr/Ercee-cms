@@ -8,16 +8,22 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
 
+/**
+ * Registers and resolves available Filament builder blocks.
+ */
 class BlockRegistry
 {
     public const CACHE_KEY = 'filament.blocks';
 
+    /**
+     * @var array Runtime map of block names to translated picker group labels.
+     */
     protected static array $blockGroupMap = [];
 
     /**
      * Get all registered and enabled blocks.
      *
-     * @return array<Block>
+     * @return array<int, Block>
      */
     public static function all(): array
     {
@@ -52,6 +58,9 @@ class BlockRegistry
         return array_merge($coreBlocks, $moduleBlocks);
     }
 
+    /**
+     * @var array Priority map that determines ordering of block groups.
+     */
     protected static array $groupOrder = [
         'hero' => 1,
         'content' => 2,
@@ -61,6 +70,11 @@ class BlockRegistry
         'layout' => 6,
     ];
 
+    /**
+     * Instantiate a block and register its translated group label.
+     *
+     * @param class-string<BaseBlock> $class
+     */
     protected static function makeWithGroup(string $class): Block
     {
         $block = $class::make();
@@ -70,11 +84,20 @@ class BlockRegistry
         return $block;
     }
 
+    /**
+     * Resolve the configured group for a block class.
+     * @param string $blockName
+     */
     public static function getGroupForBlock(string $blockName): ?string
     {
         return self::$blockGroupMap[$blockName] ?? null;
     }
 
+    /**
+     * Build a deterministic sort key from block group and order.
+     *
+     * @param class-string<BaseBlock> $class
+     */
     protected static function groupSortKey(string $class): string
     {
         $groupOrder = self::$groupOrder[$class::$group] ?? 99;
@@ -84,6 +107,11 @@ class BlockRegistry
             .str_pad((string) $class::$order, 5, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * Get block classes registered by enabled modules.
+     *
+     * @return array<int, class-string<BaseBlock>>
+     */
     protected static function getModuleBlockClasses(): array
     {
         try {
@@ -93,6 +121,12 @@ class BlockRegistry
         }
     }
 
+    /**
+     * Determine whether a core block class extends a module block class.
+     *
+     * @param class-string<BaseBlock> $class
+     * @param array<int, class-string<BaseBlock>> $moduleBlockClasses
+     */
     protected static function isAliasOfModuleBlock(string $class, array $moduleBlockClasses): bool
     {
         if (empty($moduleBlockClasses)) {
@@ -107,7 +141,7 @@ class BlockRegistry
     /**
      * Discover all block classes from the Blocks directory.
      *
-     * @return array<string>
+     * @return array<int, class-string<BaseBlock>>
      */
     protected static function discoverBlocks(): array
     {
@@ -130,6 +164,8 @@ class BlockRegistry
 
     /**
      * Validate that a class is a valid block.
+     *
+     * @param class-string $class
      */
     protected static function isValidBlockClass(string $class): bool
     {
@@ -165,7 +201,7 @@ class BlockRegistry
     /**
      * Get block class names without instantiating them.
      *
-     * @return array<string>
+     * @return array<int, class-string<BaseBlock>>
      */
     public static function getBlockClasses(): array
     {
@@ -174,3 +210,4 @@ class BlockRegistry
         });
     }
 }
+

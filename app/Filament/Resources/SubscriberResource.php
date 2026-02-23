@@ -10,26 +10,51 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+/**
+ * Defines the Filament resource configuration for admin record management.
+ */
 class SubscriberResource extends Resource
 {
+    /**
+     * @var ?string Eloquent model class managed by this Filament resource.
+     */
     protected static ?string $model = Subscriber::class;
 
+    /**
+     * @var ?string Heroicon name shown for this resource in admin navigation.
+     */
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    /**
+     * @var ?string Navigation section label used for grouping this resource.
+     */
     protected static ?string $navigationGroup = 'Marketing';
 
+    /**
+     * @var ?int Numeric sort order for this resource inside navigation groups.
+     */
     protected static ?int $navigationSort = 10;
 
+    /**
+     * Get the navigation badge color.
+     */
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 
+    /**
+     * Get the navigation badge value.
+     */
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
+    /**
+     * Build the form schema for this resource page.
+     * @param Form $form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -52,6 +77,10 @@ class SubscriberResource extends Resource
             ]);
     }
 
+    /**
+     * Build the table definition for this resource page.
+     * @param Table $table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -91,6 +120,10 @@ class SubscriberResource extends Resource
             ]);
     }
 
+    /**
+     * Define relation managers for this Filament resource.
+     * @return array<int, string>
+     */
     public static function getRelations(): array
     {
         return [
@@ -98,6 +131,10 @@ class SubscriberResource extends Resource
         ];
     }
 
+    /**
+     * Define page routes for this Filament resource.
+     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -107,3 +144,5 @@ class SubscriberResource extends Resource
         ];
     }
 }
+
+

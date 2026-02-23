@@ -11,20 +11,45 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
+/**
+ * Defines the Filament resource configuration for admin record management.
+ */
 class MediaResource extends Resource
 {
+    /**
+     * @var ?string Eloquent model class managed by this Filament resource.
+     */
     protected static ?string $model = MediaLibrary::class;
 
+    /**
+     * @var ?string Heroicon name shown for this resource in admin navigation.
+     */
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
+    /**
+     * @var ?string Navigation section label used for grouping this resource.
+     */
     protected static ?string $navigationGroup = 'Obsah';
 
+    /**
+     * @var ?int Numeric sort order for this resource inside navigation groups.
+     */
     protected static ?int $navigationSort = 2;
 
+    /**
+     * @var ?string Singular resource label shown across Filament screens.
+     */
     protected static ?string $modelLabel = 'Media';
 
+    /**
+     * @var ?string Plural resource label shown across Filament screens.
+     */
     protected static ?string $pluralModelLabel = 'Media';
 
+    /**
+     * Build the form schema for this resource page.
+     * @param Form $form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -86,6 +111,10 @@ class MediaResource extends Resource
             ]);
     }
 
+    /**
+     * Build the table definition for this resource page.
+     * @param Table $table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -140,6 +169,10 @@ class MediaResource extends Resource
             ->defaultSort('created_at', 'desc');
     }
 
+    /**
+     * Define relation managers for this Filament resource.
+     * @return array<int, string>
+     */
     public static function getRelations(): array
     {
         return [
@@ -147,6 +180,10 @@ class MediaResource extends Resource
         ];
     }
 
+    /**
+     * Define page routes for this Filament resource.
+     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -156,3 +193,5 @@ class MediaResource extends Resource
         ];
     }
 }
+
+
