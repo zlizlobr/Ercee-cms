@@ -10,11 +10,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * Represents an authenticated CMS user with role-based admin panel access.
+ */
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, HasRoles, Notifiable;
 
+    /**
+     * Determines whether the user can access the given Filament admin panel.
+     *
+     * @param Panel $panel Target panel instance being authorized.
+     * @return bool True when the user has at least one allowed CMS role.
+     */
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasAnyRole(['admin', 'operator', 'marketing']);
@@ -54,4 +63,3 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 }
-
