@@ -30,6 +30,7 @@ Available agents in this project docs:
 - `linear-task-agent`
 - `module-builder-agent`
 - `page-builder-json-agent`
+- `phpdoc-sweep-agent`
 - `review-agent`
 - `run-tasks-agent`
 - `test-runner-agent`

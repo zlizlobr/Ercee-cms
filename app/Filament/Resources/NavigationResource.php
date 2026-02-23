@@ -19,14 +19,29 @@ use Illuminate\Support\Str;
  */
 class NavigationResource extends Resource
 {
+    /**
+     * @var ?string Eloquent model class managed by this Filament resource.
+     */
     protected static ?string $model = Navigation::class;
 
+    /**
+     * @var ?string Heroicon name shown for this resource in admin navigation.
+     */
     protected static ?string $navigationIcon = 'heroicon-o-bars-3';
 
+    /**
+     * @var ?string Navigation section label used for grouping this resource.
+     */
     protected static ?string $navigationGroup = 'Content';
 
+    /**
+     * @var ?int Numeric sort order for this resource inside navigation groups.
+     */
     protected static ?int $navigationSort = 2;
 
+    /**
+     * @var bool Flag that controls automatic sidebar registration for the resource.
+     */
     protected static bool $shouldRegisterNavigation = false;
 
     /**
@@ -144,3 +159,5 @@ class NavigationResource extends Resource
         ];
     }
 }
+
+

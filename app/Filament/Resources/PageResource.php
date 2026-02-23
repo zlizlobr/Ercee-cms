@@ -15,42 +15,73 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Str;
 
+/**
+ * Defines the Filament resource configuration for admin record management.
+ */
 class PageResource extends Resource
 {
+    /**
+     * @var ?string Eloquent model class managed by this Filament resource.
+     */
     protected static ?string $model = Page::class;
 
+    /**
+     * @var ?string Heroicon name shown for this resource in admin navigation.
+     */
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    /**
+     * Get the navigation group label.
+     */
     public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.content');
     }
 
+    /**
+     * Get the singular model label.
+     */
     public static function getModelLabel(): string
     {
         return __('admin.resources.page.label');
     }
 
+    /**
+     * Get the plural model label.
+     */
     public static function getPluralModelLabel(): string
     {
         return __('admin.resources.page.plural');
     }
 
+    /**
+     * Get the navigation label.
+     */
     public static function getNavigationLabel(): string
     {
         return __('admin.resources.page.navigation');
     }
 
+    /**
+     * Get the navigation badge color.
+     */
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 
+    /**
+     * Get the navigation badge value.
+     */
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
+    /**
+     * Build the form schema for this resource page.
+     * @param Form $form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -140,6 +171,10 @@ class PageResource extends Resource
             ]);
     }
 
+    /**
+     * Build the table definition for this resource page.
+     * @param Table $table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -193,6 +228,10 @@ class PageResource extends Resource
             ]);
     }
 
+    /**
+     * Define relation managers for this Filament resource.
+     * @return array<int, string>
+     */
     public static function getRelations(): array
     {
         return [
@@ -200,6 +239,10 @@ class PageResource extends Resource
         ];
     }
 
+    /**
+     * Define page routes for this Filament resource.
+     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -209,3 +252,5 @@ class PageResource extends Resource
         ];
     }
 }
+
+

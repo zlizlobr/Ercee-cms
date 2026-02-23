@@ -16,3 +16,4 @@ interface SubscriberServiceInterface
 
     public function hasTag(Subscriber $subscriber, string $tag): bool;
 }
+

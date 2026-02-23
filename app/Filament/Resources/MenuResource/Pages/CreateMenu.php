@@ -12,5 +12,10 @@ use Filament\Resources\Pages\CreateRecord;
  */
 class CreateMenu extends CreateRecord
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = MenuResource::class;
 }
+
+

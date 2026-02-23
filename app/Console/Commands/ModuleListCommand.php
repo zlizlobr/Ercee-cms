@@ -6,12 +6,20 @@ use App\Contracts\Module\AdminExtensionInterface;
 use App\Support\Module\ModuleManager;
 use Illuminate\Console\Command;
 
+/**
+ * List configured modules and runtime metadata.
+ */
 class ModuleListCommand extends Command
 {
     protected $signature = 'module:list';
 
     protected $description = 'List all registered modules and their status';
 
+    /**
+     * Render a table with module state details.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
+     */
     public function handle(ModuleManager $moduleManager): int
     {
         $configModules = config('modules.modules', []);
@@ -60,3 +68,4 @@ class ModuleListCommand extends Command
         return self::SUCCESS;
     }
 }
+

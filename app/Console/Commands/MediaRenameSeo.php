@@ -6,6 +6,9 @@ use App\Domain\Media\MediaLibrary;
 use App\Domain\Media\MediaRenameService;
 use Illuminate\Console\Command;
 
+/**
+ * Rename media files to SEO-friendly file names.
+ */
 class MediaRenameSeo extends Command
 {
     protected $signature = 'media:rename-seo
@@ -15,12 +18,20 @@ class MediaRenameSeo extends Command
 
     protected $description = 'Rename media files to SEO-friendly names based on title/alt text';
 
+    /**
+     * Create a new command instance.
+     */
     public function __construct(
         private MediaRenameService $renameService
     ) {
         parent::__construct();
     }
 
+    /**
+     * Execute the media rename workflow.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
+     */
     public function handle(): int
     {
         $dryRun = $this->option('dry-run');
@@ -83,6 +94,14 @@ class MediaRenameSeo extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Process one media library record.
+     *
+     * @param MediaLibrary $item Media item to evaluate.
+     * @param bool $dryRun Whether to skip write operations.
+     * @param bool $force Whether to rename already-compliant files.
+     * @return string Processing status (`renamed`, `skipped`, or `failed`).
+     */
     private function processItem(MediaLibrary $item, bool $dryRun, bool $force): string
     {
         $media = $item->getFirstMedia('default');
@@ -113,3 +132,4 @@ class MediaRenameSeo extends Command
         return $newName ? 'renamed' : 'failed';
     }
 }
+

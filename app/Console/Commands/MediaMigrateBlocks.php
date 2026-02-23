@@ -20,12 +20,23 @@ class MediaMigrateBlocks extends Command
 
     protected $description = 'Migrate block images from legacy paths to MediaLibrary';
 
+    /**
+     * @var int Counter of records successfully migrated in the current run.
+     */
     private int $migratedCount = 0;
+    /**
+     * @var int Counter of records intentionally skipped during migration.
+     */
     private int $skippedCount = 0;
+    /**
+     * @var int Counter of records that failed processing during migration.
+     */
     private int $errorCount = 0;
 
     /**
      * Migrate legacy block images to MediaLibrary records.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
      */
     public function handle(): int
     {
@@ -67,6 +78,10 @@ class MediaMigrateBlocks extends Command
 
     /**
      * Process a single page's block content.
+     *
+     * @param Page $page Page model to process.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return void
      */
     private function processPage(Page $page, bool $isDryRun): void
     {
@@ -103,6 +118,8 @@ class MediaMigrateBlocks extends Command
     /**
      * Migrate an Image block payload to a media UUID reference.
      *
+     * @param array<string, mixed> $data Block payload.
+     * @param bool $isDryRun Whether to skip write operations.
      * @return array<string, mixed>|null
      */
     private function migrateImageBlock(array $data, bool $isDryRun): ?array
@@ -134,6 +151,8 @@ class MediaMigrateBlocks extends Command
     /**
      * Migrate a Hero block payload to a media UUID reference.
      *
+     * @param array<string, mixed> $data Block payload.
+     * @param bool $isDryRun Whether to skip write operations.
      * @return array<string, mixed>|null
      */
     private function migrateHeroBlock(array $data, bool $isDryRun): ?array
@@ -164,6 +183,11 @@ class MediaMigrateBlocks extends Command
 
     /**
      * Migrate a single file path to MediaLibrary and return the UUID.
+     *
+     * @param string $path Relative storage path.
+     * @param string|null $alt Optional alt text.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return string|null Media UUID or null on failure.
      */
     private function migrateFile(string $path, ?string $alt, bool $isDryRun): ?string
     {
@@ -208,3 +232,4 @@ class MediaMigrateBlocks extends Command
         }
     }
 }
+

@@ -6,6 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
+/**
+ * Generate CMS block files for backend and frontend integration.
+ */
 class MakeCmsBlock extends Command
 {
     protected $signature = 'make:cms-block
@@ -17,22 +20,52 @@ class MakeCmsBlock extends Command
 
     protected $description = 'Generate a CMS block with Filament form, Astro component, and all related files';
 
+    /**
+     * @var Filesystem Paths to generated files created by the command workflow.
+     */
     protected Filesystem $files;
 
+    /** @var array<string, mixed> */
+    /**
+     * @var array JSON schema definition used to validate generated block data.
+     */
     protected array $schema;
 
+    /**
+     * @var string Human-readable block name provided as command input.
+     */
     protected string $blockName;
 
+    /**
+     * @var string Normalized block type key stored in content payloads.
+     */
     protected string $blockType;
 
+    /**
+     * @var string PHP class name generated for the new CMS block.
+     */
     protected string $className;
 
+    /**
+     * @var string Frontend component name resolved for block rendering.
+     */
     protected string $componentName;
 
+    /**
+     * @var string Filesystem path to the corresponding Astro component file.
+     */
     protected string $astroPath;
 
+    /** @var array<int, array{path: string, description: string}> */
+    /**
+     * @var array List of files newly created during command execution.
+     */
     protected array $createdFiles = [];
 
+    /** @var array<int, string> */
+    /**
+     * @var array List of existing files changed during command execution.
+     */
     protected array $modifiedFiles = [];
 
     protected const FIELD_MAPPING = [
@@ -56,12 +89,20 @@ class MakeCmsBlock extends Command
         'hidden' => 'Hidden',
     ];
 
+    /**
+     * Create a new command instance.
+     */
     public function __construct(Filesystem $files)
     {
         parent::__construct();
         $this->files = $files;
     }
 
+    /**
+     * Execute block scaffolding for CMS and Astro.
+     *
+     * @return int Exit code (`Command::SUCCESS` or `Command::FAILURE`).
+     */
     public function handle(): int
     {
         $this->blockName = $this->argument('name');
@@ -95,6 +136,9 @@ class MakeCmsBlock extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Normalize input block name into naming variants.
+     */
     protected function normalizeBlockName(): void
     {
         $name = $this->blockName;
@@ -109,6 +153,11 @@ class MakeCmsBlock extends Command
         $this->componentName = Str::studly(Str::replace(' ', '', $name));
     }
 
+    /**
+     * Load and validate the input schema.
+     *
+     * @return bool True when schema is valid and loaded.
+     */
     protected function loadAndValidateSchema(): bool
     {
         $schemaJson = $this->argument('schema');
@@ -162,6 +211,11 @@ class MakeCmsBlock extends Command
         return true;
     }
 
+    /**
+     * Resolve the frontend Astro project path.
+     *
+     * @return string|null Absolute Astro path, or null when unavailable.
+     */
     protected function resolveAstroPath(): ?string
     {
         $path = realpath(base_path('../ercee-frontend'));
@@ -179,6 +233,9 @@ class MakeCmsBlock extends Command
         return $path;
     }
 
+    /**
+     * Generate the Filament block class file.
+     */
     protected function generateCmsBlock(): void
     {
         $path = app_path("Filament/Blocks/{$this->className}.php");
@@ -194,6 +251,9 @@ class MakeCmsBlock extends Command
         $this->writeFile($path, $content, 'CMS Block class');
     }
 
+    /**
+     * Get the block class stub content.
+     */
     protected function getBlockClassStub(): string
     {
         $stubPath = resource_path('stubs/blocks/block-class.stub');
@@ -213,6 +273,9 @@ use Filament\Forms\Components\Builder\Block;
 
 class {{ className }} extends BaseBlock
 {
+    /**
+     * @var int Display order used when registering generated blocks.
+     */
     public static int $order = {{ order }};
 
     public static function make(): Block
@@ -229,6 +292,12 @@ class {{ className }} extends BaseBlock
 STUB;
     }
 
+    /**
+     * Replace placeholders in the block class stub.
+     *
+     * @param string $stub Raw stub content.
+     * @return string Stub content with generated values.
+     */
     protected function populateBlockStub(string $stub): string
     {
         $schemaFields = $this->generateFilamentSchema();
@@ -243,6 +312,11 @@ STUB;
         );
     }
 
+    /**
+     * Generate Filament schema code from schema fields.
+     *
+     * @return string PHP schema snippet for block form fields.
+     */
     protected function generateFilamentSchema(): string
     {
         $lines = [];
@@ -254,6 +328,13 @@ STUB;
         return implode("\n", $lines);
     }
 
+    /**
+     * Generate Filament code for a single field definition.
+     *
+     * @param array<string, mixed> $field Schema field definition.
+     * @param int $indent Base indentation level.
+     * @return string Generated PHP code for a single field.
+     */
     protected function generateFieldCode(array $field, int $indent = 4): string
     {
         $component = self::FIELD_MAPPING[$field['type']];
@@ -577,6 +658,13 @@ STUB;
         return $code;
     }
 
+    /**
+     * Generate nested schema code for repeater fields.
+     *
+     * @param array<int, array<string, mixed>> $fields Nested repeater fields.
+     * @param int $indent Base indentation level.
+     * @return string Generated nested schema code.
+     */
     protected function generateNestedSchema(array $fields, int $indent): string
     {
         $lines = [];
@@ -588,12 +676,24 @@ STUB;
         return implode('', $lines);
     }
 
+    /**
+     * Format a flat array into inline PHP code.
+     *
+     * @param array<int, scalar> $items List of scalar values.
+     * @return string Inline PHP array expression.
+     */
     protected function formatSimpleArray(array $items): string
     {
         $values = array_map(fn ($v) => "'{$v}'", $items);
         return '[' . implode(', ', $values) . ']';
     }
 
+    /**
+     * Format key-value options into inline PHP code.
+     *
+     * @param array<int|string, scalar> $options Options keyed by value or label.
+     * @return string Inline PHP associative array expression.
+     */
     protected function formatOptionsArray(array $options): string
     {
         $items = [];
@@ -607,6 +707,9 @@ STUB;
         return '[' . implode(', ', $items) . ']';
     }
 
+    /**
+     * Generate Blade preview for the block.
+     */
     protected function generateBlockPreview(): void
     {
         $path = resource_path("views/components/blocks/{$this->blockType}.blade.php");
@@ -627,6 +730,9 @@ STUB;
         $this->writeFile($path, $content, 'Block preview template');
     }
 
+    /**
+     * Get the block preview stub content.
+     */
     protected function getBlockPreviewStub(): string
     {
         $stubPath = resource_path('stubs/blocks/block-preview.stub');
@@ -650,6 +756,9 @@ STUB;
 STUB;
     }
 
+    /**
+     * Add block constants to the page domain model.
+     */
     protected function updatePageConstants(): void
     {
         $path = app_path('Domain/Content/Page.php');
@@ -685,6 +794,9 @@ STUB;
         $this->modifiedFiles[] = $path;
     }
 
+    /**
+     * Add block and field labels to localization files.
+     */
     protected function updateLocalizations(): void
     {
         $locales = ['en', 'cs'];
@@ -743,6 +855,11 @@ STUB;
         }
     }
 
+    /**
+     * Build default English labels for schema fields.
+     *
+     * @return array<string, string> Field label map.
+     */
     protected function getEnglishFieldLabels(): array
     {
         $labels = [];
@@ -753,6 +870,11 @@ STUB;
         return $labels;
     }
 
+    /**
+     * Build default Czech labels for schema fields.
+     *
+     * @return array<string, string> Field label map.
+     */
     protected function getCzechFieldLabels(): array
     {
         $labels = [];
@@ -763,6 +885,9 @@ STUB;
         return $labels;
     }
 
+    /**
+     * Generate the Astro block component file.
+     */
     protected function generateAstroComponent(): void
     {
         $path = "{$this->astroPath}/src/components/blocks/{$this->componentName}.astro";
@@ -782,6 +907,9 @@ STUB;
         $this->writeFile($path, $content, 'Astro component');
     }
 
+    /**
+     * Get the Astro component stub content.
+     */
     protected function getAstroComponentStub(): string
     {
         $stubPath = resource_path('stubs/astro/BlockComponent.astro.stub');
@@ -809,11 +937,17 @@ const { data } = Astro.props;
 STUB;
     }
 
+    /**
+     * Generate Astro props interface type name.
+     */
     protected function generateAstroPropsInterface(): string
     {
         return "{$this->componentName}BlockData";
     }
 
+    /**
+     * Generate Astro template markup for known field types.
+     */
     protected function generateAstroTemplate(): string
     {
         $lines = [];
@@ -862,6 +996,9 @@ STUB;
         return implode("\n", $lines) ?: '    <p>Block content goes here</p>';
     }
 
+    /**
+     * Update shared Astro API types with the new block data type.
+     */
     protected function updateAstroTypes(): void
     {
         $path = "{$this->astroPath}/src/lib/api/types.ts";
@@ -907,6 +1044,11 @@ STUB;
         $this->modifiedFiles[] = $path;
     }
 
+    /**
+     * Generate the TypeScript interface for block data.
+     *
+     * @return string TypeScript interface code.
+     */
     protected function generateTypeScriptInterface(): string
     {
         $lines = ["export interface {$this->componentName}BlockData {"];
@@ -923,6 +1065,12 @@ STUB;
         return implode("\n", $lines);
     }
 
+    /**
+     * Map one schema field into a TypeScript type.
+     *
+     * @param array<string, mixed> $field Schema field definition.
+     * @return string TypeScript type expression.
+     */
     protected function mapFieldToTypeScript(array $field): string
     {
         return match ($field['type']) {
@@ -938,12 +1086,24 @@ STUB;
         };
     }
 
+    /**
+     * Generate a TypeScript union from select options.
+     *
+     * @param array<int|string, scalar> $options Select options.
+     * @return string TypeScript union type.
+     */
     protected function generateUnionType(array $options): string
     {
         $values = array_map(fn ($v) => "'{$v}'", array_values($options));
         return implode(' | ', $values);
     }
 
+    /**
+     * Generate a TypeScript type for repeater items.
+     *
+     * @param array<int, array<string, mixed>> $schema Repeater field schema.
+     * @return string TypeScript array item type expression.
+     */
     protected function generateRepeaterType(array $schema): string
     {
         $props = [];
@@ -956,6 +1116,9 @@ STUB;
         return '{ ' . implode('; ', $props) . ' }[]';
     }
 
+    /**
+     * Register the new block component in the Astro registry.
+     */
     protected function updateAstroRegistry(): void
     {
         $registryPath = "{$this->astroPath}/src/components/blocks/registry.ts";
@@ -994,6 +1157,9 @@ STUB;
         $this->modifiedFiles[] = $registryPath;
     }
 
+    /**
+     * Create a new Astro registry file content.
+     */
     protected function createBlockRegistry(): string
     {
         return <<<TS
@@ -1007,6 +1173,9 @@ export type BlockType = keyof typeof blockRegistry;
 TS;
     }
 
+    /**
+     * Write a file unless dry-run mode is enabled.
+     */
     protected function writeFile(string $path, string $content, string $description): void
     {
         if ($this->option('dry-run')) {
@@ -1019,6 +1188,9 @@ TS;
         $this->createdFiles[] = ['path' => $path, 'description' => $description];
     }
 
+    /**
+     * Ensure the target directory exists.
+     */
     protected function ensureDirectory(string $path): void
     {
         if (! $this->files->isDirectory($path)) {
@@ -1026,6 +1198,9 @@ TS;
         }
     }
 
+    /**
+     * Print a summary of generated artifacts.
+     */
     protected function printSummary(): void
     {
         $this->newLine();
@@ -1046,3 +1221,4 @@ TS;
         $this->line('  3. Run frontend lint: cd ../ercee-frontend && pnpm lint');
     }
 }
+

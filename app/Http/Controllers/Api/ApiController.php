@@ -97,3 +97,4 @@ abstract class ApiController extends Controller
             || $e instanceof \RedisException;
     }
 }
+

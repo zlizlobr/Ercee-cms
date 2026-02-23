@@ -8,8 +8,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Attach request ID and audit-log selected API calls.
+ */
 class ApiAuditLog
 {
+    /**
+     * Add request ID and write audit log entry for critical or failed API requests.
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $requestId = Str::uuid()->toString();
@@ -24,6 +30,9 @@ class ApiAuditLog
         return $response;
     }
 
+    /**
+     * Build and emit API audit context for selected requests.
+     */
     protected function logRequest(Request $request, Response $response, string $requestId): void
     {
         $context = [
@@ -48,6 +57,9 @@ class ApiAuditLog
         }
     }
 
+    /**
+     * Determine whether request path should always be audit-logged.
+     */
     protected function isCriticalPath(string $path): bool
     {
         $criticalPatterns = [

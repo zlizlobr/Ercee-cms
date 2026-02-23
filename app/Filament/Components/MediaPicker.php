@@ -15,12 +15,24 @@ use Illuminate\Support\Facades\Log;
  */
 class MediaPicker extends Field
 {
+    /**
+     * @var string Blade view identifier used to render this Filament component.
+     */
     protected string $view = 'filament.components.media-picker';
 
+    /**
+     * @var bool|Closure Flag or evaluated closure that controls multiple selection mode.
+     */
     protected bool|Closure $isMultiple = false;
 
+    /**
+     * @var array|Closure Allowed MIME types for uploaded files in this picker.
+     */
     protected array|Closure $acceptedFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
+    /**
+     * @var int|Closure Maximum upload size in kilobytes accepted by the picker.
+     */
     protected int|Closure $maxFileSize = 10240; // 10MB
 
     /**
@@ -264,3 +276,5 @@ class MediaPicker extends Field
         })->with('media')->get();
     }
 }
+
+

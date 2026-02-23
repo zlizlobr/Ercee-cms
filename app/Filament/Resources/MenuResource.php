@@ -19,12 +19,24 @@ use Illuminate\Support\Str;
  */
 class MenuResource extends Resource
 {
+    /**
+     * @var ?string Eloquent model class managed by this Filament resource.
+     */
     protected static ?string $model = Menu::class;
 
+    /**
+     * @var ?string Heroicon name shown for this resource in admin navigation.
+     */
     protected static ?string $navigationIcon = 'heroicon-o-bars-3-bottom-left';
 
+    /**
+     * @var ?string Navigation section label used for grouping this resource.
+     */
     protected static ?string $navigationGroup = 'Obsah';
 
+    /**
+     * @var ?int Numeric sort order for this resource inside navigation groups.
+     */
     protected static ?int $navigationSort = 3;
 
     /**
@@ -110,3 +122,5 @@ class MenuResource extends Resource
         ];
     }
 }
+
+

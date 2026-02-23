@@ -5,28 +5,58 @@ namespace App\Filament\Components;
 use Closure;
 use Filament\Forms;
 
+/**
+ * Builds a reusable icon select field for Filament forms.
+ */
 class IconPicker
 {
+    /**
+     * @var string State key used to bind the icon select value in form payloads.
+     */
     protected string $name;
 
+    /**
+     * @var ?string Translated label rendered for the generated field inputs.
+     */
     protected ?string $label = null;
 
+    /**
+     * @var ?string Placeholder text shown when no value is selected.
+     */
     protected ?string $placeholder = null;
 
+    /**
+     * @var bool Flag that controls whether users can search available options.
+     */
     protected bool $searchable = true;
 
+    /**
+     * @var bool Flag that controls whether options are preloaded on render.
+     */
     protected bool $preload = true;
 
+    /**
+     * Create a new instance of the component.
+     * @param string $name
+     */
     public function __construct(string $name = 'icon_key')
     {
         $this->name = $name;
     }
 
+    /**
+     * Instantiate the picker with the given state key.
+     * @param string $name
+     */
     public static function make(string $name = 'icon_key'): self
     {
         return new self($name);
     }
 
+    /**
+     * Configure the translated label displayed above the picker.
+     * @param ?string $label
+     */
     public function label(?string $label): self
     {
         $this->label = $label;
@@ -34,6 +64,10 @@ class IconPicker
         return $this;
     }
 
+    /**
+     * Set the field placeholder.
+     * @param ?string $placeholder
+     */
     public function placeholder(?string $placeholder): self
     {
         $this->placeholder = $placeholder;
@@ -41,6 +75,10 @@ class IconPicker
         return $this;
     }
 
+    /**
+     * Enable or disable icon searching in the select dropdown.
+     * @param bool $condition
+     */
     public function searchable(bool $condition = true): self
     {
         $this->searchable = $condition;
@@ -48,6 +86,10 @@ class IconPicker
         return $this;
     }
 
+    /**
+     * Enable or disable eager loading of icon options in the UI.
+     * @param bool $condition
+     */
     public function preload(bool $condition = true): self
     {
         $this->preload = $condition;
@@ -55,6 +97,10 @@ class IconPicker
         return $this;
     }
 
+    /**
+     * Get available icon options.
+     * @return array<string, string>
+     */
     public static function iconOptions(): array
     {
         return [
@@ -81,6 +127,9 @@ class IconPicker
         ];
     }
 
+    /**
+     * Build the Filament select field instance.
+     */
     public function field(): Forms\Components\Select
     {
         $field = Forms\Components\Select::make($this->name)
@@ -99,3 +148,4 @@ class IconPicker
         return $field;
     }
 }
+

@@ -6,10 +6,19 @@ use App\Domain\Content\Page;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Defines the Filament schema for the f a q block.
+ */
 class FAQBlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 40;
 
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_FAQ)
@@ -50,3 +59,5 @@ class FAQBlock extends BaseBlock
             ]);
     }
 }
+
+

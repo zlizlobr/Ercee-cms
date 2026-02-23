@@ -20,10 +20,25 @@ abstract class BaseModuleServiceProvider extends ServiceProvider implements
     HasEventsInterface,
     HasPoliciesInterface
 {
+    /**
+     * @var string Module display name exposed in admin and diagnostics metadata.
+     */
     protected string $name = '';
+    /**
+     * @var string Module version identifier used for compatibility tracking.
+     */
     protected string $version = '1.0.0';
+    /**
+     * @var string Short module description shown in module listings.
+     */
     protected string $description = '';
+    /**
+     * @var array Module dependency map required before module boot.
+     */
     protected array $dependencies = [];
+    /**
+     * @var array Permission definitions registered by the module provider.
+     */
     protected array $permissions = [];
 
     public function getName(): string
@@ -172,3 +187,4 @@ abstract class BaseModuleServiceProvider extends ServiceProvider implements
 
     abstract protected function getModulePath(string $path = ''): string;
 }
+

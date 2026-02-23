@@ -2,17 +2,25 @@
 
 namespace App\Domain\Media;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * Renames media files and conversion variants to SEO-friendly names.
+ */
 class MediaRenameService
 {
+    /**
+     * @param SeoSlugGenerator $slugGenerator Slug strategy for generated file names.
+     */
     public function __construct(
         private SeoSlugGenerator $slugGenerator
     ) {}
 
+    /**
+     * Renames item media to SEO format when source metadata is available.
+     */
     public function renameToSeo(MediaLibrary $item): ?string
     {
         $media = $item->getFirstMedia('default');
@@ -44,6 +52,9 @@ class MediaRenameService
         return $this->performRename($media, $newFileName);
     }
 
+    /**
+     * Reverts media file name to original preserved name.
+     */
     public function revertToOriginal(MediaLibrary $item): ?string
     {
         $media = $item->getFirstMedia('default');
@@ -61,6 +72,9 @@ class MediaRenameService
         return $this->performRename($media, $originalName);
     }
 
+    /**
+     * Applies physical file rename and updates persisted media metadata.
+     */
     private function performRename(Media $media, string $newFileName): ?string
     {
         $disk = Storage::disk($media->disk);
@@ -112,6 +126,9 @@ class MediaRenameService
         }
     }
 
+    /**
+     * Renames known conversion files to keep names aligned with original.
+     */
     private function renameConversions(Media $media, string $oldBaseName, string $newBaseName): void
     {
         $disk = Storage::disk($media->disk);
@@ -139,6 +156,9 @@ class MediaRenameService
         }
     }
 
+    /**
+     * Indicates whether current media file name differs from expected SEO name.
+     */
     public function shouldRename(MediaLibrary $item): bool
     {
         $media = $item->getFirstMedia('default');
@@ -157,6 +177,9 @@ class MediaRenameService
         return ! empty($newFileName) && $media->file_name !== $newFileName;
     }
 
+    /**
+     * Returns expected SEO file name without mutating media.
+     */
     public function getExpectedFileName(MediaLibrary $item): ?string
     {
         $media = $item->getFirstMedia('default');
@@ -173,3 +196,4 @@ class MediaRenameService
         );
     }
 }
+

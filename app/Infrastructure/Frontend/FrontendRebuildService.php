@@ -6,14 +6,29 @@ use App\Infrastructure\GitHub\GitHubDispatchService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 
+/**
+ * Orchestrates frontend rebuild triggers across configured execution modes.
+ */
 class FrontendRebuildService
 {
+    /**
+     * @var bool Flag that determines whether frontend rebuild triggering is active.
+     */
     private bool $enabled;
 
+    /**
+     * @var string Configured rebuild execution mode for frontend synchronization.
+     */
     private string $mode;
 
+    /**
+     * @var ?string Local filesystem path used for file-based rebuild triggering.
+     */
     private ?string $localPath;
 
+    /**
+     * @param GitHubDispatchService $gitHubDispatch Service that publishes repository dispatch events to GitHub.
+     */
     public function __construct(
         private GitHubDispatchService $gitHubDispatch
     ) {
@@ -22,6 +37,11 @@ class FrontendRebuildService
         $this->localPath = config('services.frontend.local_frontend_path');
     }
 
+    /**
+     * Triggers frontend rebuild according to configured mode and runtime guard flags.
+     *
+     * @param string $reason Business reason attached to logs and dispatch payloads.
+     */
     public function trigger(string $reason): void
     {
         if (! $this->enabled) {
@@ -38,16 +58,27 @@ class FrontendRebuildService
         };
     }
 
+    /**
+     * Indicates whether frontend rebuild integration is currently enabled by configuration.
+     */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
+    /**
+     * Returns the active frontend rebuild mode used by trigger routing.
+     */
     public function getMode(): string
     {
         return $this->mode;
     }
 
+    /**
+     * Triggers rebuild through GitHub repository dispatch integration.
+     *
+     * @param string $reason Business reason attached to audit logs.
+     */
     private function triggerGitHub(string $reason): void
     {
         $this->gitHubDispatch->triggerFrontendBuild($reason);
@@ -58,6 +89,11 @@ class FrontendRebuildService
         ]);
     }
 
+    /**
+     * Triggers local frontend media sync script when local integration path is configured.
+     *
+     * @param string $reason Business reason attached to local sync logs.
+     */
     private function triggerLocal(string $reason): void
     {
         if (empty($this->localPath)) {
@@ -104,6 +140,11 @@ class FrontendRebuildService
         }
     }
 
+    /**
+     * Emits informational log entry instead of triggering real rebuild side effects.
+     *
+     * @param string $reason Business reason included in diagnostic log context.
+     */
     private function triggerLog(string $reason): void
     {
         Log::info('Frontend rebuild would be triggered (log mode)', [
@@ -113,6 +154,11 @@ class FrontendRebuildService
         ]);
     }
 
+    /**
+     * Emits debug log for unknown or disabled trigger mode.
+     *
+     * @param string $reason Business reason included in skip log context.
+     */
     private function triggerDisabled(string $reason): void
     {
         Log::debug('Frontend rebuild skipped (disabled mode)', [

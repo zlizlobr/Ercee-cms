@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Migrate theme logo paths to media UUID references.
+ */
 class MediaMigrateThemeLogos extends Command
 {
     protected $signature = 'media:migrate-theme-logos
@@ -16,12 +19,26 @@ class MediaMigrateThemeLogos extends Command
 
     protected $description = 'Migrate theme logo images from legacy paths to MediaLibrary';
 
+    /**
+     * @var int Counter of records successfully migrated in the current run.
+     */
     private int $migratedCount = 0;
 
+    /**
+     * @var int Counter of records intentionally skipped during migration.
+     */
     private int $skippedCount = 0;
 
+    /**
+     * @var int Counter of records that failed processing during migration.
+     */
     private int $errorCount = 0;
 
+    /**
+     * Execute logo migration for theme settings.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
+     */
     public function handle(): int
     {
         $isDryRun = $this->option('dry-run');
@@ -64,6 +81,14 @@ class MediaMigrateThemeLogos extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Migrate one theme settings section.
+     *
+     * @param array<string, mixed> $data Theme section payload (passed by reference).
+     * @param string $section Section name.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return bool True when section data was changed.
+     */
     private function migrateSection(array &$data, string $section, bool $isDryRun): bool
     {
         if (! empty($data['logo_media_uuid'])) {
@@ -93,6 +118,14 @@ class MediaMigrateThemeLogos extends Command
         return true;
     }
 
+    /**
+     * Migrate a single logo file and return its media UUID.
+     *
+     * @param string $path Relative storage path.
+     * @param string $section Section name for logging.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return string|null Media UUID or null on failure.
+     */
     private function migrateFile(string $path, string $section, bool $isDryRun): ?string
     {
         $fullPath = Storage::disk('public')->path($path);
@@ -140,3 +173,4 @@ class MediaMigrateThemeLogos extends Command
         }
     }
 }
+

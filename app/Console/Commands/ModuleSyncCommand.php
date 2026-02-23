@@ -5,12 +5,20 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
+/**
+ * Discover local modules and compare them with module config.
+ */
 class ModuleSyncCommand extends Command
 {
     protected $signature = 'module:sync {--update-config : Automatically update config/modules.php}';
 
     protected $description = 'Scan modules directory and compare with config/modules.php';
 
+    /**
+     * Execute the module discovery and comparison flow.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
+     */
     public function handle(): int
     {
         $modulesPath = base_path('modules');
@@ -115,3 +123,4 @@ class ModuleSyncCommand extends Command
         return self::SUCCESS;
     }
 }
+

@@ -12,6 +12,9 @@ use Filament\Forms\Components\Builder\Block;
  */
 class ImageBlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 30;
 
     /**
@@ -38,3 +41,5 @@ class ImageBlock extends BaseBlock
             ]);
     }
 }
+
+

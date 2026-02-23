@@ -8,3 +8,4 @@ interface HasMigrationsInterface
 {
     public function getMigrationsPath(): ?string;
 }
+

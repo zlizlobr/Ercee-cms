@@ -46,3 +46,4 @@ class RichEditorMediaHandler
         return $entry['original']['url'] ?? null;
     }
 }
+

@@ -8,11 +8,23 @@ use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Defines the Filament schema for the image c t a block.
+ */
 class ImageCTABlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 80;
 
+    /**
+     * @var string Group key used to place the block into a picker section.
+     */
     public static string $group = 'cta';
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_IMAGE_CTA)
@@ -48,3 +60,5 @@ class ImageCTABlock extends BaseBlock
             ]);
     }
 }
+
+

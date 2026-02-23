@@ -10,3 +10,4 @@ interface HasRoutesInterface
 
     public function getApiRoutes(): ?string;
 }
+

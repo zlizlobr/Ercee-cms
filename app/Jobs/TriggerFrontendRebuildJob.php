@@ -12,20 +12,42 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Queued job that debounces and triggers frontend rebuild execution.
+ */
 class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var int Maximum number of retry attempts for this queued job.
+     */
     public int $tries = 3;
 
+    /**
+     * @var int Delay strategy in seconds between job retry attempts.
+     */
     public int $backoff = 30;
 
+    /**
+     * @var int Duration in seconds for which unique job lock is held.
+     */
     public int $uniqueFor = 60;
 
+    /**
+     * @param string $reason Business reason propagated to rebuild trigger and logs.
+     */
     public function __construct(
         public string $reason
     ) {}
 
+    /**
+     * Execute the rebuild trigger with debounce lock protection.
+     *
+     * @param FrontendRebuildService $rebuildService Service deciding mode and executing rebuild side effect.
+     *
+     * @throws \Exception
+     */
     public function handle(FrontendRebuildService $rebuildService): void
     {
         if (! $rebuildService->isEnabled()) {
@@ -69,6 +91,9 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
         }
     }
 
+    /**
+     * Return a stable unique queue key shared by all rebuild triggers.
+     */
     public function uniqueId(): string
     {
         return 'frontend_rebuild';

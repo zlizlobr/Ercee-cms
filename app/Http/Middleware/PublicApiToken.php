@@ -7,8 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Authenticate public API requests with the configured bearer token.
+ */
 class PublicApiToken
 {
+    /**
+     * Validate bearer token for public API routes.
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();

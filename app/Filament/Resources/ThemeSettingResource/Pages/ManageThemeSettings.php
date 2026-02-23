@@ -13,18 +13,39 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 
+/**
+ * Provides the custom Filament page for theme settings management.
+ */
 class ManageThemeSettings extends Page
 {
+    /**
+     * @var string Filament resource class associated with this page controller.
+     */
     protected static string $resource = ThemeSettingResource::class;
 
+    /**
+     * @var string Blade view identifier used to render this Filament component.
+     */
     protected static string $view = 'filament.pages.theme-settings';
 
+    /**
+     * @var ?string UI title displayed for this resource page or relation manager.
+     */
     protected static ?string $title = 'Theme Settings';
 
+    /**
+     * @var ?string Custom navigation label displayed in the admin sidebar.
+     */
     protected static ?string $navigationLabel = 'Theme Settings';
 
+    /**
+     * @var ?array Form state payload containing editable theme settings values.
+     */
     public ?array $data = [];
 
+    /**
+     * Hydrate the form with persisted theme settings.
+     */
     public function mount(): void
     {
         $settings = ThemeSetting::first();
@@ -47,6 +68,10 @@ class ManageThemeSettings extends Page
         ]);
     }
 
+    /**
+     * Build the form schema for this resource page.
+     * @param Form $form
+     */
     public function form(Form $form): Form
     {
         return $form
@@ -352,6 +377,9 @@ class ManageThemeSettings extends Page
             ]);
     }
 
+    /**
+     * Persist the submitted theme settings.
+     */
     public function save(): void
     {
         $data = $this->form->getState();
@@ -438,3 +466,5 @@ class ManageThemeSettings extends Page
         ];
     }
 }
+
+

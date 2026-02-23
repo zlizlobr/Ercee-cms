@@ -11,14 +11,8 @@ use Illuminate\View\View;
 /**
  * Resolve media URLs for the admin page preview view.
  */
-/**
- * Resolve media URLs for the admin page preview view.
- */
 class PagePreviewController extends Controller
 {
-    /**
-     * Render the preview view with resolved block media.
-     */
     /**
      * Render the preview view with resolved block media.
      */
@@ -32,12 +26,6 @@ class PagePreviewController extends Controller
         ]);
     }
 
-    /**
-     * Resolve media URLs for block data used in preview.
-     *
-     * @param array<int, array<string, mixed>> $blocks
-     * @return array<int, array<string, mixed>>
-     */
     /**
      * Resolve media URLs for block data used in preview.
      *
@@ -71,12 +59,6 @@ class PagePreviewController extends Controller
      * @param array<string, mixed> $data
      * @return array<string, mixed>
      */
-    /**
-     * Resolve image block media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     private function resolveImageBlock(array $data): array
     {
         if (isset($data['media_uuid'])) {
@@ -95,12 +77,6 @@ class PagePreviewController extends Controller
         return $data;
     }
 
-    /**
-     * Resolve hero block media URLs.
-     *
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     */
     /**
      * Resolve hero block media URLs.
      *
@@ -153,6 +129,12 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve testimonial block images from media UUID or storage path.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveTestimonialsBlock(array $data): array
     {
         if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
@@ -185,6 +167,12 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve premium CTA block media and normalize legacy CTA fields.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolvePremiumCtaBlock(array $data): array
     {
         if (isset($data['background_media_uuid'])) {
@@ -231,6 +219,12 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve link payloads inside service highlights block.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveServiceHighlightsBlock(array $data): array
     {
         if (isset($data['services']) && is_array($data['services'])) {
@@ -256,6 +250,12 @@ class PagePreviewController extends Controller
         return $data;
     }
 
+    /**
+     * Resolve preview link URL from explicit URL, page reference or anchor.
+     *
+     * @param array<string, mixed> $link
+     * @return array<string, mixed>
+     */
     private function resolvePreviewLink(array $link): array
     {
         $url = $link['url'] ?? null;
@@ -291,6 +291,12 @@ class PagePreviewController extends Controller
         return $link;
     }
 
+    /**
+     * Normalize CTA fields for hero-like blocks to unified link structure.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroCta(array $data, string $prefix): array
     {
         $labelKey = "{$prefix}_label";

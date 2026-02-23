@@ -10,3 +10,4 @@ interface HasEventsInterface
 
     public function getEventSubscribers(): array;
 }
+

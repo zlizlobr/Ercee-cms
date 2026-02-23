@@ -7,10 +7,19 @@ use App\Domain\Media\RichEditorMediaHandler;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Defines the Filament schema for the text block.
+ */
 class TextBlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 20;
 
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_TEXT)
@@ -33,3 +42,5 @@ class TextBlock extends BaseBlock
             ]);
     }
 }
+
+

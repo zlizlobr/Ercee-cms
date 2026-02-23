@@ -6,6 +6,9 @@ use App\Domain\Content\Page;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
+/**
+ * Displays page statistics in the Filament dashboard.
+ */
 class PagesStats extends BaseWidget
 {
     protected function getStats(): array
@@ -17,3 +20,5 @@ class PagesStats extends BaseWidget
         ];
     }
 }
+
+

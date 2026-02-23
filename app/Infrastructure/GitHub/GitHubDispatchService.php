@@ -5,10 +5,19 @@ namespace App\Infrastructure\GitHub;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Dispatches frontend rebuild events to GitHub repository dispatch API.
+ */
 class GitHubDispatchService
 {
+    /**
+     * @var string GitHub token used to authenticate dispatch API requests.
+     */
     private string $token;
 
+    /**
+     * @var string Target GitHub repository in owner/name format.
+     */
     private string $repository;
 
     public function __construct()
@@ -17,6 +26,13 @@ class GitHubDispatchService
         $this->repository = config('services.github.frontend_repository') ?? '';
     }
 
+    /**
+     * Triggers a GitHub repository dispatch event that requests frontend rebuild.
+     *
+     * @param string $reason Business reason used by frontend pipeline for traceability.
+     *
+     * @throws \RuntimeException When GitHub credentials are missing or dispatch request fails.
+     */
     public function triggerFrontendBuild(string $reason = 'content_update'): void
     {
         if (empty($this->token) || empty($this->repository)) {

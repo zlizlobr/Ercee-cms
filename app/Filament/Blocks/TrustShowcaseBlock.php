@@ -9,11 +9,23 @@ use App\Filament\Components\MediaPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 
+/**
+ * Defines the Filament schema for the trust showcase block.
+ */
 class TrustShowcaseBlock extends BaseBlock
 {
+    /**
+     * @var int Sort priority used to position the block in the builder picker.
+     */
     public static int $order = 75;
 
+    /**
+     * @var string Group key used to place the block into a picker section.
+     */
     public static string $group = 'features';
+    /**
+     * Build the block schema.
+     */
     public static function make(): Block
     {
         return Block::make(Page::BLOCK_TYPE_TRUST_SHOWCASE)
@@ -69,3 +81,5 @@ class TrustShowcaseBlock extends BaseBlock
             ]);
     }
 }
+
+

@@ -22,3 +22,4 @@ interface ModuleInterface
 
     public function boot(): void;
 }
+

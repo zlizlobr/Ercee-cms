@@ -11,10 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Subscriber aggregate representing a contact across funnels, forms, and commerce.
+ */
 class Subscriber extends Model
 {
     use HasFactory;
 
+    /**
+     * @return SubscriberFactory
+     */
     protected static function newFactory(): SubscriberFactory
     {
         return SubscriberFactory::new();
@@ -26,21 +32,33 @@ class Subscriber extends Model
         'source',
     ];
 
+    /**
+     * @return HasMany<Contract>
+     */
     public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
     }
 
+    /**
+     * @return HasMany<FunnelRun>
+     */
     public function funnelRuns(): HasMany
     {
         return $this->hasMany(FunnelRun::class);
     }
 
+    /**
+     * @return HasMany<Order>
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function tags(): array
     {
         return DB::table('subscriber_tags')
@@ -49,6 +67,9 @@ class Subscriber extends Model
             ->toArray();
     }
 
+    /**
+     * Adds a tag to the subscriber if not already present.
+     */
     public function addTag(string $tag): void
     {
         DB::table('subscriber_tags')->insertOrIgnore([
@@ -59,6 +80,9 @@ class Subscriber extends Model
         ]);
     }
 
+    /**
+     * Removes one tag association from the subscriber.
+     */
     public function removeTag(string $tag): void
     {
         DB::table('subscriber_tags')
@@ -67,6 +91,9 @@ class Subscriber extends Model
             ->delete();
     }
 
+    /**
+     * Returns true when the subscriber has the specified tag.
+     */
     public function hasTag(string $tag): bool
     {
         return DB::table('subscriber_tags')
@@ -75,3 +102,4 @@ class Subscriber extends Model
             ->exists();
     }
 }
+

@@ -10,8 +10,15 @@ use App\Domain\Content\ThemeSetting;
 use App\Domain\Media\Media;
 use App\Support\Module\ModuleManager;
 
+/**
+ * Maps resource events to frontend rebuild reasons and conditions.
+ */
 class FrontendRebuildMap
 {
+    /**
+     * Get rebuild trigger rules for resources and modules.
+     * @return array<string, array<string, mixed>>
+     */
     public static function rules(): array
     {
         $coreRules = [
@@ -72,3 +79,5 @@ class FrontendRebuildMap
         return array_merge($coreRules, $moduleRules);
     }
 }
+
+

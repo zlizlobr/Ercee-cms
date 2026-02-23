@@ -21,14 +21,28 @@ class MediaExport extends Command
     protected $description = 'Export media files and conversions to public directory and generate manifest';
 
     /** @var array<string, array<string, mixed>> */
+    /**
+     * @var array Manifest data assembled for media export output.
+     */
     private array $manifest = [];
+    /**
+     * @var string Filesystem path to the public media export directory.
+     */
     private string $publicPath;
+    /**
+     * @var string Filesystem path where the media manifest is written.
+     */
     private string $manifestPath;
     /** @var array<string, array<string, mixed>> */
+    /**
+     * @var array Previously saved manifest used for diffing export state.
+     */
     private array $previousManifest = [];
 
     /**
      * Export media items and generate a public manifest.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
      */
     public function handle(): int
     {
@@ -64,6 +78,8 @@ class MediaExport extends Command
 
     /**
      * Load the existing manifest if it is available.
+     *
+     * @return void
      */
     private function loadPreviousManifest(): void
     {
@@ -74,6 +90,8 @@ class MediaExport extends Command
 
     /**
      * Ensure the export directory exists.
+     *
+     * @return void
      */
     private function ensureDirectoryExists(): void
     {
@@ -84,6 +102,9 @@ class MediaExport extends Command
 
     /**
      * Export a single MediaLibrary record if it has media.
+     *
+     * @param MediaLibrary $item Media library record.
+     * @return void
      */
     private function processMediaItem(MediaLibrary $item): void
     {
@@ -114,6 +135,10 @@ class MediaExport extends Command
 
     /**
      * Determine if a manifest entry has not changed.
+     *
+     * @param string $uuid Media UUID.
+     * @param string $checksum Calculated media checksum.
+     * @return bool True when existing manifest entry matches checksum.
      */
     private function hasNotChanged(string $uuid, string $checksum): bool
     {
@@ -123,6 +148,10 @@ class MediaExport extends Command
 
     /**
      * Copy the original media file to the public directory.
+     *
+     * @param Media $media Source media model.
+     * @param string $targetDir Target export directory.
+     * @return void
      */
     private function copyOriginal(Media $media, string $targetDir): void
     {
@@ -136,6 +165,10 @@ class MediaExport extends Command
 
     /**
      * Copy generated conversions to the public directory.
+     *
+     * @param Media $media Source media model.
+     * @param string $targetDir Target export directory.
+     * @return void
      */
     private function copyConversions(Media $media, string $targetDir): void
     {
@@ -159,6 +192,10 @@ class MediaExport extends Command
 
     /**
      * Build a conversion file name for a specific conversion.
+     *
+     * @param Media $media Source media model.
+     * @param string $conversion Conversion name.
+     * @return string Conversion filename.
      */
     private function getConversionFileName(Media $media, string $conversion): string
     {
@@ -171,6 +208,10 @@ class MediaExport extends Command
     /**
      * Build a manifest entry for an exported media item.
      *
+     * @param Media $media Source media model.
+     * @param MediaLibrary $item Media library record.
+     * @param string $uuid Media UUID.
+     * @param string $checksum Media checksum.
      * @return array<string, mixed>
      */
     private function buildManifestEntry(Media $media, MediaLibrary $item, string $uuid, string $checksum): array
@@ -218,6 +259,7 @@ class MediaExport extends Command
     /**
      * Read image dimensions from disk, if available.
      *
+     * @param string $path Absolute file path.
      * @return array{width: int|null, height: int|null}
      */
     private function getImageDimensions(string $path): array
@@ -236,6 +278,8 @@ class MediaExport extends Command
 
     /**
      * Persist the manifest to disk using an atomic move.
+     *
+     * @return void
      */
     private function writeManifest(): void
     {
@@ -248,6 +292,8 @@ class MediaExport extends Command
 
     /**
      * Remove export directories that are no longer in the manifest.
+     *
+     * @return void
      */
     private function cleanupOrphanedFiles(): void
     {
@@ -263,3 +309,4 @@ class MediaExport extends Command
         }
     }
 }
+

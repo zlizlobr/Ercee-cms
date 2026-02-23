@@ -6,12 +6,20 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+/**
+ * Scaffold a new module package in the modules workspace.
+ */
 class ModuleMakeCommand extends Command
 {
     protected $signature = 'module:make {name : The module name (lowercase, e.g. "blog")}';
 
     protected $description = 'Scaffold a new module in the ercee-modules directory';
 
+    /**
+     * Generate module directories and base files.
+     *
+     * @return int Exit code (`Command::SUCCESS` or `Command::FAILURE`).
+     */
     public function handle(): int
     {
         $name = Str::lower($this->argument('name'));
@@ -59,6 +67,13 @@ class ModuleMakeCommand extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Build a composer.json payload for the module.
+     *
+     * @param string $name Module machine name.
+     * @param string $studly StudlyCase module name.
+     * @return string JSON payload with trailing newline.
+     */
     private function composerJson(string $name, string $studly): string
     {
         $json = [
@@ -89,6 +104,13 @@ class ModuleMakeCommand extends Command
         return json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
     }
 
+    /**
+     * Build the module service provider class template.
+     *
+     * @param string $name Module machine name.
+     * @param string $studly StudlyCase module name.
+     * @return string PHP class template.
+     */
     private function serviceProvider(string $name, string $studly): string
     {
         return <<<PHP
@@ -127,6 +149,12 @@ class {$studly}ModuleServiceProvider extends BaseModuleServiceProvider
 PHP;
     }
 
+    /**
+     * Build the module config file template.
+     *
+     * @param string $name Module machine name.
+     * @return string PHP config template.
+     */
     private function moduleConfig(string $name): string
     {
         return <<<PHP
@@ -141,6 +169,11 @@ return [
 PHP;
     }
 
+    /**
+     * Build an empty routes file template.
+     *
+     * @return string PHP routes template.
+     */
     private function routesFile(): string
     {
         return <<<'PHP'
@@ -151,3 +184,4 @@ use Illuminate\Support\Facades\Route;
 PHP;
     }
 }
+

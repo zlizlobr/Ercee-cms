@@ -11,12 +11,25 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
+/**
+ * Manages related records inside a Filament resource.
+ */
 class ItemsRelationManager extends RelationManager
 {
+    /**
+     * @var string Relationship name used by the relation manager to resolve records.
+     */
     protected static string $relationship = 'allItems';
 
+    /**
+     * @var ?string UI title displayed for this resource page or relation manager.
+     */
     protected static ?string $title = 'Navigation Items';
 
+    /**
+     * Build the form schema for this resource page.
+     * @param Form $form
+     */
     public function form(Form $form): Form
     {
         return $form
@@ -60,6 +73,10 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the table definition for this resource page.
+     * @param Table $table
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -104,3 +121,5 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 }
+
+

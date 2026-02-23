@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Migrate legacy richtext image URLs to media UUID URLs.
+ */
 class MediaMigrateRichtext extends Command
 {
     protected $signature = 'media:migrate-richtext
@@ -19,11 +22,29 @@ class MediaMigrateRichtext extends Command
 
     private const STORAGE_URL_PATTERN = '#(https?://[^/]+)?/storage/([^"\'>\s]+\.(jpg|jpeg|png|gif|webp))#i';
 
+    /**
+     * @var int Counter of records successfully migrated in the current run.
+     */
     private int $migratedCount = 0;
+    /**
+     * @var int Counter of records intentionally skipped during migration.
+     */
     private int $skippedCount = 0;
+    /**
+     * @var int Counter of records that failed processing during migration.
+     */
     private int $errorCount = 0;
+    /** @var array<string, string> */
+    /**
+     * @var array Lookup map used to replace media URLs with UUID references.
+     */
     private array $urlToUuidMap = [];
 
+    /**
+     * Execute richtext media migration.
+     *
+     * @return int Exit code (`Command::SUCCESS`).
+     */
     public function handle(): int
     {
         $isDryRun = $this->option('dry-run');
@@ -50,6 +71,12 @@ class MediaMigrateRichtext extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * Migrate richtext images in page content blocks.
+     *
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return void
+     */
     private function migratePages(bool $isDryRun): void
     {
         $pages = Page::whereNotNull('content')->get();
@@ -90,11 +117,24 @@ class MediaMigrateRichtext extends Command
         $progressBar->finish();
     }
 
+    /**
+     * Placeholder for product migration support.
+     *
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return void
+     */
     private function migrateProducts(bool $isDryRun): void
     {
         $this->info('Product migration not implemented - descriptions use RichEditor without attachFiles');
     }
 
+    /**
+     * Replace storage image URLs in HTML with media URLs.
+     *
+     * @param string $html Input HTML fragment.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return string Migrated HTML fragment.
+     */
     private function migrateHtml(string $html, bool $isDryRun): string
     {
         return preg_replace_callback(
@@ -121,6 +161,13 @@ class MediaMigrateRichtext extends Command
         );
     }
 
+    /**
+     * Migrate a single storage file and return its media UUID.
+     *
+     * @param string $path Relative storage path.
+     * @param bool $isDryRun Whether to skip write operations.
+     * @return string|null Media UUID or null on failure.
+     */
     private function migrateFile(string $path, bool $isDryRun): ?string
     {
         $fullPath = Storage::disk('public')->path($path);
@@ -166,3 +213,4 @@ class MediaMigrateRichtext extends Command
         }
     }
 }
+
