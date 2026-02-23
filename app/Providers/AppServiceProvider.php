@@ -25,13 +25,22 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Registers global service bindings, model observers, and application rate limits.
+ */
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Register application service container bindings.
+     */
     public function register(): void
     {
         $this->app->bind(SubscriberServiceInterface::class, SubscriberService::class);
     }
 
+    /**
+     * Bootstrap global observers, macros, and runtime configuration.
+     */
     public function boot(): void
     {
         $this->registerFilesystemCompatibilityMacros();
@@ -47,6 +56,9 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
     }
 
+    /**
+     * Adds a compatibility macro for absolute path detection when missing.
+     */
     protected function registerFilesystemCompatibilityMacros(): void
     {
         if (method_exists(Filesystem::class, 'isAbsolutePath') || File::hasMacro('isAbsolutePath')) {
@@ -59,6 +71,9 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Configures named rate limiters for public APIs, forms, checkout, and webhooks.
+     */
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('form-submissions', function (Request $request) {
@@ -113,4 +128,3 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
-

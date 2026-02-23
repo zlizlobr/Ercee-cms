@@ -30,8 +30,18 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+/**
+ * Configures the Filament admin panel, resources, navigation, and middleware stack.
+ */
 class AdminPanelProvider extends PanelProvider
 {
+    /**
+     * Build the admin panel definition including module-provided extensions.
+     *
+     * @param Panel $panel Base Filament panel instance.
+     *
+     * @return Panel Fully configured admin panel instance.
+     */
     public function panel(Panel $panel): Panel
     {
         $moduleManager = app(ModuleManager::class);
@@ -269,4 +279,3 @@ class AdminPanelProvider extends PanelProvider
             );
     }
 }
-
