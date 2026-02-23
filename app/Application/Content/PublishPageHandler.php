@@ -6,8 +6,14 @@ use App\Application\Content\Commands\PublishPageCommand;
 use App\Application\Content\Results\PublishPageResult;
 use App\Domain\Content\Page;
 
+/**
+ * Handles the page publishing use-case.
+ */
 final class PublishPageHandler
 {
+    /**
+     * Publish a page when all business rules are satisfied.
+     */
     public function handle(PublishPageCommand $command): PublishPageResult
     {
         $page = Page::find($command->pageId);
