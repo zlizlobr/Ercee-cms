@@ -5,12 +5,22 @@ namespace App\Domain\Media;
 use App\Domain\Content\Page;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Normalizes block payloads and resolves media references to API-ready data.
+ */
 class BlockMediaResolver
 {
+    /**
+     * @param MediaManifestService $manifestService Manifest-backed media resolver.
+     */
     public function __construct(
         private readonly MediaManifestService $manifestService,
     ) {}
 
+    /**
+     * @param array<string, mixed> $blockData
+     * @return array<string, mixed>
+     */
     public function resolve(array $blockData, string $blockType): array
     {
         return match ($blockType) {
@@ -23,6 +33,10 @@ class BlockMediaResolver
         };
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveImageBlock(array $data): array
     {
         $media = null;
@@ -45,6 +59,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroBlock(array $data): array
     {
         $media = null;
@@ -102,6 +120,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveTestimonialsBlock(array $data): array
     {
         if (! isset($data['testimonials']) || ! is_array($data['testimonials'])) {
@@ -137,6 +159,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolvePremiumCtaBlock(array $data): array
     {
         $media = null;
@@ -175,6 +201,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveServiceHighlightsBlock(array $data): array
     {
         if (isset($data['services']) && is_array($data['services'])) {
@@ -200,6 +230,10 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $link
+     * @return array<string, mixed>
+     */
     private function resolveBlockLink(array $link): array
     {
         $url = $link['url'] ?? null;
@@ -235,6 +269,10 @@ class BlockMediaResolver
         return $link;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     private function resolveHeroCta(array $data, string $prefix): array
     {
         $labelKey = "{$prefix}_label";
@@ -279,6 +317,9 @@ class BlockMediaResolver
         return $data;
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     private function resolveByUuid(string $uuid): ?array
     {
         $entry = $this->manifestService->getByUuid($uuid);
@@ -290,6 +331,20 @@ class BlockMediaResolver
         return $this->manifestService->toApiFormat($entry);
     }
 
+    /**
+     * @return array{
+     *     uuid: null,
+     *     url: string,
+     *     alt: null,
+     *     title: string,
+     *     width: int|null,
+     *     height: int|null,
+     *     mime: string|null,
+     *     focal_point: null,
+     *     variants: array<int, mixed>,
+     *     legacy: true
+     * }|null
+     */
     private function resolveLegacyPath(string $path): ?array
     {
         if (empty($path)) {
@@ -315,6 +370,9 @@ class BlockMediaResolver
         ];
     }
 
+    /**
+     * @return array{width: int|null, height: int|null}
+     */
     private function getImageDimensions(string $path): array
     {
         if (! file_exists($path)) {
@@ -329,6 +387,9 @@ class BlockMediaResolver
         ];
     }
 
+    /**
+     * Returns mime type when local file exists.
+     */
     private function getMimeType(string $path): ?string
     {
         if (! file_exists($path)) {
@@ -338,6 +399,10 @@ class BlockMediaResolver
         return mime_content_type($path) ?: null;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $blocks
+     * @return array<int, array<string, mixed>>
+     */
     public function resolveAllBlocks(array $blocks): array
     {
         return array_map(function ($block) {

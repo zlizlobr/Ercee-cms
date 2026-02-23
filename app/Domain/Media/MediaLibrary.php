@@ -8,6 +8,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as SpatieMedia;
 
+/**
+ * Aggregate for media library metadata and conversion configuration.
+ */
 class MediaLibrary extends Model implements HasMedia
 {
     use InteractsWithMedia;
@@ -21,6 +24,9 @@ class MediaLibrary extends Model implements HasMedia
         'tags',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -29,6 +35,9 @@ class MediaLibrary extends Model implements HasMedia
         ];
     }
 
+    /**
+     * Registers the main media collection used by the domain.
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('default')
@@ -36,6 +45,9 @@ class MediaLibrary extends Model implements HasMedia
             ->useDisk('media');
     }
 
+    /**
+     * Registers conversion variants for stored media items.
+     */
     public function registerMediaConversions(?SpatieMedia $media = null): void
     {
         $this->addMediaConversion('thumb')

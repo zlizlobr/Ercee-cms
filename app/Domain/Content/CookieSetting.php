@@ -5,8 +5,14 @@ namespace App\Domain\Content;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Stores configurable cookie consent banner and policy settings.
+ */
 class CookieSetting extends Model
 {
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'banner',
         'categories',
@@ -14,6 +20,9 @@ class CookieSetting extends Model
         'policy_links',
     ];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'banner' => 'array',
         'categories' => 'array',
@@ -23,6 +32,9 @@ class CookieSetting extends Model
 
     public const CACHE_KEY = 'cookie-settings';
 
+    /**
+     * @return array<string, bool|string>
+     */
     public static function defaultBanner(): array
     {
         return [
@@ -38,6 +50,9 @@ class CookieSetting extends Model
         ];
     }
 
+    /**
+     * @return array<string, array{name: string, description: string, required: bool, default_enabled: bool}>
+     */
     public static function defaultCategories(): array
     {
         return [
@@ -68,6 +83,9 @@ class CookieSetting extends Model
         ];
     }
 
+    /**
+     * @return array<string, array<int, array{name: string, description: string, cookie_pattern: string}>>
+     */
     public static function defaultServices(): array
     {
         return [
@@ -82,6 +100,9 @@ class CookieSetting extends Model
         ];
     }
 
+    /**
+     * @return array<string, array{label: string, link_type: string, url: string, page_id: int|null}>
+     */
     public static function defaultPolicyLinks(): array
     {
         return [
@@ -100,11 +121,17 @@ class CookieSetting extends Model
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getBanner(): array
     {
         return array_merge(self::defaultBanner(), $this->banner ?? []);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getCategories(): array
     {
         $defaults = self::defaultCategories();
@@ -124,11 +151,17 @@ class CookieSetting extends Model
         return $result;
     }
 
+    /**
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     public function getServices(): array
     {
         return array_merge(self::defaultServices(), $this->services ?? []);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getPolicyLinks(): array
     {
         $defaults = self::defaultPolicyLinks();
@@ -148,6 +181,9 @@ class CookieSetting extends Model
         return $result;
     }
 
+    /**
+     * Returns the cached cookie settings model or an empty default instance.
+     */
     public static function getCached(): self
     {
         return Cache::remember(self::CACHE_KEY, 3600, function () {
@@ -155,6 +191,9 @@ class CookieSetting extends Model
         });
     }
 
+    /**
+     * Invalidates cached cookie settings.
+     */
     public static function clearCache(): void
     {
         Cache::forget(self::CACHE_KEY);

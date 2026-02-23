@@ -4,8 +4,14 @@ namespace App\Domain\Media;
 
 use Illuminate\Support\Str;
 
+/**
+ * Creates deterministic SEO-friendly slugs and file names for media.
+ */
 class SeoSlugGenerator
 {
+    /**
+     * Builds a slug suffix from title/alt text and media UUID.
+     */
     public function generate(?string $title, ?string $altText, string $uuid): string
     {
         $source = $title ?? $altText;
@@ -25,6 +31,9 @@ class SeoSlugGenerator
         return "{$slug}-{$shortUuid}";
     }
 
+    /**
+     * Builds a final file name that includes extension.
+     */
     public function generateFileName(?string $title, ?string $altText, string $uuid, string $extension): string
     {
         $seoSlug = $this->generate($title, $altText, $uuid);
@@ -38,6 +47,9 @@ class SeoSlugGenerator
         return "{$seoSlug}.{$extension}";
     }
 
+    /**
+     * Converts free text to a normalized lowercase slug.
+     */
     public function toSlug(string $text): string
     {
         $text = $this->transliterate($text);
@@ -62,6 +74,9 @@ class SeoSlugGenerator
         return $text;
     }
 
+    /**
+     * Replaces common accented characters before ASCII normalization.
+     */
     private function transliterate(string $text): string
     {
         $map = [
