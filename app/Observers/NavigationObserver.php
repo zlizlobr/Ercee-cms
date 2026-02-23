@@ -14,6 +14,8 @@ class NavigationObserver
 {
     /**
      * Handle the Navigation "saved" event.
+     *
+     * @param Navigation $navigation Navigation entity that was created or updated.
      */
     public function saved(Navigation $navigation): void
     {
@@ -26,6 +28,8 @@ class NavigationObserver
 
     /**
      * Handle the Navigation "deleted" event.
+     *
+     * @param Navigation $navigation Navigation entity that was deleted.
      */
     public function deleted(Navigation $navigation): void
     {
@@ -38,6 +42,8 @@ class NavigationObserver
 
     /**
      * Clear cached navigation data for the affected menu.
+     *
+     * @param Navigation $navigation Navigation entity used to resolve menu-scoped cache keys.
      */
     protected function clearCache(Navigation $navigation): void
     {
@@ -55,4 +61,3 @@ class NavigationObserver
         Cache::forget('menu:main');
     }
 }
-
