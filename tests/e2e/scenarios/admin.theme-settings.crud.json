@@ -1,0 +1,82 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.theme-settings.crud",
+  "version": 2,
+  "description": "Deterministic custom-action scenario for ThemeSettingResource manage page.",
+  "mode": ["pr", "nightly"],
+  "tags": ["theme-settings", "custom", "resource"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "runTs": {
+      "source": "generated",
+      "type": "timestamp"
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-theme-settings-page",
+      "action": "openResource",
+      "resource": "theme-settings"
+    },
+    {
+      "id": "verify-theme-settings-loaded",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "role", "value": "heading", "name": "Theme Settings" }
+        }
+      ],
+      "dependsOn": ["open-theme-settings-page"]
+    },
+    {
+      "id": "update-global-logo-text",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.global.logo_text']" },
+      "value": "E2E Test ThemeSetting {{runTs}}",
+      "dependsOn": ["verify-theme-settings-loaded"]
+    },
+    {
+      "id": "save-theme-settings",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["update-global-logo-text"]
+    },
+    {
+      "id": "wait-theme-settings-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-theme-settings"]
+    },
+    {
+      "id": "verify-theme-settings-success-message",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "text",
+          "selector": { "type": "css", "value": "[role='status']" },
+          "value": "Settings saved"
+        }
+      ],
+      "dependsOn": ["wait-theme-settings-toast"]
+    }
+  ]
+}

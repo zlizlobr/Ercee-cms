@@ -34,7 +34,7 @@
     {
       "id": "click-new-page",
       "action": "click",
-      "selector": { "type": "role", "value": "link", "name": "New page" },
+      "selector": { "type": "css", "value": "a[href*='/admin/pages/create']" },
       "description": "Click the New page button",
       "dependsOn": ["open-pages-list"],
       "wait": {
@@ -64,7 +64,7 @@
     {
       "id": "save-page",
       "action": "click",
-      "selector": { "type": "role", "value": "button", "name": "Save" },
+      "selector": { "type": "css", "value": "button[type='submit']" },
       "description": "Click Save to create the page",
       "dependsOn": ["wait-slug-autofill"],
       "onFail": "stop",
