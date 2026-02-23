@@ -23,6 +23,9 @@ final readonly class PublishPageResult implements ResultInterface
 
     /**
      * Create a successful publish result.
+     *
+     * @param DateTimeInterface $publishedAt Publication timestamp.
+     * @return self Successful use-case result.
      */
     public static function success(DateTimeInterface $publishedAt): self
     {
@@ -34,6 +37,8 @@ final readonly class PublishPageResult implements ResultInterface
 
     /**
      * Create a failure result for a missing page.
+     *
+     * @return self Failed use-case result.
      */
     public static function pageNotFound(): self
     {
@@ -42,6 +47,8 @@ final readonly class PublishPageResult implements ResultInterface
 
     /**
      * Create a failure result when page is already published.
+     *
+     * @return self Failed use-case result.
      */
     public static function alreadyPublished(): self
     {
@@ -50,6 +57,9 @@ final readonly class PublishPageResult implements ResultInterface
 
     /**
      * Create a validation failure result.
+     *
+     * @param string $reason Validation error description.
+     * @return self Failed use-case result.
      */
     public static function validationFailed(string $reason): self
     {
@@ -58,6 +68,8 @@ final readonly class PublishPageResult implements ResultInterface
 
     /**
      * Indicate whether the publish use-case succeeded.
+     *
+     * @return bool True when page was published.
      */
     public function isSuccess(): bool
     {

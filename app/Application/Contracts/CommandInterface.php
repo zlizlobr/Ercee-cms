@@ -10,7 +10,7 @@ interface CommandInterface
     /**
      * Convert command payload into a serializable structure.
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed> Scalar-friendly command payload.
      */
     public function toArray(): array;
 }

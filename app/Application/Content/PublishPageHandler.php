@@ -13,6 +13,9 @@ final class PublishPageHandler
 {
     /**
      * Publish a page when all business rules are satisfied.
+     *
+     * @param PublishPageCommand $command Use-case input with target page ID.
+     * @return PublishPageResult Use-case result with success state or failure reason.
      */
     public function handle(PublishPageCommand $command): PublishPageResult
     {

@@ -9,6 +9,9 @@ interface HandlerInterface
 {
     /**
      * Execute the use-case for the given command.
+     *
+     * @param CommandInterface $command Use-case input payload.
+     * @return ResultInterface Normalized use-case output.
      */
     public function handle(CommandInterface $command): ResultInterface;
 }

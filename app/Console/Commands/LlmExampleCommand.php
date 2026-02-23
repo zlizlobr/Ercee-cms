@@ -9,6 +9,9 @@ use Modules\Llm\Services\LlmManager;
 use Modules\Llm\Domain\Prompt;
 use Modules\Llm\Domain\Exceptions\LlmException;
 
+/**
+ * Demonstrate non-streaming and streaming LLM calls from CLI.
+ */
 class LlmExampleCommand extends Command
 {
     protected $signature = 'llm:example
@@ -21,6 +24,11 @@ class LlmExampleCommand extends Command
 
     protected $description = 'Example command demonstrating LLM usage';
 
+    /**
+     * Handle the command execution.
+     *
+     * @return int Exit code (`Command::SUCCESS` on success, `Command::FAILURE` on provider error).
+     */
     public function handle(LlmManager $manager): int
     {
         $userPrompt = $this->argument('prompt');
@@ -57,6 +65,13 @@ class LlmExampleCommand extends Command
         }
     }
 
+    /**
+     * Run a non-streaming completion request.
+     *
+     * @param LlmManager $manager LLM manager instance.
+     * @param Prompt $prompt Prompt payload for completion.
+     * @return void
+     */
     protected function handleComplete(LlmManager $manager, Prompt $prompt): void
     {
         $response = $manager->complete($prompt);
@@ -73,6 +88,13 @@ class LlmExampleCommand extends Command
         $this->comment("  └─ Output: {$response->getUsage()->outputTokens}");
     }
 
+    /**
+     * Run a streaming completion request.
+     *
+     * @param LlmManager $manager LLM manager instance.
+     * @param Prompt $prompt Prompt payload for streaming.
+     * @return void
+     */
     protected function handleStreaming(LlmManager $manager, Prompt $prompt): void
     {
         $stream = $manager->stream($prompt);
