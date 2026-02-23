@@ -45,3 +45,4 @@ app/Filament/Resources/frontend-rebuild-guide.md
 git-worktree-llm-flow.md
 /task-modules
 /modules/*/
+/test-results

@@ -1,0 +1,193 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.pages.crud",
+  "version": 2,
+  "description": "Deterministic CRUD flow for PageResource.",
+  "mode": ["pr", "nightly"],
+  "tags": ["pages", "crud", "resource"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "runTs": {
+      "source": "generated",
+      "type": "timestamp"
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin",
+      "description": "Authenticate admin user"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-pages-list",
+      "action": "openResource",
+      "resource": "pages",
+      "description": "Open Pages resource list"
+    },
+    {
+      "id": "verify-pages-list-loaded",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "css", "value": "table" }
+        }
+      ],
+      "dependsOn": ["open-pages-list"]
+    },
+    {
+      "id": "open-create-page",
+      "action": "click",
+      "selector": { "type": "css", "value": "a[href*='/admin/pages/create']" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/pages/create"
+      },
+      "dependsOn": ["verify-pages-list-loaded"]
+    },
+    {
+      "id": "fill-page-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.title']" },
+      "value": "E2E Test Page {{runTs}}",
+      "dependsOn": ["open-create-page"]
+    },
+    {
+      "id": "wait-page-slug-generated",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": "input[id='data.slug']:not([value=''])" },
+        "timeout": 10000
+      },
+      "dependsOn": ["fill-page-title"]
+    },
+    {
+      "id": "save-created-page",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["wait-page-slug-generated"]
+    },
+    {
+      "id": "wait-page-create-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-created-page"]
+    },
+    {
+      "id": "verify-created-page-edit-url",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "url",
+          "value": "/admin/pages/.+/edit"
+        }
+      ],
+      "dependsOn": ["wait-page-create-toast"]
+    },
+    {
+      "id": "return-to-pages-list",
+      "action": "openResource",
+      "resource": "pages",
+      "dependsOn": ["verify-created-page-edit-url"]
+    },
+    {
+      "id": "verify-created-page-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Page {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["return-to-pages-list"]
+    },
+    {
+      "id": "open-created-page-edit",
+      "action": "click",
+      "selector": { "type": "text", "value": "E2E Test Page {{runTs}}" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/pages/.+/edit"
+      },
+      "dependsOn": ["verify-created-page-visible"]
+    },
+    {
+      "id": "update-page-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.title']" },
+      "value": "E2E Test Page Updated {{runTs}}",
+      "dependsOn": ["open-created-page-edit"]
+    },
+    {
+      "id": "save-updated-page",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["update-page-title"]
+    },
+    {
+      "id": "wait-page-update-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-updated-page"]
+    },
+    {
+      "id": "open-pages-list-before-delete",
+      "action": "openResource",
+      "resource": "pages",
+      "dependsOn": ["wait-page-update-toast"]
+    },
+    {
+      "id": "verify-updated-page-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Page Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["open-pages-list-before-delete"]
+    },
+    {
+      "id": "delete-updated-page",
+      "action": "deleteRecordByTitle",
+      "resource": "pages",
+      "title": "E2E Test Page Updated {{runTs}}",
+      "dependsOn": ["verify-updated-page-visible"],
+      "retry": 2
+    },
+    {
+      "id": "verify-page-deleted",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "hidden",
+          "selector": { "type": "text", "value": "E2E Test Page Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["delete-updated-page"]
+    }
+  ]
+}

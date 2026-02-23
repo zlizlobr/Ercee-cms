@@ -128,16 +128,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.37",
+            "version": "3.369.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "bc599ce989b101ee630d5e1a1aeda387632df47b"
+                "reference": "6b39dcc5284fae1a1f7e5d4fd64878092a56594b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bc599ce989b101ee630d5e1a1aeda387632df47b",
-                "reference": "bc599ce989b101ee630d5e1a1aeda387632df47b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6b39dcc5284fae1a1f7e5d4fd64878092a56594b",
+                "reference": "6b39dcc5284fae1a1f7e5d4fd64878092a56594b",
                 "shasum": ""
             },
             "require": {
@@ -219,9 +219,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.37"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.38"
             },
-            "time": "2026-02-18T19:16:34+00:00"
+            "time": "2026-02-19T19:06:55+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -1217,7 +1217,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-analytics",
-                "reference": "ba4febf6e237155d45929a04ac3394b98f084551"
+                "reference": "be27ea39a9f8acf43ea21efb6675209dd506a449"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1252,6 +1252,14 @@
                     "Modules\\Analytics\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -1267,10 +1275,9 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-commerce",
-                "reference": "d8db9e089ce1da24f185f2e4313ce0720794804b"
+                "reference": "906a4efcf15242f0f9697dd9e33a39af25e2e98f"
             },
             "require": {
-                "ercee/module-forms": "^1.0",
                 "filament/filament": "^3.2",
                 "laravel/framework": "^12.0",
                 "php": "^8.2",
@@ -1302,6 +1309,14 @@
                     "Modules\\Commerce\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "proprietary"
             ],
@@ -1317,7 +1332,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-forms",
-                "reference": "e326c4e3dfb637cac96811c8e2f08dcbed91748a"
+                "reference": "86431df43d491700fbea1a461ef5dc49b3101a10"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1352,6 +1367,14 @@
                     "Modules\\Forms\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "proprietary"
             ],
@@ -1367,11 +1390,10 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-funnel",
-                "reference": "399a5e256ce216255d9c8e6d9487808e67b2deb6"
+                "reference": "b6c3ad7e7b1488ef998d1ae377c66c58966d38e5"
             },
             "require": {
                 "ercee/module-commerce": "^1.0",
-                "ercee/module-forms": "^1.0",
                 "filament/filament": "^3.2",
                 "laravel/framework": "^12.0",
                 "php": "^8.2"
@@ -1402,6 +1424,14 @@
                     "Modules\\Funnel\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "proprietary"
             ],
@@ -1417,7 +1447,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-llm",
-                "reference": "0e68ec2ab0ce6ce468cecfdddc7024e3cb8148c6"
+                "reference": "d13200c343b0974bc51303573d787b482e946f56"
             },
             "require": {
                 "filament/filament": "^3.2",
@@ -1453,6 +1483,14 @@
                     "Modules\\Llm\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "proprietary"
             ],
@@ -1468,7 +1506,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ercee-modules/ercee-module-theme-builds",
-                "reference": "96869b267ec715b5109efacb16200a302feb27c9"
+                "reference": "1b33fb2805c9e222a5cb440cdc0a115bdd940316"
             },
             "require": {
                 "laravel/framework": "^12.0",
@@ -1500,6 +1538,14 @@
                     "Modules\\ThemeBuilds\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "test": [
+                    "@test:unit"
+                ],
+                "test:unit": [
+                    "phpunit --colors=always"
+                ]
+            },
             "license": [
                 "proprietary"
             ],
@@ -1511,7 +1557,7 @@
         },
         {
             "name": "filament/actions",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/actions.git",
@@ -1564,7 +1610,7 @@
         },
         {
             "name": "filament/filament",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/panels.git",
@@ -1629,16 +1675,16 @@
         },
         {
             "name": "filament/forms",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "45f6e9337d60154f2d0ad3b2c4e47f7e16912971"
+                "reference": "c64bf142f808d292b0c6c21fdd3c75cbef9e9d30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/45f6e9337d60154f2d0ad3b2c4e47f7e16912971",
-                "reference": "45f6e9337d60154f2d0ad3b2c4e47f7e16912971",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/c64bf142f808d292b0c6c21fdd3c75cbef9e9d30",
+                "reference": "c64bf142f808d292b0c6c21fdd3c75cbef9e9d30",
                 "shasum": ""
             },
             "require": {
@@ -1681,11 +1727,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2026-02-07T21:51:43+00:00"
+            "time": "2026-02-19T23:07:33+00:00"
         },
         {
             "name": "filament/infolists",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
@@ -1736,7 +1782,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1788,7 +1834,7 @@
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-media-library-plugin.git",
@@ -1826,7 +1872,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -1885,7 +1931,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
@@ -1937,7 +1983,7 @@
         },
         {
             "name": "filament/widgets",
-            "version": "v3.3.48",
+            "version": "v3.3.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",

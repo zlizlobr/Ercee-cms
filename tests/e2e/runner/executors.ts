@@ -201,12 +201,12 @@ export async function executeStep(page: Page, step: Step, ctx: RunContext): Prom
       } else {
         const actionsBtn = row.locator('.fi-dropdown-trigger, button.fi-btn').last();
         await actionsBtn.click();
-        await page.getByRole('menuitem', { name: /delete/i }).click();
+        await page.getByRole('menuitem', { name: /delete|smazat/i }).click();
       }
 
       const modal = page.locator('.fi-modal, [role="dialog"]');
       if (await modal.isVisible()) {
-        await modal.getByRole('button', { name: /delete|confirm/i }).click();
+        await modal.getByRole('button', { name: /delete|confirm|smazat|potvrdit/i }).click();
       }
 
       await expect(row).not.toBeVisible();

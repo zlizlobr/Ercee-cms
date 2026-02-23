@@ -1,0 +1,184 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.subscribers.crud",
+  "version": 2,
+  "description": "Deterministic CRUD flow for SubscriberResource.",
+  "mode": ["pr", "nightly"],
+  "tags": ["subscribers", "crud", "resource"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "runTs": {
+      "source": "generated",
+      "type": "timestamp"
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-subscribers-list",
+      "action": "openResource",
+      "resource": "subscribers"
+    },
+    {
+      "id": "verify-subscribers-table",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "css", "value": "table" }
+        }
+      ],
+      "dependsOn": ["open-subscribers-list"]
+    },
+    {
+      "id": "open-subscriber-create",
+      "action": "click",
+      "selector": { "type": "css", "value": "a[href*='/admin/subscribers/create']" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/subscribers/create"
+      },
+      "dependsOn": ["verify-subscribers-table"]
+    },
+    {
+      "id": "fill-subscriber-email",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.email']" },
+      "value": "e2e+subscriber{{runTs}}@example.test",
+      "dependsOn": ["open-subscriber-create"]
+    },
+    {
+      "id": "select-subscriber-status",
+      "action": "select",
+      "selector": { "type": "css", "value": "select[id='data.status']" },
+      "value": "active",
+      "dependsOn": ["fill-subscriber-email"]
+    },
+    {
+      "id": "fill-subscriber-source",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.source']" },
+      "value": "E2E Test Subscriber",
+      "dependsOn": ["select-subscriber-status"]
+    },
+    {
+      "id": "save-subscriber",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["fill-subscriber-source"]
+    },
+    {
+      "id": "wait-subscriber-create-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-subscriber"]
+    },
+    {
+      "id": "verify-subscriber-edit-url",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "url",
+          "value": "/admin/subscribers/.+/edit"
+        }
+      ],
+      "dependsOn": ["wait-subscriber-create-toast"]
+    },
+    {
+      "id": "open-subscribers-list-for-read",
+      "action": "openResource",
+      "resource": "subscribers",
+      "dependsOn": ["verify-subscriber-edit-url"]
+    },
+    {
+      "id": "verify-created-subscriber-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "e2e+subscriber{{runTs}}@example.test" }
+        }
+      ],
+      "dependsOn": ["open-subscribers-list-for-read"]
+    },
+    {
+      "id": "open-created-subscriber-edit",
+      "action": "click",
+      "selector": { "type": "text", "value": "e2e+subscriber{{runTs}}@example.test" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/subscribers/.+/edit"
+      },
+      "dependsOn": ["verify-created-subscriber-visible"]
+    },
+    {
+      "id": "update-subscriber-source",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.source']" },
+      "value": "E2E Test Subscriber Updated",
+      "dependsOn": ["open-created-subscriber-edit"]
+    },
+    {
+      "id": "save-subscriber-update",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["update-subscriber-source"]
+    },
+    {
+      "id": "wait-subscriber-update-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-subscriber-update"]
+    },
+    {
+      "id": "open-subscribers-list-for-delete",
+      "action": "openResource",
+      "resource": "subscribers",
+      "dependsOn": ["wait-subscriber-update-toast"]
+    },
+    {
+      "id": "delete-subscriber",
+      "action": "deleteRecordByTitle",
+      "resource": "subscribers",
+      "title": "e2e+subscriber{{runTs}}@example.test",
+      "dependsOn": ["open-subscribers-list-for-delete"],
+      "retry": 2
+    },
+    {
+      "id": "verify-subscriber-deleted",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "hidden",
+          "selector": { "type": "text", "value": "e2e+subscriber{{runTs}}@example.test" }
+        }
+      ],
+      "dependsOn": ["delete-subscriber"]
+    }
+  ]
+}

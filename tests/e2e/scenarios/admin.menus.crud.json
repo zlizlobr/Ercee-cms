@@ -1,0 +1,227 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.menus.crud",
+  "version": 2,
+  "description": "Deterministic CRUD flow for MenuResource with relation manager interaction.",
+  "mode": ["pr", "nightly"],
+  "tags": ["menus", "crud", "relation-manager", "resource"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "runTs": {
+      "source": "generated",
+      "type": "timestamp"
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-menus-list",
+      "action": "openResource",
+      "resource": "menus"
+    },
+    {
+      "id": "verify-menus-table",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "css", "value": "table" }
+        }
+      ],
+      "dependsOn": ["open-menus-list"]
+    },
+    {
+      "id": "open-menu-create",
+      "action": "click",
+      "selector": { "type": "css", "value": "a[href*='/admin/menus/create']" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/menus/create"
+      },
+      "dependsOn": ["verify-menus-table"]
+    },
+    {
+      "id": "fill-menu-name",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.name']" },
+      "value": "E2E Test Menu {{runTs}}",
+      "dependsOn": ["open-menu-create"]
+    },
+    {
+      "id": "wait-menu-slug-generated",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": "input[id='data.slug']:not([value=''])" },
+        "timeout": 10000
+      },
+      "dependsOn": ["fill-menu-name"]
+    },
+    {
+      "id": "save-menu",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["wait-menu-slug-generated"]
+    },
+    {
+      "id": "wait-menu-create-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-menu"]
+    },
+    {
+      "id": "verify-menu-edit-url",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "url",
+          "value": "/admin/menus/.+/edit"
+        }
+      ],
+      "dependsOn": ["wait-menu-create-toast"]
+    },
+    {
+      "id": "open-navigation-items-relation",
+      "action": "click",
+      "selector": { "type": "text", "value": "Navigation Items" },
+      "dependsOn": ["verify-menu-edit-url"],
+      "retry": 2,
+      "onFail": "continue"
+    },
+    {
+      "id": "open-relation-item-create",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[data-action='create']" },
+      "dependsOn": ["open-navigation-items-relation"],
+      "retry": 2,
+      "onFail": "continue"
+    },
+    {
+      "id": "fill-relation-item-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id$='title']" },
+      "value": "E2E Test Menu Item {{runTs}}",
+      "dependsOn": ["open-relation-item-create"],
+      "onFail": "continue"
+    },
+    {
+      "id": "fill-relation-item-position",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id$='position']" },
+      "value": "1",
+      "dependsOn": ["fill-relation-item-title"],
+      "onFail": "continue"
+    },
+    {
+      "id": "save-relation-item",
+      "action": "click",
+      "selector": { "type": "role", "value": "button", "name": "Vytvořit" },
+      "dependsOn": ["fill-relation-item-position"],
+      "onFail": "continue",
+      "retry": 2
+    },
+    {
+      "id": "wait-relation-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-relation-item"],
+      "onFail": "continue"
+    },
+    {
+      "id": "verify-relation-item-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Menu Item {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["wait-relation-toast"],
+      "onFail": "continue"
+    },
+    {
+      "id": "update-menu-name",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.name']" },
+      "value": "E2E Test Menu Updated {{runTs}}",
+      "dependsOn": ["verify-menu-edit-url"]
+    },
+    {
+      "id": "save-menu-update",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["update-menu-name"]
+    },
+    {
+      "id": "wait-menu-update-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-menu-update"]
+    },
+    {
+      "id": "open-menus-list-for-delete",
+      "action": "openResource",
+      "resource": "menus",
+      "dependsOn": ["wait-menu-update-toast"]
+    },
+    {
+      "id": "verify-updated-menu-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Menu Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["open-menus-list-for-delete"]
+    },
+    {
+      "id": "delete-menu",
+      "action": "deleteRecordByTitle",
+      "resource": "menus",
+      "title": "E2E Test Menu Updated {{runTs}}",
+      "dependsOn": ["verify-updated-menu-visible"],
+      "retry": 2
+    },
+    {
+      "id": "verify-menu-deleted",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "hidden",
+          "selector": { "type": "text", "value": "E2E Test Menu Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["delete-menu"]
+    }
+  ]
+}

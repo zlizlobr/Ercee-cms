@@ -1,0 +1,198 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.navigations.crud",
+  "version": 2,
+  "description": "Deterministic CRUD flow for NavigationResource.",
+  "mode": ["pr", "nightly"],
+  "tags": ["navigations", "crud", "resource"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "variables": {
+    "runTs": {
+      "source": "generated",
+      "type": "timestamp"
+    }
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-navigations-list",
+      "action": "openResource",
+      "resource": "navigations"
+    },
+    {
+      "id": "verify-navigations-table",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "css", "value": "table" }
+        }
+      ],
+      "dependsOn": ["open-navigations-list"]
+    },
+    {
+      "id": "open-navigation-create",
+      "action": "click",
+      "selector": { "type": "css", "value": "a[href*='/admin/navigations/create']" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/navigations/create"
+      },
+      "dependsOn": ["verify-navigations-table"]
+    },
+    {
+      "id": "fill-navigation-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.title']" },
+      "value": "E2E Test Navigation {{runTs}}",
+      "dependsOn": ["open-navigation-create"]
+    },
+    {
+      "id": "wait-navigation-slug-generated",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": "input[id='data.slug']:not([value=''])" },
+        "timeout": 10000
+      },
+      "dependsOn": ["fill-navigation-title"]
+    },
+    {
+      "id": "fill-navigation-position",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.position']" },
+      "value": "10",
+      "dependsOn": ["wait-navigation-slug-generated"]
+    },
+    {
+      "id": "save-navigation",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["fill-navigation-position"]
+    },
+    {
+      "id": "wait-navigation-create-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-navigation"]
+    },
+    {
+      "id": "verify-navigation-edit-url",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "url",
+          "value": "/admin/navigations/.+/edit"
+        }
+      ],
+      "dependsOn": ["wait-navigation-create-toast"]
+    },
+    {
+      "id": "open-navigations-list-for-read",
+      "action": "openResource",
+      "resource": "navigations",
+      "dependsOn": ["verify-navigation-edit-url"]
+    },
+    {
+      "id": "verify-created-navigation-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Navigation {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["open-navigations-list-for-read"]
+    },
+    {
+      "id": "open-created-navigation-edit",
+      "action": "click",
+      "selector": { "type": "text", "value": "E2E Test Navigation {{runTs}}" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/navigations/.+/edit"
+      },
+      "dependsOn": ["verify-created-navigation-visible"]
+    },
+    {
+      "id": "update-navigation-title",
+      "action": "fill",
+      "selector": { "type": "css", "value": "input[id='data.title']" },
+      "value": "E2E Test Navigation Updated {{runTs}}",
+      "dependsOn": ["open-created-navigation-edit"]
+    },
+    {
+      "id": "save-navigation-update",
+      "action": "click",
+      "selector": { "type": "css", "value": "button[type='submit']" },
+      "wait": {
+        "type": "loadstate",
+        "value": "networkidle"
+      },
+      "dependsOn": ["update-navigation-title"]
+    },
+    {
+      "id": "wait-navigation-update-toast",
+      "action": "waitFor",
+      "wait": {
+        "type": "visible",
+        "selector": { "type": "css", "value": ".fi-no-title, [data-testid='success-notification'], [role='status']" },
+        "timeout": 10000
+      },
+      "dependsOn": ["save-navigation-update"]
+    },
+    {
+      "id": "open-navigations-list-for-delete",
+      "action": "openResource",
+      "resource": "navigations",
+      "dependsOn": ["wait-navigation-update-toast"]
+    },
+    {
+      "id": "verify-updated-navigation-visible",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "text", "value": "E2E Test Navigation Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["open-navigations-list-for-delete"]
+    },
+    {
+      "id": "delete-navigation",
+      "action": "deleteRecordByTitle",
+      "resource": "navigations",
+      "title": "E2E Test Navigation Updated {{runTs}}",
+      "dependsOn": ["verify-updated-navigation-visible"],
+      "retry": 2
+    },
+    {
+      "id": "verify-navigation-deleted",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "hidden",
+          "selector": { "type": "text", "value": "E2E Test Navigation Updated {{runTs}}" }
+        }
+      ],
+      "dependsOn": ["delete-navigation"]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "../schema/e2e-scenario.schema.v2.json",
+  "scenarioId": "admin.media.crud",
+  "version": 2,
+  "description": "Deterministic read-focused scenario for MediaResource (create submission requires file upload, unsupported by current JSON runner actions).",
+  "mode": ["pr", "nightly"],
+  "tags": ["media", "crud", "resource", "read-only"],
+  "defaults": {
+    "timeout": 30000,
+    "retry": 1,
+    "onFail": "stop"
+  },
+  "beforeAll": [
+    {
+      "id": "login",
+      "action": "loginAdmin"
+    }
+  ],
+  "steps": [
+    {
+      "id": "open-media-list",
+      "action": "openResource",
+      "resource": "media"
+    },
+    {
+      "id": "verify-media-list-loaded",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "role", "value": "heading", "name": "Media" }
+        }
+      ],
+      "dependsOn": ["open-media-list"]
+    },
+    {
+      "id": "open-media-create-page",
+      "action": "click",
+      "selector": { "type": "css", "value": "a[href*='/admin/media/create']" },
+      "wait": {
+        "type": "url",
+        "value": "/admin/media/create"
+      },
+      "dependsOn": ["verify-media-list-loaded"]
+    },
+    {
+      "id": "verify-media-upload-field",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "url",
+          "value": "/admin/media/create"
+        }
+      ],
+      "dependsOn": ["open-media-create-page"]
+    },
+    {
+      "id": "return-to-media-list",
+      "action": "openResource",
+      "resource": "media",
+      "dependsOn": ["verify-media-upload-field"]
+    },
+    {
+      "id": "verify-media-list-still-loaded",
+      "action": "assert",
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": { "type": "role", "value": "heading", "name": "Media" }
+        }
+      ],
+      "dependsOn": ["return-to-media-list"]
+    }
+  ]
+}
