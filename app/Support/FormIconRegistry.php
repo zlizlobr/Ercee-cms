@@ -19,3 +19,4 @@ class FormIconRegistry
         return is_array($icons) ? $icons : [];
     }
 }
+

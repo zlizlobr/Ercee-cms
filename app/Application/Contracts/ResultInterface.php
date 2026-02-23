@@ -21,3 +21,4 @@ interface ResultInterface
      */
     public function toArray(): array;
 }
+

@@ -32,3 +32,4 @@ class CookieSettingObserver
         Cache::forget(CookieSetting::CACHE_KEY);
     }
 }
+

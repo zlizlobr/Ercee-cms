@@ -38,3 +38,4 @@ class PublicApiToken
         return $next($request);
     }
 }
+

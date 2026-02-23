@@ -132,3 +132,4 @@ class MediaRenameSeo extends Command
         return $newName ? 'renamed' : 'failed';
     }
 }
+

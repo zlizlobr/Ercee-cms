@@ -63,3 +63,4 @@ class ThemeMediaResolver
         return $this->manifestService->getUrl($uuid);
     }
 }
+

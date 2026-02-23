@@ -36,3 +36,4 @@ class RedirectToFrontend
         return redirect()->away($redirectUrl, 301);
     }
 }
+

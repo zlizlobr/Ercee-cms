@@ -194,3 +194,4 @@ class ThemeSetting extends Model
         Cache::forget(self::CACHE_KEY);
     }
 }
+

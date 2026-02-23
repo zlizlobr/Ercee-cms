@@ -76,3 +76,4 @@ class MediaController extends ApiController
         ]);
     }
 }
+

@@ -153,3 +153,4 @@ class ApiExceptionHandler
         ], 500);
     }
 }
+

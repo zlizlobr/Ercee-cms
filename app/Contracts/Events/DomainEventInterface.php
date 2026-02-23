@@ -12,3 +12,4 @@ interface DomainEventInterface
 
     public function getOccurredAt(): \DateTimeImmutable;
 }
+

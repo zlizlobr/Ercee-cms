@@ -48,3 +48,4 @@ class SyncModulePermissions extends Command
         return self::SUCCESS;
     }
 }
+

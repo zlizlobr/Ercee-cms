@@ -29,3 +29,4 @@ final readonly class PublishPageCommand implements CommandInterface
         ];
     }
 }
+

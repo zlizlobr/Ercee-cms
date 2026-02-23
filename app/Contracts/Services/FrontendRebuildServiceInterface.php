@@ -10,3 +10,4 @@ interface FrontendRebuildServiceInterface
 
     public function triggerForModel(object $model, string $action): void;
 }
+

@@ -84,3 +84,4 @@ class RichContentTransformer
         return array_unique($matches[1] ?? []);
     }
 }
+

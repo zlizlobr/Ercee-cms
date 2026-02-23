@@ -16,3 +16,4 @@ interface AdminExtensionInterface
 
     public function getBlocks(): array;
 }
+

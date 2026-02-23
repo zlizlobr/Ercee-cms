@@ -17,7 +17,13 @@ final readonly class PublishPageResult implements ResultInterface
      */
     private function __construct(
         public bool $success,
+        /**
+         * @var ?string Timestamp when the page publish action was finalized.
+         */
         public ?string $publishedAt = null,
+        /**
+         * @var ?string Failure reason returned when publish action cannot complete.
+         */
         public ?string $error = null,
     ) {}
 
@@ -88,3 +94,4 @@ final readonly class PublishPageResult implements ResultInterface
         ];
     }
 }
+

@@ -199,3 +199,4 @@ class CookieSetting extends Model
         Cache::forget(self::CACHE_KEY);
     }
 }
+

@@ -117,3 +117,4 @@ class CookieConfigController extends ApiController
         return $link['url'] ?? null;
     }
 }
+

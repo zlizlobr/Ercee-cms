@@ -249,3 +249,4 @@ class ThemeController extends ApiController
         return $logo;
     }
 }
+

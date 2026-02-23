@@ -37,3 +37,4 @@ class ApiTokenAuth
         return $next($request);
     }
 }
+

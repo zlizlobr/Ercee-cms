@@ -47,3 +47,4 @@ final class PublishPageHandler
         return PublishPageResult::success($now);
     }
 }
+

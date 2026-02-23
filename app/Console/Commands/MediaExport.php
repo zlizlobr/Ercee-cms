@@ -21,10 +21,22 @@ class MediaExport extends Command
     protected $description = 'Export media files and conversions to public directory and generate manifest';
 
     /** @var array<string, array<string, mixed>> */
+    /**
+     * @var array Manifest data assembled for media export output.
+     */
     private array $manifest = [];
+    /**
+     * @var string Filesystem path to the public media export directory.
+     */
     private string $publicPath;
+    /**
+     * @var string Filesystem path where the media manifest is written.
+     */
     private string $manifestPath;
     /** @var array<string, array<string, mixed>> */
+    /**
+     * @var array Previously saved manifest used for diffing export state.
+     */
     private array $previousManifest = [];
 
     /**
@@ -297,3 +309,4 @@ class MediaExport extends Command
         }
     }
 }
+

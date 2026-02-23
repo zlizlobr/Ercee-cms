@@ -14,3 +14,4 @@ interface CommandInterface
      */
     public function toArray(): array;
 }
+

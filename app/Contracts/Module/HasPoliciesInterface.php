@@ -8,3 +8,4 @@ interface HasPoliciesInterface
 {
     public function getPolicies(): array;
 }
+

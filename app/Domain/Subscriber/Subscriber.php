@@ -102,3 +102,4 @@ class Subscriber extends Model
             ->exists();
     }
 }
+

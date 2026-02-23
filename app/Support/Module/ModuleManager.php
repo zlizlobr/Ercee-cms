@@ -18,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 class ModuleManager
 {
+    /**
+     * @var array Loaded module instances keyed by module identifier.
+     */
     protected array $modules = [];
+    /**
+     * @var array Flag that tracks whether modules were already registered.
+     */
     protected array $registered = [];
+    /**
+     * @var array Flag that tracks whether loaded modules were already booted.
+     */
     protected array $booted = [];
 
     public function __construct(
@@ -389,3 +398,4 @@ class ModuleManager
         return implode('.', array_slice($parts, 0, 3));
     }
 }
+

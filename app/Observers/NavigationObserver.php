@@ -55,3 +55,4 @@ class NavigationObserver
         Cache::forget('menu:main');
     }
 }
+

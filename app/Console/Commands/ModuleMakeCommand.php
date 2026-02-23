@@ -184,3 +184,4 @@ use Illuminate\Support\Facades\Route;
 PHP;
     }
 }
+

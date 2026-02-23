@@ -333,3 +333,4 @@ class PagePreviewController extends Controller
         return $data;
     }
 }
+

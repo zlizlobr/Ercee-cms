@@ -33,3 +33,4 @@ class Media extends BaseMedia
             ->nonQueued();
     }
 }
+

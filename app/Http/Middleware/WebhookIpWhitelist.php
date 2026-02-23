@@ -47,3 +47,4 @@ class WebhookIpWhitelist
         return ($ipLong & $maskLong) === ($subnetLong & $maskLong);
     }
 }
+

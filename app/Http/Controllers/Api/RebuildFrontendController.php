@@ -51,3 +51,4 @@ class RebuildFrontendController extends Controller
         }
     }
 }
+

@@ -28,3 +28,4 @@ class ModuleServiceProvider extends ServiceProvider
         $manager->boot();
     }
 }
+

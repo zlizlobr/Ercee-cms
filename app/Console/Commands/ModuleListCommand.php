@@ -68,3 +68,4 @@ class ModuleListCommand extends Command
         return self::SUCCESS;
     }
 }
+

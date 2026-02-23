@@ -123,3 +123,4 @@ class ModuleSyncCommand extends Command
         return self::SUCCESS;
     }
 }
+

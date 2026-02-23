@@ -32,3 +32,4 @@ class ThemeSettingObserver
         Cache::forget(ThemeSetting::CACHE_KEY);
     }
 }
+

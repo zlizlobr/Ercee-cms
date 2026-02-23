@@ -145,3 +145,4 @@ class NavigationController extends ApiController
         return $parsed === false ? (string) $value : date(DATE_ATOM, $parsed);
     }
 }
+

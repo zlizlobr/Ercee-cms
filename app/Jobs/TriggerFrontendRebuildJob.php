@@ -16,10 +16,19 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var int Maximum number of retry attempts for this queued job.
+     */
     public int $tries = 3;
 
+    /**
+     * @var int Delay strategy in seconds between job retry attempts.
+     */
     public int $backoff = 30;
 
+    /**
+     * @var int Duration in seconds for which unique job lock is held.
+     */
     public int $uniqueFor = 60;
 
     public function __construct(
@@ -74,3 +83,4 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
         return 'frontend_rebuild';
     }
 }
+

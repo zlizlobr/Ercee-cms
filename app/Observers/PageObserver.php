@@ -38,3 +38,4 @@ class PageObserver
         Cache::forget('pages:slugs');
     }
 }
+

@@ -33,3 +33,4 @@ class MediaUploaded extends BaseDomainEvent
         ];
     }
 }
+

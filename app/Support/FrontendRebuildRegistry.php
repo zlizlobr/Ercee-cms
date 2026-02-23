@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class FrontendRebuildRegistry
 {
+    /**
+     * @var ?array In-memory cache of rebuild registry entries for the current request.
+     */
     protected static ?array $cache = null;
 
     public static function rules(): array
@@ -100,3 +103,4 @@ class FrontendRebuildRegistry
         );
     }
 }
+

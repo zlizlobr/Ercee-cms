@@ -173,3 +173,4 @@ class Navigation extends Model
         return $this->page?->slug;
     }
 }
+

@@ -14,6 +14,9 @@ abstract class BaseDomainEvent implements DomainEventInterface
     use InteractsWithSockets;
     use SerializesModels;
 
+    /**
+     * @var \DateTimeImmutable Timestamp indicating when the domain event occurred.
+     */
     protected \DateTimeImmutable $occurredAt;
 
     public function __construct()
@@ -31,3 +34,4 @@ abstract class BaseDomainEvent implements DomainEventInterface
         return $this->occurredAt;
     }
 }
+

@@ -30,3 +30,4 @@ class RebuildFrontendRequest extends FormRequest
         );
     }
 }
+

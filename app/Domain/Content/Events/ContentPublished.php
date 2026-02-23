@@ -33,3 +33,4 @@ class ContentPublished extends BaseDomainEvent
         ];
     }
 }
+

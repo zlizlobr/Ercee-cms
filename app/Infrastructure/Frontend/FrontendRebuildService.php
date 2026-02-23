@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Process;
 
 class FrontendRebuildService
 {
+    /**
+     * @var bool Flag that determines whether frontend rebuild triggering is active.
+     */
     private bool $enabled;
 
+    /**
+     * @var string Configured rebuild execution mode for frontend synchronization.
+     */
     private string $mode;
 
+    /**
+     * @var ?string Local filesystem path used for file-based rebuild triggering.
+     */
     private ?string $localPath;
 
     public function __construct(
@@ -121,3 +130,4 @@ class FrontendRebuildService
         ]);
     }
 }
+

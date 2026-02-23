@@ -22,10 +22,22 @@ class MediaMigrateRichtext extends Command
 
     private const STORAGE_URL_PATTERN = '#(https?://[^/]+)?/storage/([^"\'>\s]+\.(jpg|jpeg|png|gif|webp))#i';
 
+    /**
+     * @var int Counter of records successfully migrated in the current run.
+     */
     private int $migratedCount = 0;
+    /**
+     * @var int Counter of records intentionally skipped during migration.
+     */
     private int $skippedCount = 0;
+    /**
+     * @var int Counter of records that failed processing during migration.
+     */
     private int $errorCount = 0;
     /** @var array<string, string> */
+    /**
+     * @var array Lookup map used to replace media URLs with UUID references.
+     */
     private array $urlToUuidMap = [];
 
     /**
@@ -201,3 +213,4 @@ class MediaMigrateRichtext extends Command
         }
     }
 }
+

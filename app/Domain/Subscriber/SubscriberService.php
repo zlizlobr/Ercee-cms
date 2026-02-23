@@ -60,3 +60,4 @@ class SubscriberService implements SubscriberServiceInterface
         return $subscriber->hasTag($tag);
     }
 }
+

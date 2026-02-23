@@ -7,8 +7,14 @@ use Illuminate\Support\Facades\Log;
 
 class GitHubDispatchService
 {
+    /**
+     * @var string GitHub token used to authenticate dispatch API requests.
+     */
     private string $token;
 
+    /**
+     * @var string Target GitHub repository in owner/name format.
+     */
     private string $repository;
 
     public function __construct()
@@ -56,3 +62,4 @@ class GitHubDispatchService
         ]);
     }
 }
+

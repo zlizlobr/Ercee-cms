@@ -20,25 +20,52 @@ class MakeCmsBlock extends Command
 
     protected $description = 'Generate a CMS block with Filament form, Astro component, and all related files';
 
+    /**
+     * @var Filesystem Paths to generated files created by the command workflow.
+     */
     protected Filesystem $files;
 
     /** @var array<string, mixed> */
+    /**
+     * @var array JSON schema definition used to validate generated block data.
+     */
     protected array $schema;
 
+    /**
+     * @var string Human-readable block name provided as command input.
+     */
     protected string $blockName;
 
+    /**
+     * @var string Normalized block type key stored in content payloads.
+     */
     protected string $blockType;
 
+    /**
+     * @var string PHP class name generated for the new CMS block.
+     */
     protected string $className;
 
+    /**
+     * @var string Frontend component name resolved for block rendering.
+     */
     protected string $componentName;
 
+    /**
+     * @var string Filesystem path to the corresponding Astro component file.
+     */
     protected string $astroPath;
 
     /** @var array<int, array{path: string, description: string}> */
+    /**
+     * @var array List of files newly created during command execution.
+     */
     protected array $createdFiles = [];
 
     /** @var array<int, string> */
+    /**
+     * @var array List of existing files changed during command execution.
+     */
     protected array $modifiedFiles = [];
 
     protected const FIELD_MAPPING = [
@@ -246,6 +273,9 @@ use Filament\Forms\Components\Builder\Block;
 
 class {{ className }} extends BaseBlock
 {
+    /**
+     * @var int Display order used when registering generated blocks.
+     */
     public static int $order = {{ order }};
 
     public static function make(): Block
@@ -1191,3 +1221,4 @@ TS;
         $this->line('  3. Run frontend lint: cd ../ercee-frontend && pnpm lint');
     }
 }
+

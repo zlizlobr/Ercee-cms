@@ -34,3 +34,4 @@ class UuidPathGenerator implements PathGenerator
         return $media->uuid.'/responsive/';
     }
 }
+

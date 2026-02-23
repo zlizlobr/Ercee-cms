@@ -32,3 +32,4 @@ class MenuUpdated extends BaseDomainEvent
         ];
     }
 }
+

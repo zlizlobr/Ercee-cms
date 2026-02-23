@@ -24,3 +24,4 @@ class ContractCreated
         public ?Subscriber $subscriber
     ) {}
 }
+

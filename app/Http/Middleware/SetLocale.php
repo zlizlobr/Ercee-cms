@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
+    /**
+     * @var array Allowed locale codes accepted by locale middleware.
+     */
     protected array $supportedLocales = ['cs', 'en'];
 
     public function handle(Request $request, Closure $next): Response
@@ -22,3 +25,4 @@ class SetLocale
         return $next($request);
     }
 }
+

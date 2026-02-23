@@ -20,8 +20,17 @@ class MediaMigrateBlocks extends Command
 
     protected $description = 'Migrate block images from legacy paths to MediaLibrary';
 
+    /**
+     * @var int Counter of records successfully migrated in the current run.
+     */
     private int $migratedCount = 0;
+    /**
+     * @var int Counter of records intentionally skipped during migration.
+     */
     private int $skippedCount = 0;
+    /**
+     * @var int Counter of records that failed processing during migration.
+     */
     private int $errorCount = 0;
 
     /**
@@ -223,3 +232,4 @@ class MediaMigrateBlocks extends Command
         }
     }
 }
+
