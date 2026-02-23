@@ -63,6 +63,9 @@ class ThemeController extends ApiController
         });
     }
 
+    /**
+     * Normalize timestamp-like value to unix timestamp for cache keys.
+     */
     private function normalizeTimestamp(mixed $value): ?int
     {
         if (! $value) {
@@ -82,6 +85,9 @@ class ThemeController extends ApiController
         return $parsed === false ? null : $parsed;
     }
 
+    /**
+     * Normalize timestamp-like value to ISO 8601 string for API metadata.
+     */
     private function normalizeIsoDate(mixed $value): ?string
     {
         if (! $value) {
@@ -103,6 +109,8 @@ class ThemeController extends ApiController
 
     /**
      * Format the global theme settings.
+     *
+     * @return array{logo: array<string, mixed>, cta: array<string, mixed>}
      */
     protected function formatGlobal(ThemeSetting $settings): array
     {
@@ -116,6 +124,8 @@ class ThemeController extends ApiController
 
     /**
      * Format the header theme settings.
+     *
+     * @return array{logo: array<string, mixed>, menu: array<string, mixed>|null, cta: array<string, mixed>}
      */
     protected function formatHeader(ThemeSetting $settings): array
     {
@@ -130,6 +140,8 @@ class ThemeController extends ApiController
 
     /**
      * Format the footer theme settings.
+     *
+     * @return array{logo: array<string, mixed>, company_text: mixed, menus: array<string, array<string, mixed>|null>, cta: array<string, mixed>, copyright_text: string}
      */
     protected function formatFooter(ThemeSetting $settings): array
     {
@@ -155,6 +167,8 @@ class ThemeController extends ApiController
 
     /**
      * Resolve link data to a URL string.
+     *
+     * @param array<string, mixed> $linkData
      */
     protected function resolveLinkData(array $linkData): ?string
     {
@@ -171,6 +185,9 @@ class ThemeController extends ApiController
 
     /**
      * Format a call-to-action configuration.
+     *
+     * @param array<string, mixed> $settings
+     * @return array{label: mixed, url: string|null}
      */
     protected function formatCta(array $settings): array
     {
@@ -198,6 +215,8 @@ class ThemeController extends ApiController
 
     /**
      * Resolve a menu by ID and format it for the API response.
+     *
+     * @return array{id: int, name: string, slug: string, items: array<int, array<string, mixed>>}|null
      */
     protected function resolveMenu(?int $menuId): ?array
     {
@@ -227,6 +246,9 @@ class ThemeController extends ApiController
 
     /**
      * Format a logo configuration for API output.
+     *
+     * @param array<string, mixed> $settings
+     * @return array<string, mixed>
      */
     protected function formatLogo(array $settings, bool $includeUrl): array
     {
@@ -249,4 +271,3 @@ class ThemeController extends ApiController
         return $logo;
     }
 }
-

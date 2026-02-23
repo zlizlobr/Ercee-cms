@@ -87,6 +87,9 @@ class PageController extends ApiController
         });
     }
 
+    /**
+     * Normalize timestamp-like value to unix timestamp for cache keys.
+     */
     private function normalizeTimestamp(mixed $value): ?int
     {
         if (! $value) {
@@ -106,6 +109,9 @@ class PageController extends ApiController
         return $parsed === false ? null : $parsed;
     }
 
+    /**
+     * Normalize timestamp-like value to ISO 8601 string for API metadata.
+     */
     private function normalizeIsoDate(mixed $value): ?string
     {
         if (! $value) {
@@ -144,4 +150,3 @@ class PageController extends ApiController
         return $blocks;
     }
 }
-

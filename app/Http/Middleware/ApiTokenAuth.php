@@ -6,8 +6,14 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Authenticate internal API routes using shared token and optional ability.
+ */
 class ApiTokenAuth
 {
+    /**
+     * Validate internal token and optional route ability requirement.
+     */
     public function handle(Request $request, Closure $next, ?string $ability = null): Response
     {
         $token = $request->bearerToken() ?? $request->header('X-Api-Token');
@@ -37,4 +43,3 @@ class ApiTokenAuth
         return $next($request);
     }
 }
-

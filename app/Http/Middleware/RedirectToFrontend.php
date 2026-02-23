@@ -6,6 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Redirect non-API public routes to external headless frontend.
+ */
 class RedirectToFrontend
 {
     /**
@@ -36,4 +39,3 @@ class RedirectToFrontend
         return redirect()->away($redirectUrl, 301);
     }
 }
-

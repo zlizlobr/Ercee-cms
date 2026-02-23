@@ -1,0 +1,15 @@
+# PHPDoc Sweep Agent Skill Reference
+
+Canonical skill source:
+
+- <https://github.com/zlizlobr/ercee-agents/blob/main/phpdoc-sweep-agent/SKILL.md>
+
+Repository-local context:
+
+- `docs/workflow/runbooks/phpdoc-sweep-agent.md`
+- `docs/guides/application-phpdoc-notes-guide.md`
+
+Note:
+
+- This file is a CI-safe reference document.
+- Runtime agent loading is expected to use the centralized agents repository.

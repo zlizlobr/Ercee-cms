@@ -2,7 +2,7 @@
 
 ## Účel
 Tento guide definuje jednotný standard pro:
-- PHPDoc v `app/Application/*`
+- PHPDoc v libovolných PHP souborech (`*.php`) napříč aplikací
 - "note pole" v dokumentaci use-case částí aplikace
 
 Používej tento soubor jako canonical zdroj pravidel. V task/plán dokumentech pravidla neduplikuj, pouze odkazuj sem.
@@ -10,14 +10,14 @@ Používej tento soubor jako canonical zdroj pravidel. V task/plán dokumentech 
 ## Jak mě nasměrovat na standard
 Při zadání použij větu:
 
-`Použij standard z docs/app/Application/application-phpdoc-notes-guide.md.`
+`Použij standard z docs/guides/application-phpdoc-notes-guide.md.`
 
 To znamená:
 1. doplnit chybějící PHPDoc podle sekce níže,
 2. držet jednotné note pole podle šablony níže.
 
-## PHPDoc Standard (app/Application)
-Platí pro `Contracts/`, `Content/`, `Commands/`, `Results/` a další use-case podsložky.
+## PHPDoc Standard (všechny PHP soubory)
+Platí pro všechny PHP soubory v repozitáři (např. `app/`, `modules/`, `routes/`, `database/`), pokud konkrétní podsložka nemá přísnější vlastní standard.
 
 ### Class/Interface Docblock
 - Každá `class` / `interface` má stručný 1řádkový popis účelu.
@@ -38,6 +38,7 @@ Platí pro `Contracts/`, `Content/`, `Commands/`, `Results/` a další use-case 
 - `@var`:
   - u properties typu `array`, kde nativní typ nepopisuje obsah.
   - **must have** i u properties s business významem (včetně scalar/object typů), kde samotný název nebo nativní typ nevysvětluje účel hodnoty.
+  - pravidlo platí i pro promoted properties v `__construct(...)` (řeš přes `@param` na konstruktoru nebo odpovídající `@var` dokumentaci property podle kontextu).
   - popis piš jednou větou: co hodnota reprezentuje v kontextu class (ne jen opakování typu).
 
 ### Doporučené typy
@@ -69,7 +70,7 @@ Pro README/use-case poznámky používej jednotná pole v tomto pořadí:
 ```
 
 ## Definition Of Done
-- V `app/Application` nejsou chybějící PHPDocy u klíčových class/method.
+- V cílovém PHP scope (podle tasku) nejsou chybějící PHPDocy u klíčových class/method.
 - `array` parametry/návraty mají generiky nebo shape.
 - Properties s business významem mají `@var` s jednovětým popisem významu hodnoty.
 - Docs používají stejné note pole (`Purpose`, `Inputs`, `Outputs`, `Rules`, `Dependencies`, `Risks`).

@@ -7,8 +7,14 @@ use App\Domain\Content\Page;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
+/**
+ * Render server-side frontend pages for fallback browsing.
+ */
 class FrontendController extends Controller
 {
+    /**
+     * Render the home page with navigation.
+     */
     public function home(): View
     {
         $page = $this->getPageBySlug('home');
@@ -20,6 +26,9 @@ class FrontendController extends Controller
         ]);
     }
 
+    /**
+     * Render a published page by slug with navigation.
+     */
     public function page(string $slug): View
     {
         $page = $this->getPageBySlug($slug);
@@ -36,6 +45,9 @@ class FrontendController extends Controller
         ]);
     }
 
+    /**
+     * Load a published page by slug from cache.
+     */
     private function getPageBySlug(string $slug): ?Page
     {
         return Cache::remember("page:{$slug}", 3600, function () use ($slug) {
@@ -43,6 +55,11 @@ class FrontendController extends Controller
         });
     }
 
+    /**
+     * Load active navigation tree for frontend rendering.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     private function getNavigation(): array
     {
         return Cache::remember('navigation:tree', 3600, function () {
@@ -56,4 +73,3 @@ class FrontendController extends Controller
         });
     }
 }
-

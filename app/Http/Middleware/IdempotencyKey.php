@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Replay cached responses for repeated requests with the same idempotency key.
+ */
 class IdempotencyKey
 {
     protected const CACHE_TTL = 86400; // 24 hours
 
+    /**
+     * Cache successful and client-error responses by request fingerprint.
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $idempotencyKey = $request->header('Idempotency-Key');
@@ -40,6 +46,9 @@ class IdempotencyKey
         return $response;
     }
 
+    /**
+     * Build cache key from caller, path and provided idempotency key.
+     */
     protected function buildCacheKey(Request $request, string $idempotencyKey): string
     {
         return sprintf(
@@ -50,6 +59,9 @@ class IdempotencyKey
         );
     }
 
+    /**
+     * Persist response payload for future idempotent replays.
+     */
     protected function cacheResponse(string $cacheKey, Response $response): void
     {
         $body = json_decode($response->getContent(), true);
@@ -60,4 +72,3 @@ class IdempotencyKey
         ], self::CACHE_TTL);
     }
 }
-

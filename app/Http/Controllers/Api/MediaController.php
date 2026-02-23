@@ -56,6 +56,9 @@ class MediaController extends ApiController
 
     /**
      * Resolve media entries by numeric IDs.
+     *
+     * Request payload:
+     * - ids: array<int, int>
      */
     public function resolve(Request $request): JsonResponse
     {
@@ -76,4 +79,3 @@ class MediaController extends ApiController
         ]);
     }
 }
-
