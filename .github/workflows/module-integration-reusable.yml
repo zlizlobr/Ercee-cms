@@ -92,13 +92,67 @@ jobs:
           token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
           path: ercee-modules/ercee-module-${{ inputs.module_name }}
 
+      - name: Checkout analytics module baseline
+        if: ${{ inputs.module_name != 'analytics' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-analytics
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-analytics
+
+      - name: Checkout commerce module baseline
+        if: ${{ inputs.module_name != 'commerce' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-commerce
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-commerce
+
+      - name: Checkout forms module baseline
+        if: ${{ inputs.module_name != 'forms' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-forms
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-forms
+
+      - name: Checkout funnel module baseline
+        if: ${{ inputs.module_name != 'funnel' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-funnel
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-funnel
+
+      - name: Checkout llm module baseline
+        if: ${{ inputs.module_name != 'llm' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-llm
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-llm
+
+      - name: Checkout theme-builds module baseline
+        if: ${{ inputs.module_name != 'theme-builds' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zlizlobr/ercee-module-theme-builds
+          ref: main
+          token: ${{ secrets.MODULES_REPO_TOKEN || secrets.CMS_MODULES_TOKEN }}
+          path: ercee-modules/ercee-module-theme-builds
+
       - name: Prepare path repository for Composer
         run: ln -sfn "$GITHUB_WORKSPACE/ercee-modules" "$GITHUB_WORKSPACE/../ercee-modules"
 
       - name: Configure module dependency
         run: |
           composer config repositories.module path ../ercee-modules/ercee-module-${{ inputs.module_name }}
-          composer require ercee/module-${{ inputs.module_name }}:@dev --no-interaction --no-progress
+          composer update ercee/module-${{ inputs.module_name }} --no-interaction --no-progress --ansi
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
