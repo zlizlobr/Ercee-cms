@@ -24,6 +24,7 @@ return [
         'export' => 'Exportovat',
         'import' => 'Importovat',
         'preview' => 'Náhled',
+        'publish' => 'Publikovat',
         'close' => 'Zavřít',
     ],
 

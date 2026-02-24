@@ -24,6 +24,7 @@ return [
         'export' => 'Export',
         'import' => 'Import',
         'preview' => 'Preview',
+        'publish' => 'Publish',
         'close' => 'Close',
     ],
 
