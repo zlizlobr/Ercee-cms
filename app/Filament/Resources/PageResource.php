@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Str;
 
 /**
@@ -223,6 +224,28 @@ class PageResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('publish')
+                        ->label(__('admin.actions.publish'))
+                        ->icon('heroicon-o-globe-alt')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (EloquentCollection $records): void {
+                            $recordIdsToPublish = $records
+                                ->reject(fn (Page $record): bool => $record->status === Page::STATUS_PUBLISHED)
+                                ->modelKeys();
+
+                            if ($recordIdsToPublish === []) {
+                                return;
+                            }
+
+                            Page::query()
+                                ->whereKey($recordIdsToPublish)
+                                ->update([
+                                    'status' => Page::STATUS_PUBLISHED,
+                                    'published_at' => now(),
+                                ]);
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
@@ -252,5 +275,4 @@ class PageResource extends Resource
         ];
     }
 }
-
 

@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Cache;
 class PageObserver
 {
     /**
+     * Ensure publish timestamp is set when a page is saved as published.
+     *
+     * @param Page $page Page entity being persisted.
+     */
+    public function saving(Page $page): void
+    {
+        if ($page->status === Page::STATUS_PUBLISHED && blank($page->published_at)) {
+            $page->published_at = now();
+        }
+    }
+
+    /**
      * Handle page save events and trigger publish/rebuild flows when relevant.
      *
      * @param Page $page Page entity that was created or updated.
