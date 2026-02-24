@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\PageResource\Pages;
 
+use App\Domain\Content\Page;
 use App\Filament\Resources\PageResource;
 use Filament\Actions;
+use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\EditRecord;
 
 /**
@@ -28,6 +30,32 @@ class EditPage extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    /**
+     * @return array<Actions\Action | ActionGroup>
+     */
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            $this->getPublishFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
+
+    protected function getPublishFormAction(): Actions\Action
+    {
+        return Actions\Action::make('publish')
+            ->label(__('admin.actions.publish'))
+            ->color('success')
+            ->action('publish')
+            ->visible(fn (): bool => ($this->data['status'] ?? $this->record->status) !== Page::STATUS_PUBLISHED);
+    }
+
+    public function publish(): void
+    {
+        $this->data['status'] = Page::STATUS_PUBLISHED;
+
+        $this->save();
+    }
 }
-
-
