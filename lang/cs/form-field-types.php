@@ -69,4 +69,8 @@ return [
         'label' => 'Skryté',
         'description' => 'Skryté pole bez UI.',
     ],
+    'google_address' => [
+        'label' => 'Vyhledávání adresy',
+        'description' => 'Vyhledávání adresy přes Google Places autocomplete.',
+    ],
 ];

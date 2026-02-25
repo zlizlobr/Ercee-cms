@@ -69,4 +69,8 @@ return [
         'label' => 'Hidden',
         'description' => 'Hidden field without UI.',
     ],
+    'google_address' => [
+        'label' => 'Address Search',
+        'description' => 'Address search with Google Places autocomplete.',
+    ],
 ];

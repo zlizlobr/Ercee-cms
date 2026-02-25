@@ -69,3 +69,16 @@ Modules\Funnel\Domain\FunnelRun::query()->first();
 Modules\Funnel\Domain\FunnelRunStep::query()->first();
 Modules\Funnel\Domain\FunnelStep::query()->first();
 ```
+
+## Jednopříkazové získání záznamu pro ID
+Níže je vždy jeden příkaz pro vytažení prvního záznamu (pokud existuje):
+
+```php
+use Modules\Forms\Domain\Contract;
+
+// vrátí model (nebo null, pokud neexistuje)
+Contract::find(26);
+
+// pokud chceš čistě data jako pole:
+Contract::query()->whereKey(26)->first()?->toArray();
+```
