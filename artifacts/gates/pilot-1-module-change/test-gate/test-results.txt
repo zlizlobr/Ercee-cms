@@ -1,0 +1,10 @@
+A:pass
+A_NOTE: ./vendor/bin/phpunit nebyl dostupny v modulu; composer install selhal na chybejicim balicku ercee/module-forms. Pouzit fallback bootstrap pres CMS vendor autoload.
+B:pass
+B_CMD_1: php /usr/local/var/www/Ercee-cms/vendor/bin/phpunit --bootstrap /tmp/phpunit-commerce-bootstrap.php /usr/local/var/www/ercee-modules/ercee-module-commerce/tests/Unit/Domain/ProductStockTest.php
+B_RESULT_1: OK (3 tests, 8 assertions)
+B_CMD_2: php /usr/local/var/www/Ercee-cms/vendor/bin/phpunit --bootstrap /tmp/phpunit-commerce-bootstrap.php /usr/local/var/www/ercee-modules/ercee-module-commerce/tests/Unit/Domain/PaymentResultTest.php
+B_RESULT_2: OK (3 tests, 8 assertions)
+C:pass
+C_CMD: npm run verify:blocks
+C_RESULT: PASS after frontend lint/test fixes in ../ercee-frontend (eslint ignore for .build-cache, RFQForm lint/type fixes, vitest alias config)

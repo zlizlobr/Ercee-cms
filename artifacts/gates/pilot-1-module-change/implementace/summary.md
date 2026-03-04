@@ -1,0 +1,28 @@
+# Pilot #1 Implementace Summary
+
+- Scope executed:
+  - Implemented commerce module Gate 2 changes in `/usr/local/var/www/ercee-modules/ercee-module-commerce`:
+    - admin product table sorting by name,
+    - stock evidence model (`manage_stock`, `stock_quantity`, `stock_status`) with API exposure,
+    - new Commerce Settings page with `XML Feeds` tab,
+    - tab priority controls for settings tabs,
+    - new `ProductTipsCarouselBlock` registration for CMS builder.
+- Key files changed:
+  - `src/Filament/Resources/ProductResource.php`
+  - `src/Domain/Product.php`
+  - `src/Domain/Services/ProductAvailabilityService.php`
+  - `src/Http/Controllers/ProductController.php`
+  - `src/CommerceModuleServiceProvider.php`
+  - `src/Filament/Pages/CommerceSettingsPage.php`
+  - `src/Domain/CommerceSetting.php`
+  - `src/Services/CommerceSettingsService.php`
+  - `src/Filament/Blocks/ProductTipsCarouselBlock.php`
+  - `database/migrations/2026_02_16_000010_add_stock_fields_to_products_table.php`
+  - `database/migrations/2026_02_16_000011_create_commerce_settings_table.php`
+  - `docs/guides/commerce-settings-stock-and-blocks.md`
+  - `tests/Unit/Domain/ProductStockTest.php`
+- Risks observed:
+  - New product stock columns require migration before admin/API screens are used in production.
+  - New settings page expects `commerce_settings` table; guarded in UI, but full behavior requires migration.
+  - Carousel block registration is module-side complete; end-to-end render still depends on frontend mapping for this block type if custom rendering is required.
+- Next handoff: test-runner-agent
