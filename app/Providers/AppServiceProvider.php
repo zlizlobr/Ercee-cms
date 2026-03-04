@@ -76,6 +76,14 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting(): void
     {
+        RateLimiter::for('api', function (Request $request) {
+            $key = implode('|', [$request->ip(), 'api']);
+
+            return Limit::perMinute(60)->by($key)->response(function () {
+                return response()->json(['error' => 'Too many requests', 'retry_after' => 60], 429);
+            });
+        });
+
         RateLimiter::for('form-submissions', function (Request $request) {
             $formId = (string) ($request->route('id') ?? 'unknown');
             $key = implode('|', [$request->ip(), 'form-submit', $formId]);
