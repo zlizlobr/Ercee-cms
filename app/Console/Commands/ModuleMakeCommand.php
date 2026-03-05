@@ -46,6 +46,7 @@ class ModuleMakeCommand extends Command
             'resources/views',
             'tests',
             'tests/Unit',
+            '.github/workflows',
         ];
 
         foreach ($directories as $dir) {
@@ -62,6 +63,8 @@ class ModuleMakeCommand extends Command
         File::put("{$moduleDir}/tests/phpstan-bootstrap.php", $this->phpstanBootstrap());
         File::put("{$moduleDir}/tests/TestCase.php", $this->testCase($studly));
         File::put("{$moduleDir}/tests/Unit/SmokeTest.php", $this->smokeTest($studly));
+        File::put("{$moduleDir}/CHANGELOG.md", '');
+        File::put("{$moduleDir}/.github/workflows/release.yml", $this->releaseWorkflow());
 
         $this->info("Module scaffolded: {$moduleDir}");
         $this->newLine();
@@ -317,6 +320,211 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase {}
 
 PHP;
+    }
+
+    private function releaseWorkflow(): string
+    {
+        return <<<'YAML'
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for release loop
+        id: guard
+        run: |
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          MESSAGE=$(git log -1 --pretty=format:'%s')
+          if [ "$AUTHOR" = "github-actions" ] || echo "$MESSAGE" | grep -qE '^chore: release v'; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read release intent
+        id: intent
+        if: steps.guard.outputs.skip == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+            let title = '';
+
+            try {
+              const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: sha,
+              });
+              if (prs.data.length > 0) {
+                title = prs.data[0].title || '';
+              }
+            } catch (error) {
+              core.info(`PR lookup failed: ${error.message}`);
+            }
+
+            if (!title) {
+              const msg = context.payload.head_commit?.message || '';
+              title = msg.split('\n')[0] || '';
+            }
+
+            core.info(`Release intent source title: ${title}`);
+
+            let type = '';
+            if (/release:\s*patch/i.test(title)) type = 'patch';
+            else if (/release:\s*minor/i.test(title)) type = 'minor';
+            else if (/release:\s*major/i.test(title)) type = 'major';
+
+            if (!type) {
+              core.info('No release intent found. Skipping release.');
+              return;
+            }
+
+            core.setOutput('type', type);
+
+      - name: Get last tag
+        id: last_tag
+        if: steps.intent.outputs.type != ''
+        run: |
+          TAG=$(git tag --sort=-v:refname | head -n 1)
+          if [ -z "$TAG" ]; then
+            TAG="v0.0.0"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Calculate next version
+        id: version
+        if: steps.intent.outputs.type != ''
+        run: |
+          VERSION=${{ steps.last_tag.outputs.tag }}
+          VERSION=${VERSION#v}
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          case "${{ steps.intent.outputs.type }}" in
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+          esac
+
+          NEXT="v$MAJOR.$MINOR.$PATCH"
+          echo "next=$NEXT" >> $GITHUB_OUTPUT
+          echo "next_bare=$MAJOR.$MINOR.$PATCH" >> $GITHUB_OUTPUT
+          echo "Next version: $NEXT"
+
+      - name: Capture HEAD SHA
+        id: head_sha
+        if: steps.intent.outputs.type != ''
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Update config/module.php
+        if: steps.intent.outputs.type != ''
+        run: |
+          VERSION_BARE="${{ steps.version.outputs.next_bare }}"
+          sed -i "s/'version' => '[^']*'/'version' => '$VERSION_BARE'/" config/module.php
+          echo "Updated config/module.php to version $VERSION_BARE"
+
+      - name: Verify version consistency
+        if: steps.intent.outputs.type != ''
+        run: |
+          VERSION_BARE="${{ steps.version.outputs.next_bare }}"
+          ACTUAL=$(grep -oP "(?<='version' => ')[^']*" config/module.php)
+          if [ "$ACTUAL" != "$VERSION_BARE" ]; then
+            echo "ERROR: config/module.php version ($ACTUAL) does not match release ($VERSION_BARE)"
+            exit 1
+          fi
+          echo "Version verified: $ACTUAL"
+
+      - name: Generate release notes
+        id: notes
+        if: steps.intent.outputs.type != ''
+        run: |
+          LAST_TAG=${{ steps.last_tag.outputs.tag }}
+
+          NOTES=$(git log "$LAST_TAG..HEAD" --pretty=format:"- %s%n%b")
+
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update CHANGELOG.md
+        if: steps.intent.outputs.type != ''
+        run: |
+          VERSION=${{ steps.version.outputs.next }}
+          DATE=$(date +'%Y-%m-%d')
+
+          {
+            echo "## [$VERSION] – $DATE"
+            echo ""
+            echo "${{ steps.notes.outputs.notes }}"
+            echo ""
+            cat CHANGELOG.md
+          } > CHANGELOG.tmp
+
+          mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Commit release artifacts
+        if: steps.intent.outputs.type != ''
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CHANGELOG.md config/module.php
+          git commit -m "chore: release ${{ steps.version.outputs.next }}"
+
+      - name: Verify fast-forward (conflict guard)
+        if: steps.intent.outputs.type != ''
+        run: |
+          git fetch origin main
+          REMOTE_SHA=$(git rev-parse origin/main)
+          LOCAL_BASE="${{ steps.head_sha.outputs.sha }}"
+          if [ "$REMOTE_SHA" != "$LOCAL_BASE" ]; then
+            echo "ERROR: main has diverged since checkout (remote: $REMOTE_SHA, local base: $LOCAL_BASE). Aborting to prevent incorrect tag."
+            exit 1
+          fi
+
+      - name: Push release commit
+        if: steps.intent.outputs.type != ''
+        run: git push origin main
+
+      - name: Create tag
+        if: steps.intent.outputs.type != ''
+        run: |
+          git tag ${{ steps.version.outputs.next }}
+          git push origin ${{ steps.version.outputs.next }}
+
+      - name: Create GitHub Release
+        if: steps.intent.outputs.type != ''
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.next }}
+          name: ${{ steps.version.outputs.next }}
+          body: ${{ steps.notes.outputs.notes }}
+YAML;
     }
 
     /**
