@@ -161,7 +161,7 @@ class FrontendRebuildService
      */
     private function triggerDisabled(string $reason): void
     {
-        Log::debug('Frontend rebuild skipped (disabled mode)', [
+        dev_debug('Frontend rebuild skipped (disabled mode)', [
             'reason' => $reason,
             'mode' => $this->mode,
         ]);

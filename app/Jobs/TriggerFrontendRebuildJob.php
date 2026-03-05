@@ -51,7 +51,7 @@ class TriggerFrontendRebuildJob implements ShouldBeUnique, ShouldQueue
     public function handle(FrontendRebuildService $rebuildService): void
     {
         if (! $rebuildService->isEnabled()) {
-            Log::debug('Frontend rebuild skipped (disabled)', [
+            dev_debug('Frontend rebuild skipped (disabled)', [
                 'reason' => $this->reason,
             ]);
 

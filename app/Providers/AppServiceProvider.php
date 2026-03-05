@@ -16,6 +16,7 @@ use App\Observers\MenuObserver;
 use App\Observers\NavigationObserver;
 use App\Observers\PageObserver;
 use App\Observers\ThemeSettingObserver;
+use App\Support\DevLayer\ErceeDevLayerPolicy;
 use App\Contracts\Services\SubscriberServiceInterface;
 use App\Domain\Subscriber\SubscriberService;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -36,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(SubscriberServiceInterface::class, SubscriberService::class);
+        $this->app->singleton(ErceeDevLayerPolicy::class, fn () => new ErceeDevLayerPolicy);
     }
 
     /**

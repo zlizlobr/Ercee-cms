@@ -1,3 +1,7 @@
+## [Unreleased]
+
+- docs: add Ercee Dev Layer guide coverage in `docs/guides/dev/` and setup/index cross-links
+
 ## [v0.6.3] – 2026-02-02
 
 - release: patch -- Update docs (#38)
@@ -316,4 +320,3 @@ ltimpalization of tables for forms
 - Initialize Laravel
 * Initialize Laravel 12 platform with SQLite, Redis, Mailpit and CI pipeline
 - Init first setup
-

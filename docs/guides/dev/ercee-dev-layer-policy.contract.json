@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "variables": {
+    "ERCEE_DEV_LAYER": {
+      "type": "boolean",
+      "default": true
+    },
+    "ERCEE_LOG_LEVEL": {
+      "type": "string",
+      "allowed": [
+        "debug",
+        "info",
+        "notice",
+        "warning",
+        "error",
+        "critical",
+        "alert",
+        "emergency"
+      ],
+      "default_by_profile": {
+        "dev": "debug",
+        "staging": "info",
+        "prod": "info"
+      }
+    },
+    "ERCEE_PUBLIC_DEBUG": {
+      "type": "boolean",
+      "default": false
+    },
+    "ERCEE_RUNTIME_PROFILE": {
+      "type": "string",
+      "allowed": [
+        "dev",
+        "staging",
+        "prod"
+      ],
+      "default_from_app_env": {
+        "production|prod": "prod",
+        "stage|staging|preprod": "staging",
+        "*": "dev"
+      }
+    }
+  },
+  "behavior_matrix": {
+    "dev": {
+      "debug_logs": "ON",
+      "public_debug": "EXPLICIT_ONLY",
+      "astro_debug_plugins": "ON",
+      "npm_dev_only_scripts": "ON"
+    },
+    "staging": {
+      "debug_logs": "OFF",
+      "public_debug": "OFF",
+      "astro_debug_plugins": "OFF",
+      "npm_dev_only_scripts": "OFF"
+    },
+    "prod": {
+      "debug_logs": "OFF",
+      "public_debug": "OFF",
+      "astro_debug_plugins": "OFF",
+      "npm_dev_only_scripts": "OFF"
+    }
+  },
+  "api_contract": [
+    "isDevLayerEnabled",
+    "canWriteDebugLogs",
+    "isPublicDebugEnabled"
+  ],
+  "safety_rules": [
+    "prod_never_allows_debug_logs",
+    "public_debug_requires_dev_profile_and_explicit_opt_in"
+  ]
+}

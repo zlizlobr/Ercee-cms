@@ -37,7 +37,7 @@ class MediaRenameService
         );
 
         if (empty($newFileName)) {
-            Log::debug('SEO rename skipped - no title/alt', [
+            dev_debug('SEO rename skipped - no title/alt', [
                 'media_id' => $media->id,
                 'uuid' => $media->uuid,
             ]);
@@ -196,4 +196,3 @@ class MediaRenameService
         );
     }
 }
-

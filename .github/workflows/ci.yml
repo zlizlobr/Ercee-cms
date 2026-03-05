@@ -145,6 +145,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --ansi
 
+      - name: Validate Ercee dev-layer contract
+        run: php scripts/workflow/validate-dev-layer-policy.php
+
       - name: Resolve changed PHP files for quality checks
         id: changed-php
         run: |

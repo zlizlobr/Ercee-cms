@@ -52,6 +52,21 @@ Default admin user:
 If you need Stripe payments or webhooks locally, follow the Commerce guide:
 `docs/guides/commerce/commerce-guide.md`.
 
+### 5b. Configure Ercee Dev Layer (recommended)
+
+Set explicit profile and debug policy in `.env`:
+
+```env
+ERCEE_RUNTIME_PROFILE=dev
+ERCEE_DEV_LAYER=true
+ERCEE_LOG_LEVEL=debug
+ERCEE_PUBLIC_DEBUG=false
+```
+
+Reference:
+- `docs/guides/dev/ercee-dev-layer-guide.md`
+- `docs/guides/dev/ercee-dev-layer-policy.md`
+
 ### 6. Start services (optional)
 
 ```bash

@@ -26,6 +26,10 @@ This folder follows a structured information model:
   - `docs/guides/setup/local-backend-setup.md`
   - `docs/guides/setup/local-frontend-setup.md`
   - `docs/guides/setup/json-seeders-guide.md`
+- Dev
+  - `docs/guides/dev/ercee-dev-layer-guide.md`
+  - `docs/guides/dev/ercee-dev-layer-policy.md`
+  - `docs/guides/dev/ercee-dev-layer-implementation-tasks.md`
 - Frontend
   - `docs/guides/frontend/astro-frontend-guide.md`
   - `docs/guides/frontend/preview-frontend-guide.md`
