@@ -20,6 +20,11 @@ class RedirectToFrontend
             return $next($request);
         }
 
+        // Allow direct downloads of CMS-generated theme build artifacts.
+        if ($request->is('storage/app/theme-builds') || $request->is('storage/app/theme-builds/*')) {
+            return $next($request);
+        }
+
         $frontendUrl = config('app.frontend_url');
 
         // If no frontend URL configured, proceed normally

@@ -27,6 +27,25 @@ Route::get('/admin/pages/{page}/preview', PagePreviewController::class)
     ->middleware(['web', 'auth'])
     ->name('admin.pages.preview');
 
+// Serve generated theme build artifacts directly from storage.
+Route::get('/storage/app/theme-builds/{path}', function (string $path) {
+    $buildsRoot = realpath(storage_path('app/theme-builds'));
+
+    if ($buildsRoot === false) {
+        abort(404);
+    }
+
+    $requestedPath = storage_path('app/theme-builds/' . ltrim($path, '/'));
+    $resolvedPath = realpath($requestedPath);
+
+    // Block directory traversal and allow only existing files from theme-builds root.
+    if ($resolvedPath === false || ! is_file($resolvedPath) || ! str_starts_with($resolvedPath, $buildsRoot . DIRECTORY_SEPARATOR)) {
+        abort(404);
+    }
+
+    return response()->download($resolvedPath);
+})->where('path', '.*')->name('theme-builds.download');
+
 // Language switcher
 Route::get('/lang/{locale}', function (string $locale) {
     $supported = ['cs', 'en'];
